@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Skap Client v1.0</title>
+        <link href="style.css" rel="stylesheet" />
+        <link rel="icon" href="skap.ico">
+    </head>
+    <body>
+        <div id="loginDiv">
+            <h1 id="logo">Skap Client<span id="scuffed">Scuffed</span><span id="hacked">>hacked</span></h1>
+            <br>
+            <div id="loginData">
+                <label for="username">Username: </label><input id="username" type="text" /><br>
+                <label for="password">Password: </label><input id="password" type="password" /><br><br>
+                <button id="guest">Guest</button>&nbsp;<button id="login">Login</button>
+            </div>
+            <br>
+            <div id="logoutDiv" class="hidden">
+                <br>
+                <button id="logout">Logout</button>
+                <br><br>
+                <button id="play">Play</button>
+            </div>
+        </div>
+        <div id="gamesDiv" class="hidden">
+            <div id="gamesMenu">
+                <h2>Game list</h2>
+                <button id="refresh">Refresh</button>
+            </div><br>
+            <div id="games"></div>
+        </div>
+        <div id="gameDiv" class="hidden">
+            <div id="GUI">
+                <div id="playerList" class="noselect"></div>
+                <div id="fuelBarWrap"><div id="fuelBarInner"></div></div>
+                <div id="chat">
+                    <div id="chatContent"></div>
+                    <input id="chatInput" placeholder="Say something...">
+                </div>
+                <div id="lastUpdateDiv">
+                    <span id="lastUpdateDisplay" class="noselect"></span>ms since last update<br>
+                    (<span id="minMaxUpdateDisplay" class="noselect"></span>ms)
+                </div>
+            </div>
+            <canvas id="render">CANVAS_NOT_SUPPORTED (rip)</canvas>
+        </div>
+        <div id="alert"></div>
+        <div id="ws"></div>
+        <script src="keysDown.js"></script>
+        <script src="vars.js"></script>
+        <script src="render.js"></script>
+        <script src="updateStates.js"></script>
+        <script src="sha256.js"></script>
+        <script src="main.js"></script>
+    </body>
+</html>

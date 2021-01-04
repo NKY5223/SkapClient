@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bad.</title>
+        <style>
+            html {
+                background: #000000;
+                color: #00ff00;
+                font-family: monospace;
+            }
+            p {
+                font-size: 50px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                margin: 0;
+            }
+        </style>
+        <link rel="icon" href="skap.ico">
+    </head>
+    <body>
+        <p>You are bad.</p>
+    </body>
+    <script>
+        const p = document.body.firstElementChild;
+        setTimeout(() => {
+            p.innerHTML = "Why did you send that message?".replace(/ /g, "&nbsp;");
+            setTimeout(() => {
+                p.innerHTML = ".";
+                setTimeout(() => {
+                    p.innerHTML = "..";
+                    setTimeout(() => {
+                        p.innerHTML = "...";
+                        setTimeout(() => {
+                            window.location.replace("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+                        }, 1000);
+                    }, 1000);
+                }, 1000);
+            }, 2000);
+        }, 2000);
+    </script>
+</html>
