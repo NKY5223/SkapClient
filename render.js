@@ -127,26 +127,6 @@ function render(e, map) {
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         ctx.restore();
     }
-    // Render players
-    ctx.font = "2px Tahoma, Verdana, Segoe, sans-serif";
-    for (let i in e.players) {
-        let p = e.players[i];
-        ctx.save();
-        ctx.translate(p.pos.x, p.pos.y);
-        ctx.rotate(p.gravDir / 2 * Math.PI);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, p.radius, p.radius, 0, 0, 7);
-        ctx.fillStyle = p.died ? "#ff0000" : p.color;
-        ctx.fill();
-        ctx.fillStyle = p.died ? "#ff0000" : "#ffffff";
-        ctx.fillText(p.name, 0, -p.radius - 0.5);
-        ctx.fillStyle = p.died ? "#ff0000" : "#ffff40";
-        ctx.fillRect(-5, p.radius + 1, p.fuel / 6 * 5, 2.5);
-        ctx.strokeStyle = "#202020";
-        ctx.lineWidth = 0.5;
-        ctx.strokeRect(-5, p.radius + 1, 10, 2.5);
-        ctx.restore();
-    }
     // Render bombs
     for (let obj of e.entities.filter(obj => obj.type === "bomb")) {
         ctx.save();
@@ -213,10 +193,6 @@ function render(e, map) {
         ctx.fillStyle = fill.normalOutline;
         ctx.fill();
         ctx.beginPath();
-        ctx.ellipse(0, 0, .9, .9, 0, 0, 7);
-        ctx.fillStyle = fill.normalTop;
-        ctx.fill();
-        ctx.beginPath();
         ctx.arc(0, 0, .9, 0, Math.PI);
         ctx.fillStyle = fill.normalBottom;
         ctx.fill();
@@ -231,10 +207,6 @@ function render(e, map) {
         ctx.beginPath();
         ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
         ctx.fillStyle = fill.normalOutline;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.ellipse(0, 0, .9, .9, 0, 0, 7);
-        ctx.fillStyle = fill.normalBottom;
         ctx.fill();
         ctx.beginPath();
         ctx.arc(0, 0, .9, 0, Math.PI);
@@ -260,6 +232,26 @@ function render(e, map) {
         ctx.beginPath();
         ctx.ellipse(0, 0, obj.size.x / 2, obj.size.y / 2, 0, 0, 7);
         ctx.fill();
+        ctx.restore();
+    }
+    // Render players
+    ctx.font = "2px Tahoma, Verdana, Segoe, sans-serif";
+    for (let i in e.players) {
+        let p = e.players[i];
+        ctx.save();
+        ctx.translate(p.pos.x, p.pos.y);
+        ctx.rotate(p.gravDir / 2 * Math.PI);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, p.radius, p.radius, 0, 0, 7);
+        ctx.fillStyle = p.died ? "#ff0000" : p.color;
+        ctx.fill();
+        ctx.fillStyle = p.died ? "#ff0000" : "#ffffff";
+        ctx.fillText(p.name, 0, -p.radius - 0.5);
+        ctx.fillStyle = p.died ? "#ff0000" : "#ffff40";
+        ctx.fillRect(-5, p.radius + 1, p.fuel / 6 * 5, 2.5);
+        ctx.strokeStyle = "#202020";
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(-5, p.radius + 1, 10, 2.5);
         ctx.restore();
     }
 }

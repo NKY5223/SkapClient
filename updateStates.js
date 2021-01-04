@@ -39,6 +39,11 @@ function updateStates(m) {
     }
     // Fuel bar 
     fuelBar.style.width = 100 * m.infos.fuel / 12 + "%";
+    // Pos and vel
+    posXSpan.innerHTML = player.pos.x;
+    posYSpan.innerHTML = player.pos.y;
+    velXSpan.innerHTML = player.vel.x;
+    velYSpan.innerHTML = player.vel.y;
 
     // Render
     canvas.width = document.body.clientWidth;

@@ -116,6 +116,10 @@ const chatInput = document.getElementById("chatInput");
 const fuelBar = document.getElementById("fuelBarInner");
 const lastUpdateDisplay = document.getElementById("lastUpdateDisplay");
 const minMaxUpdate = document.getElementById("minMaxUpdateDisplay");
+const posXSpan = document.getElementById("posX");
+const posYSpan = document.getElementById("posY");
+const velXSpan = document.getElementById("velX");
+const velYSpan = document.getElementById("velY");
 
 // Functions
 /**
