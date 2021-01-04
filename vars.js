@@ -31,7 +31,10 @@ let fill = {
     mineExpRegion: "#c0000020",
 
     bouncerGreen: "#00c000",
-    bouncerBlack: "#000000"
+    bouncerBlack: "#000000",
+    
+    spikeFill: "#c00000",
+    spikeOutline: "#000000"
 };
 obstaclePNG.addEventListener("load", () => {
     fill.obstacle = ctx.createPattern(obstaclePNG, "repeat")

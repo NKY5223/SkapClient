@@ -187,4 +187,20 @@ function renderEntities(e) {
         ctx.fillRect(-.5, -.5, 1, 1);
         ctx.restore();
     }
+    // Render bouncers
+    for (let obj of e.filter(obj => obj.type === "spike")) {
+        ctx.save();
+        ctx.globalAlpha = obj.opacity;
+        ctx.translate(obj.pos.x, obj.pos.y);
+        ctx.scale(obj.radius, obj.radius);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
+        ctx.fillStyle = fill.spikeOutline;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(0, 0, .9, .9, 0, 0, 7);
+        ctx.fillStyle = fill.spikeFill;
+        ctx.fill();
+        ctx.restore();
+    }
 }
