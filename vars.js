@@ -5,15 +5,29 @@ const ws = new WebSocket("wss://skap.io");
  */
 const canvas = document.getElementById("render");
 const ctx = canvas.getContext("2d");
+    ctx.textBaseline = "middle";
 
 const obstaclePNG = new Image();
 obstaclePNG.src = "obstacle.png";
+// Replace with images eventually (might need to restrict zoom in)
 let fill = {
     background: "#808080",
     obstacle: ctx.createPattern(obstaclePNG, "repeat"),
     obstacleColor: "#404040",
-    lava: "#c00000",
+    lava: "#d00000",
     slime: "#00c000",
+    gravOutline: [
+        "#ffff00",
+        "#ff0000",
+        "#0000ff",
+        "#00ff00"
+    ],
+    gravFill: [
+        "#ffff0008",
+        "#ff000008",
+        "#0000ff08",
+        "#00ff0008"
+    ],
 
     doorClosedOutline: "#404040",
     doorClosedFill: "#404040c0",
@@ -22,19 +36,25 @@ let fill = {
 
     turretBody: "#404040",
     turretCannon: "#303030",
+    bullet: "#d00000",
 
     mineOuter: "#000000",
-    mineInner: "#c00000",
+    mineInner: "#d00000",
     minePhaseOuter: "#202020",
     minePhaseInner: "#ffffff",
     mineRegion: "#00000020",
-    mineExpRegion: "#c0000020",
+    mineExpRegion: "#d0000020",
 
     bouncerGreen: "#00c000",
     bouncerBlack: "#000000",
-    
-    spikeFill: "#c00000",
-    spikeOutline: "#000000"
+
+    spikeFill: "#d00000",
+    spikeOutline: "#000000",
+
+    // For normal AND reverse
+    normalOutline: "#000000",
+    normalTop: "#000000",
+    normalBottom: "#d00000"
 };
 obstaclePNG.addEventListener("load", () => {
     fill.obstacle = ctx.createPattern(obstaclePNG, "repeat")

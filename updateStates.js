@@ -22,7 +22,6 @@ function updateStates(m) {
     lastUpdate = now;
 
     let player = m.players[m.infos.id];
-    let ids = Object.keys(m.players);
 
     // Camera
     if (freeCam) {
@@ -44,15 +43,12 @@ function updateStates(m) {
     // Render
     canvas.width = document.body.clientWidth;
     canvas.height = document.body.clientHeight;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.lineCap = "middle";
     ctx.resetTransform();
     ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.scale(camScale, camScale);
     ctx.translate(-camX, -camY);
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font = "5px Russo One, Verdana, Arial, Helvetica, sans-serif";
-    renderMap(map);
-    renderEntities(m.entities);
-    ctx.font = "2px Tahoma, Verdana, Segoe, sans-serif";
-    renderPlayers(ids, m.players);
+    render(m, map);
 }

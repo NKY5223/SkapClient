@@ -13,8 +13,8 @@
  * @property {boolean} opened
  * 
  * @typedef SkapEntity
- * @property {"bomb"} type
- * bombs
+ * @property {"bomb" | "bouncer" | "spike" | "normal"} type
+ * bombs/bouncers/normal/spike
  * @property {number} radius
  * @property {number} opacity
  * @property {boolean} phase
@@ -40,15 +40,36 @@
  */
 
 /**
+ * @param {Object} e
+ * @param {Object} e.infos
+ * @param {string} e.infos.id
+ * @param {number} e.infos.fuel
+ * @param {number | null} e.infos.oneCooldown
+ * @param {number | null} e.infos.twoCooldown
+ * @param {number} e.infos.oneHeat
+ * @param {number} e.infos.twoHeat
+ * @param {Object<string, Player>} e.players id:Player
+ * @param {[string, string, boolean][]} e.playerList
+ * @param {SkapEntity[]} e.entities
  * @param {Object} map
  * @param {Object} map.areaSize
  * @param {number} map.areaSize.x
  * @param {number} map.areaSize.y
  * @param {SkapObject[]} map.objects
  */
-function renderMap(map) {
+function render(e, map) {
     ctx.fillStyle = fill.background;
     ctx.fillRect(0, 0, map.areaSize.x, map.areaSize.y);
+    // Render grav zones
+    ctx.setLineDash([2, 6]);
+    ctx.lineCap = "round";
+    for (let obj of map.objects.filter(obj => obj.type === "gravityZone")) {
+        ctx.strokeStyle = fill.gravOutline[obj.dir];
+        ctx.fillStyle = fill.gravFill[obj.dir];
+        ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+    }
+    ctx.setLineDash([]);
     // Render obstacles
     ctx.fillStyle = fill.obstacle;
     for (let obj of map.objects.filter(obj => obj.type === "obstacle")) {
@@ -93,21 +114,9 @@ function renderMap(map) {
     }
     // Render text
     ctx.fillStyle = "#ffffff";
+    ctx.font = "5px Russo One, Verdana, Arial, Helvetica, sans-serif";
     for (let obj of map.objects.filter(obj => obj.type === "text")) {
         ctx.fillText(obj.text, obj.pos.x, obj.pos.y);
-    }
-    // Render turrets
-    for (let obj of map.objects.filter(obj => obj.type === "turret")) {
-        ctx.save();
-        ctx.translate(obj.pos.x + obj.size.x / 2, obj.pos.y + obj.size.y / 2);
-        ctx.rotate(obj.dir);
-        ctx.fillStyle = fill.turretCannon;
-        ctx.fillRect(0, -2, 5, 4);
-        ctx.fillStyle = fill.turretBody;
-        ctx.beginPath();
-        ctx.ellipse(0, 0, obj.size.x / 2, obj.size.y / 2, 0, 0, 7);
-        ctx.fill();
-        ctx.restore();
     }
     // Render doors
     for (let obj of map.objects.filter(obj => obj.type === "door")) {
@@ -118,14 +127,10 @@ function renderMap(map) {
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         ctx.restore();
     }
-}
-/**
- * @param {string[]} ids
- * @param {Object<string, Player>} players id:Player
- */
-function renderPlayers(ids, players) {
-    for (let i of ids) {
-        let p = players[i];
+    // Render players
+    ctx.font = "2px Tahoma, Verdana, Segoe, sans-serif";
+    for (let i in e.players) {
+        let p = e.players[i];
         ctx.save();
         ctx.translate(p.pos.x, p.pos.y);
         ctx.rotate(p.gravDir / 2 * Math.PI);
@@ -142,14 +147,8 @@ function renderPlayers(ids, players) {
         ctx.strokeRect(-5, p.radius + 1, 10, 2.5);
         ctx.restore();
     }
-}
-
-/**
- * @param {SkapEntity[]} e 
- */
-function renderEntities(e) {
     // Render bombs
-    for (let obj of e.filter(obj => obj.type === "bomb")) {
+    for (let obj of e.entities.filter(obj => obj.type === "bomb")) {
         ctx.save();
         ctx.globalAlpha = obj.opacity;
         ctx.translate(obj.pos.x, obj.pos.y);
@@ -168,7 +167,7 @@ function renderEntities(e) {
         ctx.restore();
     }
     // Render bouncers
-    for (let obj of e.filter(obj => obj.type === "bouncer")) {
+    for (let obj of e.entities.filter(obj => obj.type === "bouncer")) {
         ctx.save();
         ctx.globalAlpha = obj.opacity;
         ctx.translate(obj.pos.x, obj.pos.y);
@@ -188,7 +187,7 @@ function renderEntities(e) {
         ctx.restore();
     }
     // Render bouncers
-    for (let obj of e.filter(obj => obj.type === "spike")) {
+    for (let obj of e.entities.filter(obj => obj.type === "spike")) {
         ctx.save();
         ctx.globalAlpha = obj.opacity;
         ctx.translate(obj.pos.x, obj.pos.y);
@@ -200,6 +199,66 @@ function renderEntities(e) {
         ctx.beginPath();
         ctx.ellipse(0, 0, .9, .9, 0, 0, 7);
         ctx.fillStyle = fill.spikeFill;
+        ctx.fill();
+        ctx.restore();
+    }
+    // Render normal enemies
+    for (let obj of e.entities.filter(obj => obj.type === "normal")) {
+        ctx.save();
+        ctx.globalAlpha = obj.opacity;
+        ctx.translate(obj.pos.x, obj.pos.y);
+        ctx.scale(obj.radius, obj.radius);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
+        ctx.fillStyle = fill.normalOutline;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(0, 0, .9, .9, 0, 0, 7);
+        ctx.fillStyle = fill.normalTop;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(0, 0, .9, 0, Math.PI);
+        ctx.fillStyle = fill.normalBottom;
+        ctx.fill();
+        ctx.restore();
+    }
+    // Render reverse enemies
+    for (let obj of e.entities.filter(obj => obj.type === "reverse")) {
+        ctx.save();
+        ctx.globalAlpha = obj.opacity;
+        ctx.translate(obj.pos.x, obj.pos.y);
+        ctx.scale(obj.radius, obj.radius);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
+        ctx.fillStyle = fill.normalOutline;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(0, 0, .9, .9, 0, 0, 7);
+        ctx.fillStyle = fill.normalBottom;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(0, 0, .9, 0, Math.PI);
+        ctx.fillStyle = fill.normalTop;
+        ctx.fill();
+        ctx.restore();
+    }
+    // Render bullets
+    ctx.fillStyle = fill.bullet;
+    for (let obj of e.entities.filter(obj => obj.type === "turretBullet")) {
+        ctx.beginPath();
+        ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
+        ctx.fill();
+    }
+    // Render turrets
+    for (let obj of map.objects.filter(obj => obj.type === "turret")) {
+        ctx.save();
+        ctx.translate(obj.pos.x + obj.size.x / 2, obj.pos.y + obj.size.y / 2);
+        ctx.rotate(obj.dir);
+        ctx.fillStyle = fill.turretCannon;
+        ctx.fillRect(0, -2, 5, 4);
+        ctx.fillStyle = fill.turretBody;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, obj.size.x / 2, obj.size.y / 2, 0, 0, 7);
         ctx.fill();
         ctx.restore();
     }
