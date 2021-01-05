@@ -47,6 +47,7 @@ let fill = {
 
     bouncerGreen: "#00c000",
     bouncerBlack: "#000000",
+    megabouncer: "#ff00c0",
 
     spikeFill: "#d00000",
     spikeOutline: "#000000",

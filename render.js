@@ -166,7 +166,27 @@ function render(e, map) {
         ctx.fillRect(-.5, -.5, 1, 1);
         ctx.restore();
     }
-    // Render bouncers
+    // Render megabouncers
+    for (let obj of e.entities.filter(obj => obj.type === "megabouncer")) {
+        ctx.save();
+        ctx.globalAlpha = obj.opacity;
+        ctx.translate(obj.pos.x, obj.pos.y);
+        ctx.scale(obj.radius, obj.radius);
+        ctx.fillStyle = fill.bouncerGreen;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
+        ctx.fill();
+        ctx.fillStyle = fill.bouncerBlack;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, .9, .9, 0, 0, 7);
+        ctx.fill();
+        ctx.fillStyle = fill.megabouncer;
+        ctx.fillRect(-.5, -.5, 1, 1);
+        ctx.rotate(Math.PI / 4);
+        ctx.fillRect(-.5, -.5, 1, 1);
+        ctx.restore();
+    }
+    // Render spikes
     for (let obj of e.entities.filter(obj => obj.type === "spike")) {
         ctx.save();
         ctx.globalAlpha = obj.opacity;
