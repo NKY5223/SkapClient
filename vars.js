@@ -14,7 +14,7 @@ let fill = {
     background: "#808080",
     obstacle: ctx.createPattern(obstaclePNG, "repeat"),
     obstacleColor: "#404040",
-    lava: "#d00000",
+    lava: "#d01000",
     slime: "#00c000",
     gravOutline: [
         "#ffff00",
@@ -38,26 +38,34 @@ let fill = {
 
     turretBody: "#404040",
     turretCannon: "#303030",
-    bullet: "#d00000",
+    bullet: "#d01000",
 
     mineOuter: "#000000",
-    mineInner: "#d00000",
+    mineInner: "#d01000",
     minePhaseOuter: "#202020",
     minePhaseInner: "#ffffff",
     mineRegion: "#00000020",
-    mineExpRegion: "#d0000020",
+    mineExpRegion: "#d0100020",
 
     bouncerGreen: "#00c000",
     bouncerBlack: "#000000",
     megabouncer: "#ff0080",
 
-    spikeFill: "#d00000",
+    spikeFill: "#d01000",
     spikeOutline: "#000000",
 
     // For normal AND reverse
     normalOutline: "#000000",
-    normalDeath: "#d00000"
+    normalDeath: "#d01000"
 };
+let textures = {
+    bouncer: loadImage("bouncer"),
+    megaBouncer: loadImage("megabouncer"),
+    spike: loadImage("spike"),
+    normal: loadImage("normal"),
+    reverse: loadImage("reverse")
+};
+
 obstaclePNG.addEventListener("load", () => {
     fill.obstacle = ctx.createPattern(obstaclePNG, "repeat")
     fill.obstacle.setTransform(new DOMMatrix([
@@ -162,6 +170,15 @@ function hide(el) {
  */
 function show(el) {
     el.classList.remove("hidden");
+}
+/**
+ * LOAD IMAGE
+ * @param {string} src 
+ */
+function loadImage(src) {
+    let image = new Image();
+    image.src = `Textures/${src}.svg`;
+    return image;
 }
 /**
  * safe

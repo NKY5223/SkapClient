@@ -63,15 +63,6 @@
 function render(e, map) {
     ctx.fillStyle = fill.background;
     ctx.fillRect(0, 0, map.areaSize.x, map.areaSize.y);
-    // Render grav zones
-    ctx.setLineDash([2, 6]);
-    ctx.lineCap = "round";
-    for (let obj of map.objects.filter(obj => obj.type === "gravityZone")) {
-        ctx.strokeStyle = fill.gravOutline[obj.dir];
-        ctx.fillStyle = fill.gravFill[obj.dir];
-        ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-    }
     ctx.setLineDash([]);
     // Render obstacles
     ctx.fillStyle = fill.obstacle;
@@ -156,59 +147,18 @@ function render(e, map) {
     }
     // Render bouncers
     for (let obj of e.entities.filter(obj => obj.type === "bouncer")) {
-        ctx.save();
         ctx.globalAlpha = obj.opacity;
-        ctx.translate(obj.pos.x, obj.pos.y);
-        ctx.scale(obj.radius, obj.radius);
-        ctx.fillStyle = fill.bouncerGreen;
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
-        ctx.fill();
-        ctx.fillStyle = fill.bouncerBlack;
-        ctx.beginPath();
-        ctx.ellipse(0, 0, .9, .9, 0, 0, 7);
-        ctx.fill();
-        ctx.fillStyle = fill.bouncerGreen;
-        ctx.fillRect(-.5, -.5, 1, 1);
-        ctx.rotate(Math.PI / 4);
-        ctx.fillRect(-.5, -.5, 1, 1);
-        ctx.restore();
+        ctx.drawImage(textures.bouncer, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
     // Render megabouncers
     for (let obj of e.entities.filter(obj => obj.type === "megaBouncer")) {
-        ctx.save();
         ctx.globalAlpha = obj.opacity;
-        ctx.translate(obj.pos.x, obj.pos.y);
-        ctx.scale(obj.radius, obj.radius);
-        ctx.fillStyle = fill.bouncerGreen;
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
-        ctx.fill();
-        ctx.fillStyle = fill.bouncerBlack;
-        ctx.beginPath();
-        ctx.ellipse(0, 0, .9, .9, 0, 0, 7);
-        ctx.fill();
-        ctx.fillStyle = fill.megabouncer;
-        ctx.fillRect(-.5, -.5, 1, 1);
-        ctx.rotate(Math.PI / 4);
-        ctx.fillRect(-.5, -.5, 1, 1);
-        ctx.restore();
+        ctx.drawImage(textures.megaBouncer, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
     // Render spikes
     for (let obj of e.entities.filter(obj => obj.type === "spike")) {
-        ctx.save();
         ctx.globalAlpha = obj.opacity;
-        ctx.translate(obj.pos.x, obj.pos.y);
-        ctx.scale(obj.radius, obj.radius);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
-        ctx.fillStyle = fill.spikeOutline;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.ellipse(0, 0, .9, .9, 0, 0, 7);
-        ctx.fillStyle = fill.spikeFill;
-        ctx.fill();
-        ctx.restore();
+        ctx.drawImage(textures.spike, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
     // Render rotating enemies
     for (let obj of e.entities.filter(obj => obj.type === "rotating")) {
@@ -229,35 +179,13 @@ function render(e, map) {
     }
     // Render normal enemies
     for (let obj of e.entities.filter(obj => obj.type === "normal")) {
-        ctx.save();
         ctx.globalAlpha = obj.opacity;
-        ctx.translate(obj.pos.x, obj.pos.y);
-        ctx.scale(obj.radius, obj.radius);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
-        ctx.fillStyle = fill.normalOutline;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(0, 0, .9, 0, Math.PI);
-        ctx.fillStyle = fill.normalDeath;
-        ctx.fill();
-        ctx.restore();
+        ctx.drawImage(textures.normal, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
     // Render reverse enemies
     for (let obj of e.entities.filter(obj => obj.type === "reverse")) {
-        ctx.save();
         ctx.globalAlpha = obj.opacity;
-        ctx.translate(obj.pos.x, obj.pos.y);
-        ctx.scale(obj.radius, obj.radius);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
-        ctx.fillStyle = fill.normalOutline;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(0, 0, .9, 0, Math.PI, 1);
-        ctx.fillStyle = fill.normalDeath;
-        ctx.fill();
-        ctx.restore();
+        ctx.drawImage(textures.reverse, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
     // Render bullets
     ctx.fillStyle = fill.bullet;
@@ -280,6 +208,7 @@ function render(e, map) {
         ctx.restore();
     }
     // Render players
+    ctx.globalAlpha = 1;
     ctx.font = "2px Tahoma, Verdana, Segoe, sans-serif";
     for (let i in e.players) {
         let p = e.players[i];
@@ -298,5 +227,14 @@ function render(e, map) {
         ctx.lineWidth = 0.5;
         ctx.strokeRect(-5, p.radius + 1, 10, 2.5);
         ctx.restore();
+    }
+    // Render grav zones
+    ctx.setLineDash([2, 6]);
+    ctx.lineCap = "round";
+    for (let obj of map.objects.filter(obj => obj.type === "gravityZone")) {
+        ctx.strokeStyle = fill.gravOutline[obj.dir];
+        ctx.fillStyle = fill.gravFill[obj.dir];
+        ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
 }
