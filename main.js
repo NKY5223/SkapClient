@@ -116,7 +116,7 @@ ws.addEventListener("message", e => {
                     localStorage.setItem("username", username.value);
                     localStorage.setItem("password", password.value);
                 }
-                customAlert("Logged in as " + msg.u.replace(/</g, "lt;").replace(/>/g, "gt;"));
+                customAlert("Logged in as " + msg.u.safe());
                 hide(loginData);
                 show(logoutDiv);
             } else {
@@ -156,13 +156,12 @@ ws.addEventListener("message", e => {
             show(gamesDiv);
             break;
         case "join":
-            if (!msg.m) {
+            if (msg.m) customAlert("Could not join game");
+            else {
                 map = msg.i.map;
                 hide(gamesDiv);
                 show(gameDiv);
                 customAlert("Joined game");
-            } else {
-                customAlert("Could not join game");
             }
             break;
         case "message":

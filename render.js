@@ -1,7 +1,7 @@
 /**
  * @typedef SkapObject
  * @property {string} id
- * @property {"obstacle" | "lava" | "slime" | "teleporter" | "text"} type
+ * @property {"obstacle" | "lava" | "slime" | "teleporter" | "text" | "door" | "button"} type
  * @property {number} dir
  * @property {Object} pos
  * @property {number} pos.x
@@ -11,6 +11,7 @@
  * @property {number} size.y
  * @property {string} text
  * @property {boolean} opened
+ * @property {boolean} pressed
  * 
  * @typedef SkapEntity
  * @property {"bomb" | "bouncer" | "spike" | "normal"} type
@@ -22,6 +23,8 @@
  * @property {Object} pos
  * @property {number} pos.x
  * @property {number} pos.y
+ * rotating >:(
+ * @property {number} angle
  * 
  * @typedef Player
  * @property {Object} pos
@@ -118,6 +121,11 @@ function render(e, map) {
     for (let obj of map.objects.filter(obj => obj.type === "text")) {
         ctx.fillText(obj.text, obj.pos.x, obj.pos.y);
     }
+    // Render buttons
+    for (let obj of map.objects.filter(obj => obj.type === "button")) {
+        ctx.fillStyle = obj.pressed ? fill.buttonPressed : fill.button;
+        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+    }
     // Render doors
     for (let obj of map.objects.filter(obj => obj.type === "door")) {
         ctx.strokeStyle = obj.opened ? fill.doorOpenedOutline : fill.doorClosedOutline;
@@ -167,7 +175,7 @@ function render(e, map) {
         ctx.restore();
     }
     // Render megabouncers
-    for (let obj of e.entities.filter(obj => obj.type === "megabouncer")) {
+    for (let obj of e.entities.filter(obj => obj.type === "megaBouncer")) {
         ctx.save();
         ctx.globalAlpha = obj.opacity;
         ctx.translate(obj.pos.x, obj.pos.y);
@@ -202,6 +210,23 @@ function render(e, map) {
         ctx.fill();
         ctx.restore();
     }
+    // Render rotating enemies
+    for (let obj of e.entities.filter(obj => obj.type === "rotating")) {
+        ctx.save();
+        ctx.globalAlpha = obj.opacity;
+        ctx.translate(obj.pos.x, obj.pos.y);
+        ctx.rotate(obj.angle);
+        ctx.scale(obj.radius, obj.radius);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
+        ctx.fillStyle = fill.normalOutline;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(0, 0, .9, 0, Math.PI, 1);
+        ctx.fillStyle = fill.normalDeath;
+        ctx.fill();
+        ctx.restore();
+    }
     // Render normal enemies
     for (let obj of e.entities.filter(obj => obj.type === "normal")) {
         ctx.save();
@@ -214,7 +239,7 @@ function render(e, map) {
         ctx.fill();
         ctx.beginPath();
         ctx.arc(0, 0, .9, 0, Math.PI);
-        ctx.fillStyle = fill.normalBottom;
+        ctx.fillStyle = fill.normalDeath;
         ctx.fill();
         ctx.restore();
     }
@@ -229,8 +254,8 @@ function render(e, map) {
         ctx.fillStyle = fill.normalOutline;
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(0, 0, .9, 0, Math.PI);
-        ctx.fillStyle = fill.normalTop;
+        ctx.arc(0, 0, .9, 0, Math.PI, 1);
+        ctx.fillStyle = fill.normalDeath;
         ctx.fill();
         ctx.restore();
     }

@@ -8,7 +8,7 @@ const ctx = canvas.getContext("2d");
     ctx.textBaseline = "middle";
 
 const obstaclePNG = new Image();
-obstaclePNG.src = "obstacle.png";
+obstaclePNG.src = "Textures/obstacle.png";
 // Replace with images eventually (might need to restrict zoom in)
 let fill = {
     background: "#808080",
@@ -29,6 +29,8 @@ let fill = {
         "#00ff0008"
     ],
 
+    button: "#404040",
+    buttonPressed: "#505050",
     doorClosedOutline: "#404040",
     doorClosedFill: "#404040c0",
     doorOpenedOutline: "#40404080",
@@ -47,15 +49,14 @@ let fill = {
 
     bouncerGreen: "#00c000",
     bouncerBlack: "#000000",
-    megabouncer: "#ff00c0",
+    megabouncer: "#ff0080",
 
     spikeFill: "#d00000",
     spikeOutline: "#000000",
 
     // For normal AND reverse
     normalOutline: "#000000",
-    normalTop: "#000000",
-    normalBottom: "#d00000"
+    normalDeath: "#d00000"
 };
 obstaclePNG.addEventListener("load", () => {
     fill.obstacle = ctx.createPattern(obstaclePNG, "repeat")
