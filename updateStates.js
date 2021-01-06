@@ -46,14 +46,5 @@ function updateStates(m) {
     velYSpan.innerHTML = player.vel.y;
 
     // Render
-    canvas.width = document.body.clientWidth;
-    canvas.height = document.body.clientHeight;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.lineCap = "middle";
-    ctx.resetTransform();
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.scale(camScale, camScale);
-    ctx.translate(-camX, -camY);
     render(m, map);
 }

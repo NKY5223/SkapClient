@@ -5,7 +5,6 @@ const ws = new WebSocket("wss://skap.io");
  */
 const canvas = document.getElementById("render");
 const ctx = canvas.getContext("2d");
-    ctx.textBaseline = "middle";
 
 const obstaclePNG = new Image();
 obstaclePNG.src = "Textures/obstacle.png";
@@ -45,25 +44,18 @@ let fill = {
     minePhaseOuter: "#202020",
     minePhaseInner: "#ffffff",
     mineRegion: "#00000020",
-    mineExpRegion: "#d0100020",
-
-    bouncerGreen: "#00c000",
-    bouncerBlack: "#000000",
-    megabouncer: "#ff0080",
-
-    spikeFill: "#d01000",
-    spikeOutline: "#000000",
-
-    // For normal AND reverse
-    normalOutline: "#000000",
-    normalDeath: "#d01000"
+    mineExpRegion: "#d0100020"
 };
 let textures = {
     bouncer: loadImage("bouncer"),
     megaBouncer: loadImage("megabouncer"),
     spike: loadImage("spike"),
     normal: loadImage("normal"),
-    reverse: loadImage("reverse")
+    reverse: loadImage("reverse"),
+    bomb: [
+        loadImage("bomb0"),
+        loadImage("bomb1")
+    ]
 };
 
 obstaclePNG.addEventListener("load", () => {

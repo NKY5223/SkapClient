@@ -61,10 +61,20 @@
  * @param {SkapObject[]} map.objects
  */
 function render(e, map) {
+    canvas.width = document.body.clientWidth;
+    canvas.height = document.body.clientHeight;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.lineCap = "middle";
+    ctx.resetTransform();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.scale(camScale, camScale);
+    ctx.translate(-camX, -camY);
     ctx.fillStyle = fill.background;
     ctx.fillRect(0, 0, map.areaSize.x, map.areaSize.y);
-    ctx.setLineDash([]);
+
     // Render obstacles
+    ctx.setLineDash([]);
     ctx.fillStyle = fill.obstacle;
     for (let obj of map.objects.filter(obj => obj.type === "obstacle")) {
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
@@ -128,37 +138,17 @@ function render(e, map) {
     }
     // Render bombs
     for (let obj of e.entities.filter(obj => obj.type === "bomb")) {
-        ctx.save();
         ctx.globalAlpha = obj.opacity;
-        ctx.translate(obj.pos.x, obj.pos.y);
         ctx.beginPath();
-        ctx.ellipse(0, 0, obj.region, obj.region, 0, 0, 7);
+        ctx.ellipse(obj.pos.x, obj.pos.y, obj.region, obj.region, 0, 0, 7);
         ctx.fillStyle = obj.explosing ? fill.mineExpRegion : fill.mineRegion;
         ctx.fill();
-        ctx.beginPath();
-        ctx.ellipse(0, 0, obj.radius, obj.radius, 0, 0, 7);
-        ctx.fillStyle = obj.phase ? fill.minePhaseOuter : fill.mineOuter;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.ellipse(0, 0, obj.radius / 4, obj.radius / 4, 0, 0, 7);
-        ctx.fillStyle = obj.phase ? fill.minePhaseInner : fill.mineInner;
-        ctx.fill();
-        ctx.restore();
+        ctx.drawImage(textures.bomb[obj.phase & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
     // Render bouncers
-    for (let obj of e.entities.filter(obj => obj.type === "bouncer")) {
+    for (let obj of e.entities.filter(obj => ["bouncer", "megaBouncer", "spike", "normal", "reverse"].includes(obj.type))) {
         ctx.globalAlpha = obj.opacity;
-        ctx.drawImage(textures.bouncer, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
-    }
-    // Render megabouncers
-    for (let obj of e.entities.filter(obj => obj.type === "megaBouncer")) {
-        ctx.globalAlpha = obj.opacity;
-        ctx.drawImage(textures.megaBouncer, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
-    }
-    // Render spikes
-    for (let obj of e.entities.filter(obj => obj.type === "spike")) {
-        ctx.globalAlpha = obj.opacity;
-        ctx.drawImage(textures.spike, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+        ctx.drawImage(textures[obj.type], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
     // Render rotating enemies
     for (let obj of e.entities.filter(obj => obj.type === "rotating")) {
@@ -176,16 +166,6 @@ function render(e, map) {
         ctx.fillStyle = fill.normalDeath;
         ctx.fill();
         ctx.restore();
-    }
-    // Render normal enemies
-    for (let obj of e.entities.filter(obj => obj.type === "normal")) {
-        ctx.globalAlpha = obj.opacity;
-        ctx.drawImage(textures.normal, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
-    }
-    // Render reverse enemies
-    for (let obj of e.entities.filter(obj => obj.type === "reverse")) {
-        ctx.globalAlpha = obj.opacity;
-        ctx.drawImage(textures.reverse, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
     // Render bullets
     ctx.fillStyle = fill.bullet;
