@@ -6,13 +6,10 @@ const ws = new WebSocket("wss://skap.io");
 const canvas = document.getElementById("render");
 const ctx = canvas.getContext("2d");
 
-const obstaclePNG = new Image();
-obstaclePNG.src = "Textures/obstacle.png";
 // Replace with images eventually (might need to restrict zoom in)
 let fill = {
     background: "#808080",
-    obstacle: ctx.createPattern(obstaclePNG, "repeat"),
-    obstacleColor: "#404040",
+    obstacle: "#404040",
     lava: "#d01000",
     slime: "#00c000",
     gravOutline: [
@@ -58,12 +55,7 @@ let textures = {
     ]
 };
 
-obstaclePNG.addEventListener("load", () => {
-    fill.obstacle = ctx.createPattern(obstaclePNG, "repeat")
-    fill.obstacle.setTransform(new DOMMatrix([
-        0.125, 0, 0, 0.125, 0, 0
-    ]));
-});
+
 let camScale = 5;
 let camX = 0;
 let camY = 0;

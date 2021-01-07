@@ -109,14 +109,14 @@ ws.addEventListener("message", e => {
     let msg = JSON.parse(e.data);
     if (viewWS) wsDiv.innerHTML = e.data;
     switch (msg.e) {
-        case "login":
+        case "result":
             if (!msg.m) {
                 if (msg.cookie !== "") {
                     localStorage.setItem("cookie", msg.cookie);
                     localStorage.setItem("username", username.value);
                     localStorage.setItem("password", password.value);
                 }
-                customAlert("Logged in as " + msg.u.safe());
+                customAlert(msg.t.safe());
                 hide(loginData);
                 show(logoutDiv);
             } else {
@@ -214,9 +214,11 @@ document.addEventListener("keydown", e => {
                 break;
             case "u":
                 camScale /= 1.5;
+                customAlert(`Camera Scale: ${camScale}`);
                 break;
             case "i":
                 camScale *= 1.5;
+                customAlert(`Camera Scale: ${camScale}`);
                 break;
             case "enter":
                 if (!chatFocus) {

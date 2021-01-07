@@ -19,7 +19,7 @@
  * @property {number} radius
  * @property {number} opacity
  * @property {boolean} phase
- * @property {boolean} explosing
+ * @property {boolean} exploding FINALLY TYPO
  * @property {Object} pos
  * @property {number} pos.x
  * @property {number} pos.y
@@ -110,7 +110,7 @@ function render(e, map) {
         }
         if (gradient) {
             gradient.addColorStop(0, fill.background);
-            gradient.addColorStop(1, fill.obstacleColor);
+            gradient.addColorStop(1, fill.obstacle);
         } else gradient = fill.background;
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, obj.size.x, obj.size.y);
@@ -141,7 +141,7 @@ function render(e, map) {
         ctx.globalAlpha = obj.opacity;
         ctx.beginPath();
         ctx.ellipse(obj.pos.x, obj.pos.y, obj.region, obj.region, 0, 0, 7);
-        ctx.fillStyle = obj.explosing ? fill.mineExpRegion : fill.mineRegion;
+        ctx.fillStyle = obj.exploding ? fill.mineExpRegion : fill.mineRegion;
         ctx.fill();
         ctx.drawImage(textures.bomb[obj.phase & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
@@ -153,18 +153,10 @@ function render(e, map) {
     // Render rotating enemies
     for (let obj of e.entities.filter(obj => obj.type === "rotating")) {
         ctx.save();
-        ctx.globalAlpha = obj.opacity;
         ctx.translate(obj.pos.x, obj.pos.y);
         ctx.rotate(obj.angle);
-        ctx.scale(obj.radius, obj.radius);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
-        ctx.fillStyle = fill.normalOutline;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(0, 0, .9, 0, Math.PI, 1);
-        ctx.fillStyle = fill.normalDeath;
-        ctx.fill();
+        ctx.globalAlpha = obj.opacity;
+        ctx.drawImage(textures.normal, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
         ctx.restore();
     }
     // Render bullets
