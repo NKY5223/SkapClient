@@ -12,6 +12,8 @@ let fill = {
     obstacle: "#404040",
     lava: "#d01000",
     slime: "#00c000",
+    ice: "#00ffff",
+
     gravOutline: [
         "#ffff00",
         "#ff0000",
@@ -36,16 +38,16 @@ let fill = {
     turretCannon: "#303030",
     bullet: "#d01000",
 
-    mineOuter: "#000000",
-    mineInner: "#d01000",
-    minePhaseOuter: "#202020",
-    minePhaseInner: "#ffffff",
     mineRegion: "#00000020",
-    mineExpRegion: "#d0100020"
+    mineExpRegion: "#d0100020",
+
+    playerDead: "#ff0000",
+    playerFreeze: "#00ffff"
 };
 let textures = {
     bouncer: loadImage("bouncer"),
     megaBouncer: loadImage("megabouncer"),
+    freezer: loadImage("freezer"),
     spike: loadImage("spike"),
     normal: loadImage("normal"),
     reverse: loadImage("reverse"),
@@ -69,6 +71,7 @@ let bypassProfan = true;
 
 let chatFocus = false;
 let viewWS = Boolean(localStorage.getItem("viewWS"));
+let noUS = true;
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");
 

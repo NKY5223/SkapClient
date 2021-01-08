@@ -107,7 +107,7 @@ ws.addEventListener("open", () => {
 });
 ws.addEventListener("message", e => {
     let msg = JSON.parse(e.data);
-    if (viewWS) wsDiv.innerHTML = e.data;
+    if (viewWS && (!noUS || msg.e !== "updateStates")) wsDiv.innerHTML = e.data;
     switch (msg.e) {
         case "result":
             if (!msg.m) {
