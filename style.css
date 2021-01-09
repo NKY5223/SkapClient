@@ -109,6 +109,9 @@ button {
     background: #404000;
 }
 
+canvas {
+    background: #ffffff;
+}
 #playerList {
     position: absolute;
     top: 10px;

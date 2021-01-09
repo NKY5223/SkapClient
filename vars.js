@@ -9,10 +9,11 @@ const ctx = canvas.getContext("2d");
 // Replace with images eventually (might need to restrict zoom in)
 let fill = {
     background: "#808080",
-    obstacle: "#404040",
+    obstacle: "#ffffff", // Is variable (shit)
     lava: "#d01000",
     slime: "#00c000",
     ice: "#00ffff",
+    box: "#00000060",
 
     gravOutline: [
         "#ffff00",
@@ -67,6 +68,7 @@ let freeCam = false;
 let keys = ["w", "a", "s", "d", "shift", "", "", "r"];
 
 let map = null;
+let data = null;
 let bypassProfan = true;
 
 let chatFocus = false;
@@ -78,6 +80,7 @@ const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU
 let maxLU = 0;
 let lastUpdate = 0;
 let minLU = 1000;
+let lastFrame = 0;
 
 // HTML Elements
 // Other stuff
@@ -113,6 +116,7 @@ const chatInput = document.getElementById("chatInput");
 const fuelBar = document.getElementById("fuelBarInner");
 const lastUpdateDisplay = document.getElementById("lastUpdateDisplay");
 const minMaxUpdate = document.getElementById("minMaxUpdateDisplay");
+const FPSDisplay = document.getElementById("FPS");
 const posXSpan = document.getElementById("posX");
 const posYSpan = document.getElementById("posY");
 const velXSpan = document.getElementById("velX");

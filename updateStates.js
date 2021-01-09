@@ -45,6 +45,6 @@ function updateStates(m) {
     velXSpan.innerHTML = player.vel.x;
     velYSpan.innerHTML = player.vel.y;
 
-    // Render
-    render(m, map);
+    // Set entities... (totally not render)
+    data = m;
 }

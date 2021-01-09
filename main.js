@@ -43,7 +43,7 @@ ws.addEventListener("open", () => {
     });
     chatInput.addEventListener("keydown", e => {
         e.cancelBubble = true;
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && !e.shiftKey) {
             if (chatInput.value !== "") {
                 /**
                  * @type {string}
@@ -158,32 +158,57 @@ ws.addEventListener("message", e => {
         case "join":
             if (msg.m) customAlert("Could not join game");
             else {
-                map = msg.i.map;
+                initMap(msg.i.map);
                 hide(gamesDiv);
                 show(gameDiv);
+                setInterval(() => {
+                    window.requestAnimationFrame(fps => {
+                        let calcFPS = Math.floor(1000 / (fps - lastFrame));
+                        if (calcFPS != Infinity) FPSDisplay.innerHTML = calcFPS;
+                        lastFrame = fps;
+                        render(data, map);
+                    });
+                }, 15);
                 customAlert("Joined game");
             }
             break;
         case "message":
+            let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
+            console.log(chat.scrollTop  + chat.clientHeight + 6, chat.scrollHeight);
             chat.innerHTML += `<p class="${msg.m.s === "[SKAP]" ? "SKAPMsg" : ["guestMsg", "userMsg", "modMsg"][msg.m.r + 1]}">${msg.m.s.safe()}:&nbsp;${msg.m.m.safe()}</p>`;
-            chat.lastElementChild.scrollIntoView();
+            if (scroll) chat.lastElementChild.scrollIntoView();
             break;
         case "updateStates":
             updateStates(msg.m);
             break;
         case "initMap":
-            map = msg.m;
+            initMap(msg.m);
             break;
         case "updateMap":
-            for (let u of msg.m.update)
-                for (let o in map.objects)
-                    if (map.objects[o].id === u.id) {
-                        map.objects[o] = u;
-                        break;
-                    }
+            if (msg.m.update)
+                for (let u of msg.m.update)
+                    for (let o in map.objects)
+                        if (map.objects[o].id === u.id) {
+                            map.objects[o] = u;
+                            break;
+                        }
+            if (msg.m.add)
+                map.objects = map.objects.concat(msg.m.add);
+            if (msg.m.remove)
+                for (let r of msg.m.remove)
+                    for (let o in map.objects)
+                        if (map.objects[o].id === r.id)
+                            map.objects.splice(o);
             break;
     }
 });
+function initMap(i) {
+    map = i;
+    fill.obstacle = "rgba(" +
+        (240 + (i.backgroundColor[0] - 240) * i.backgroundColor[3]) + ", " +
+        (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +
+        (240 + (i.backgroundColor[2] - 240) * i.backgroundColor[3]) + ", 1)";
+}
 ws.addEventListener("close", () => {
     hide(gameDiv);
     customAlert("The WebSocket closed for unknown reasons.<br>Please reload the client. If that doesn't work, try again later.<br>Skap may have been taken down for maintenence", 100);

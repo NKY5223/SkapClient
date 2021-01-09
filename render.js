@@ -72,17 +72,18 @@ function render(e, map) {
     ctx.textBaseline = "middle";
     ctx.lineCap = "middle";
 
-    ctx.resetTransform();
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.scale(camScale, camScale);
-    ctx.translate(-camX, -camY);
-
     let canvasL = camX - canvas.width / 2 / camScale;
     let canvasU = camY - canvas.height / 2 / camScale;
     let bg = fromColArr(map.backgroundColor);
     let areaBG = fromColArr(map.areaColor);
     ctx.fillStyle = bg;
-    ctx.fillRect(canvasL, canvasU, canvas.width / camScale, canvas.height / camScale);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.resetTransform();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.scale(camScale, camScale);
+    ctx.translate(-camX, -camY);
+
     ctx.fillStyle = areaBG;
     ctx.fillRect(0, 0, map.areaSize.x, map.areaSize.y);
 
@@ -181,7 +182,7 @@ function render(e, map) {
         ctx.translate(obj.pos.x, obj.pos.y);
         ctx.rotate(obj.angle);
         ctx.globalAlpha = obj.opacity;
-        ctx.drawImage(textures.normal, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+        ctx.drawImage(textures.normal, -obj.radius, -obj.radius, obj.radius * 2, obj.radius * 2);
         ctx.restore();
     }
     // Render bullets
@@ -234,6 +235,11 @@ function render(e, map) {
         ctx.strokeStyle = fill.gravOutline[obj.dir];
         ctx.fillStyle = fill.gravFill[obj.dir];
         ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+    }
+    // Render boxes (build power)
+    for (let obj of map.objects.filter(obj => obj.type === "box")) {
+        ctx.fillStyle = fill.box;
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
 }
