@@ -249,7 +249,7 @@ ws.addEventListener("close", () => {
 document.addEventListener("keydown", e => {
     if (!e.repeat) {
         if (!chatFocus) switch (e.key.toLowerCase()) {
-            case "o":
+            case "p":
                 if (viewWS) {
                     viewWS = false;
                     customAlert("WS messages HIDDEN");
@@ -260,6 +260,10 @@ document.addEventListener("keydown", e => {
                     show(wsDiv);
                 }
                 localStorage.setItem("viewWS", viewWS ? "on" : "");
+                break;
+            case "o":
+                renderSettings.renderHitboxes = !renderSettings.renderHitboxes;
+                customAlert(`Hitboxes ${renderSettings.renderHitboxes ? "ON" : "OFF"}`);
                 break;
             case "f":
                 if (freeCam) {
