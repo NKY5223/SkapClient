@@ -77,7 +77,7 @@ function render(e, map) {
     let bg = fromColArr(map.backgroundColor);
     let areaBG = fromColArr(map.areaColor);
     ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawRect(0, 0, canvas.width, canvas.height);
 
     ctx.resetTransform();
     ctx.translate(canvas.width / 2, canvas.height / 2);
@@ -85,33 +85,33 @@ function render(e, map) {
     ctx.translate(-camX, -camY);
 
     ctx.fillStyle = areaBG;
-    ctx.fillRect(0, 0, map.areaSize.x, map.areaSize.y);
+    ctx.drawRect(0, 0, map.areaSize.x, map.areaSize.y);
 
     // Render blocks(0)
     ctx.setLineDash([]);
     for (let obj of map.objects.filter(obj => obj.type === "block" && !obj.layer)) {
         ctx.fillStyle = fromColArr(obj.color.concat(obj.opacity));
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.drawRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render obstacles
     ctx.fillStyle = fill.obstacle;
     for (let obj of map.objects.filter(obj => obj.type === "obstacle")) {
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.drawRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render slime
     ctx.fillStyle = fill.slime;
     for (let obj of map.objects.filter(obj => obj.type === "slime")) {
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.drawRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render ice
     ctx.fillStyle = fill.ice;
     for (let obj of map.objects.filter(obj => obj.type === "ice")) {
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.drawRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render lava
     ctx.fillStyle = fill.lava;
     for (let obj of map.objects.filter(obj => obj.type === "lava")) {
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.drawRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render the ****ing teleporters (they suck)
     for (let obj of map.objects.filter(obj => obj.type === "teleporter")) {
@@ -137,7 +137,7 @@ function render(e, map) {
             gradient.addColorStop(1, fill.obstacle);
         } else gradient = fromColArr(map.areaColor);
         ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, obj.size.x, obj.size.y);
+        ctx.drawRect(0, 0, obj.size.x, obj.size.y);
         ctx.restore();
     }
     // Render text
@@ -151,7 +151,7 @@ function render(e, map) {
     // Render buttons
     for (let obj of map.objects.filter(obj => obj.type === "button")) {
         ctx.fillStyle = obj.pressed ? fill.buttonPressed : fill.button;
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.drawRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render doors
     for (let obj of map.objects.filter(obj => obj.type === "door")) {
@@ -159,7 +159,7 @@ function render(e, map) {
         ctx.fillStyle = obj.opened ? fill.doorOpenedFill : fill.doorClosedFill;
         ctx.save();
         ctx.strokeRect(obj.pos.x + 0.5, obj.pos.y + 0.5, obj.size.x - 1, obj.size.y - 1);
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.drawRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         ctx.restore();
     }
     // Render bombs
@@ -199,7 +199,7 @@ function render(e, map) {
         ctx.translate(obj.pos.x + obj.size.x / 2, obj.pos.y + obj.size.y / 2);
         ctx.rotate(obj.dir);
         ctx.fillStyle = fill.turretCannon;
-        ctx.fillRect(0, -2, 5, 4);
+        ctx.drawRect(0, -2, 5, 4);
         ctx.fillStyle = fill.turretBody;
         ctx.beginPath();
         ctx.ellipse(0, 0, obj.size.x / 2, obj.size.y / 2, 0, 0, 7);
@@ -222,7 +222,7 @@ function render(e, map) {
         ctx.fillStyle = died ? fill.playerDead : freeze ? fill.playerFreeze : "#202020";
         ctx.fillText(p.name, 0, -p.radius - 0.5);
         ctx.fillStyle = died ? fill.playerDead : freeze ? fill.playerFreeze : "#ffff40";
-        ctx.fillRect(-5, p.radius + 1, p.fuel / 6 * 5, 2.5);
+        ctx.drawRect(-5, p.radius + 1, p.fuel / 6 * 5, 2.5);
         ctx.strokeStyle = "#202020";
         ctx.lineWidth = 0.5;
         ctx.strokeRect(-5, p.radius + 1, 10, 2.5);
@@ -235,17 +235,20 @@ function render(e, map) {
         ctx.strokeStyle = fill.gravOutline[obj.dir];
         ctx.fillStyle = fill.gravFill[obj.dir];
         ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.drawRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render boxes (build power)
     for (let obj of map.objects.filter(obj => obj.type === "box")) {
         ctx.fillStyle = fill.box;
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.drawRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
 }
 /**
  * @param {number[]} arr 
  */
+CanvasRenderingContext2D.prototype.drawRect = function(x, y, width, height) {
+    this.fillRect(Math.round(x), Math.round(y), Math.round(width), Math.round(height);
+};
 function fromColArr(arr) {
     return `rgba(${arr.join(", ")})`;
 }
