@@ -81,7 +81,6 @@ ws.addEventListener("open", () => {
     });
 });
 ws.addEventListener("message", e => {
-    setInterval(() => {console.log("HAHA0201 THE WEBSOCKET OPENED ALERT ALERT ALERT");},100);
     let msg = JSON.parse(e.data);
     if (viewWS && (!noUS || msg.e !== "updateStates")) wsDiv.innerHTML = e.data;
     switch (msg.e) {

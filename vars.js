@@ -156,7 +156,6 @@ function customAlert(s, t = 1) {
  * @param {string} obj.e The event
  */
 function send(obj) {
-    console.log("lol");
     ws.send(JSON.stringify(obj));
 }
 /**
