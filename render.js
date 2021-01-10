@@ -96,24 +96,34 @@ function render(e, map) {
         }
     }
     // Render obstacles
+    ctx.lineWidth = 1;
     ctx.fillStyle = fill.obstacle;
+    ctx.strokeStyle = fill.obstacle;
     for (let obj of map.objects.filter(obj => obj.type === "obstacle")) {
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
+    
     // Render slime
     ctx.fillStyle = fill.slime;
+    ctx.strokeStyle = fill.slime;
     for (let obj of map.objects.filter(obj => obj.type === "slime")) {
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render ice
     ctx.fillStyle = fill.ice;
+    ctx.strokeStyle = fill.ice;
     for (let obj of map.objects.filter(obj => obj.type === "ice")) {
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render lava
     ctx.fillStyle = fill.lava;
+    ctx.strokeStyle = fill.lava;
     for (let obj of map.objects.filter(obj => obj.type === "lava")) {
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y)
     }
     // Render the ****ing teleporters (they suck)
     for (let obj of map.objects.filter(obj => obj.type === "teleporter")) {
