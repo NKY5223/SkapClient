@@ -253,7 +253,7 @@ ws.addEventListener("close", () => {
 document.addEventListener("keydown", e => {
     if (!e.repeat) {
         if (!chatFocus) switch (e.key.toLowerCase()) {
-            case "o":
+            case "p":
                 if (viewWS) {
                     viewWS = false;
                     customAlert("WS messages HIDDEN");
@@ -281,6 +281,10 @@ document.addEventListener("keydown", e => {
             case "i":
                 camScale *= 1.5;
                 customAlert(`Camera Scale: ${camScale}`);
+                break;
+            case "o":
+                renderSettings.renderHitboxes = !renderSettings.renderHitboxes;
+                customAlert(`Outline: ${renderSettings.renderHitboxes}`);
                 break;
             case "enter":
                 if (!chatFocus) {
