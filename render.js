@@ -168,7 +168,7 @@ function render(e, map) {
     for (let obj of e.entities.filter(obj => obj.type === "bomb")) {
         ctx.globalAlpha = obj.opacity;
         ctx.beginPath();
-        ctx.ellipse(obj.pos.x, obj.pos.y, obj.region, obj.region, 0, 0, 7);
+        ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
         ctx.fillStyle = obj.exploding ? fill.mineExpRegion : fill.mineRegion;
         ctx.fill();
         ctx.drawImage(textures.bomb[obj.phase & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);

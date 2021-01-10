@@ -111,7 +111,7 @@ ws.addEventListener("message", e => {
                 let div = document.createElement("div");
                 div.className = "gameDisplay";
                 if (g.private) div.classList.add("private");
-                div.innerHTML = `<h2>${g.name}<br>${g.players} players</h2><h5>${g.id}</h5><p>${g.mapName.safe()} by ${g.creator.safe()}</p>`;
+                div.innerHTML = `<h2>${g.name}<br>${g.players} players</h2><h5>${g.id}</h5><p>${String(g.mapName).safe()} by ${String(g.creator).safe()}</p>`;
                 div.addEventListener("click", () => {
                     if (g.private) {
                         send({
@@ -170,11 +170,7 @@ ws.addEventListener("message", e => {
                         });
                     }
                 });
-                // Prevent if just clicking on chat
-                chatInput.addEventListener("mousedown", e => {
-                    e.cancelBubble = true;
-                });
-                document.addEventListener("mousedown", e => {
+                canvas.addEventListener("mousedown", e => {
                     let x;
                     if (e.button === 0) x = 5;
                     else if (e.button === 2) x = 6;
@@ -186,7 +182,7 @@ ws.addEventListener("message", e => {
                         }
                     });
                 });
-                document.addEventListener("mouseup", e => {
+                canvas.addEventListener("mouseup", e => {
                     let x;
                     if (e.button === 0) x = 5;
                     else if (e.button === 2) x = 6;
@@ -198,7 +194,7 @@ ws.addEventListener("message", e => {
                         }
                     });
                 });
-                document.addEventListener("contextmenu", e => { e.preventDefault(); });
+                canvas.addEventListener("contextmenu", e => { e.preventDefault(); });
                 document.addEventListener("mousemove", e => {
                     send({
                         e: "aim",
