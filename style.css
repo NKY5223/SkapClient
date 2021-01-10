@@ -69,6 +69,23 @@ body {
     position: absolute;
     transform: translate(-250px, -30px);
 }
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+#update {
+    color: yellow;
+    position: relative;
+    animation: cubic-bezier(.5, .3, .3, .5) pulse 1s infinite;
+}
+
 #loginDiv {
     text-align: center;
 }
@@ -110,7 +127,7 @@ button {
 }
 
 canvas {
-    background: #ffffff;
+    background: #f0f0f0;
 }
 #playerList {
     position: absolute;
@@ -135,7 +152,7 @@ canvas {
     left: 10px;
     width: 300px;
     height: 200px;
-    background: #00000080;
+    background: #000000c0;
     overflow: hidden;
 }
 #chatContent {

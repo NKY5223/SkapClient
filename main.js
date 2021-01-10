@@ -79,31 +79,6 @@ ws.addEventListener("open", () => {
     chatInput.addEventListener("blur", () => {
         chatFocus = false;
     });
-    // Handle game controls
-    document.addEventListener("keydown", e => {
-        if (!chatFocus) {
-            if (keys.includes(e.key.toLowerCase())) {
-                send({
-                    e: "input",
-                    input: {
-                        keys: keys.indexOf(e.key.toLowerCase()),
-                        value: true
-                    }
-                });
-            }
-        }
-    });
-    document.addEventListener("keyup", e => {
-        if (keys.includes(e.key.toLowerCase())) {
-            send({
-                e: "input",
-                input: {
-                    keys: keys.indexOf(e.key.toLowerCase()),
-                    value: false
-                }
-            });
-        }
-    });
 });
 ws.addEventListener("message", e => {
     let msg = JSON.parse(e.data);
@@ -170,11 +145,74 @@ ws.addEventListener("message", e => {
                     });
                 }, 15);
                 customAlert("Joined game");
+                // Handle game controls
+                document.addEventListener("keydown", e => {
+                    if (!chatFocus) {
+                        if (keys.includes(e.key.toLowerCase())) {
+                            send({
+                                e: "input",
+                                input: {
+                                    keys: keys.indexOf(e.key.toLowerCase()),
+                                    value: true
+                                }
+                            });
+                        }
+                    }
+                });
+                document.addEventListener("keyup", e => {
+                    if (keys.includes(e.key.toLowerCase())) {
+                        send({
+                            e: "input",
+                            input: {
+                                keys: keys.indexOf(e.key.toLowerCase()),
+                                value: false
+                            }
+                        });
+                    }
+                });
+                // Prevent if just clicking on chat
+                chatInput.addEventListener("mousedown", e => {
+                    e.cancelBubble = true;
+                });
+                document.addEventListener("mousedown", e => {
+                    let x;
+                    if (e.button === 0) x = 5;
+                    else if (e.button === 2) x = 6;
+                    send({
+                        e: "input",
+                        input: {
+                            keys: x,
+                            value: true
+                        }
+                    });
+                });
+                document.addEventListener("mouseup", e => {
+                    let x;
+                    if (e.button === 0) x = 5;
+                    else if (e.button === 2) x = 6;
+                    send({
+                        e: "input",
+                        input: {
+                            keys: x,
+                            value: false
+                        }
+                    });
+                });
+                document.addEventListener("contextmenu", e => { e.preventDefault(); });
+                document.addEventListener("mousemove", e => {
+                    send({
+                        e: "aim",
+                        m: [
+                            (e.x - canvas.width / 2) / camScale + camX,
+                            (e.y - canvas.height / 2) / camScale + camY
+                        ]
+                    });
+                });
             }
             break;
         case "message":
             let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
-            console.log(chat.scrollTop  + chat.clientHeight + 6, chat.scrollHeight);
+            console.log(chat.scrollTop + chat.clientHeight + 6, chat.scrollHeight);
             chat.innerHTML += `<p class="${msg.m.s === "[SKAP]" ? "SKAPMsg" : ["guestMsg", "userMsg", "modMsg"][msg.m.r + 1]}">${msg.m.s.safe()}:&nbsp;${msg.m.m.safe()}</p>`;
             if (scroll) chat.lastElementChild.scrollIntoView();
             break;

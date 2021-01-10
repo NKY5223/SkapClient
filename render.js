@@ -88,10 +88,12 @@ function render(e, map) {
     ctx.fillRect(0, 0, map.areaSize.x, map.areaSize.y);
 
     // Render blocks(0)
-    ctx.setLineDash([]);
-    for (let obj of map.objects.filter(obj => obj.type === "block" && !obj.layer)) {
-        ctx.fillStyle = fromColArr(obj.color.concat(obj.opacity));
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+    if (renderSettings.renderBlocks0) {
+        ctx.setLineDash([]);
+        for (let obj of map.objects.filter(obj => obj.type === "block" && !obj.layer)) {
+            ctx.fillStyle = fromColArr(obj.color.concat(obj.opacity));
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
     }
     // Render obstacles
     ctx.fillStyle = fill.obstacle;
@@ -228,6 +230,14 @@ function render(e, map) {
         ctx.strokeRect(-5, p.radius + 1, 10, 2.5);
         ctx.restore();
     }
+    // Render blocks(1)
+    if (renderSettings.renderBlocks1) {
+        ctx.setLineDash([]);
+        for (let obj of map.objects.filter(obj => obj.type === "block" && obj.layer)) {
+            ctx.fillStyle = fromColArr(obj.color.concat(obj.opacity));
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
+    }
     // Render grav zones
     ctx.setLineDash([2, 6]);
     ctx.lineCap = "round";
@@ -241,6 +251,13 @@ function render(e, map) {
     for (let obj of map.objects.filter(obj => obj.type === "box")) {
         ctx.fillStyle = fill.box;
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+    }
+    // Render hitboxes
+    if (renderSettings.renderHitboxes) {
+        ctx.setLineDash([]);
+        ctx.lineWidth = 2 / camScale;
+        ctx.strokeStyle = renderSettings.colors.hitbox;
+        for (let o of map.objects) ctx.strokeRect(o.pos.x, o.pos.y, o.size.x, o.size.y);
     }
 }
 /**

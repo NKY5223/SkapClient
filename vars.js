@@ -6,10 +6,20 @@ const ws = new WebSocket("wss://skap.io");
 const canvas = document.getElementById("render");
 const ctx = canvas.getContext("2d");
 
+let renderSettings = {
+    renderBlocks0: true,
+    renderBlocks1: true,
+    renderHitboxes: true,
+
+    colors: {
+        hitbox: "#ffff00c0"
+    }
+};
+// Merge these two vars with this ^^^
 // Replace with images eventually (might need to restrict zoom in)
 let fill = {
     background: "#808080",
-    obstacle: "#ffffff", // Is variable (shit)
+    obstacle: "#ffffff", // Is variable (shit) (no moar shit)
     lava: "#d01000",
     slime: "#00c000",
     ice: "#00ffff",
