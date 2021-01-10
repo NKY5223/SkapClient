@@ -81,6 +81,7 @@ ws.addEventListener("open", () => {
     });
 });
 ws.addEventListener("message", e => {
+    setInterval(() => {console.log("HAHA0201 THE WEBSOCKET OPENED ALERT ALERT ALERT");},100);
     let msg = JSON.parse(e.data);
     if (viewWS && (!noUS || msg.e !== "updateStates")) wsDiv.innerHTML = e.data;
     switch (msg.e) {
@@ -212,7 +213,6 @@ ws.addEventListener("message", e => {
             break;
         case "message":
             let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
-            console.log(chat.scrollTop + chat.clientHeight + 6, chat.scrollHeight);
             chat.innerHTML += `<p class="${msg.m.s === "[SKAP]" ? "SKAPMsg" : ["guestMsg", "userMsg", "modMsg"][msg.m.r + 1]}">${msg.m.s.safe()}:&nbsp;${msg.m.m.safe()}</p>`;
             if (scroll) chat.lastElementChild.scrollIntoView();
             break;
