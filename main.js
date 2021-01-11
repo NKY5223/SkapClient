@@ -136,14 +136,15 @@ ws.addEventListener("message", e => {
                 initMap(msg.i.map);
                 hide(gamesDiv);
                 show(gameDiv);
-                setInterval(() => {
-                    window.requestAnimationFrame(fps => {
-                        let calcFPS = Math.floor(1000 / (fps - lastFrame));
-                        if (calcFPS != Infinity) FPSDisplay.innerHTML = calcFPS;
-                        lastFrame = fps;
-                        render(data, map);
-                    });
-                }, 15);
+                (function run(now = 0) {
+                    const calcFPS = Math.floor(1000 / (now - lastFrame));
+                    if (calcFPS != Infinity && FPSDisplay.innerHTML !== String(calcFps)) {
+                        FPSDisplay.innerHTML = calcFPS;
+                    }
+                    lastFrame = now;
+                    render(data, map);
+                    requestAnimationFrame(run);
+                })();
                 customAlert("Joined game");
                 // Handle game controls
                 document.addEventListener("keydown", e => {
