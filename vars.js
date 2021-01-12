@@ -7,68 +7,66 @@ const canvas = document.getElementById("render");
 const ctx = canvas.getContext("2d");
 
 let renderSettings = {
-    renderBlocks0: true,
-    renderBlocks1: true,
-    renderHitboxes: true,
-
+    render: {
+        obstacle: true,
+        lava: true,
+        slime: true,
+        ice: true,
+        block0: true,
+        block1: true,
+        hitbox: false
+    },
     colors: {
-        hitbox: "#ffff00c0"
+        obstacle: "#ffffff", // Is variable (shit) (no moar shit)
+        lava: "#d01000",
+        slime: "#00c000",
+        ice: "#00ffff",
+        box: "#00000060",
+        hitbox: "#ffff00c0",
+        gravOutline: [
+            "#ffff00",
+            "#ff0000",
+            "#0000ff",
+            "#00ff00"
+        ],
+        gravFill: [
+            "#ffff0008",
+            "#ff000008",
+            "#0000ff08",
+            "#00ff0008"
+        ],
+        button: "#404040",
+        buttonPressed: "#505050",
+        doorClosedOutline: "#404040",
+        doorClosedFill: "#404040c0",
+        doorOpenedOutline: "#40404080",
+        doorOpenedFill: "#40404000",
+
+        turretBody: "#404040",
+        turretCannon: "#303030",
+        bullet: "#d01000",
+
+        mineRegion: "#00000010",
+        mineExpRegion: "#d0100010",
+
+        playerDead: "#ff0000",
+        playerFreeze: "#00ffff"
+    },
+    textures: {
+        bouncer: loadImage("bouncer"),
+        megaBouncer: loadImage("megabouncer"),
+        freezer: loadImage("freezer"),
+        spike: loadImage("spike"),
+        normal: loadImage("normal"),
+        reverse: loadImage("reverse"),
+        bomb: [
+            loadImage("bomb0"),
+            loadImage("bomb1")
+        ]
     }
 };
 // Merge these two vars with this ^^^
 // Replace with images eventually (might need to restrict zoom in)
-let fill = {
-    background: "#808080",
-    obstacle: "#ffffff", // Is variable (shit) (no moar shit)
-    lava: "#d01000",
-    slime: "#00c000",
-    ice: "#00ffff",
-    box: "#00000060",
-
-    gravOutline: [
-        "#ffff00",
-        "#ff0000",
-        "#0000ff",
-        "#00ff00"
-    ],
-    gravFill: [
-        "#ffff0008",
-        "#ff000008",
-        "#0000ff08",
-        "#00ff0008"
-    ],
-
-    button: "#404040",
-    buttonPressed: "#505050",
-    doorClosedOutline: "#404040",
-    doorClosedFill: "#404040c0",
-    doorOpenedOutline: "#40404080",
-    doorOpenedFill: "#40404000",
-
-    turretBody: "#404040",
-    turretCannon: "#303030",
-    bullet: "#d01000",
-
-    mineRegion: "#00000020",
-    mineExpRegion: "#d0100020",
-
-    playerDead: "#ff0000",
-    playerFreeze: "#00ffff"
-};
-let textures = {
-    bouncer: loadImage("bouncer"),
-    megaBouncer: loadImage("megabouncer"),
-    freezer: loadImage("freezer"),
-    spike: loadImage("spike"),
-    normal: loadImage("normal"),
-    reverse: loadImage("reverse"),
-    bomb: [
-        loadImage("bomb0"),
-        loadImage("bomb1")
-    ]
-};
-
-
 let camScale = 5;
 let camX = 0;
 let camY = 0;

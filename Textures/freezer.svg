@@ -31,4 +31,6 @@
         <rect width="10" height="6" transform="translate(25, 0) rotate(-60) translate(0, -3)" />
         <rect width="10" height="6" transform="translate(25, 0) rotate(60) translate(0, -3)" />
     </g>
+    <polygon points="0,-20 17.3205080757,-10 17.3205080757,10 0,20 -17.3205080757,10 -17.3205080757,-10" transform="translate(50,50)" fill="#00ffff" />
+    <polygon points="0,-15 12.9903810568,-7.5 12.9903810568,7.5 0,15 -12.9903810568,7.5 -12.9903810568,-7.5" transform="translate(50,50)" fill="#000000" />
 </svg>
