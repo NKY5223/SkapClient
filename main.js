@@ -138,11 +138,11 @@ ws.addEventListener("message", e => {
                 show(gameDiv);
                 (function run(now = 0) {
                     const calcFPS = Math.floor(1000 / (now - lastFrame));
-                    if (calcFPS != Infinity && FPSDisplay.innerHTML !== String(calcFps)) {
+                    if (calcFPS != Infinity && FPSDisplay.innerHTML !== String(calcFPS)) {
                         FPSDisplay.innerHTML = calcFPS;
                     }
                     lastFrame = now;
-                    render(data, map);
+                    render(data);
                     requestAnimationFrame(run);
                 })();
                 customAlert("Joined game");
@@ -236,8 +236,17 @@ ws.addEventListener("message", e => {
             break;
     }
 });
+/**
+ * @param {SkapMap} i 
+ */
 function initMap(i) {
     map = i;
+    parsedMap.background = fromColArr(i.areaColor);
+    parsedMap.obstacle = i.objects.filter(obj => obj.type === "obstacle");
+    parsedMap.slime = i.objects.filter(obj => obj.type === "slime");
+    parsedMap.ice = i.objects.filter(obj => obj.type === "ice");
+    parsedMap.lava = i.objects.filter(obj => obj.type === "lava");
+    parsedMap.teleporter = i.objects.filter(obj => obj.type === "teleporter");
     renderSettings.colors.obstacle = "rgb(" +
         (240 + (i.backgroundColor[0] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +

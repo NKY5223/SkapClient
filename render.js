@@ -42,7 +42,16 @@
  * @property {3 | 2.25} radius
  * @property {string} name
  * @property {[number, number, number]} color
- * @property {boolean} died
+ * @property {string} hat
+ */
+/**
+ * @typedef SkapMap
+ * @property {Object} areaSize
+ * @property {number} areaSize.x
+ * @property {number} areaSize.y
+ * @property {[number, number, number]} areaColor
+ * @property {[number, number, number, number]} backgroundColor
+ * @property {SkapObject[]} objects
  */
 
 /**
@@ -57,26 +66,15 @@
  * @param {Object<string, Player>} e.players id:Player
  * @param {[string, string, boolean][]} e.playerList
  * @param {SkapEntity[]} e.entities
- * @param {Object} map
- * @param {Object} map.areaSize
- * @param {number} map.areaSize.x
- * @param {number} map.areaSize.y
- * @param {[number, number, number]} map.areaColor
- * @param {[number, number, number, number]} map.backgroundColor
- * @param {SkapObject[]} map.objects
  */
-function render(e, map) {
+function render(e) {
     canvas.width = document.body.clientWidth;
     canvas.height = document.body.clientHeight;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.lineCap = "middle";
 
-    let canvasL = camX - canvas.width / 2 / camScale;
-    let canvasU = camY - canvas.height / 2 / camScale;
-    let bg = fromColArr(map.backgroundColor);
-    let areaBG = fromColArr(map.areaColor);
-    ctx.fillStyle = bg;
+    ctx.fillStyle = renderSettings.colors.obstacle;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.resetTransform();
@@ -84,7 +82,7 @@ function render(e, map) {
     ctx.scale(camScale, camScale);
     ctx.translate(-camX, -camY);
 
-    ctx.fillStyle = areaBG;
+    ctx.fillStyle = parsedMap.background;
     ctx.fillRect(0, 0, map.areaSize.x, map.areaSize.y);
 
     if (!e) {
@@ -114,28 +112,28 @@ function render(e, map) {
     if (renderSettings.render.obstacle) {
         // Render obstacles
         ctx.fillStyle = renderSettings.colors.obstacle;
-        for (let obj of map.objects.filter(obj => obj.type === "obstacle")) {
+        for (let obj of parsedMap.obstacle) {
             ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
     }
     if (renderSettings.render.slime) {
         // Render slime
         ctx.fillStyle = renderSettings.colors.slime;
-        for (let obj of map.objects.filter(obj => obj.type === "slime")) {
+        for (let obj of parsedMap.slime) {
             ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
     }
     if (renderSettings.render.ice) {
         // Render ice
         ctx.fillStyle = renderSettings.colors.ice;
-        for (let obj of map.objects.filter(obj => obj.type === "ice")) {
+        for (let obj of parsedMap.ice) {
             ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
     }
     if (renderSettings.render.lava) {
         // Render lava
         ctx.fillStyle = renderSettings.colors.lava;
-        for (let obj of map.objects.filter(obj => obj.type === "lava")) {
+        for (let obj of parsedMap.lava) {
             ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
     }
@@ -159,9 +157,9 @@ function render(e, map) {
                 break;
         }
         if (gradient) {
-            gradient.addColorStop(0, areaBG);
+            gradient.addColorStop(0, parsedMap.background);
             gradient.addColorStop(1, renderSettings.colors.obstacle);
-        } else gradient = areaBG;
+        } else gradient = parsedMap.background;
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, obj.size.x, obj.size.y);
         ctx.restore();
@@ -195,12 +193,12 @@ function render(e, map) {
         ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
         ctx.fillStyle = obj.exploding ? renderSettings.colors.mineExpRegion : renderSettings.colors.mineRegion;
         ctx.fill();
-        ctx.drawImage(renderSettings.textures.bomb[obj.phase & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+        ctx.drawImage(renderSettings.textures.enemies.bomb[obj.phase & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
     // Render bouncers
     for (let obj of e.entities.filter(obj => ["bouncer", "megaBouncer", "freezer", "spike", "normal", "reverse"].includes(obj.type))) {
         ctx.globalAlpha = obj.opacity;
-        ctx.drawImage(renderSettings.textures[obj.type], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+        ctx.drawImage(renderSettings.textures.enemies[obj.type], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
     // Render rotating enemies
     for (let obj of e.entities.filter(obj => obj.type === "rotating")) {
@@ -208,7 +206,7 @@ function render(e, map) {
         ctx.translate(obj.pos.x, obj.pos.y);
         ctx.rotate(obj.angle);
         ctx.globalAlpha = obj.opacity;
-        ctx.drawImage(renderSettings.textures.normal, -obj.radius, -obj.radius, obj.radius * 2, obj.radius * 2);
+        ctx.drawImage(renderSettings.textures.enemies.rotating, -obj.radius, -obj.radius, obj.radius * 2, obj.radius * 2);
         ctx.restore();
     }
     // Render bullets
@@ -242,11 +240,17 @@ function render(e, map) {
         ctx.translate(p.pos.x, p.pos.y);
         ctx.rotate(p.gravDir / 2 * Math.PI);
         ctx.beginPath();
+        // Body
         ctx.ellipse(0, 0, p.radius, p.radius, 0, 0, 7);
         ctx.fillStyle = died ? renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : fromColArr(p.color);
         ctx.fill();
+        // Hat
+        if (renderSettings.textures.hasOwnProperty(p.hat))
+            ctx.drawImage(renderSettings.textures[p.hat], -p.radius, -p.radius, 2 * p.radius, 2 * p.radius);
+        // Name
         ctx.fillStyle = died ? renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#202020";
         ctx.fillText(p.name, 0, -p.radius - 0.5);
+        // fuelBar™️
         ctx.fillStyle = died ? renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#ffff40";
         ctx.fillRect(-5, p.radius + 1, p.fuel / 6 * 5, 2.5);
         ctx.strokeStyle = "#202020";
@@ -255,7 +259,7 @@ function render(e, map) {
         ctx.restore();
     }
     // Render blocks(1)
-    if (renderSettings.renderBlocks1) {
+    if (renderSettings.render.block1) {
         ctx.setLineDash([]);
         for (let obj of map.objects.filter(obj => obj.type === "block" && obj.layer)) {
             ctx.fillStyle = fromColArr(obj.color.concat(obj.opacity));

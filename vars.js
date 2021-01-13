@@ -53,17 +53,33 @@ let renderSettings = {
         playerFreeze: "#00ffff"
     },
     textures: {
-        bouncer: loadImage("bouncer"),
-        megaBouncer: loadImage("megabouncer"),
-        freezer: loadImage("freezer"),
-        spike: loadImage("spike"),
-        normal: loadImage("normal"),
-        reverse: loadImage("reverse"),
-        bomb: [
-            loadImage("bomb0"),
-            loadImage("bomb1")
-        ]
+        enemies: {
+            bouncer: loadImage("enemies/bouncer"),
+            megaBouncer: loadImage("enemies/megabouncer"),
+            freezer: loadImage("enemies/freezer"),
+            spike: loadImage("enemies/spike"),
+            normal: loadImage("enemies/normal"),
+            reverse: loadImage("enemies/reverse"),
+            rotating: loadImage("enemies/rotating"),
+            bomb: [
+                loadImage("enemies/bomb0"),
+                loadImage("enemies/bomb1")
+            ]
+        },
+        hats: {
+            santa: loadImage("https://skap.io/textures/hats/santa.png")
+        }
     }
+};
+let parsedMap = {
+    background: "#ffffff",
+    obstacle: [],
+    block0: [],
+    slime: [],
+    ice: [],
+    lava: [],
+    teleporter: [],
+    block1: []
 };
 // Merge these two vars with this ^^^
 // Replace with images eventually (might need to restrict zoom in)
@@ -176,7 +192,7 @@ function show(el) {
  */
 function loadImage(src) {
     let image = new Image();
-    image.src = `Textures/${src}.svg`;
+    image.src = src.startsWith("http") ? src : `Textures/${src}.svg`;
     return image;
 }
 /**
