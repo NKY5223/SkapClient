@@ -16,21 +16,28 @@ function updateStates(m) {
     let diff = now - lastUpdate;
     minLU = Math.min(minLU, diff);
     if (diff < 10000)
-    maxLU = Math.max(maxLU, diff);
+        maxLU = Math.max(maxLU, diff);
     lastUpdateDisplay.innerHTML = diff;
     minMaxUpdate.innerHTML = minLU + " - " + maxLU;
     lastUpdate = now;
 
     let player = m.players[m.infos.id];
-
     // Camera
-    if (freeCam) {
-        camX += camSpeed * (keysDown.has("arrowright") - keysDown.has("arrowleft"));
-        camY += camSpeed * (keysDown.has("arrowdown") - keysDown.has("arrowup"));
-    } else {
+    if (!freeCam) {
         camX = player.pos.x;
         camY = player.pos.y;
     }
+
+    // Death/Freeze message
+    if (player.states.includes("Died")) {
+        show(deathM);
+        hide(freezeM);
+    }
+    else {
+        hide(deathM);
+        if (player.states.includes("Freeze")) show(freezeM);
+        else hide(freezeM);
+    };
 
     // List players
     playerList.innerHTML = "";

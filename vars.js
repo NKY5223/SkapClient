@@ -86,8 +86,9 @@ let parsedMap = {
 let camScale = 5;
 let camX = 0;
 let camY = 0;
-let camSpeed = 2;
+let camSpeed = 0.5;
 let freeCam = false;
+
 
 let keys = ["w", "a", "s", "d", "shift", "", "", "r"];
 
@@ -116,6 +117,7 @@ if (viewWS) {
     show(wsDiv);
 } else hide(wsDiv);
 
+const connectP = document.getElementById("connecting");
 // Login
 const username = document.getElementById("username");
 const password = document.getElementById("password");
@@ -145,6 +147,9 @@ const posXSpan = document.getElementById("posX");
 const posYSpan = document.getElementById("posY");
 const velXSpan = document.getElementById("velX");
 const velYSpan = document.getElementById("velY");
+
+const deathM = document.getElementById("deathText");
+const freezeM = document.getElementById("freezeText");
 
 // Functions
 /**

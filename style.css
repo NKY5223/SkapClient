@@ -132,6 +132,20 @@ button {
     background: #404000;
 }
 
+#deathText, #freezeText {
+    color: #ff0000;
+    position: absolute;
+    top: 10px;
+    text-align: center;
+    width: 100%;
+    text-shadow: 
+        1px 1px #101010,
+        2px 2px #101010;
+}
+#freezeText {
+    color: #00ffff;
+}
+
 canvas {
     background: #f0f0f0;
 }

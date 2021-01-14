@@ -85,6 +85,12 @@ function render(e) {
     ctx.fillStyle = parsedMap.background;
     ctx.fillRect(0, 0, map.areaSize.x, map.areaSize.y);
 
+    // Camera
+    if (freeCam) {
+        camX += camScale * camSpeed * (keysDown.has("arrowright") - keysDown.has("arrowleft"));
+        camY += camScale * camSpeed * (keysDown.has("arrowdown") - keysDown.has("arrowup"));
+    }
+
     if (!e) {
         e = {
             infos: {
@@ -138,7 +144,7 @@ function render(e) {
         }
     }
     // Render the ****ing teleporters (they suck)
-    for (let obj of map.objects.filter(obj => obj.type === "teleporter")) {
+    for (let obj of parsedMap.teleporter) {
         ctx.save();
         ctx.translate(obj.pos.x, obj.pos.y);
         let gradient;

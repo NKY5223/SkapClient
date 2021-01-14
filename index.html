@@ -8,9 +8,10 @@
         <link rel="icon" href="skap.ico">
     </head>
     <body>
-        <div id="loginDiv">
+        <p id="connecting">Connecting...</p>
+        <div id="loginDiv" class="hidden">
             <h1 id="logo">Skap Client<span id="scuffed">Scuffed</span><span id="hacked">>hacked</span></h1>
-            <p id="update">Linkity links</p>
+            <p id="update"><code>const DEATH_MESSAGE = new Code();</code></p>
             <br>
             <div id="loginData">
                 <label for="username">Username: </label><input id="username" type="text" /><br>
@@ -44,7 +45,7 @@
             <div id="games"></div>
         </div>
         <div id="gameDiv" class="hidden">
-            <div id="GUI">
+            <div id="UI">
                 <div id="playerList" class="noselect"></div>
                 <div id="fuelBarWrap"><div id="fuelBarInner"></div></div>
                 <div id="chat">
@@ -60,6 +61,8 @@
                     (<span id="minMaxUpdateDisplay" class="noselect"></span>ms)<br>
                     <span id="FPS"></span>fps
                 </div>
+                <h3 id="deathText" class="hidden">Yuo ded. Press R to respawn or wait for someone to rescue you.<br>If you have perms, type /res in chat to rescue yuoself.</h3>
+                <h3 id="freezeText" class="hidden">Ur frozen. Hope you don't freeze to death!</h3>
             </div>
             <canvas id="render">CANVAS_NOT_SUPPORTED (rip)</canvas>
         </div>

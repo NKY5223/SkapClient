@@ -6,6 +6,8 @@ if (localStorage.getItem("password")) {
 }
 
 ws.addEventListener("open", () => {
+    hide(connectP);
+    show(loginDiv);
     if (localStorage.getItem("cookie")) {
         send({
             e: "session",
