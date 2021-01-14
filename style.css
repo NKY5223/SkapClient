@@ -101,6 +101,12 @@ button {
     padding: 20px 40px;
 }
 
+#links {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+}
+
 #gamesDiv {
     height: 100%;
     width: 100%;
