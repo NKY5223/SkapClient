@@ -49,6 +49,9 @@ let renderSettings = {
         mineRegion: "#00000010",
         mineExpRegion: "#d0100010",
 
+        contracRegion: "#8080a010",
+        contracTriggerRegion: "#c000c010",
+
         playerDead: "#ff0000",
         playerFreeze: "#00ffff"
     },
@@ -64,7 +67,12 @@ let renderSettings = {
             bomb: [
                 loadImage("enemies/bomb0"),
                 loadImage("enemies/bomb1")
-            ]
+            ],
+            contractor: [
+                loadImage("enemies/contractor0"),
+                loadImage("enemies/contractor1")
+            ],
+            taker: loadImage("enemies/taker"),
         },
         hats: {
             santa: loadImage("https://skap.io/textures/hats/santa.png")
@@ -123,6 +131,7 @@ const username = document.getElementById("username");
 const password = document.getElementById("password");
 const guest = document.getElementById("guest");
 const login = document.getElementById("login");
+const register = document.getElementById("register");
 const logout = document.getElementById("logout");
 const logoutDiv = document.getElementById("logoutDiv");
 const play = document.getElementById("play");

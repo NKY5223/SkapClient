@@ -33,6 +33,15 @@ ws.addEventListener("open", () => {
             e: "guest"
         });
     });
+    register.addEventListener("click", () => {
+        send({
+            e: "register",
+            m: {
+                username: username.value,
+                password: SHA256(username.value + password.value)
+            }
+        });
+    });
     play.addEventListener("click", () => {
         send({
             e: "games"
@@ -52,7 +61,7 @@ ws.addEventListener("open", () => {
                  */
                 let msg = chatInput.value;
                 for (let i of seriousProfanCheck) {
-                    if (msg.toLowerCase().match(new RegExp("\\s" + i, "gi"))) {
+                    if (msg.toLowerCase().match(new RegExp("(^|\\s)" + i, "gi"))) {
                         if (window.location.href.endsWith("index.html"))
                             window.location.replace(window.location.pathname.slice(0, window.location.pathname.length - 10) + "bad.html");
                         else window.location.pathname = "bad.html";

@@ -22,7 +22,8 @@
  * @property {number} radius
  * @property {number} opacity
  * @property {boolean} phase
- * @property {boolean} exploding FINALLY TYPO
+ * @property {boolean} exploding FINALLY TYPO                      v 
+ * @property {boolean} triggered why can't you merge these two .-. ^
  * @property {Object} pos
  * @property {number} pos.x
  * @property {number} pos.y
@@ -192,6 +193,8 @@ function render(e) {
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         ctx.restore();
     }
+
+    // <ENTITIES>
     // Render bombs
     for (let obj of e.entities.filter(obj => obj.type === "bomb")) {
         ctx.globalAlpha = obj.opacity;
@@ -201,8 +204,17 @@ function render(e) {
         ctx.fill();
         ctx.drawImage(renderSettings.textures.enemies.bomb[obj.phase & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
-    // Render bouncers
-    for (let obj of e.entities.filter(obj => ["bouncer", "megaBouncer", "freezer", "spike", "normal", "reverse"].includes(obj.type))) {
+    // Render contracs
+    for (let obj of e.entities.filter(obj => obj.type === "contractor")) {
+        ctx.globalAlpha = obj.opacity;
+        ctx.beginPath();
+        ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
+        ctx.fillStyle = obj.triggered ? renderSettings.colors.contracTriggerRegion : renderSettings.colors.contracRegion;
+        ctx.fill();
+        ctx.drawImage(renderSettings.textures.enemies.contractor[obj.triggered & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+    }
+    // Render entities
+    for (let obj of e.entities.filter(obj => ["bouncer", "megaBouncer", "freezer", "spike", "normal", "reverse", "taker"].includes(obj.type))) {
         ctx.globalAlpha = obj.opacity;
         ctx.drawImage(renderSettings.textures.enemies[obj.type], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
@@ -222,6 +234,8 @@ function render(e) {
         ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
         ctx.fill();
     }
+    // </ENTITIES>
+
     // Render turrets
     ctx.globalAlpha = 1;
     for (let obj of map.objects.filter(obj => obj.type === "turret")) {
@@ -251,8 +265,7 @@ function render(e) {
         ctx.fillStyle = died ? renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : fromColArr(p.color);
         ctx.fill();
         // Hat
-        if (renderSettings.textures.hasOwnProperty(p.hat))
-            ctx.drawImage(renderSettings.textures[p.hat], -p.radius, -p.radius, 2 * p.radius, 2 * p.radius);
+        // if (renderSettings.textures.hats.hasOwnProperty(p.hat)) ctx.drawImage(renderSettings.textures.hats[p.hat], -2 * p.radius, -2 * p.radius, 4 * p.radius, 4 * p.radius);
         // Name
         ctx.fillStyle = died ? renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#202020";
         ctx.fillText(p.name, 0, -p.radius - 0.5);
