@@ -57,12 +57,15 @@
                     <p>vel: <span id="velX"></span>, <span id="velY"></span></p>
                 </div>
                 <div id="lastUpdateDiv">
-                    <span id="lastUpdateDisplay" class="noselect"></span>ms since last update<br>
-                    (<span id="minMaxUpdateDisplay" class="noselect"></span>ms)<br>
-                    <span id="FPS"></span>fps
+                    <span id="lastUpdateDisplay" class="noselect">0</span>ms since last update<br>
+                    (<span id="minMaxUpdateDisplay" class="noselect">0 - 0</span>ms)<br>
+                    <span id="FPS">0</span>fps
                 </div>
-                <h3 id="deathText" class="hidden">Yuo ded. Press R to respawn or wait for someone to rescue you.<br>If you have perms, type /res in chat to rescue yuoself.</h3>
-                <h3 id="freezeText" class="hidden">Ur frozen. Hope you don't freeze to death!</h3>
+                <h3 id="deathText" class="hidden">
+                    Yuo ded. Press R to respawn or w8 for sum1 to res you.<br>
+                    If you is of havings perms, type /res in chat to rescue yuoself.
+                </h3>
+                <h3 id="freezeText" class="hidden">Ur freeze. U might die</h3>
             </div>
             <canvas id="render">CANVAS_NOT_SUPPORTED (rip)</canvas>
         </div>
