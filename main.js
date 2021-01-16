@@ -171,6 +171,34 @@ ws.addEventListener("message", e => {
                                 }
                             });
                         }
+                        switch (e.key.toLowerCase()) {
+                            case "o":
+                                renderSettings.renderHitboxes = !renderSettings.renderHitboxes;
+                                customAlert(`Hitboxes ${renderSettings.renderHitboxes ? "ON" : "OFF"}`);
+                                break;
+                            case "f":
+                                if (freeCam) {
+                                    customAlert("Freecam OFF");
+                                    freeCam = false;
+                                } else {
+                                    customAlert("Freecam ON");
+                                    freeCam = true;
+                                }
+                                break;
+                            case "u":
+                                camScale /= 1.5;
+                                customAlert(`Camera Scale: ${camScale}`);
+                                break;
+                            case "i":
+                                camScale *= 1.5;
+                                customAlert(`Camera Scale: ${camScale}`);
+                                break;
+                            case "enter":
+                                if (!chatFocus) {
+                                    chatInput.focus();
+                                }
+                                break;
+                        }
                     }
                 });
                 document.addEventListener("keyup", e => {
@@ -270,46 +298,16 @@ ws.addEventListener("close", () => {
     customAlert("The WebSocket closed for unknown reasons.<br>Please reload the client. If that doesn't work, try again later.<br>Skap may have been taken down for maintenence", 100);
 });
 document.addEventListener("keydown", e => {
-    if (!e.repeat) {
-        if (!chatFocus) switch (e.key.toLowerCase()) {
-            case "p":
-                if (viewWS) {
-                    viewWS = false;
-                    customAlert("WS messages HIDDEN");
-                    hide(wsDiv);
-                } else {
-                    viewWS = true;
-                    customAlert("WS messages SHOWN<br><small>Note: Is spammy</small>");
-                    show(wsDiv);
-                }
-                localStorage.setItem("viewWS", viewWS ? "on" : "");
-                break;
-            case "o":
-                renderSettings.renderHitboxes = !renderSettings.renderHitboxes;
-                customAlert(`Hitboxes ${renderSettings.renderHitboxes ? "ON" : "OFF"}`);
-                break;
-            case "f":
-                if (freeCam) {
-                    customAlert("Freecam OFF");
-                    freeCam = false;
-                } else {
-                    customAlert("Freecam ON");
-                    freeCam = true;
-                }
-                break;
-            case "u":
-                camScale /= 1.5;
-                customAlert(`Camera Scale: ${camScale}`);
-                break;
-            case "i":
-                camScale *= 1.5;
-                customAlert(`Camera Scale: ${camScale}`);
-                break;
-            case "enter":
-                if (!chatFocus) {
-                    chatInput.focus();
-                }
-                break;
+    if (!e.repeat && !chatFocus && e.key.toLowerCase() === "p") {
+        if (viewWS) {
+            viewWS = false;
+            customAlert("WS messages HIDDEN");
+            hide(wsDiv);
+        } else {
+            viewWS = true;
+            customAlert("WS messages SHOWN<br><small>Note: Is spammy</small>");
+            show(wsDiv);
         }
+        localStorage.setItem("viewWS", viewWS ? "on" : "");
     }
 });

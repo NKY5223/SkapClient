@@ -73,6 +73,7 @@ let renderSettings = {
                 loadImage("enemies/contractor1")
             ],
             taker: loadImage("enemies/taker"),
+            immune: loadImage("enemies/immune")
         },
         hats: {
             santa: loadImage("https://skap.io/textures/hats/santa.png")
@@ -97,7 +98,6 @@ let camY = 0;
 let camSpeed = 0.5;
 let freeCam = false;
 
-
 let keys = ["w", "a", "s", "d", "shift", "", "", "r"];
 
 let map = null;
@@ -106,7 +106,8 @@ let bypassProfan = true;
 
 let chatFocus = false;
 let viewWS = Boolean(localStorage.getItem("viewWS"));
-let noUS = true;
+let noUS = false;
+const devs = ["NKY"];
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");
 
