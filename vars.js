@@ -98,7 +98,9 @@ let camY = 0;
 let camSpeed = 5;
 let freeCam = false;
 
-let keys = ["w", "a", "s", "d", "shift", "", "", "r"];
+let keys;
+if (localStorage.getItem("keys")) keys = localStorage.getItem("keys").split(" ");
+else keys = ["w", "a", "s", "d", "shift", "", "", "r"];
 
 let map = null;
 let data = null;
