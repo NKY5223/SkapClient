@@ -270,7 +270,7 @@ function render(e) {
         ctx.fillStyle = died ? renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#202020";
         ctx.fillText(p.name, 0, -p.radius - 0.5);
         // fuelBar™️
-        ctx.fillStyle = died ? renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#ffff40";
+        ctx.fillStyle = died ? renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#999999";
         ctx.fillRect(-5, p.radius + 1, p.fuel / 6 * 5, 2.5);
         ctx.strokeStyle = "#202020";
         ctx.lineWidth = 0.5;
