@@ -220,7 +220,7 @@ canvas {
     -webkit-text-fill-color: transparent;
 }
 .devMsg {
-    background-image: repeating-linear-gradient(45deg, #00c000, #00c080, #0000c0, #00c080, #00c000);
+    background-image: repeating-linear-gradient(45deg, #40ff40, #00c080, #4040ff, #00c080, #40ff40);
     animation: slide 7s linear infinite;
     background-size: 150% 700%;
     -webkit-background-clip: text;
