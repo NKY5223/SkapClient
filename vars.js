@@ -9,6 +9,7 @@ const controls = document.querySelector(".controls");
 const controlType = localStorage.getItem('controls');
 if (controlType === "arrows"){
     controls.value = "Controls: Arrow Keys";
+    controlType = "arrows";
 }
 else{
     controls.value = "Controls: WASD";
