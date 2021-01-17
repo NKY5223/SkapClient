@@ -6,7 +6,17 @@ const ws = new WebSocket("wss://skap.io");
 const canvas = document.getElementById("render");
 const ctx = canvas.getContext("2d");
 const controls = document.querySelector(".controls");
+const controlType = localStorage.getItem('controls');
+if (controlType === "arrows"){
+    controls.value = "Controls: Arrow Keys";
+}
+else{
+    controls.value = "Controls: WASD";
+}
 
+if (controlType === null){
+    localStorage.setItem('controls', 'WASD');
+}
 
 let renderSettings = {
     render: {
