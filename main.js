@@ -216,10 +216,12 @@ ws.addEventListener("message", e => {
                     if (controlType != "arrows"){
                         controlType = "arrows";
                         localStorage.setItem('controls', 'arrows');
+                        controls.value = "Controls: Arrow Keys";
                     }
                     else{
                         controlType = "WASD";
                         localStorage.setItem('controls', 'WASD');
+                        controls.value = "Controls: WASD";
                     }
                 });
                 canvas.addEventListener("mousedown", e => {
