@@ -5,6 +5,8 @@ const ws = new WebSocket("wss://skap.io");
  */
 const canvas = document.getElementById("render");
 const ctx = canvas.getContext("2d");
+const controls = document.querySelector(".controls");
+
 
 let renderSettings = {
     render: {
