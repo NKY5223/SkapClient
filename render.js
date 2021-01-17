@@ -227,11 +227,61 @@ function render(e) {
         ctx.drawImage(renderSettings.textures.enemies.rotating, -obj.radius, -obj.radius, obj.radius * 2, obj.radius * 2);
         ctx.restore();
     }
+    ctx.globalAlpha = 1;
     // Render bullets
     ctx.fillStyle = renderSettings.colors.bullet;
     for (let obj of e.entities.filter(obj => obj.type === "turretBullet")) {
         ctx.beginPath();
         ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
+        ctx.fill();
+    }
+        // Render shooter bullets
+    ctx.fillStyle = fill.bullet;
+    for (let obj of e.entities.filter(obj => obj.type === "enemyBullet")) {
+        ctx.beginPath();
+        ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
+        ctx.fill();
+    }
+    // Render meteor bullets
+    ctx.fillStyle = "#ba8b3a";
+    ctx.globalAlpha = 1;
+    for (let obj of e.entities.filter(obj => obj.type === "meteorBullet")) {
+        ctx.beginPath();
+        ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
+        ctx.fill();
+    }
+    // Render the F***ing Blue Fire things (they suck)
+    for (let obj of e.entities.filter(obj => obj.type === "path")) {
+    ctx.beginPath();
+    ctx.fillStyle = "rgba(62, 115, 218)";
+    ctx.globalAlpha = 0.08;
+    ctx.arc(obj.pos.x, obj.pos.y, obj.radius, 0, 2 * Math.PI, !0);
+    ctx.fill();
+    ctx.closePath();
+    }
+    // Render the F***ing Shields (they suck)
+    ctx.globalAlpha = 1;
+    for (let obj of e.entities.filter(obj => obj.type === "shield")) {
+      ctx.save();
+      ctx.translate(obj.pos.x, obj.pos.y);
+      ctx.rotate(obj.dir);
+      /*
+      ctx.lineWidth = obj.size.y * 2;
+      ctx.beginPath();
+      ctx.moveTo(-obj.size.x, 0);
+      ctx.lineTo(obj.size.x, 0);
+      ctx.stroke();
+      */
+      ctx.fillStyle = "rgb(57, 57, 57)";
+      ctx.fillRect(-obj.size.x, -obj.size.y, obj.size.x*2, obj.size.y*2);
+      ctx.restore();
+    }
+    
+    // Render Ghost 
+    ctx.fillStyle = "#258535";
+    for (let obj of e.entities.filter(obj => obj.type === "healingGhost")) {
+        ctx.beginPath();
+        ctx.ellipse(obj.pos.x, obj.pos.y, 2, 2, 2, 0, 7);
         ctx.fill();
     }
     // </ENTITIES>
