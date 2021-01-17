@@ -88,8 +88,8 @@ function render(e) {
 
     // Camera
     if (freeCam) {
-        camX += camScale * camSpeed * (keysDown.has("arrowright") - keysDown.has("arrowleft"));
-        camY += camScale * camSpeed * (keysDown.has("arrowdown") - keysDown.has("arrowup"));
+        camX += camSpeed / camScale * (keysDown.has("arrowright") - keysDown.has("arrowleft"));
+        camY += camSpeed / camScale * (keysDown.has("arrowdown") - keysDown.has("arrowup"));
     }
 
     if (!e) {

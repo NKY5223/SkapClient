@@ -213,16 +213,16 @@ canvas {
 .modMsg {
     /* Haha's CSS */
     background-image: repeating-linear-gradient(45deg, violet, rgb(195, 122, 247), rgb(118, 118, 235), rgb(114, 231, 114), rgb(240, 240, 128), rgb(240, 195, 113), rgb(248, 149, 149), rgb(248, 160, 248));
-    animation: slide 7s ease infinite;
-    background-size: 760% 700%;
+    animation: slide 7s linear infinite;
+    background-size: 700% 700%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 .devMsg {
     background-image: repeating-linear-gradient(45deg, #00c000, #00c080, #0000c0, #00c080, #00c000);
-    animation: slide 7s ease infinite;
-    background-size: 760% 700%;
+    animation: slide 7s linear infinite;
+    background-size: 150% 700%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

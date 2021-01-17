@@ -250,7 +250,7 @@ ws.addEventListener("message", e => {
             break;
         case "message":
             let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
-            chat.innerHTML += `<p class="${msg.m.s === "[SKAP]" ? "SKAPMsg" : ["guestMsg", "userMsg", "modMsg"][msg.m.r + 1]}">${msg.m.s.safe()}:&nbsp;${msg.m.m.safe()}</p>`;
+            chat.innerHTML += `<p class="${msg.m.s === "[SKAP]" ? "SKAPMsg" : devs.includes(msg.m.s) ? "devMsg" : ["guestMsg", "userMsg", "modMsg"][msg.m.r + 1]}">${msg.m.s.safe()}:&nbsp;${msg.m.m.safe()}</p>`;
             if (scroll) chat.lastElementChild.scrollIntoView();
             break;
         case "updateStates":
@@ -295,6 +295,7 @@ function initMap(i) {
 }
 ws.addEventListener("close", () => {
     hide(gameDiv);
+    document.title = "Disconnected";
     customAlert("The WebSocket closed for unknown reasons.<br>Please reload the client. If that doesn't work, try again later.<br>Skap may have been taken down for maintenence", 100);
 });
 document.addEventListener("keydown", e => {
