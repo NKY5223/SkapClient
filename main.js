@@ -212,6 +212,16 @@ ws.addEventListener("message", e => {
                         });
                     }
                 });
+                controls.addEventListener("click", function() {
+                    if (controlType != "arrows"){
+                        controlType = "arrows";
+                        localStorage.setItem('controls', 'arrows');
+                    }
+                    else{
+                        controlType = "WASD";
+                        localStorage.setItem('controls', 'WASD');
+                    }
+                });
                 canvas.addEventListener("mousedown", e => {
                     let x;
                     if (e.button === 0) x = 5;
