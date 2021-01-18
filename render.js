@@ -258,8 +258,7 @@ function render(e) {
         ctx.closePath();
     }
     // Render shields
-    ctx.strokeStyle = renderSettings.colors.shield;
-    ctx.lineCap = "round";
+    ctx.fillStyle = renderSettings.colors.shield;
     for (let obj of e.entities.filter(obj => obj.type === "shield")) {
         ctx.save();
         ctx.translate(obj.pos.x, obj.pos.y);

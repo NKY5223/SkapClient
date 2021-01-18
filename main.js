@@ -60,27 +60,71 @@ ws.addEventListener("open", () => {
                  * @type {string}
                  */
                 let msg = chatInput.value;
-                for (let i of seriousProfanCheck) {
-                    if (msg.toLowerCase().match(new RegExp("(^|\\s)" + i, "gi"))) {
-                        if (window.location.href.endsWith("index.html"))
-                            window.location.replace(window.location.pathname.slice(0, window.location.pathname.length - 10) + "bad.html");
-                        else window.location.pathname = "bad.html";
+                if (msg.startsWith("/block ") && msg.length > 7) {
+                    let p = msg.slice(7);
+                    if (blocked.includes(p)) {
+                        message({
+                            m: {
+                                s: "[CLIENT]",
+                                r: 1,
+                                m: `User ${p} is already blocked`
+                            }
+                        }, true);
+                    } else {
+                        blocked.push(p);
+                        message({
+                            m: {
+                                s: "[CLIENT]",
+                                r: 1,
+                                m: `Blocked user ${p}`
+                            }
+                        }, true);
                     }
-                }
-                if (bypassProfan) {
-                    for (let i of profanCheck) {
-                        let match = msg.match(new RegExp(i, "gi"));
-                        if (match) {
-                            for (let m of match) {
-                                msg = msg.replace(m, m[0] + "\u200C" + m.slice(1));
+                } else if (msg.startsWith("/unblock ") && msg.length > 9) {
+                    let p = msg.slice(9);
+                    if (blocked.includes(p)) {
+                        blocked.splice(blocked.indexOf(p));
+                        message({
+                            m: {
+                                s: "[CLIENT]",
+                                r: 1,
+                                m: `Unblocked user ${p}`
+                            }
+                        }, true);
+                    } else {
+                        message({
+                            m: {
+                                s: "[CLIENT]",
+                                r: 1,
+                                m: `Could not unblock user ${p}<br>because they are not in the blocked list, or something went wrong.`
+                            }
+                        });
+                    }
+                } else {
+                    // Test for n-words and stuff
+                    for (let i of seriousProfanCheck) {
+                        if (msg.toLowerCase().match(new RegExp("(^|\\s)" + i, "gi"))) {
+                            if (window.location.href.endsWith("index.html"))
+                                window.location.replace(window.location.pathname.slice(0, window.location.pathname.length - 10) + "bad.html");
+                            else window.location.pathname = "bad.html";
+                        }
+                    }
+                    // Bypass the profan
+                    if (bypassProfan) {
+                        for (let i of profanCheck) {
+                            let match = msg.match(new RegExp(i, "gi"));
+                            if (match) {
+                                for (let m of match) {
+                                    msg = msg.replace(m, m[0] + "\u200C" + m.slice(1));
+                                }
                             }
                         }
                     }
+                    send({
+                        e: "message",
+                        message: msg
+                    });
                 }
-                send({
-                    e: "message",
-                    message: msg
-                });
                 chatInput.value = "";
             }
             chatInput.blur();
@@ -249,12 +293,7 @@ ws.addEventListener("message", e => {
             }
             break;
         case "message":
-            let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
-            let p = document.createElement("p");
-            p.className = msg.m.s === "[SKAP]" ? "SKAPMsg" : devs.includes(msg.m.s) ? "devMsg" : ["guestMsg", "userMsg", "modMsg"][msg.m.r + 1];
-            p.innerHTML = msg.m.s.safe() + ":&nbsp;" + msg.m.m.safe();
-            chat.appendChild(p);
-            if (scroll) p.scrollIntoView();
+            message(msg);
             break;
         case "updateStates":
             updateStates(msg.m);
@@ -295,6 +334,26 @@ function initMap(i) {
         (240 + (i.backgroundColor[0] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[2] - 240) * i.backgroundColor[3]) + ")";
+}
+/**
+ * 
+ * @param {Object} msg 
+ * @param {Object} msg.m
+ * @param {string} msg.m.s Author
+ * @param {-1 | 0 | 1} msg.m.r Guest / User / Mod
+ * @param {string} msg.m.m Message
+ * @param {boolean} force Force message
+ */
+function message(msg, force = false) {
+    if (!force && blocked.includes(msg.m.s) && !devs.includes(msg.m.s)) {
+        return;
+    }
+    let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
+    let p = document.createElement("p");
+    p.className = msg.m.s === "[SKAP]" || msg.m.s === "[CLIENT]" ? "SYSMsg" : devs.includes(msg.m.s) ? "devMsg" : ["guestMsg", "userMsg", "modMsg"][msg.m.r + 1];
+    p.innerHTML = (force ? msg.m.s : msg.m.s.safe()) + ":&nbsp;" + (force ? msg.m.m : msg.m.m.safe());
+    chat.appendChild(p);
+    if (scroll) p.scrollIntoView();
 }
 ws.addEventListener("close", () => {
     hide(gameDiv);

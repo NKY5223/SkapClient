@@ -207,8 +207,13 @@ canvas {
 .userMsg {
     color: #ffffff;
 }
-.SKAPMsg {
-    color: #ffff00;
+.SYSMsg {
+    background-image: repeating-linear-gradient(45deg,#ff0000, #ffff00, #ff0000);
+    animation: slide 2s linear infinite;
+    background-size: 700% 700%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 .modMsg {
     /* Haha's CSS */
@@ -217,7 +222,7 @@ canvas {
     background-size: 700% 700%;
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: transparent;
 }
 .devMsg {
     background-image: repeating-linear-gradient(45deg, #80ff80, #00ff80, #8080ff, #00ff80, #80ff80);
