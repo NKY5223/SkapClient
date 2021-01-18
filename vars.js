@@ -53,7 +53,12 @@ let renderSettings = {
         contracTriggerRegion: "#c000c010",
 
         playerDead: "#ff0000",
-        playerFreeze: "#00ffff"
+        playerFreeze: "#00ffff",
+
+        meteor: "#c08000",
+        ghost: "#20a040",
+        blueFire: "#4040ff10",
+        shield: "#383838"
     },
     textures: {
         enemies: {

@@ -228,10 +228,55 @@ function render(e) {
         ctx.restore();
     }
     // Render bullets
+    ctx.globalAlpha = 1;
     ctx.fillStyle = renderSettings.colors.bullet;
     for (let obj of e.entities.filter(obj => obj.type === "turretBullet")) {
         ctx.beginPath();
         ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
+        ctx.fill();
+    }
+    // Render shooter bullets
+    ctx.fillStyle = renderSettings.colors.bullet;
+    for (let obj of e.entities.filter(obj => obj.type === "enemyBullet")) {
+        ctx.beginPath();
+        ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
+        ctx.fill();
+    }
+    // Render meteor bullets
+    ctx.fillStyle = renderSettings.colors.meteor;
+    for (let obj of e.entities.filter(obj => obj.type === "meteorBullet")) {
+        ctx.beginPath();
+        ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
+        ctx.fill();
+    }
+    // Render blueFire
+    ctx.fillStyle = renderSettings.colors.blueFire;
+    for (let obj of e.entities.filter(obj => obj.type === "path")) {
+        ctx.beginPath();
+        ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, 0, 0, 7);
+        ctx.fill();
+        ctx.closePath();
+    }
+    // Render shields
+    ctx.strokeStyle = renderSettings.colors.shield;
+    ctx.lineCap = "round";
+    for (let obj of e.entities.filter(obj => obj.type === "shield")) {
+        ctx.save();
+        ctx.translate(obj.pos.x, obj.pos.y);
+        ctx.rotate(obj.dir);
+        ctx.lineWidth = obj.size.y * 2;
+        ctx.beginPath();
+        ctx.moveTo(-obj.size.x, 0);
+        ctx.lineTo(obj.size.x, 0);
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    // Render ghost 
+    ctx.fillStyle = renderSettings.colors.ghost;
+    for (let obj of e.entities.filter(obj => obj.type === "healingGhost")) {
+        ctx.beginPath();
+        ctx.ellipse(obj.pos.x, obj.pos.y, 2, 2, 2, 0, 7);
         ctx.fill();
     }
     // </ENTITIES>

@@ -220,17 +220,16 @@ canvas {
     -webkit-text-fill-color: transparent;
 }
 .devMsg {
-    background-image: repeating-linear-gradient(45deg, #40ff40, #00c080, #4040ff, #00c080, #40ff40);
-    animation: slide 7s linear infinite;
-    background-size: 150% 700%;
+    background-image: repeating-linear-gradient(45deg, #80ff80, #00ff80, #8080ff, #00ff80, #80ff80);
+    animation: slide 3s linear infinite;
+    background-size: 700% 100%;
     -webkit-background-clip: text;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: transparent;
 }
 @keyframes slide { 
-    0%{ background-position:0% 50%; }
-    50%{ background-position:100% 25%; }
-    100%{ background-position:0% 50%; }
+    0%{ background-position: 0% 0; }
+    100%{ background-position: 100% 0; }
 }
 
 #fuelBarWrap {

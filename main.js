@@ -250,8 +250,11 @@ ws.addEventListener("message", e => {
             break;
         case "message":
             let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
-            chat.innerHTML += `<p class="${msg.m.s === "[SKAP]" ? "SKAPMsg" : devs.includes(msg.m.s) ? "devMsg" : ["guestMsg", "userMsg", "modMsg"][msg.m.r + 1]}">${msg.m.s.safe()}:&nbsp;${msg.m.m.safe()}</p>`;
-            if (scroll) chat.lastElementChild.scrollIntoView();
+            let p = document.createElement("p");
+            p.className = msg.m.s === "[SKAP]" ? "SKAPMsg" : devs.includes(msg.m.s) ? "devMsg" : ["guestMsg", "userMsg", "modMsg"][msg.m.r + 1];
+            p.innerHTML = msg.m.s.safe() + ":&nbsp;" + msg.m.m.safe();
+            chat.appendChild(p);
+            if (scroll) p.scrollIntoView();
             break;
         case "updateStates":
             updateStates(msg.m);
