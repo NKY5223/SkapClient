@@ -1,19 +1,18 @@
-if (localStorage.getItem("username")) {
-    username.value = localStorage.getItem("username");
-}
-if (localStorage.getItem("password")) {
-    password.value = localStorage.getItem("password");
-}
+if (URLParams.has("username")) username.value = URLParams.get("username");
+else if (localStorage.getItem("username")) username.value = localStorage.getItem("username");
+if (URLParams.has("password")) password.value = URLParams.get("password");
+else if (localStorage.getItem("username")) password.value = localStorage.getItem("password");
 
 ws.addEventListener("open", () => {
     hide(connectP);
     show(loginDiv);
-    if (localStorage.getItem("cookie")) {
+    if (localStorage.getItem("cookie") && !URLParams.has("username") && !URLParams.has("password")) {
         send({
             e: "session",
             cookie: localStorage.getItem("cookie")
         });
     }
+    window.history.pushState("SkapClient", "SkapClient", location.host + location.pathname)
     login.addEventListener("click", () => {
         send({
             e: "login",

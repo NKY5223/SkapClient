@@ -1,4 +1,5 @@
 const ws = new WebSocket("wss://skap.io");
+const URLParams = new URLSearchParams(location.search);
 
 /**
  * @type {HTMLCanvasElement}
@@ -78,7 +79,8 @@ let renderSettings = {
                 loadImage("enemies/contractor1")
             ],
             taker: loadImage("enemies/taker"),
-            immune: loadImage("enemies/immune")
+            immune: loadImage("enemies/immune"),
+            monster: loadImage("enemies/monster")
         },
         hats: {
             santa: loadImage("https://skap.io/textures/hats/santa.png")
