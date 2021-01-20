@@ -27,6 +27,7 @@ function updateStates(m) {
         camX = player.pos.x;
         camY = player.pos.y;
     }
+    
 
     // Death/Freeze message
     if (player.states.includes("Died")) {

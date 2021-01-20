@@ -107,6 +107,14 @@ function render(e) {
             entities: []
         }
     }
+    
+    send({
+        e: "aim",
+        m: [
+            (mouse.x - canvas.width / 2) / camScale + camX,
+            (mouse.y - canvas.height / 2) / camScale + camY
+        ]
+    });
 
     if (renderSettings.render.block0) {
         // Render blocks(0)

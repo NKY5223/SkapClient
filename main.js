@@ -99,6 +99,30 @@ ws.addEventListener("open", () => {
                             }
                         });
                     }
+                } else if (msg.startsWith("/help")) {
+                    message({
+                        m: {
+                            s: "[CLIENT]",
+                            r: 1,
+                            m: `
+Commands:<br>
+Without perms:<ul>
+<li>/help - [CLIENT] Displays this message
+<li>/list - Tells you who has perms</li>
+<li>/respawn - Respawns you to Home</li>
+</ul>
+With perms:<ul>
+<li>/res - Rescues yourself</li>
+<li>/god - Turns on godmode</li>
+<li>/kick <username> - Kicks someone</li>
+</ul>
+Owner:<ul>
+<li>/add <username> - Gives someone perms</li>
+<li>/remove <username> - Removes ones' perms</li>
+</ul>
+                            `
+                        }
+                    }, true);
                 } else {
                     // Test for n-words and stuff
                     for (let i of seriousProfanCheck) {
@@ -281,13 +305,8 @@ ws.addEventListener("message", e => {
                 });
                 canvas.addEventListener("contextmenu", e => { e.preventDefault(); });
                 document.addEventListener("mousemove", e => {
-                    send({
-                        e: "aim",
-                        m: [
-                            (e.x - canvas.width / 2) / camScale + camX,
-                            (e.y - canvas.height / 2) / camScale + camY
-                        ]
-                    });
+                    mouse.x = e.x;
+                    mouse.y = e.y;
                 });
             }
             break;
