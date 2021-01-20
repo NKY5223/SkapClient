@@ -58,7 +58,15 @@ ws.addEventListener("open", () => {
                 let msg = chatInput.value;
                 if (msg.startsWith("/block ") && msg.length > 7) {
                     let p = msg.slice(7);
-                    if (blocked.includes(p)) {
+                    if (devs.includes(p)) {
+                        message({
+                            m: {
+                                s: "[CLIENT]",
+                                r: 1,
+                                m: `Seriously? Blocking a DEV?`
+                            }
+                        }, true);
+                    } else if (blocked.includes(p)) {
                         message({
                             m: {
                                 s: "[CLIENT]",
@@ -75,6 +83,7 @@ ws.addEventListener("open", () => {
                                 m: `Blocked user ${p}`
                             }
                         }, true);
+                        localStorage.setItem("blocked", blocked.join(" "));
                     }
                 } else if (msg.startsWith("/unblock ") && msg.length > 9) {
                     let p = msg.slice(9);
@@ -87,6 +96,7 @@ ws.addEventListener("open", () => {
                                 m: `Unblocked user ${p}`
                             }
                         }, true);
+                        localStorage.setItem("blocked", blocked.join(" "));
                     } else {
                         message({
                             m: {
@@ -96,6 +106,14 @@ ws.addEventListener("open", () => {
                             }
                         });
                     }
+                } else if (msg.startsWith("/blocked")) {
+                    message({
+                        m: {
+                            s: "[CLIENT]",
+                            r: 1,
+                            m: blocked.length ? "Blocked users: " + blocked.join(", ") : "No blocked users"
+                        }
+                    });
                 } else if (msg.startsWith("/help")) {
                     message({
                         m: {

@@ -69,8 +69,8 @@
  * @param {SkapEntity[]} e.entities
  */
 function render(e) {
-    canvas.width = document.body.clientWidth;
-    canvas.height = document.body.clientHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.lineCap = "middle";
