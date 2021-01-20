@@ -107,21 +107,24 @@ ws.addEventListener("open", () => {
                             m: `
 Commands:<br>
 Without perms:<ul>
-<li>/help - [CLIENT] Displays this message
+<li>/help - [CLIENT] Displays this message</li>
+<li>/block &lt;username&gt; - [CLIENT] Blocks a user</li>
+<li>/unblock &lt;username&gt; - [CLIENT] Unblocks a user</li>
 <li>/list - Tells you who has perms</li>
 <li>/respawn - Respawns you to Home</li>
 </ul>
 With perms:<ul>
 <li>/res - Rescues yourself</li>
 <li>/god - Turns on godmode</li>
-<li>/kick <username> - Kicks someone</li>
-<li>/ban <username> - Bring the BANHAMMER down on someone</li>
-<li>/unban <username> - Remove the ban from someone</li>
+<li>/tp &lt;areaname&gt; - Teleports to an area</li>
+<li>/kick &lt;username&gt; - Kicks someone</li>
+<li>/ban &lt;username&gt; - Bring the BANHAMMER down on someone</li>
+<li>/unban &lt;username&gt; - Remove the ban from someone</li>
 <li>/bans - Check bans</li>
 </ul>
 Owner:<ul>
-<li>/add <username> - Gives someone perms</li>
-<li>/remove <username> - Removes ones' perms</li>
+<li>/add &lt;username&gt; - Gives someone perms</li>
+<li>/remove &lt;username&gt; - Removes ones' perms</li>
 </ul>
                             `
                         }
