@@ -210,7 +210,7 @@ canvas {
 }
 .SYSMsg {
     background-image: repeating-linear-gradient(45deg,#ff0000, #ffff00, #ff0000);
-    animation: slide 2s linear infinite;
+    animation: slide 7s linear infinite;
     background-size: 700% 100%;
     -webkit-background-clip: text;
     background-clip: text;

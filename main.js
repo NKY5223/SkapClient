@@ -1,7 +1,5 @@
-if (URLParams.has("username")) username.value = URLParams.get("username");
-else if (localStorage.getItem("username")) username.value = localStorage.getItem("username");
-if (URLParams.has("password")) password.value = URLParams.get("password");
-else if (localStorage.getItem("username")) password.value = localStorage.getItem("password");
+if (localStorage.getItem("username")) username.value = localStorage.getItem("username");
+if (localStorage.getItem("username")) password.value = localStorage.getItem("password");
 
 ws.addEventListener("open", () => {
     hide(connectP);
