@@ -109,6 +109,7 @@ Without perms:<ul>
 <li>/unblock &lt;username&gt; - [CLIENT] Unblocks a user</li>
 <li>/list - Tells you who has perms</li>
 <li>/respawn - Respawns you to Home</li>
+<li>/banned - Check bans</li>
 </ul>
 With perms:<ul>
 <li>/res - Rescues yourself</li>
@@ -117,7 +118,6 @@ With perms:<ul>
 <li>/kick &lt;username&gt; - Kicks someone</li>
 <li>/ban &lt;username&gt; - Bring the BANHAMMER down on someone</li>
 <li>/unban &lt;username&gt; - Remove the ban from someone</li>
-<li>/bans - Check bans</li>
 </ul>
 Owner:<ul>
 <li>/add &lt;username&gt; - Gives someone perms</li>
