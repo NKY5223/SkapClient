@@ -4,13 +4,12 @@ if (localStorage.getItem("username")) password.value = localStorage.getItem("pas
 ws.addEventListener("open", () => {
     hide(connectP);
     show(loginDiv);
-    if (localStorage.getItem("cookie") && !URLParams.has("username") && !URLParams.has("password")) {
+    if (localStorage.getItem("cookie")) {
         send({
             e: "session",
             cookie: localStorage.getItem("cookie")
         });
     }
-    window.history.pushState("SkapClient", "SkapClient", location.host + location.pathname)
     login.addEventListener("click", () => {
         send({
             e: "login",
