@@ -115,6 +115,9 @@ With perms:<ul>
 <li>/res - Rescues yourself</li>
 <li>/god - Turns on godmode</li>
 <li>/kick <username> - Kicks someone</li>
+<li>/ban <username> - Bring the BANHAMMER down on someone</li>
+<li>/unban <username> - Remove the ban from someone</li>
+<li>/bans - Check bans</li>
 </ul>
 Owner:<ul>
 <li>/add <username> - Gives someone perms</li>
