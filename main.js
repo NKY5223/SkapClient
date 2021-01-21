@@ -43,6 +43,10 @@ ws.addEventListener("open", () => {
             e: "games"
         });
     });
+    backtoLogin.addEventListener("click", () => {
+        hide(gamesDiv);
+        show(loginDiv);
+    });
     refresh.addEventListener("click", () => {
         send({
             e: "games"

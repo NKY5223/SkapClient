@@ -49,6 +49,8 @@ let renderSettings = {
 
         mineRegion: "#00000010",
         mineExpRegion: "#d0100010",
+        
+        followingRegion: "#00000010",
 
         contracRegion: "#8080a010",
         contracTriggerRegion: "#c000c010",
@@ -80,7 +82,8 @@ let renderSettings = {
             ],
             taker: loadImage("enemies/taker"),
             immune: loadImage("enemies/immune"),
-            monster: loadImage("enemies/monster")
+            monster: loadImage("enemies/monster"),
+            following: loadImage("enemies/following")
         },
         hats: {
             santa: loadImage("https://skap.io/textures/hats/santa.png")
@@ -151,6 +154,7 @@ const loginData = document.getElementById("loginData");
 const loginDiv = document.getElementById("loginDiv");
 
 // GameList
+const backtoLogin = document.getElementById("backtoLogin");
 const gamesDiv = document.getElementById("gamesDiv");
 const gameListDiv = document.getElementById("games");
 const refresh = document.getElementById("refresh");

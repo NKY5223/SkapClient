@@ -212,6 +212,15 @@ function render(e) {
         ctx.fill();
         ctx.drawImage(renderSettings.textures.enemies.bomb[obj.phase & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
+    // Render followings
+    for (let obj of e.entities.filter(obj => obj.type === "following")) {
+        ctx.globalAlpha = obj.opacity;
+        ctx.beginPath();
+        ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
+        ctx.fillStyle = renderSettings.colors.followingRegion;
+        ctx.fill();
+        ctx.drawImage(renderSettings.textures.enemies.following, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+    }
     // Render contracs
     for (let obj of e.entities.filter(obj => obj.type === "contractor")) {
         ctx.globalAlpha = obj.opacity;

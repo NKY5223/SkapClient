@@ -38,6 +38,7 @@
             </div>
         </div>
         <div id="gamesDiv" class="hidden">
+            <button id="backtoLogin">Back</button>
             <div id="gamesMenu">
                 <h2>Game list</h2>
                 <button id="refresh">Refresh</button>
@@ -61,11 +62,11 @@
                     (<span id="minMaxUpdateDisplay" class="noselect">0 - 0</span>ms)<br>
                     <span id="FPS">0</span>fps
                 </div>
-                <h3 id="deathText" class="hidden">
+                <h3 id="deathText" class="hidden noselect">
                     You are dead. Wait for someone to rescue you or press R to respawn.<br>
                     If you have perms, you can type /res in chat to rescue yourself.
                 </h3>
-                <h3 id="freezeText" class="hidden">You are frozen. Note that you can still use powers.</h3>
+                <h3 id="freezeText" class="hidden noselect">You are frozen. Note that you can still use powers.</h3>
             </div>
             <canvas id="render">CANVAS_NOT_SUPPORTED (rip)</canvas>
         </div>
