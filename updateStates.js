@@ -28,6 +28,10 @@ function updateStates(m) {
         camY = player.pos.y;
     }
     
+    power0CD.style.height = m.infos.oneCooldown * 100 + "%";
+    power1CD.style.height = m.infos.twoCooldown * 100 + "%";
+    power0Heat.style.height = m.infos.oneHeat * 100 + "%";
+    power1Heat.style.height = m.infos.twoHeat * 100 + "%";
 
     // Death/Freeze message
     if (player.states.includes("Died")) {

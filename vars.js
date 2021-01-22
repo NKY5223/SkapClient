@@ -175,8 +175,12 @@ const velYSpan = document.getElementById("velY");
 const deathM = document.getElementById("deathText");
 const freezeM = document.getElementById("freezeText");
 
-const power0 = document.getElementById("power0");
-const power1 = document.getElementById("power1");
+const power0 = document.getElementById("power0input");
+const power1 = document.getElementById("power1input");
+const power0CD = document.getElementById("power0CD");
+const power1CD = document.getElementById("power1CD");
+const power0Heat = document.getElementById("power0Heat");
+const power1Heat = document.getElementById("power1Heat");
 let powers = new Set();
 
 // Functions
@@ -233,4 +237,13 @@ function loadImage(src) {
  */
 String.prototype.safe = function () {
     return this.replace(/&/, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+/**
+ * clamp when
+ * @param {number} min 
+ * @param {number} num 
+ * @param {number} max 
+ */
+function clamp(min, num, max) {
+    return Math.max(Math.min(num, max), min);
 }

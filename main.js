@@ -52,6 +52,12 @@ ws.addEventListener("open", () => {
             e: "games"
         });
     });
+    power0.addEventListener("input", () => {
+        send({e: "powerChange", m: 0, i: power0.value = clamp(0, power0.value, 9)});
+    });
+    power1.addEventListener("input", () => {
+        send({e: "powerChange", m: 1, i: power1.value = clamp(0, power1.value, 9)});
+    });
     chatInput.addEventListener("keydown", e => {
         e.cancelBubble = true;
         if (e.key === "Escape") {

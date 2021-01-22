@@ -165,6 +165,37 @@ button {
 #power1 {
     transform: translate(0, 12.5%);
 }
+#power0input, #power1input {
+    background: transparent;
+    border: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+#power0input:focus, #power1input:focus {
+    outline: none;
+}
+.coolDown, .heat {
+    position: absolute;
+    bottom: 0;
+    background: #ff404040;
+}
+.heat {
+    background: #2040ff80;
+}
+
+/* W3Schools */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
 canvas {
     background: #f0f0f0;
