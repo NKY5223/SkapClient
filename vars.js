@@ -83,11 +83,10 @@ let renderSettings = {
             taker: loadImage("enemies/taker"),
             immune: loadImage("enemies/immune"),
             monster: loadImage("enemies/monster"),
-            following: loadImage("enemies/following")
+            following: loadImage("enemies/following"),
+            stutter: loadImage("enemies/stutter"),
         },
-        hats: {
-            santa: loadImage("https://skap.io/textures/hats/santa.png")
-        }
+        hats: {}
     }
 };
 let parsedMap = {
@@ -175,6 +174,10 @@ const velYSpan = document.getElementById("velY");
 
 const deathM = document.getElementById("deathText");
 const freezeM = document.getElementById("freezeText");
+
+const power0 = document.getElementById("power0");
+const power1 = document.getElementById("power1");
+let powers = new Set();
 
 // Functions
 /**

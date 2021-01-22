@@ -54,6 +54,11 @@ ws.addEventListener("open", () => {
     });
     chatInput.addEventListener("keydown", e => {
         e.cancelBubble = true;
+        if (e.key === "Escape") {
+            chatInput.value = "";
+            chatInput.blur();
+            return;
+        }
         if (e.key === "Enter" && !e.shiftKey) {
             if (chatInput.value !== "") {
                 /**
@@ -241,6 +246,9 @@ ws.addEventListener("message", e => {
                 initMap(msg.i.map);
                 hide(gamesDiv);
                 show(gameDiv);
+                for (let i of msg.i.powers) {
+                    powers.add(i);
+                }
                 (function run(now = 0) {
                     const calcFPS = Math.floor(1000 / (now - lastFrame));
                     if (calcFPS != Infinity && FPSDisplay.innerHTML !== String(calcFPS)) {
@@ -359,6 +367,11 @@ ws.addEventListener("message", e => {
                     for (let o in map.objects)
                         if (map.objects[o].id === r.id)
                             map.objects.splice(o);
+            break;
+        case "power":
+            for (let i of msg.m) {
+                powers.add(i);
+            }
             break;
     }
 });
