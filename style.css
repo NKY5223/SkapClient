@@ -179,6 +179,7 @@ button {
     position: absolute;
     bottom: 0;
     background: #ff404040;
+    width: 100%;
 }
 .heat {
     background: #2040ff80;

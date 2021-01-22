@@ -255,6 +255,8 @@ ws.addEventListener("message", e => {
                 for (let i of msg.i.powers) {
                     powers.add(i);
                 }
+                power0.value = msg.i.powers[0];
+                power1.value = msg.i.powers[1];
                 (function run(now = 0) {
                     const calcFPS = Math.floor(1000 / (now - lastFrame));
                     if (calcFPS != Infinity && FPSDisplay.innerHTML !== String(calcFPS)) {
