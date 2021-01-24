@@ -260,7 +260,7 @@ canvas {
     color: #ffffff;
 }
 .SYSMsg {
-    background-image: repeating-linear-gradient(45deg,#ff0000, #ffff00, #ff0000);
+    background-image: repeating-linear-gradient(45deg, #ff0000, #ffff00, #ff0000);
     animation: slide 7s linear infinite;
     background-size: 700% 100%;
     -webkit-background-clip: text;
@@ -269,7 +269,7 @@ canvas {
 }
 .modMsg {
     /* Haha's CSS */
-    background-image: repeating-linear-gradient(45deg, violet, rgb(195, 122, 247), rgb(118, 118, 235), rgb(114, 231, 114), rgb(240, 240, 128), rgb(240, 195, 113), rgb(248, 149, 149), rgb(248, 160, 248));
+    background-image: repeating-linear-gradient(45deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
     animation: slide 7s linear infinite;
     background-size: 700% 700%;
     -webkit-background-clip: text;

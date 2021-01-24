@@ -73,7 +73,15 @@ ws.addEventListener("open", () => {
                 let msg = chatInput.value;
                 if (msg.startsWith("/block ") && msg.length > 7) {
                     let p = msg.slice(7);
-                    if (devs.includes(p)) {
+                    if (user === p) {
+                        message({
+                            m: {
+                                s: "[CLIENT]",
+                                r: 1,
+                                m: `You can't block yourself :/`
+                            }
+                        }, true);
+                    } else if (devs.includes(p)) {
                         message({
                             m: {
                                 s: "[CLIENT]",
@@ -158,7 +166,7 @@ Owner:<ul>
 </ul>
                             `
                         }
-                    }, true);
+                    }, true).scrollIntoView();
                 } else {
                     // Test for n-words and stuff
                     for (let i of seriousProfanCheck) {
@@ -206,6 +214,9 @@ ws.addEventListener("message", e => {
                     localStorage.setItem("cookie", msg.cookie);
                     localStorage.setItem("username", username.value);
                     localStorage.setItem("password", password.value);
+                }
+                if (msg.t.startsWith("Logged in as ")) {
+                    user = msg.t.slice(13);
                 }
                 customAlert(msg.t.safe());
                 hide(loginData);
@@ -418,6 +429,7 @@ function message(msg, force = false) {
     p.innerHTML = (force ? msg.m.s : msg.m.s.safe()) + ":&nbsp;" + (force ? msg.m.m : msg.m.m.safe());
     chat.appendChild(p);
     if (scroll) p.scrollIntoView();
+    return p;
 }
 ws.addEventListener("close", () => {
     hide(gameDiv);

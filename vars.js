@@ -115,6 +115,7 @@ let map = null;
 let data = null;
 let bypassProfan = true;
 let mouse = {x: 0, y: 0};
+let user = "";
 
 let chatFocus = false;
 let blocked = localStorage.getItem("blocked") ? localStorage.getItem("blocked").split(" ") : [];
