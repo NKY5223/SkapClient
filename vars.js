@@ -85,6 +85,7 @@ let renderSettings = {
             monster: loadImage("enemies/monster"),
             following: loadImage("enemies/following"),
             stutter: loadImage("enemies/stutter"),
+            expander: loadImage("enemies/none"),
         },
         hats: {}
     }

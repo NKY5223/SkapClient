@@ -166,7 +166,8 @@ Owner:<ul>
 </ul>
                             `
                         }
-                    }, true).scrollIntoView();
+                    }, true);
+                    chat.scrollTop = chat.scrollHeight;
                 } else {
                     // Test for n-words and stuff
                     for (let i of seriousProfanCheck) {
