@@ -53,13 +53,13 @@ ws.addEventListener("open", () => {
         });
     });
     power0.addEventListener("input", () => {
-        send({e: "powerChange", m: 0, i: power0.value = clamp(0, power0.value, 9)});
+        send({ e: "powerChange", m: 0, i: power0.value = clamp(0, power0.value, 9) });
     });
     power1.addEventListener("input", () => {
-        send({e: "powerChange", m: 1, i: power1.value = clamp(0, power1.value, 9)});
+        send({ e: "powerChange", m: 1, i: power1.value = clamp(0, power1.value, 9) });
     });
     chatInput.addEventListener("keydown", e => {
-        e.cancelBubble = true;
+        e.stopPropagation();
         if (e.key === "Escape") {
             chatInput.value = "";
             chatInput.blur();
@@ -94,7 +94,7 @@ ws.addEventListener("open", () => {
                             m: {
                                 s: "[CLIENT]",
                                 r: 1,
-                                m: `User ${p} is already blocked`
+                                m: `User ${p.safe()} is already blocked`
                             }
                         }, true);
                     } else {
@@ -103,7 +103,7 @@ ws.addEventListener("open", () => {
                             m: {
                                 s: "[CLIENT]",
                                 r: 1,
-                                m: `Blocked user ${p}`
+                                m: `Blocked user ${p.safe()}`
                             }
                         }, true);
                         localStorage.setItem("blocked", blocked.join(" "));
@@ -116,7 +116,7 @@ ws.addEventListener("open", () => {
                             m: {
                                 s: "[CLIENT]",
                                 r: 1,
-                                m: `Unblocked user ${p}`
+                                m: `Unblocked user ${p.safe()}`
                             }
                         }, true);
                         localStorage.setItem("blocked", blocked.join(" "));
@@ -125,9 +125,9 @@ ws.addEventListener("open", () => {
                             m: {
                                 s: "[CLIENT]",
                                 r: 1,
-                                m: `Could not unblock user ${p}<br>because they are not in the blocked list, or something went wrong.`
+                                m: `Could not unblock user ${p.safe()}<br>because they are not in the blocked list, or something went wrong.`
                             }
-                        });
+                        }, true);
                     }
                 } else if (msg.startsWith("/blocked")) {
                     message({
@@ -136,7 +136,7 @@ ws.addEventListener("open", () => {
                             r: 1,
                             m: blocked.length ? "Blocked users: " + blocked.join(", ") : "No blocked users"
                         }
-                    });
+                    }, true);
                 } else if (msg.startsWith("/help")) {
                     message({
                         m: {
@@ -280,44 +280,41 @@ ws.addEventListener("message", e => {
                 customAlert("Joined game");
                 // Handle game controls
                 document.addEventListener("keydown", e => {
-                    if (!chatFocus) {
-                        if (keys.includes(e.key.toLowerCase())) {
-                            send({
-                                e: "input",
-                                input: {
-                                    keys: keys.indexOf(e.key.toLowerCase()),
-                                    value: true
-                                }
-                            });
-                        }
-                        switch (e.key.toLowerCase()) {
-                            case "o":
-                                renderSettings.renderHitboxes = !renderSettings.renderHitboxes;
-                                customAlert(`Hitboxes ${renderSettings.renderHitboxes ? "ON" : "OFF"}`);
-                                break;
-                            case "f":
-                                if (freeCam) {
-                                    customAlert("Freecam OFF");
-                                    freeCam = false;
-                                } else {
-                                    customAlert("Freecam ON");
-                                    freeCam = true;
-                                }
-                                break;
-                            case "u":
-                                camScale /= 1.5;
-                                customAlert(`Camera Scale: ${camScale}`);
-                                break;
-                            case "i":
-                                camScale *= 1.5;
-                                customAlert(`Camera Scale: ${camScale}`);
-                                break;
-                            case "enter":
-                                if (!chatFocus) {
-                                    chatInput.focus();
-                                }
-                                break;
-                        }
+                    if (keys.includes(e.key.toLowerCase())) {
+                        send({
+                            e: "input",
+                            input: {
+                                keys: keys.indexOf(e.key.toLowerCase()),
+                                value: true
+                            }
+                        });
+                    }
+                    switch (e.key.toLowerCase()) {
+                        case "o":
+                            renderSettings.renderHitboxes = !renderSettings.renderHitboxes;
+                            customAlert(`Hitboxes ${renderSettings.renderHitboxes ? "ON" : "OFF"}`);
+                            break;
+                        case "f":
+                            if (freeCam) {
+                                customAlert("Freecam OFF");
+                                freeCam = false;
+                            } else {
+                                customAlert("Freecam ON");
+                                freeCam = true;
+                            }
+                            break;
+                        case "u":
+                            camScale /= 1.5;
+                            customAlert(`Camera Scale: ${camScale}`);
+                            break;
+                        case "i":
+                            camScale *= 1.5;
+                            customAlert(`Camera Scale: ${camScale}`);
+                            break;
+                        case "enter":
+                        case "/":
+                            chatInput.focus();
+                            break;
                     }
                 });
                 document.addEventListener("keyup", e => {
@@ -437,7 +434,7 @@ ws.addEventListener("close", () => {
     customAlert("The WebSocket closed for unknown reasons.<br>Please reload the client. If that doesn't work, try again later.<br>Skap may have been taken down for maintenence", 100);
 });
 document.addEventListener("keydown", e => {
-    if (!e.repeat && !chatFocus && e.key.toLowerCase() === "p") {
+    if (!e.repeat && e.key.toLowerCase() === "p") {
         if (viewWS) {
             viewWS = false;
             customAlert("WS messages HIDDEN");
