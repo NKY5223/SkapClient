@@ -58,6 +58,16 @@ ws.addEventListener("open", () => {
     power1.addEventListener("input", () => {
         send({ e: "powerChange", m: 1, i: power1.value = clamp(0, power1.value, 9) });
     });
+    document.querySelectorAll(".poweroption").forEach(e => {
+        e.addEventListener("click", () => {
+            send({
+                e: "powerChange",
+                m: Number(e.dataset.slot),
+                i: Number(e.dataset.power)
+            });
+        });
+    });
+
     chatInput.addEventListener("keydown", e => {
         e.stopPropagation();
         if (e.key === "Escape") {

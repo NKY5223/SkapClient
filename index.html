@@ -67,12 +67,23 @@
                     If you have perms, you can type /res in chat to rescue yourself.
                 </h3>
                 <h3 id="freezeText" class="hidden noselect">You are frozen. Note that you can still use powers.</h3>
-                <div id="power0">
+                <div id="power0" class="power">
                     <div id="power0CD" class="coolDown"></div>
                     <div id="power0Heat" class="heat"></div>
+                    <div class="selectclip"><div id="power0select" class="select">
+                        <div class="poweroption" data-slot="0" data-power="0">
+                            <img src="Textures/powers/shrink.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption" data-slot="0" data-power="1">
+                            <img src="Textures/powers/boom.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption" data-slot="0" data-power="2">
+                            <img src="Textures/powers/build.svg" width="40" height="40" />
+                        </div>
+                    </div></div>
                     <input type="number" id="power0input" placeholder="0-9" />
                 </div>
-                <div id="power1">
+                <div id="power1" class="power">
                     <div id="power1CD" class="coolDown"></div>
                     <div id="power1Heat" class="heat"></div>
                     <input type="number" id="power1input" placeholder="0-9" />

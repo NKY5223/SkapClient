@@ -151,7 +151,8 @@ button {
 #freezeText {
     color: #00ffff;
 }
-#power0, #power1 {
+
+.power {
     width: 50px;
     height: 50px;
     position: absolute;
@@ -160,6 +161,8 @@ button {
     background: #80808040;
     border: 5px solid black;
     border-radius: 5px;
+}
+#power0 {
     transform: translate(0, -112.5%);
 }
 #power1 {
@@ -183,6 +186,37 @@ button {
 }
 .heat {
     background: #2040ff80;
+}
+.select {
+    height: 100%;
+    position: absolute;
+    background: #c0c0c080;
+    border-radius: 5px 0 0 5px;
+    transition: .5s;
+    display: flex;
+}
+.selectclip {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    clip-path: polygon(-100vw 0, -5px 0, -5px 100%, -100vw 100%);
+}
+.power:hover .select {
+    transform: translate(calc(-100% - 5px), 0);
+}
+
+.poweroption {
+    width: 50px;
+    height: 50px;
+}
+.poweroption img {
+    margin: 5px;
+}
+.poweroption:first-child {
+    border-radius: 5px 0 0 5px;
+}
+.poweroption:hover {
+    background: #2080ff;
 }
 
 /* W3Schools */

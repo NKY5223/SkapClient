@@ -1,0 +1,10 @@
+<svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0" y="0" width="50" height="50" />
+    <path d="M0 0 L25 17 L15 7 L40 20
+    A15 15 0 1 1 20 40
+    L7 15 L17 25 Z
+    Z" fill="#ff6000" />
+    <path d="M15 15 L37 25
+    A10 10 0 1 1 25 37
+    Z" fill="#ff8000" />
+</svg>
