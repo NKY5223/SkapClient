@@ -2,9 +2,6 @@
     <path d="M0 0 L25 17 L15 7 L40 20
     A15 15 0 1 1 20 40
     L7 15 L17 25 Z
-    Z" fill="#ff6000" />
-    <path d="M15 15 L38 25
-    A10 10 0 1 1 25 38
     Z" fill="#ff8000" />
-    <circle cx="34.5" cy="34.5" r="8" fill="#c08000" />
+    <circle cx="34.5" cy="34.5" r="10" fill="#c08000" />
 </svg>
