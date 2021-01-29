@@ -193,11 +193,13 @@ let powers = new Set();
  */
 function customAlert(s, t = 1) {
     alertDiv.innerHTML = s;
+    show(alertDiv);
     alertDiv.style.opacity = 1;
     let i = 0;
     let interv = setInterval(() => {
         i += 0.01;
         if (i >= t) {
+            hide(alertDiv);
             clearInterval(interv);
         }
         alertDiv.style.opacity -= 0.01 / t;
