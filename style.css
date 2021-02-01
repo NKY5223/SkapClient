@@ -305,7 +305,8 @@ canvas {
     color: #7289da;
 }
 .discordMsg:before {
-    content: '[DISCORD]&nbsp;';
+    content: '[DISCORD]';
+    margin-right: 5px;
 }
 .guestMsg {
     color: #808080;
