@@ -82,7 +82,7 @@ function render(e) {
     ctx.translate(Math.floor(canvas.width / 2 - camScale * camX), Math.floor(canvas.height / 2 - camScale * camY));
 
     ctx.fillStyle = parsedMap.background;
-    ctx.fillRect(0, 0, Math.floor(map.areaSize.x * camScale), Math.floor(map.areaSize.y * camScale));
+    ctx.fillRect(0, 0, Math.floor(map.areaSize.x * camScale), Math.ceil(map.areaSize.y * camScale));
 
     // Camera
     if (freeCam) {
@@ -123,7 +123,7 @@ function render(e) {
             entities: []
         }
     }
-
+    
     send({
         e: "aim",
         m: [
@@ -329,30 +329,30 @@ function render(e) {
         ctx.restore();
     }
     // Render players
-    ctx.strokeStyle = "#202020";
-    ctx.lineWidth = camScale / 2;
-    ctx.font = 2 * camScale + "px Tahoma, Verdana, Segoe, sans-serif";
+    ctx.font = "2px Tahoma, Verdana, Segoe, sans-serif";
     for (let i in e.players) {
         let p = e.players[i];
         let died = p.states.includes("Died");
         let freeze = p.states.includes("Freeze");
         ctx.save();
-        ctx.translate(p.pos.x * camScale, p.pos.y * camScale);
+        ctx.translate(p.pos.x, p.pos.y);
         ctx.rotate(p.gravDir / 2 * Math.PI);
         ctx.beginPath();
         // Body
-        ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
+        ctx.ellipse(0, 0, p.radius, p.radius, 0, 0, 7);
         ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : fromColArr(p.color);
         ctx.fill();
         // Hat
         // if (renderSettings.textures.hats.hasOwnProperty(p.hat)) ctx.drawImage(renderSettings.textures.hats[p.hat], -2 * p.radius, -2 * p.radius, 4 * p.radius, 4 * p.radius);
         // Name
         ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#202020";
-        ctx.fillText(p.name, 0, camScale * (-p.radius - 0.5));
+        ctx.fillText(p.name, 0, -p.radius - 0.5);
         // fuelBar™️
-        ctx.strokeRect(camScale * -5.25, camScale * (p.radius + .75), camScale * 10.5, camScale * 3);
         ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#ffff40";
-        ctx.fillRect(camScale * -5, camScale * (p.radius + 1), camScale * p.fuel, camScale * 2.5);
+        ctx.fillRect(-5, p.radius + 1, p.fuel, 2.5);
+        ctx.strokeStyle = "#202020";
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(-5, p.radius + 1, 10, 2.5);
         ctx.restore();
     }
     // Render blocks(1)
@@ -379,10 +379,10 @@ function render(e) {
     }
     // Render hitboxes
     ctx.setLineDash([]);
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = renderSettings.colors.hitbox;
     if (renderSettings.renderHitboxes) {
-        for (let o of map.objects) ctx.strokeRect(Math.floor(o.pos.x * camScale), Math.floor(o.pos.y * camScale), Math.ceil(o.size.x * camScale), Math.ceil(o.size.y * camScale));
+        ctx.lineWidth = 2 / camScale;
+        ctx.strokeStyle = renderSettings.colors.hitbox;
+        for (let o of map.objects) ctx.strokeRect(o.pos.x, o.pos.y, o.size.x, o.size.y);
     }
 }
 /**
