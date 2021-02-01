@@ -408,16 +408,24 @@ ws.addEventListener("message", e => {
  */
 function initMap(i) {
     map = i;
+    renderSettings.colors.obstacle = "rgb(" +
+        (240 + (i.backgroundColor[0] - 240) * i.backgroundColor[3]) + ", " +
+        (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +
+        (240 + (i.backgroundColor[2] - 240) * i.backgroundColor[3]) + ")";
     parsedMap.background = fromColArr(i.areaColor);
     parsedMap.obstacle = i.objects.filter(obj => obj.type === "obstacle");
     parsedMap.slime = i.objects.filter(obj => obj.type === "slime");
     parsedMap.ice = i.objects.filter(obj => obj.type === "ice");
     parsedMap.lava = i.objects.filter(obj => obj.type === "lava");
     parsedMap.teleporter = i.objects.filter(obj => obj.type === "teleporter");
-    renderSettings.colors.obstacle = "rgb(" +
-        (240 + (i.backgroundColor[0] - 240) * i.backgroundColor[3]) + ", " +
-        (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +
-        (240 + (i.backgroundColor[2] - 240) * i.backgroundColor[3]) + ")";
+    parsedMap.block0 = [];
+    parsedMap.block1 = [];
+    for (let o of i.objects) {
+        if (o.type === "block") {
+            o.color = fromColArr(o.color.concat(o.opacity));
+            parsedMap["block" + o.layer].push(o);
+        }
+    }
 }
 /**
  * 

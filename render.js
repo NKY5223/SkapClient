@@ -74,6 +74,8 @@ function render(e) {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.lineCap = "middle";
+    ctx.setLineDash([]);
+
 
     ctx.fillStyle = renderSettings.colors.obstacle;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -107,7 +109,6 @@ function render(e) {
             entities: []
         }
     }
-    
     send({
         e: "aim",
         m: [
@@ -116,14 +117,6 @@ function render(e) {
         ]
     });
 
-    if (renderSettings.render.block0) {
-        // Render blocks(0)
-        ctx.setLineDash([]);
-        for (let obj of map.objects.filter(obj => obj.type === "block" && !obj.layer)) {
-            ctx.fillStyle = fromColArr(obj.color.concat(obj.opacity));
-            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-        }
-    }
     if (renderSettings.render.obstacle) {
         // Render obstacles
         ctx.fillStyle = renderSettings.colors.obstacle;
@@ -152,33 +145,41 @@ function render(e) {
             ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
     }
-    // Render the ****ing teleporters (they suck)
-    for (let obj of parsedMap.teleporter) {
-        ctx.save();
-        ctx.translate(obj.pos.x, obj.pos.y);
-        let gradient;
-        switch (obj.dir.toString()) {
-            case "0":
-                gradient = ctx.createLinearGradient(0, 0, 0, obj.size.y);
-                break;
-            case "1":
-                gradient = ctx.createLinearGradient(obj.size.x, 0, 0, 0);
-                break;
-            case "2":
-                gradient = ctx.createLinearGradient(0, obj.size.y, 0, 0);
-                break;
-            case "3":
-                gradient = ctx.createLinearGradient(0, 0, obj.size.x, 0);
-                break;
+    if (renderSettings.render.block0) {
+        // Render blocks(0)
+        for (let obj of parsedMap.block0) {
+            ctx.fillStyle = obj.color;
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
-        if (gradient) {
-            gradient.addColorStop(0, parsedMap.background);
-            gradient.addColorStop(1, renderSettings.colors.obstacle);
-        } else gradient = parsedMap.background;
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, obj.size.x, obj.size.y);
-        ctx.restore();
     }
+    // Render the ****ing teleporters (they suck)
+    if (renderSettings.render.teleporter)
+        for (let obj of parsedMap.teleporter) {
+            ctx.save();
+            ctx.translate(obj.pos.x, obj.pos.y);
+            let gradient;
+            switch (obj.dir.toString()) {
+                case "0":
+                    gradient = ctx.createLinearGradient(0, 0, 0, obj.size.y);
+                    break;
+                case "1":
+                    gradient = ctx.createLinearGradient(obj.size.x, 0, 0, 0);
+                    break;
+                case "2":
+                    gradient = ctx.createLinearGradient(0, obj.size.y, 0, 0);
+                    break;
+                case "3":
+                    gradient = ctx.createLinearGradient(0, 0, obj.size.x, 0);
+                    break;
+            }
+            if (gradient) {
+                gradient.addColorStop(0, parsedMap.background);
+                gradient.addColorStop(1, renderSettings.colors.obstacle);
+            } else gradient = parsedMap.background;
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, obj.size.x, obj.size.y);
+            ctx.restore();
+        }
     // Render text
     ctx.font = "5px Russo One, Verdana, Arial, Helvetica, sans-serif";
     for (let obj of map.objects.filter(obj => obj.type === "text")) {
@@ -340,9 +341,8 @@ function render(e) {
     }
     // Render blocks(1)
     if (renderSettings.render.block1) {
-        ctx.setLineDash([]);
-        for (let obj of map.objects.filter(obj => obj.type === "block" && obj.layer)) {
-            ctx.fillStyle = fromColArr(obj.color.concat(obj.opacity));
+        for (let obj of parsedMap.block1) {
+            ctx.fillStyle = obj.color;
             ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
     }
@@ -361,8 +361,8 @@ function render(e) {
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render hitboxes
+    ctx.setLineDash([]);
     if (renderSettings.renderHitboxes) {
-        ctx.setLineDash([]);
         ctx.lineWidth = 2 / camScale;
         ctx.strokeStyle = renderSettings.colors.hitbox;
         for (let o of map.objects) ctx.strokeRect(o.pos.x, o.pos.y, o.size.x, o.size.y);

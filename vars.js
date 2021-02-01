@@ -14,6 +14,8 @@ let renderSettings = {
         slime: true,
         ice: true,
         block0: true,
+        text: true,
+        teleporter: true,
         block1: true,
         hitbox: false
     },
