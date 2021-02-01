@@ -57,6 +57,7 @@ let renderSettings = {
 
         playerDead: "#ff0000",
         playerFreeze: "#00ffff",
+        playerFreezeDead: "#ff0080",
 
         meteor: "#c08000",
         ghost: "#20a040",
@@ -86,6 +87,7 @@ let renderSettings = {
             following: loadImage("enemies/following"),
             stutter: loadImage("enemies/stutter"),
             expander: loadImage("enemies/none"),
+            shooter: loadImage("enemies/none"),
         },
         hats: {}
     }
@@ -171,6 +173,7 @@ const minMaxUpdate = document.getElementById("minMaxUpdateDisplay");
 const FPSDisplay = document.getElementById("FPS");
 const posXSpan = document.getElementById("posX");
 const posYSpan = document.getElementById("posY");
+const velSpan = document.getElementById("vel");
 const velXSpan = document.getElementById("velX");
 const velYSpan = document.getElementById("velY");
 
@@ -240,7 +243,7 @@ function loadImage(src) {
  * safe
  */
 String.prototype.safe = function () {
-    return this.replace(/&/, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return this.replace(/&/g, "&amp;").replace(/ /g, "&nbsp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 /**
  * clamp when

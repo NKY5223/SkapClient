@@ -231,7 +231,7 @@ function render(e) {
         ctx.drawImage(renderSettings.textures.enemies.contractor[obj.triggered & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
     // Render entities
-    for (let obj of e.entities.filter(obj => ["bouncer", "megaBouncer", "freezer", "spike", "normal", "reverse", "taker", "immune", "monster", "stutter", "expander"].includes(obj.type))) {
+    for (let obj of e.entities.filter(obj => ["bouncer", "megaBouncer", "freezer", "spike", "normal", "reverse", "taker", "immune", "monster", "stutter", "expander", "shooter"].includes(obj.type))) {
         ctx.globalAlpha = obj.opacity;
         ctx.drawImage(renderSettings.textures.enemies[obj.type], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
     }
@@ -323,16 +323,16 @@ function render(e) {
         ctx.beginPath();
         // Body
         ctx.ellipse(0, 0, p.radius, p.radius, 0, 0, 7);
-        ctx.fillStyle = died ? renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : fromColArr(p.color);
+        ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : fromColArr(p.color);
         ctx.fill();
         // Hat
         // if (renderSettings.textures.hats.hasOwnProperty(p.hat)) ctx.drawImage(renderSettings.textures.hats[p.hat], -2 * p.radius, -2 * p.radius, 4 * p.radius, 4 * p.radius);
         // Name
-        ctx.fillStyle = died ? renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#202020";
+        ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#202020";
         ctx.fillText(p.name, 0, -p.radius - 0.5);
         // fuelBar™️
-        ctx.fillStyle = died ? renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#ffff40";
-        ctx.fillRect(-5, p.radius + 1, p.fuel / 6 * 5, 2.5);
+        ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#ffff40";
+        ctx.fillRect(-5, p.radius + 1, p.fuel, 2.5);
         ctx.strokeStyle = "#202020";
         ctx.lineWidth = 0.5;
         ctx.strokeRect(-5, p.radius + 1, 10, 2.5);

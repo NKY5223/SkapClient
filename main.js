@@ -392,8 +392,9 @@ ws.addEventListener("message", e => {
             if (msg.m.remove)
                 for (let r of msg.m.remove)
                     for (let o in map.objects)
-                        if (map.objects[o].id === r.id)
-                            map.objects.splice(o);
+                        if (map.objects[o].id === r.id){
+                        console.log("Found item, removing...")
+                            map.objects.splice(o);}
             break;
         case "power":
             for (let i of msg.m) {
@@ -423,7 +424,7 @@ function initMap(i) {
  * @param {Object} msg 
  * @param {Object} msg.m
  * @param {string} msg.m.s Author
- * @param {-1 | 0 | 1} msg.m.r Guest / User / Mod
+ * @param {-2 | -1 | 0 | 1} msg.m.r Discord / Guest / User / Mod
  * @param {string} msg.m.m Message
  * @param {boolean} force Force message
  */
@@ -433,8 +434,18 @@ function message(msg, force = false) {
     }
     let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
     let p = document.createElement("p");
-    p.className = msg.m.s === "[SKAP]" || msg.m.s === "[CLIENT]" ? "SYSMsg" : devs.includes(msg.m.s) ? "devMsg" : ["guestMsg", "userMsg", "modMsg"][msg.m.r + 1];
-    p.innerHTML = (force ? msg.m.s : msg.m.s.safe()) + ":&nbsp;" + (force ? msg.m.m : msg.m.m.safe());
+    p.className =
+        (msg.m.s === "[SKAP]" || msg.m.s === "[CLIENT]")
+            ? "SYSMsg"
+            : devs.includes(msg.m.s) && msg.m.r !== -2
+                ? "devMsg"
+                : ["discordMsg", "guestMsg", "userMsg", "modMsg"][msg.m.r + 2];
+    p.innerHTML =
+        (force ? msg.m.s : msg.m.s.safe()) + ":&nbsp;" +
+        (force
+            ? msg.m.m.replace(/https?:\/\/\S+/g, '<a href="$1" target="_blank">$1</a>')
+            : msg.m.m.safe().replace(/(https?:\/\/\S+)/g, '<a href="$1" target="_blank">$1</a>')
+        );
     chat.appendChild(p);
     if (scroll) p.scrollIntoView();
     return p;

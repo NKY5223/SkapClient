@@ -51,10 +51,11 @@ function updateStates(m) {
         playerList.innerHTML += `<p${p[2] ? " class='deadPlayerName'" : ""}>${p[0].safe()}: ${p[1].safe()}</p>`
     }
     // Fuel bar 
-    fuelBar.style.width = 100 * m.infos.fuel / 12 + "%";
+    fuelBar.style.width = 100 * m.infos.fuel / 10 + "%";
     // Pos and vel
     posXSpan.innerHTML = player.pos.x;
     posYSpan.innerHTML = player.pos.y;
+    velSpan.innerHTML = Math.sqrt(player.vel.x * player.vel.x + player.vel.y * player.vel.y).toFixed(3);
     velXSpan.innerHTML = player.vel.x;
     velYSpan.innerHTML = player.vel.y;
 

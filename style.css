@@ -271,6 +271,18 @@ canvas {
 #chat p {
     margin: 0;
 }
+#chat a {
+    color: #4040ff;
+}
+#chat a:visited {
+    color: #8000ff;
+}
+#chat a:active {
+    color: #0000c0;
+}
+#chat a:visited:active {
+    color: #4000c0;
+}
 #chat input {
     box-sizing: border-box;
     width: 100%;
@@ -287,6 +299,13 @@ canvas {
 }
 #chat input:focus {
     outline: none;
+}
+
+.discordMsg {
+    color: #7289da;
+}
+.discordMsg:before {
+    content: '[DISCORD]&nbsp;';
 }
 .guestMsg {
     color: #808080;
@@ -306,7 +325,7 @@ canvas {
     /* Haha's CSS */
     background-image: repeating-linear-gradient(45deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
     animation: slide 7s linear infinite;
-    background-size: 700% 700%;
+    background-size: 4900% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
