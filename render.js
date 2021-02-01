@@ -79,10 +79,12 @@ function render(e) {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.resetTransform();
-    ctx.translate(Math.floor(canvas.width / 2 - camScale * camX), Math.floor(canvas.height / 2 - camScale * camY));
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.scale(camScale, camScale);
+    ctx.translate(-camX, -camY);
 
     ctx.fillStyle = parsedMap.background;
-    ctx.fillRect(0, 0, Math.floor(map.areaSize.x * camScale), Math.ceil(map.areaSize.y * camScale));
+    ctx.fillRect(0, 0, map.areaSize.x, map.areaSize.y);
 
     // Camera
     if (freeCam) {
@@ -100,26 +102,8 @@ function render(e) {
                 oneHeat: 0,
                 twoHeat: 0
             },
-            players: {
-                "TEMPORARY_ID": {
-                    pos: {
-                        x: 0,
-                        y: 0
-                    },
-                    vel: {
-                        x: 0,
-                        y: 0
-                    },
-                    fuel: 10,
-                    states: [],
-                    gravDir: 0,
-                    radius: 3,
-                    name: "TEMPORARY_PLAYER",
-                    color: [255, 0, 255],
-                    hat: "none"
-                }
-            },
-            playerList: ["DATA_NOT_LOADED", "", true],
+            players: {},
+            playerList: ["Sorry, but the data has not yet loaded.", "", true],
             entities: []
         }
     }
@@ -132,59 +116,59 @@ function render(e) {
         ]
     });
 
+    if (renderSettings.render.block0) {
+        // Render blocks(0)
+        ctx.setLineDash([]);
+        for (let obj of map.objects.filter(obj => obj.type === "block" && !obj.layer)) {
+            ctx.fillStyle = fromColArr(obj.color.concat(obj.opacity));
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
+    }
     if (renderSettings.render.obstacle) {
         // Render obstacles
         ctx.fillStyle = renderSettings.colors.obstacle;
         for (let obj of parsedMap.obstacle) {
-            ctx.fillRect(Math.floor(obj.pos.x * camScale), Math.floor(obj.pos.y * camScale), Math.ceil(obj.size.x * camScale), Math.ceil(obj.size.y * camScale));
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
     }
     if (renderSettings.render.slime) {
         // Render slime
         ctx.fillStyle = renderSettings.colors.slime;
         for (let obj of parsedMap.slime) {
-            ctx.fillRect(Math.floor(obj.pos.x * camScale), Math.floor(obj.pos.y * camScale), Math.ceil(obj.size.x * camScale), Math.ceil(obj.size.y * camScale));
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
     }
     if (renderSettings.render.ice) {
         // Render ice
         ctx.fillStyle = renderSettings.colors.ice;
         for (let obj of parsedMap.ice) {
-            ctx.fillRect(Math.floor(obj.pos.x * camScale), Math.floor(obj.pos.y * camScale), Math.ceil(obj.size.x * camScale), Math.ceil(obj.size.y * camScale));
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
     }
     if (renderSettings.render.lava) {
         // Render lava
         ctx.fillStyle = renderSettings.colors.lava;
         for (let obj of parsedMap.lava) {
-            ctx.fillRect(Math.floor(obj.pos.x * camScale), Math.floor(obj.pos.y * camScale), Math.ceil(obj.size.x * camScale), Math.ceil(obj.size.y * camScale));
-        }
-    }
-    if (renderSettings.render.block0) {
-        // Render blocks(0)
-        ctx.setLineDash([]);
-        for (let obj of map.objects.filter(obj => obj.type === "block" && !obj.layer)) {
-            ctx.fillStyle = fromColArr(obj.color.concat(obj.opacity));
-            ctx.fillRect(Math.floor(obj.pos.x * camScale), Math.floor(obj.pos.y * camScale), Math.floor(obj.size.x * camScale), Math.floor(obj.size.y * camScale));
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
     }
     // Render the ****ing teleporters (they suck)
     for (let obj of parsedMap.teleporter) {
         ctx.save();
-        ctx.translate(Math.floor(obj.pos.x * camScale), Math.floor(obj.pos.y * camScale));
+        ctx.translate(obj.pos.x, obj.pos.y);
         let gradient;
         switch (obj.dir.toString()) {
             case "0":
-                gradient = ctx.createLinearGradient(0, 0, 0, Math.ceil(obj.size.y * camScale));
+                gradient = ctx.createLinearGradient(0, 0, 0, obj.size.y);
                 break;
             case "1":
-                gradient = ctx.createLinearGradient(Math.ceil(obj.size.x * camScale), 0, 0, 0);
+                gradient = ctx.createLinearGradient(obj.size.x, 0, 0, 0);
                 break;
             case "2":
-                gradient = ctx.createLinearGradient(0, Math.ceil(obj.size.y * camScale), 0, 0);
+                gradient = ctx.createLinearGradient(0, obj.size.y, 0, 0);
                 break;
             case "3":
-                gradient = ctx.createLinearGradient(0, 0, Math.ceil(obj.size.x * camScale), 0);
+                gradient = ctx.createLinearGradient(0, 0, obj.size.x, 0);
                 break;
         }
         if (gradient) {
@@ -192,17 +176,16 @@ function render(e) {
             gradient.addColorStop(1, renderSettings.colors.obstacle);
         } else gradient = parsedMap.background;
         ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, Math.ceil(obj.size.x * camScale), Math.ceil(obj.size.y * camScale));
+        ctx.fillRect(0, 0, obj.size.x, obj.size.y);
         ctx.restore();
     }
     // Render text
-    ctx.font = Math.floor(5 * camScale) + "px Russo One, Verdana, Arial, Helvetica, sans-serif";
-    ctx.lineWidth = Math.floor(camScale);
+    ctx.font = "5px Russo One, Verdana, Arial, Helvetica, sans-serif";
     for (let obj of map.objects.filter(obj => obj.type === "text")) {
-        ctx.fillStyle = "#000000";
-        ctx.strokeText(obj.text, Math.floor(obj.pos.x * camScale), Math.floor(obj.pos.y * camScale));
+        ctx.strokeText(obj.text, obj.pos.x, obj.pos.y);
         ctx.fillStyle = "#ffffff";
-        ctx.fillText(obj.text, Math.floor(obj.pos.x * camScale), Math.floor(obj.pos.y * camScale));
+        ctx.fillText(obj.text, obj.pos.x, obj.pos.y);
+        ctx.fillStyle = "#000000";
     }
     // Render buttons
     for (let obj of map.objects.filter(obj => obj.type === "button")) {
@@ -364,13 +347,13 @@ function render(e) {
         }
     }
     // Render grav zones
-    ctx.setLineDash([Math.floor(2 * camScale), Math.floor(6 * camScale)]);
+    ctx.setLineDash([2, 6]);
     ctx.lineCap = "round";
     for (let obj of map.objects.filter(obj => obj.type === "gravityZone")) {
         ctx.strokeStyle = renderSettings.colors.gravOutline[obj.dir];
         ctx.fillStyle = renderSettings.colors.gravFill[obj.dir];
-        ctx.strokeRect(Math.floor(obj.pos.x * camScale), Math.floor(obj.pos.y * camScale), Math.ceil(obj.size.x * camScale), Math.ceil(obj.size.y * camScale));
-        ctx.fillRect(Math.floor(obj.pos.x * camScale), Math.floor(obj.pos.y * camScale), Math.ceil(obj.size.x * camScale), Math.ceil(obj.size.y * camScale));
+        ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render boxes (build power)
     for (let obj of map.objects.filter(obj => obj.type === "box")) {
@@ -378,8 +361,8 @@ function render(e) {
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render hitboxes
-    ctx.setLineDash([]);
     if (renderSettings.renderHitboxes) {
+        ctx.setLineDash([]);
         ctx.lineWidth = 2 / camScale;
         ctx.strokeStyle = renderSettings.colors.hitbox;
         for (let o of map.objects) ctx.strokeRect(o.pos.x, o.pos.y, o.size.x, o.size.y);
