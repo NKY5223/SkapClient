@@ -104,8 +104,6 @@ let parsedMap = {
     teleporter: [],
     block1: []
 };
-// Merge these two vars with this ^^^
-// Replace with images eventually (might need to restrict zoom in)
 let camScale = 5;
 let camX = 0;
 let camY = 0;
@@ -121,6 +119,7 @@ let data = null;
 let bypassProfan = true;
 let mouse = {x: 0, y: 0};
 let user = "";
+const ping = document.getElementById("ping");
 
 let chatFocus = false;
 let blocked = localStorage.getItem("blocked") ? localStorage.getItem("blocked").split(" ") : [];

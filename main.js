@@ -371,6 +371,7 @@ ws.addEventListener("message", e => {
             }
             break;
         case "message":
+            if (msg.m.m.includes("@" + user)) ping.play();
             message(msg);
             break;
         case "updateStates":
