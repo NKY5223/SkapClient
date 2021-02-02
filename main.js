@@ -371,7 +371,7 @@ ws.addEventListener("message", e => {
             }
             break;
         case "message":
-            if (msg.m.m.includes("@" + user)) ping.play();
+            if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g"))) ping.play();
             message(msg);
             break;
         case "updateStates":
