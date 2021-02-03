@@ -9,12 +9,16 @@
  * @property {Object} size
  * @property {number} size.x
  * @property {number} size.y
+ * @property {Object} center
+ * @property {number} center.x
+ * @property {number} center.y
  * @property {string} text
  * @property {boolean} opened
  * @property {boolean} pressed
  * @property {0 | 1} layer
  * @property {[number, number, number]} color
  * @property {number} opacity
+ * @property {number} angle
  * 
  * @typedef SkapEntity
  * @property {"bomb" | "bouncer" | "spike" | "normal" | "megaBouncer" | "taker" | "wavy" | "freezer" | "snek" | "immune" | "monster" | "stutter" | "contractor" | "expanding" | "turretBullet" | "enemyBullet" | "shield" | "healingGhost" | "meteorBullet" | "path"} type
@@ -144,6 +148,15 @@ function render(e) {
         for (let obj of parsedMap.lava) {
             ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
+    }
+    // Render rotLava
+    ctx.globalAlpha = 1;
+    for (let obj of parsedMap.rotatingLava) {
+        ctx.save();
+        ctx.translate(obj.center.x, obj.center.y);
+        ctx.rotate(obj.angle * Math.PI / 180);
+        ctx.fillRect(-obj.size.x / 2, -obj.size.y / 2, obj.size.x, obj.size.y);
+        ctx.restore();
     }
     if (renderSettings.render.block0) {
         // Render blocks(0)
@@ -287,19 +300,17 @@ function render(e) {
                 ctx.stroke();
                 ctx.restore();
                 break;
+            case "healingGhost":
+                ctx.fillStyle = renderSettings.colors.ghost;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, 2, 2, 2, 0, 7);
+                ctx.fill();
+                break;
             default:
                 ctx.globalAlpha = obj.opacity || 1;
                 ctx.drawImage(renderSettings.textures.enemies.none, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
                 break;
         }
-    }
-
-    // Render ghost 
-    ctx.fillStyle = renderSettings.colors.ghost;
-    for (let obj of e.entities.filter(obj => obj.type === "healingGhost")) {
-        ctx.beginPath();
-        ctx.ellipse(obj.pos.x, obj.pos.y, 2, 2, 2, 0, 7);
-        ctx.fill();
     }
     // </ENTITIES>
 
@@ -361,7 +372,7 @@ function render(e) {
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render boxes (build power)
-    for (let obj of map.objects.filter(obj => obj.type === "box")) {
+    for (let obj of parsedMap.box) {
         ctx.fillStyle = renderSettings.colors.box;
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }

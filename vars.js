@@ -98,11 +98,13 @@ let parsedMap = {
     obstacle: [],
     teleporter: [],
     lava: [],
+    rotatingLava: [],
     ice: [],
     slime: [],
     block0: [],
     text: [],
-    block1: []
+    block1: [],
+    box: []
 };
 let camScale = 5;
 let camX = 0;

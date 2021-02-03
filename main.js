@@ -382,20 +382,29 @@ ws.addEventListener("message", e => {
             break;
         case "updateMap":
             if (msg.m.update)
-                for (let u of msg.m.update)
-                    for (let o in map.objects)
-                        if (map.objects[o].id === u.id) {
-                            map.objects[o] = u;
-                            break;
+                for (let o of msg.m.update)
+                    if (o.type === "rotatingLava") {
+                        for (let u of parsedMap.rotatingLava) {
+                            if (o.id === u.id) {
+                                u.angle = o.angle;
+                                u.center = o.center;
+                                break;
+                            }
                         }
+                    }
             if (msg.m.add)
-                map.objects = map.objects.concat(msg.m.add);
+                for (let o of msg.m.add) {
+                    if (o.type === "box")
+                        parsedMap.box.push(o);
+                }
             if (msg.m.remove)
-                for (let r of msg.m.remove)
-                    for (let o in map.objects)
-                        if (map.objects[o].id === r.id){
-                        console.log("Found item, removing...")
-                            map.objects.splice(o);}
+                for (let o of msg.m.remove)
+                    if (o.type === "box")
+                        for (let i in parsedMap.box)
+                            if (parsedMap.box[i].id === o.id) {
+                                parsedMap.box.splice(i, 1);
+                                break;
+                            }
             break;
         case "power":
             for (let i of msg.m) {
@@ -419,9 +428,11 @@ function initMap(i) {
     parsedMap.obstacle = [];
     parsedMap.ice = [];
     parsedMap.lava = [];
+    parsedMap.rotatingLava = [];
     parsedMap.slime = [];
     parsedMap.text = [];
     parsedMap.teleporter = [];
+    parsedMap.box = [];
     for (let o of i.objects) {
         switch (o.type) {
             case "block":
@@ -433,6 +444,8 @@ function initMap(i) {
             case "ice":
             case "lava":
             case "text":
+            case "box":
+            case "rotatingLava":
                 parsedMap[o.type].push(o);
                 break;
             case "teleporter":
