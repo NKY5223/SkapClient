@@ -235,14 +235,14 @@ function render(e) {
                 ctx.fill();
                 ctx.drawImage(renderSettings.textures.enemies.following, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
                 break;
-            case "contractor":
-                ctx.globalAlpha = obj.opacity;
-                ctx.beginPath();
-                ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
-                ctx.fillStyle = obj.triggered ? renderSettings.colors.contracTriggerRegion : renderSettings.colors.contracRegion;
-                ctx.fill();
-                ctx.drawImage(renderSettings.textures.enemies.contractor[obj.triggered & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
-                break;
+                case "contractor":
+                    ctx.globalAlpha = obj.opacity;
+                    ctx.beginPath();
+                    ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
+                    ctx.fillStyle = obj.triggered ? renderSettings.colors.contracTriggerRegion : renderSettings.colors.contracRegion;
+                    ctx.fill();
+                    ctx.drawImage(renderSettings.textures.enemies.contractor[obj.triggered & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                    break;
             case "bouncer":
             case "normal":
             case "reverse":
@@ -306,6 +306,13 @@ function render(e) {
                 ctx.ellipse(obj.pos.x, obj.pos.y, 2, 2, 2, 0, 7);
                 ctx.fill();
                 break;
+                case "frostEntity":
+                    ctx.globalAlpha = obj.opacity;
+                    ctx.beginPath();
+                    ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, 0, 0, 7);
+                    ctx.fillStyle = renderSettings.colors.frost;
+                    ctx.fill();
+                    break;
             default:
                 ctx.globalAlpha = obj.opacity || 1;
                 ctx.drawImage(renderSettings.textures.enemies.none, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
@@ -316,7 +323,7 @@ function render(e) {
 
     // Render turrets
     ctx.globalAlpha = 1;
-    for (let obj of map.objects.filter(obj => obj.type === "turret")) {
+    for (let obj of parsedMap.turret) {
         ctx.save();
         ctx.translate(obj.pos.x + obj.size.x / 2, obj.pos.y + obj.size.y / 2);
         ctx.rotate(obj.dir);

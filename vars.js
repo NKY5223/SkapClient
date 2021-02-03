@@ -63,7 +63,8 @@ let renderSettings = {
         meteor: "#c08000",
         ghost: "#20a040",
         blueFire: "#4040ff10",
-        shield: "#383838"
+        shield: "#383838",
+        frost: "#00ffff40"
     },
     textures: {
         enemies: {
@@ -103,6 +104,7 @@ let parsedMap = {
     slime: [],
     block0: [],
     text: [],
+    turret: [],
     block1: [],
     box: []
 };
@@ -158,6 +160,11 @@ const logoutDiv = document.getElementById("logoutDiv");
 const play = document.getElementById("play");
 const loginData = document.getElementById("loginData");
 const loginDiv = document.getElementById("loginDiv");
+
+// Changelog
+const changelogBtn = document.getElementById("changelogBtn");
+const changelog = document.getElementById("changelog");
+const closeChangelog = document.getElementById("closeChangelog")
 
 // GameList
 const backtoLogin = document.getElementById("backtoLogin");

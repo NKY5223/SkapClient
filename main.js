@@ -53,10 +53,10 @@ ws.addEventListener("open", () => {
         });
     });
     power0.addEventListener("input", () => {
-        send({ e: "powerChange", m: 0, i: power0.value = clamp(0, power0.value, 9) });
+        send({ e: "powerChange", m: 0, i: power0.value = clamp(0, power0.value, 10) });
     });
     power1.addEventListener("input", () => {
-        send({ e: "powerChange", m: 1, i: power1.value = clamp(0, power1.value, 9) });
+        send({ e: "powerChange", m: 1, i: power1.value = clamp(0, power1.value, 10) });
     });
     document.querySelectorAll(".poweroption").forEach(e => {
         e.addEventListener("click", () => {
@@ -213,6 +213,12 @@ Owner:<ul>
     });
     chatInput.addEventListener("blur", () => {
         chatFocus = false;
+    });
+    changelogBtn.addEventListener("click", () => {
+        show(changelog);
+    });
+    closeChangelog.addEventListener("click", () => {
+        hide(changelog);
     });
 });
 ws.addEventListener("message", e => {
@@ -381,8 +387,8 @@ ws.addEventListener("message", e => {
             initMap(msg.m);
             break;
         case "updateMap":
-            if (msg.m.update)
-                for (let o of msg.m.update)
+            if (msg.m.update) {
+                for (let o of msg.m.update) {
                     if (o.type === "rotatingLava") {
                         for (let u of parsedMap.rotatingLava) {
                             if (o.id === u.id) {
@@ -391,7 +397,16 @@ ws.addEventListener("message", e => {
                                 break;
                             }
                         }
+                    } else if (o.type === "turret") {
+                        for (let u of parsedMap.turret) {
+                            if (o.id === u.id) {
+                                u.dir = o.dir;
+                                break;
+                            }
+                        }
                     }
+                }
+            }
             if (msg.m.add)
                 for (let o of msg.m.add) {
                     if (o.type === "box")
@@ -423,16 +438,17 @@ function initMap(i) {
         (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[2] - 240) * i.backgroundColor[3]) + ")";
     parsedMap.background = fromColArr(i.areaColor);
-    parsedMap.block0 = [];
-    parsedMap.block1 = [];
     parsedMap.obstacle = [];
-    parsedMap.ice = [];
+    parsedMap.teleporter = [];
     parsedMap.lava = [];
     parsedMap.rotatingLava = [];
+    parsedMap.ice = [];
     parsedMap.slime = [];
+    parsedMap.block0 = [];
     parsedMap.text = [];
-    parsedMap.teleporter = [];
+    parsedMap.turret = [];
     parsedMap.box = [];
+    parsedMap.block1 = [];
     for (let o of i.objects) {
         switch (o.type) {
             case "block":
@@ -446,6 +462,7 @@ function initMap(i) {
             case "text":
             case "box":
             case "rotatingLava":
+            case "turret":
                 parsedMap[o.type].push(o);
                 break;
             case "teleporter":
