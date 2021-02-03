@@ -414,17 +414,30 @@ function initMap(i) {
         (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[2] - 240) * i.backgroundColor[3]) + ")";
     parsedMap.background = fromColArr(i.areaColor);
-    parsedMap.obstacle = i.objects.filter(obj => obj.type === "obstacle");
-    parsedMap.slime = i.objects.filter(obj => obj.type === "slime");
-    parsedMap.ice = i.objects.filter(obj => obj.type === "ice");
-    parsedMap.lava = i.objects.filter(obj => obj.type === "lava");
-    parsedMap.teleporter = i.objects.filter(obj => obj.type === "teleporter");
     parsedMap.block0 = [];
     parsedMap.block1 = [];
+    parsedMap.obstacle = [];
+    parsedMap.ice = [];
+    parsedMap.lava = [];
+    parsedMap.slime = [];
+    parsedMap.text = [];
+    parsedMap.teleporter = [];
     for (let o of i.objects) {
-        if (o.type === "block") {
-            o.color = fromColArr(o.color.concat(o.opacity));
-            parsedMap["block" + o.layer].push(o);
+        switch (o.type) {
+            case "block":
+                o.color = fromColArr(o.color.concat(o.opacity));
+                parsedMap["block" + o.layer].push(o);
+                break;
+            case "obstacle":
+            case "slime":
+            case "ice":
+            case "lava":
+            case "text":
+                parsedMap[o.type].push(o);
+                break;
+            case "teleporter":
+                o.dir = o.dir.toString();
+                parsedMap.teleporter.push(o);
         }
     }
 }

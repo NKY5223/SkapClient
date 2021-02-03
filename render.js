@@ -2,7 +2,7 @@
  * @typedef SkapObject
  * @property {string} id
  * @property {"obstacle" | "lava" | "slime" | "teleporter" | "text" | "door" | "button"} type
- * @property {number} dir
+ * @property {"0" | "1" | "2" | "3"} dir
  * @property {Object} pos
  * @property {number} pos.x
  * @property {number} pos.y
@@ -17,7 +17,7 @@
  * @property {number} opacity
  * 
  * @typedef SkapEntity
- * @property {"bomb" | "bouncer" | "spike" | "normal"} type
+ * @property {"bomb" | "bouncer" | "spike" | "normal" | "megaBouncer" | "taker" | "wavy" | "freezer" | "snek" | "immune" | "monster" | "stutter" | "contractor" | "expanding" | "turretBullet" | "enemyBullet" | "shield" | "healingGhost" | "meteorBullet" | "path"} type
  * bombs/bouncers/normal/spike
  * @property {number} radius
  * @property {number} opacity
@@ -73,7 +73,7 @@ function render(e) {
     canvas.height = window.innerHeight;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.lineCap = "middle";
+    ctx.lineCap = "round";
     ctx.setLineDash([]);
 
 
@@ -158,7 +158,7 @@ function render(e) {
             ctx.save();
             ctx.translate(obj.pos.x, obj.pos.y);
             let gradient;
-            switch (obj.dir.toString()) {
+            switch (obj.dir) {
                 case "0":
                     gradient = ctx.createLinearGradient(0, 0, 0, obj.size.y);
                     break;
@@ -204,89 +204,94 @@ function render(e) {
     }
 
     // <ENTITIES>
-    // Render bombs
-    for (let obj of e.entities.filter(obj => obj.type === "bomb")) {
-        ctx.globalAlpha = obj.opacity;
-        ctx.beginPath();
-        ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
-        ctx.fillStyle = obj.exploding ? renderSettings.colors.mineExpRegion : renderSettings.colors.mineRegion;
-        ctx.fill();
-        ctx.drawImage(renderSettings.textures.enemies.bomb[obj.phase & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
-    }
-    // Render followings
-    for (let obj of e.entities.filter(obj => obj.type === "following")) {
-        ctx.globalAlpha = obj.opacity;
-        ctx.beginPath();
-        ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
-        ctx.fillStyle = renderSettings.colors.followingRegion;
-        ctx.fill();
-        ctx.drawImage(renderSettings.textures.enemies.following, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
-    }
-    // Render contracs
-    for (let obj of e.entities.filter(obj => obj.type === "contractor")) {
-        ctx.globalAlpha = obj.opacity;
-        ctx.beginPath();
-        ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
-        ctx.fillStyle = obj.triggered ? renderSettings.colors.contracTriggerRegion : renderSettings.colors.contracRegion;
-        ctx.fill();
-        ctx.drawImage(renderSettings.textures.enemies.contractor[obj.triggered & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
-    }
-    // Render entities
-    for (let obj of e.entities.filter(obj => ["bouncer", "megaBouncer", "freezer", "spike", "normal", "reverse", "taker", "immune", "monster", "stutter", "expander", "shooter"].includes(obj.type))) {
-        ctx.globalAlpha = obj.opacity;
-        ctx.drawImage(renderSettings.textures.enemies[obj.type], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
-    }
-    // Render rotating enemies
-    for (let obj of e.entities.filter(obj => obj.type === "rotating")) {
-        ctx.save();
-        ctx.translate(obj.pos.x, obj.pos.y);
-        ctx.rotate(obj.angle);
-        ctx.globalAlpha = obj.opacity;
-        ctx.drawImage(renderSettings.textures.enemies.rotating, -obj.radius, -obj.radius, obj.radius * 2, obj.radius * 2);
-        ctx.restore();
-    }
-    // Render bullets
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = renderSettings.colors.bullet;
-    for (let obj of e.entities.filter(obj => obj.type === "turretBullet")) {
-        ctx.beginPath();
-        ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
-        ctx.fill();
-    }
-    // Render shooter bullets
-    ctx.fillStyle = renderSettings.colors.bullet;
-    for (let obj of e.entities.filter(obj => obj.type === "enemyBullet")) {
-        ctx.beginPath();
-        ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
-        ctx.fill();
-    }
-    // Render meteor bullets
-    ctx.fillStyle = renderSettings.colors.meteor;
-    for (let obj of e.entities.filter(obj => obj.type === "meteorBullet")) {
-        ctx.beginPath();
-        ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
-        ctx.fill();
-    }
-    // Render blueFire
-    ctx.fillStyle = renderSettings.colors.blueFire;
-    for (let obj of e.entities.filter(obj => obj.type === "path")) {
-        ctx.beginPath();
-        ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, 0, 0, 7);
-        ctx.fill();
-        ctx.closePath();
-    }
-    // Render shields
-    ctx.fillStyle = renderSettings.colors.shield;
-    for (let obj of e.entities.filter(obj => obj.type === "shield")) {
-        ctx.save();
-        ctx.translate(obj.pos.x, obj.pos.y);
-        ctx.rotate(obj.dir);
-        ctx.lineWidth = obj.size.y * 2;
-        ctx.beginPath();
-        ctx.moveTo(-obj.size.x, 0);
-        ctx.lineTo(obj.size.x, 0);
-        ctx.stroke();
-        ctx.restore();
+    for (let obj of e.entities) {
+        switch (obj.type) {
+            case "bomb":
+                ctx.globalAlpha = obj.opacity;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
+                ctx.fillStyle = obj.exploding ? renderSettings.colors.mineExpRegion : renderSettings.colors.mineRegion;
+                ctx.fill();
+                ctx.drawImage(renderSettings.textures.enemies.bomb[obj.phase & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                break;
+            case "following":
+                ctx.globalAlpha = obj.opacity;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
+                ctx.fillStyle = renderSettings.colors.followingRegion;
+                ctx.fill();
+                ctx.drawImage(renderSettings.textures.enemies.following, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                break;
+            case "contractor":
+                ctx.globalAlpha = obj.opacity;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
+                ctx.fillStyle = obj.triggered ? renderSettings.colors.contracTriggerRegion : renderSettings.colors.contracRegion;
+                ctx.fill();
+                ctx.drawImage(renderSettings.textures.enemies.contractor[obj.triggered & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                break;
+            case "bouncer":
+            case "normal":
+            case "reverse":
+            case "spike":
+            case "megaBouncer":
+            case "freezer":
+            case "taker":
+            case "immune":
+            case "monster":
+            case "stutter":
+            case "expanding":
+                ctx.globalAlpha = obj.opacity;
+                ctx.drawImage(renderSettings.textures.enemies[obj.type], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                break;
+            case "rotating":
+                ctx.save();
+                ctx.translate(obj.pos.x, obj.pos.y);
+                ctx.rotate(obj.angle);
+                ctx.globalAlpha = obj.opacity;
+                ctx.drawImage(renderSettings.textures.enemies.rotating, -obj.radius, -obj.radius, obj.radius * 2, obj.radius * 2);
+                ctx.restore();
+                break;
+            case "turretBullet":
+            case "enemyBullet":
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = renderSettings.colors.lava;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
+                ctx.fill();
+                break;
+            case "meteorBullet":
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = renderSettings.colors.meteor;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
+                ctx.fill();
+                break;
+            case "path":
+                ctx.fillStyle = renderSettings.colors.blueFire;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, 0, 0, 7);
+                ctx.fill();
+                ctx.closePath();
+                break;
+            case "shield":
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = renderSettings.colors.shield;
+                ctx.lineWidth = obj.size.y * 2;
+                ctx.save();
+                ctx.translate(obj.pos.x, obj.pos.y);
+                ctx.rotate(obj.dir);
+                ctx.beginPath();
+                ctx.moveTo(-obj.size.x, 0);
+                ctx.lineTo(obj.size.x, 0);
+                ctx.stroke();
+                ctx.restore();
+                break;
+            default:
+                ctx.globalAlpha = obj.opacity || 1;
+                ctx.drawImage(renderSettings.textures.enemies.none, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                break;
+        }
     }
 
     // Render ghost 

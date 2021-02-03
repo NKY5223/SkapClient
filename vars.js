@@ -47,7 +47,6 @@ let renderSettings = {
 
         turretBody: "#404040",
         turretCannon: "#303030",
-        bullet: "#d01000",
 
         mineRegion: "#00000010",
         mineExpRegion: "#d0100010",
@@ -88,8 +87,8 @@ let renderSettings = {
             monster: loadImage("enemies/monster"),
             following: loadImage("enemies/following"),
             stutter: loadImage("enemies/stutter"),
-            expander: loadImage("enemies/none"),
-            shooter: loadImage("enemies/none"),
+
+            none: loadImage("enemies/none")
         },
         hats: {}
     }
@@ -97,11 +96,12 @@ let renderSettings = {
 let parsedMap = {
     background: "#ffffff",
     obstacle: [],
-    block0: [],
-    slime: [],
-    ice: [],
-    lava: [],
     teleporter: [],
+    lava: [],
+    ice: [],
+    slime: [],
+    block0: [],
+    text: [],
     block1: []
 };
 let camScale = 5;
