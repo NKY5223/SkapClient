@@ -102,6 +102,9 @@ let parsedMap = {
     rotatingLava: [],
     ice: [],
     slime: [],
+    button: [],
+    switch: [],
+    door: [],
     block0: [],
     text: [],
     turret: [],
@@ -137,6 +140,9 @@ let maxLU = 0;
 let lastUpdate = 0;
 let minLU = 1000;
 let lastFrame = 0;
+
+let maxVel = 0;
+const maxVelP = document.getElementById("maxVel");
 
 // HTML Elements
 // Other stuff

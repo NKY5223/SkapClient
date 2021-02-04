@@ -39,9 +39,14 @@
                 </a>
                 <button id="changelogBtn">Changelog</button>
             </div>
+            <!-- CHANGELOG -->
             <div id="changelog" class="hidden">
                 <h2>Changelog</h2>
                 <button id="closeChangelog">&times;</button>
+                <h3>Update</h3>
+                <ul>
+                    <li><code>map</code> now updates alongside <code>parsedMap</code></li>
+                </ul>
                 <h3>Frost and Changelog</h3>
                 <ul>
                     <li>Added rendering for frost power [10]</li>
@@ -69,6 +74,7 @@
                 <div id="pos">
                     <p>pos: <span id="posX"></span>, <span id="posY"></span></p>
                     <p>vel: <span id="vel"></span> (<span id="velX"></span>, <span id="velY"></span>)</p>
+                    <P>maxVel: <span id="maxVel"></span></P>
                 </div>
                 <div id="lastUpdateDiv">
                     <span id="lastUpdateDisplay" class="noselect">0</span>ms since last update<br>

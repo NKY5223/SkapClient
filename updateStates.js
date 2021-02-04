@@ -55,9 +55,12 @@ function updateStates(m) {
     // Pos and vel
     posXSpan.innerHTML = player.pos.x;
     posYSpan.innerHTML = player.pos.y;
-    velSpan.innerHTML = Math.sqrt(player.vel.x * player.vel.x + player.vel.y * player.vel.y).toFixed(3);
+    let vel = Math.sqrt(player.vel.x * player.vel.x + player.vel.y * player.vel.y);
+    velSpan.innerHTML = vel.toFixed(3);
     velXSpan.innerHTML = player.vel.x;
     velYSpan.innerHTML = player.vel.y;
+    maxVel = Math.max(maxVel, vel);
+    maxVelP.innerHTML = maxVel.toFixed(3);
 
     // Set entities... (totally not render)
     data = m;

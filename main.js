@@ -58,15 +58,15 @@ ws.addEventListener("open", () => {
     power1.addEventListener("input", () => {
         send({ e: "powerChange", m: 1, i: power1.value = clamp(0, power1.value, 10) });
     });
-    document.querySelectorAll(".poweroption").forEach(e => {
-        e.addEventListener("click", () => {
+    for (let el of document.getElementsByClassName("poweroption")) {
+        el.addEventListener("click", () => {
             send({
                 e: "powerChange",
                 m: Number(e.dataset.slot),
                 i: Number(e.dataset.power)
             });
         });
-    });
+    }
 
     chatInput.addEventListener("keydown", e => {
         e.stopPropagation();
@@ -377,7 +377,7 @@ ws.addEventListener("message", e => {
             }
             break;
         case "message":
-            if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g"))) ping.play();
+            if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || msg.m.m.match(/@everyone(\s|$)/g)) ping.play();
             message(msg);
             break;
         case "updateStates":
@@ -403,6 +403,34 @@ ws.addEventListener("message", e => {
                                 u.dir = o.dir;
                                 break;
                             }
+                        }
+                    } else if (o.type === "door") {
+                        for (let u of parsedMap.door) {
+                            if (o.id === u.id) {
+                                u.opened = o.opened;
+                                break;
+                            }
+                        }
+                    } else if (o.type === "button") {
+                        for (let u of parsedMap.button) {
+                            if (o.id === u.id) {
+                                u.pressed = o.pressed;
+                                u.pos = o.pos;
+                                u.size = o.size;
+                                break;
+                            }
+                        }
+                    } else if (o.type === "switch") {
+                        for (let u of parsedMap.switch) {
+                            if (o.id === u.id) {
+                                u.switch = o.switch;
+                                break;
+                            }
+                        }
+                    }
+                    for (let u in map) {
+                        if (map[u].id === o.id) {
+                            map[u] = o;
                         }
                     }
                 }
@@ -444,6 +472,9 @@ function initMap(i) {
     parsedMap.rotatingLava = [];
     parsedMap.ice = [];
     parsedMap.slime = [];
+    parsedMap.button = [];
+    parsedMap.switch = [];
+    parsedMap.door = [];
     parsedMap.block0 = [];
     parsedMap.text = [];
     parsedMap.turret = [];
@@ -463,6 +494,9 @@ function initMap(i) {
             case "box":
             case "rotatingLava":
             case "turret":
+            case "button":
+            case "switch":
+            case "door":
                 parsedMap[o.type].push(o);
                 break;
             case "teleporter":

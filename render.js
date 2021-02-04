@@ -15,6 +15,7 @@
  * @property {string} text
  * @property {boolean} opened
  * @property {boolean} pressed
+ * @property {boolean} switch
  * @property {0 | 1} layer
  * @property {[number, number, number]} color
  * @property {number} opacity
@@ -78,7 +79,6 @@ function render(e) {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.lineCap = "round";
-    ctx.setLineDash([]);
 
 
     ctx.fillStyle = renderSettings.colors.obstacle;
@@ -128,45 +128,8 @@ function render(e) {
             ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
     }
-    if (renderSettings.render.slime) {
-        // Render slime
-        ctx.fillStyle = renderSettings.colors.slime;
-        for (let obj of parsedMap.slime) {
-            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-        }
-    }
-    if (renderSettings.render.ice) {
-        // Render ice
-        ctx.fillStyle = renderSettings.colors.ice;
-        for (let obj of parsedMap.ice) {
-            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-        }
-    }
-    if (renderSettings.render.lava) {
-        // Render lava
-        ctx.fillStyle = renderSettings.colors.lava;
-        for (let obj of parsedMap.lava) {
-            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-        }
-    }
-    // Render rotLava
-    ctx.globalAlpha = 1;
-    for (let obj of parsedMap.rotatingLava) {
-        ctx.save();
-        ctx.translate(obj.center.x, obj.center.y);
-        ctx.rotate(obj.angle * Math.PI / 180);
-        ctx.fillRect(-obj.size.x / 2, -obj.size.y / 2, obj.size.x, obj.size.y);
-        ctx.restore();
-    }
-    if (renderSettings.render.block0) {
-        // Render blocks(0)
-        for (let obj of parsedMap.block0) {
-            ctx.fillStyle = obj.color;
-            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-        }
-    }
     // Render the ****ing teleporters (they suck)
-    if (renderSettings.render.teleporter)
+    if (renderSettings.render.teleporter) {
         for (let obj of parsedMap.teleporter) {
             ctx.save();
             ctx.translate(obj.pos.x, obj.pos.y);
@@ -193,21 +156,49 @@ function render(e) {
             ctx.fillRect(0, 0, obj.size.x, obj.size.y);
             ctx.restore();
         }
-    // Render text
-    ctx.font = "5px Russo One, Verdana, Arial, Helvetica, sans-serif";
-    for (let obj of map.objects.filter(obj => obj.type === "text")) {
-        ctx.strokeText(obj.text, obj.pos.x, obj.pos.y);
-        ctx.fillStyle = "#ffffff";
-        ctx.fillText(obj.text, obj.pos.x, obj.pos.y);
-        ctx.fillStyle = "#000000";
+    }
+    if (renderSettings.render.lava) {
+        // Render lava
+        ctx.fillStyle = renderSettings.colors.lava;
+        for (let obj of parsedMap.lava) {
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
+    }
+    // Render rotLava
+    ctx.globalAlpha = 1;
+    for (let obj of parsedMap.rotatingLava) {
+        ctx.save();
+        ctx.translate(obj.center.x, obj.center.y);
+        ctx.rotate(obj.angle * Math.PI / 180);
+        ctx.fillRect(-obj.size.x / 2, -obj.size.y / 2, obj.size.x, obj.size.y);
+        ctx.restore();
+    }
+    if (renderSettings.render.ice) {
+        // Render ice
+        ctx.fillStyle = renderSettings.colors.ice;
+        for (let obj of parsedMap.ice) {
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
+    }
+    if (renderSettings.render.slime) {
+        // Render slime
+        ctx.fillStyle = renderSettings.colors.slime;
+        for (let obj of parsedMap.slime) {
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
     }
     // Render buttons
-    for (let obj of map.objects.filter(obj => obj.type === "button")) {
+    for (let obj of parsedMap.button) {
+        ctx.fillStyle = obj.pressed ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
+        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+    }
+    // Render buttons
+    for (let obj of parsedMap.button) {
         ctx.fillStyle = obj.pressed ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render doors
-    for (let obj of map.objects.filter(obj => obj.type === "door")) {
+    for (let obj of parsedMap.door) {
         ctx.strokeStyle = obj.opened ? renderSettings.colors.doorOpenedOutline : renderSettings.colors.doorClosedOutline;
         ctx.fillStyle = obj.opened ? renderSettings.colors.doorOpenedFill : renderSettings.colors.doorClosedFill;
         ctx.save();
@@ -235,14 +226,14 @@ function render(e) {
                 ctx.fill();
                 ctx.drawImage(renderSettings.textures.enemies.following, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
                 break;
-                case "contractor":
-                    ctx.globalAlpha = obj.opacity;
-                    ctx.beginPath();
-                    ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
-                    ctx.fillStyle = obj.triggered ? renderSettings.colors.contracTriggerRegion : renderSettings.colors.contracRegion;
-                    ctx.fill();
-                    ctx.drawImage(renderSettings.textures.enemies.contractor[obj.triggered & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
-                    break;
+            case "contractor":
+                ctx.globalAlpha = obj.opacity;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
+                ctx.fillStyle = obj.triggered ? renderSettings.colors.contracTriggerRegion : renderSettings.colors.contracRegion;
+                ctx.fill();
+                ctx.drawImage(renderSettings.textures.enemies.contractor[obj.triggered & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                break;
             case "bouncer":
             case "normal":
             case "reverse":
@@ -301,18 +292,19 @@ function render(e) {
                 ctx.restore();
                 break;
             case "healingGhost":
+                ctx.globalAlpha = 1;
                 ctx.fillStyle = renderSettings.colors.ghost;
                 ctx.beginPath();
                 ctx.ellipse(obj.pos.x, obj.pos.y, 2, 2, 2, 0, 7);
                 ctx.fill();
                 break;
-                case "frostEntity":
-                    ctx.globalAlpha = obj.opacity;
-                    ctx.beginPath();
-                    ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, 0, 0, 7);
-                    ctx.fillStyle = renderSettings.colors.frost;
-                    ctx.fill();
-                    break;
+            case "frostEntity":
+                ctx.globalAlpha = obj.opacity;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, 0, 0, 7);
+                ctx.fillStyle = renderSettings.colors.frost;
+                ctx.fill();
+                break;
             default:
                 ctx.globalAlpha = obj.opacity || 1;
                 ctx.drawImage(renderSettings.textures.enemies.none, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
@@ -321,6 +313,13 @@ function render(e) {
     }
     // </ENTITIES>
 
+    // Render blocks(0)
+    if (renderSettings.render.block0) {
+        for (let obj of parsedMap.block0) {
+            ctx.fillStyle = obj.color;
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
+    }
     // Render turrets
     ctx.globalAlpha = 1;
     for (let obj of parsedMap.turret) {
@@ -382,6 +381,16 @@ function render(e) {
     for (let obj of parsedMap.box) {
         ctx.fillStyle = renderSettings.colors.box;
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+    }
+    // Render text
+    ctx.font = "5px Russo One, Verdana, Arial, Helvetica, sans-serif";
+    ctx.strokeStyle = "#000000";
+    ctx.setLineDash([]);
+    for (let obj of map.objects.filter(obj => obj.type === "text")) {
+        ctx.strokeText(obj.text, obj.pos.x, obj.pos.y);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(obj.text, obj.pos.x, obj.pos.y);
+        ctx.fillStyle = "#000000";
     }
     // Render hitboxes
     ctx.setLineDash([]);

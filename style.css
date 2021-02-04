@@ -122,6 +122,10 @@ button {
     border-radius: 5px;
     overflow-y: auto;
 }
+code {
+    background: #808080;
+    padding: 2px 5px;
+}
 #closeChangelog {
     color: red;
     position: absolute;
