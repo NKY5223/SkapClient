@@ -192,6 +192,8 @@ const posYSpan = document.getElementById("posY");
 const velSpan = document.getElementById("vel");
 const velXSpan = document.getElementById("velX");
 const velYSpan = document.getElementById("velY");
+const aimXSpan = document.getElementById("aimX");
+const aimYSpan = document.getElementById("aimY");
 
 const deathM = document.getElementById("deathText");
 const freezeM = document.getElementById("freezeText");

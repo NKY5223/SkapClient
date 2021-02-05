@@ -113,11 +113,15 @@ function render(e) {
             entities: []
         }
     }
+    let mX = (mouse.x - canvas.width / 2) / camScale + camX;
+    let mY = (mouse.y - canvas.height / 2) / camScale + camY;
+    aimXSpan.innerHTML = mX.toFixed(3);
+    aimYSpan.innerHTML = mY.toFixed(3);
     send({
         e: "aim",
         m: [
-            (mouse.x - canvas.width / 2) / camScale + camX,
-            (mouse.y - canvas.height / 2) / camScale + camY
+            mX,
+            mY
         ]
     });
 
