@@ -10,6 +10,12 @@ ws.addEventListener("open", () => {
             cookie: localStorage.getItem("cookie")
         });
     }
+    username.addEventListener("keydown", e => {
+        e.stopPropagation();
+    });
+    password.addEventListener("keydown", e => {
+        e.stopPropagation();
+    });
     login.addEventListener("click", () => {
         send({
             e: "login",

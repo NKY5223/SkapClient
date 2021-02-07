@@ -16,9 +16,20 @@
             </p>
             <br>
             <div id="loginData">
-                <label for="username">Username: </label><input id="username" type="text" /><br>
-                <label for="password">Password: </label><input id="password" type="password" /><br><br>
-                <button id="guest">Guest</button> <button id="login">Login</button> <button id="register">Register</button>
+                <form class="" method="post">
+                    <input id="username" class="inputs" value="" placeholder="Username"><br>
+                    <input id="password" type="password" class="inputs" value="" placeholder="Password"><br>
+                </form>
+                <!-- <form method="POST" action="discord.png">
+                    <label for="username">Username: </label>
+                    <input id="username" type="text" placeholder="Username" autocomplete="off" /><br>
+                    <label for="password">Password: </label>
+                    <input id="password" type="password" placeholder="Password" autocomplete="off" />
+                </form> -->
+                <br>
+                <button id="guest">Guest</button>
+                <button id="login">Login</button>
+                <button id="register">Register</button>
             </div>
             <br>    
             <div id="logoutDiv" class="hidden">
