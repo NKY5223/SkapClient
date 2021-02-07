@@ -50,7 +50,7 @@ let renderSettings = {
 
         mineRegion: "#00000010",
         mineExpRegion: "#d0100010",
-        
+
         followingRegion: "#00000010",
 
         contracRegion: "#8080a010",
@@ -88,6 +88,8 @@ let renderSettings = {
             monster: loadImage("enemies/monster"),
             following: loadImage("enemies/following"),
             stutter: loadImage("enemies/stutter"),
+            snekHead: loadImage("enemies/snekHead"),
+            snekBody: loadImage("enemies/snekBody"),
 
             none: loadImage("enemies/none")
         },
@@ -124,7 +126,7 @@ else keys = ["w", "a", "s", "d", "shift", "", "", "r"];
 let map = null;
 let data = null;
 let bypassProfan = true;
-let mouse = {x: 0, y: 0};
+let mouse = { x: 0, y: 0 };
 let user = "";
 const ping = document.getElementById("ping");
 
@@ -132,7 +134,7 @@ let chatFocus = false;
 let blocked = localStorage.getItem("blocked") ? localStorage.getItem("blocked").split(" ") : [];
 let viewWS = Boolean(localStorage.getItem("viewWS"));
 let noUS = false;
-const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "User", "ZeroTix", "ZeroFix", "haha0201", "[SKAP]", "[CLIENT]"];
+const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "User", "ZeroTix", "ZeroFix", "haha0201", "[CLIENT]"];
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");
 
@@ -271,4 +273,32 @@ String.prototype.safe = function () {
  */
 function clamp(min, num, max) {
     return Math.max(Math.min(num, max), min);
+}
+/**
+ * @param {string} msg 
+ */
+function sendMessage(msg) {
+    // Test for n-words and stuff
+    for (let i of seriousProfanCheck) {
+        if (msg.toLowerCase().match(new RegExp("(^|\\s)" + i, "gi"))) {
+            if (window.location.href.endsWith("index.html"))
+                window.location.replace(window.location.pathname.slice(0, window.location.pathname.length - 10) + "bad.html");
+            else window.location.pathname = "bad.html";
+        }
+    }
+    // Bypass the profan
+    if (bypassProfan) {
+        for (let i of profanCheck) {
+            let match = msg.match(new RegExp(i, "gi"));
+            if (match) {
+                for (let m of match) {
+                    msg = msg.replace(m, m[0] + "\u200C" + m.slice(1));
+                }
+            }
+        }
+    }
+    send({
+        e: "message",
+        message: msg
+    });
 }

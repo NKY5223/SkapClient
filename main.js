@@ -164,6 +164,9 @@ Without perms:<ul>
 <li>/help - [CLIENT] Displays this message</li>
 <li>/block &lt;username&gt; - [CLIENT] Blocks a user</li>
 <li>/unblock &lt;username&gt; - [CLIENT] Unblocks a user</li>
+<li>/shrug &lt;message&gt; - [CLIENT] Appends ¯\\_(ツ)_/¯ to the end of the message.</li>
+<li>/tableflip &lt;message&gt; - [CLIENT] Appends (╯°□°）╯︵ ┻━┻ to the end of the message.</li>
+<li>/unflip &lt;message&gt; - [CLIENT] Appends ┬─┬ ノ( ゜-゜ノ) to the end of the message.</li>
 <li>/list - Tells you who has perms</li>
 <li>/respawn - Respawns you to Home</li>
 <li>/banned - Check bans</li>
@@ -184,30 +187,14 @@ Owner:<ul>
                         }
                     }, true);
                     chat.scrollTop = chat.scrollHeight;
+                } else if (msg.startsWith("/shrug")) {
+                    sendMessage(msg.slice(7) + " ¯\\_(ツ)_/¯");
+                } else if (msg.startsWith("/tableflip")) {
+                    sendMessage(msg.slice(11) + " (╯°□°）╯︵ ┻━┻");
+                } else if (msg.startsWith("/unflip")) {
+                    sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
                 } else {
-                    // Test for n-words and stuff
-                    for (let i of seriousProfanCheck) {
-                        if (msg.toLowerCase().match(new RegExp("(^|\\s)" + i, "gi"))) {
-                            if (window.location.href.endsWith("index.html"))
-                                window.location.replace(window.location.pathname.slice(0, window.location.pathname.length - 10) + "bad.html");
-                            else window.location.pathname = "bad.html";
-                        }
-                    }
-                    // Bypass the profan
-                    if (bypassProfan) {
-                        for (let i of profanCheck) {
-                            let match = msg.match(new RegExp(i, "gi"));
-                            if (match) {
-                                for (let m of match) {
-                                    msg = msg.replace(m, m[0] + "\u200C" + m.slice(1));
-                                }
-                            }
-                        }
-                    }
-                    send({
-                        e: "message",
-                        message: msg
-                    });
+                    sendMessage(msg);
                 }
                 chatInput.value = "";
             }
@@ -398,7 +385,7 @@ ws.addEventListener("message", e => {
                     if (o.type === "rotatingLava") {
                         for (let u of parsedMap.rotatingLava) {
                             if (o.id === u.id) {
-                                u.angle = o.angle;
+                                u.angle = (o.angle % 360) * Math.PI / 180;
                                 u.center = o.center;
                                 break;
                             }
@@ -498,7 +485,6 @@ function initMap(i) {
             case "lava":
             case "text":
             case "box":
-            case "rotatingLava":
             case "turret":
             case "button":
             case "switch":
@@ -507,7 +493,12 @@ function initMap(i) {
                 break;
             case "teleporter":
                 o.dir = o.dir.toString();
-                parsedMap.teleporter.push(o);
+                parsedMap.teleporter.push(o); 
+                break;
+            case "rotatingLava":
+                o.angle = o.angle * Math.PI / 180;
+                parsedMap.rotatingLava.push(o);
+                break;
         }
     }
 }

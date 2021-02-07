@@ -34,6 +34,9 @@
  * @property {number} pos.y
  * rotating >:(
  * @property {number} angle
+ * snek >:(
+ * @property {number} dir
+ * @property {{ x: number, y: number, radius: number, time: number }[]} states
  * 
  * @typedef Player
  * @property {Object} pos
@@ -173,7 +176,7 @@ function render(e) {
     for (let obj of parsedMap.rotatingLava) {
         ctx.save();
         ctx.translate(obj.center.x, obj.center.y);
-        ctx.rotate(obj.angle * Math.PI / 180);
+        ctx.rotate(obj.angle);
         ctx.fillRect(-obj.size.x / 2, -obj.size.y / 2, obj.size.x, obj.size.y);
         ctx.restore();
     }
@@ -196,11 +199,11 @@ function render(e) {
         ctx.fillStyle = obj.pressed ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
-    // Render buttons
-    for (let obj of parsedMap.button) {
-        ctx.fillStyle = obj.pressed ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-    }
+    // Render switches?
+    // for (let obj of parsedMap.button) {
+    //     ctx.fillStyle = obj.pressed ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
+    //     ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+    // }
     // Render doors
     for (let obj of parsedMap.door) {
         ctx.strokeStyle = obj.opened ? renderSettings.colors.doorOpenedOutline : renderSettings.colors.doorClosedOutline;
@@ -309,6 +312,17 @@ function render(e) {
                 ctx.fillStyle = renderSettings.colors.frost;
                 ctx.fill();
                 break;
+            case "snek":
+                ctx.save();
+                for (let i = obj.states.length - 1, o = obj.states[i]; i >= 0; i--, o = obj.states[i]) {
+                    ctx.drawImage(renderSettings.textures.enemies.snekBody, o.x - obj.radius, o.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                }
+                ctx.globalAlpha = obj.opacity;
+                ctx.translate(obj.pos.x, obj.pos.y);
+                ctx.rotate(obj.dir);
+                ctx.drawImage(renderSettings.textures.enemies.snekHead, -obj.radius, -obj.radius, obj.radius * 3, obj.radius * 2);
+                ctx.restore();
+                break;
             default:
                 ctx.globalAlpha = obj.opacity || 1;
                 ctx.drawImage(renderSettings.textures.enemies.none, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
@@ -374,6 +388,7 @@ function render(e) {
     }
     // Render grav zones
     ctx.setLineDash([2, 6]);
+    ctx.lineWidth = 1;
     ctx.lineCap = "round";
     for (let obj of map.objects.filter(obj => obj.type === "gravityZone")) {
         ctx.strokeStyle = renderSettings.colors.gravOutline[obj.dir];

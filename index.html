@@ -6,13 +6,15 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Russo One"  />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tahoma"  />
         <link rel="icon" href="skap.ico" />
+        <meta charset="utf8" />
     </head>
     <body>
         <h2 id="connecting">Connecting...</h2>
         <div id="loginDiv" class="hidden">
             <h1 id="logo">Skap Client<span id="scuffed">Scuffed</span><span id="hacked">>hacked</span></h1>
             <p id="update">
-                Rotating Lava is finally out!
+                S N E K 
+                <img src="Textures/enemies/snekBody.svg" height="15" /><img src="Textures/enemies/snekBody.svg" height="15" /><img src="Textures/enemies/snekHead.svg" height="15" />
             </p>
             <br>
             <div id="loginData">
@@ -55,6 +57,10 @@
                 <h2>Changelog</h2>
                 <button id="closeChangelog">&times;</button>
                 
+                <h3>THE SNEK UPDATE</h3>
+                <ul>
+                    <li><code>rotLava.angle</code> is now mod 2π and in range [0, 2π)</li>
+                </ul> 
                 <h3>Misc</h3>
                 <ul>
                     <li>Modified ping sound again</li>
@@ -140,12 +146,12 @@
                             <img src="Textures/powers/dash.svg" width="40" height="40" />
                         </div>
                     </div></div>
-                    <input type="number" id="power0input" placeholder="0-9" />
+                    <input type="number" id="power0input" placeholder="0-10" />
                 </div>
                 <div id="power1" class="power">
                     <div id="power1CD" class="coolDown"></div>
                     <div id="power1Heat" class="heat"></div>
-                    <input type="number" id="power1input" placeholder="0-9" />
+                    <input type="number" id="power1input" placeholder="0-10" />
                 </div>
             </div>
             <canvas id="render">CANVAS_NOT_SUPPORTED (rip)</canvas>
