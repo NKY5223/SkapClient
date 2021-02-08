@@ -195,9 +195,27 @@ function render(e) {
         }
     }
     // Render buttons
+    ctx.setLineDash([]);
     for (let obj of parsedMap.button) {
+        ctx.beginPath();
+        ctx.moveTo(
+            obj.pos.x + (obj.dir === "0" ? obj.size.x * 0.1 : 0),
+            obj.pos.y + (obj.dir === "3" ? obj.size.y * 0.1 : 0)
+        );
+        ctx.lineTo(
+            obj.pos.x + (obj.dir === "0" ? obj.size.x * 0.9 : obj.size.x),
+            obj.pos.y + (obj.dir === "1" ? obj.size.y * 0.1 : 0)
+        );
+        ctx.lineTo(
+            obj.pos.x + (obj.dir === "2" ? obj.size.x * 0.9 : obj.size.x),
+            obj.pos.y + (obj.dir === "1" ? obj.size.y * 0.9 : obj.size.y)
+        );
+        ctx.lineTo(
+            obj.pos.x + (obj.dir === "2" ? obj.size.x * 0.1 : 0),
+            obj.pos.y + (obj.dir === "3" ? obj.size.y * 0.9 : obj.size.y)
+        );
         ctx.fillStyle = obj.pressed ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.fill();
     }
     // Render switches?
     // for (let obj of parsedMap.button) {
@@ -214,7 +232,7 @@ function render(e) {
         ctx.restore();
     }
 
-    // <ENTITIES>
+    // ENTITIES
     for (let obj of e.entities) {
         switch (obj.type) {
             case "bomb":
@@ -329,9 +347,9 @@ function render(e) {
                 break;
         }
     }
-    // </ENTITIES>
 
     // Render blocks(0)
+    ctx.globalAlpha = 1;
     if (renderSettings.render.block0) {
         for (let obj of parsedMap.block0) {
             ctx.fillStyle = obj.color;
@@ -380,6 +398,7 @@ function render(e) {
         ctx.restore();
     }
     // Render blocks(1)
+    ctx.globalAlpha = 1;
     if (renderSettings.render.block1) {
         for (let obj of parsedMap.block1) {
             ctx.fillStyle = obj.color;

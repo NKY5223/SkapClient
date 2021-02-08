@@ -486,14 +486,14 @@ function initMap(i) {
             case "text":
             case "box":
             case "turret":
-            case "button":
             case "switch":
             case "door":
                 parsedMap[o.type].push(o);
                 break;
             case "teleporter":
+            case "button":
                 o.dir = o.dir.toString();
-                parsedMap.teleporter.push(o); 
+                parsedMap[o.type].push(o); 
                 break;
             case "rotatingLava":
                 o.angle = o.angle * Math.PI / 180;
@@ -526,8 +526,8 @@ function message(msg, force = false) {
     p.innerHTML =
         (force ? msg.m.s : msg.m.s.safe()) + ":&nbsp;" +
         (force
-            ? msg.m.m.replace(/https?:\/\/\S+/g, '<a href="$1" target="_blank">$1</a>')
-            : msg.m.m.safe().replace(/(https?:\/\/\S+)/g, '<a href="$1" target="_blank">$1</a>')
+            ? msg.m.m.replace(URLRegex, '<a href="$1" target="_blank">$1</a>')
+            : msg.m.m.safe().replace(URLRegex, '<a href="$1" target="_blank">$1</a>')
         );
     chat.appendChild(p);
     if (scroll) p.scrollIntoView();
