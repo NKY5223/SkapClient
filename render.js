@@ -218,10 +218,27 @@ function render(e) {
         ctx.fill();
     }
     // Render switches?
-    // for (let obj of parsedMap.button) {
-    //     ctx.fillStyle = obj.pressed ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
-    //     ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-    // }
+    for (let obj of parsedMap.switch) {
+        ctx.beginPath();
+        ctx.moveTo(
+            obj.pos.x - (obj.dir === "3" && !obj.switch ? 5 : 0),
+            obj.pos.y - (obj.dir === "0" && obj.switch ? 5 : 0)
+        );
+        ctx.lineTo(
+            obj.pos.x + (obj.dir === "1" && obj.switch ? 5 : 0) + obj.size.x,
+            obj.pos.y - (obj.dir === "0" && !obj.switch ? 5 : 0)
+        );
+        ctx.lineTo(
+            obj.pos.x + (obj.dir === "1" && !obj.switch ? 5 : 0) + obj.size.x,
+            obj.pos.y + (obj.dir === "2" && obj.switch ? 5 : 0) + obj.size.y
+        );
+        ctx.lineTo(
+            obj.pos.x - (obj.dir === "3" && obj.switch ? 5 : 0),
+            obj.pos.y + (obj.dir === "2" ? 5 : 0) + obj.size.y
+        );
+        ctx.fillStyle = obj.pressed ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
+        ctx.fill();
+    }
     // Render doors
     for (let obj of parsedMap.door) {
         ctx.strokeStyle = obj.opened ? renderSettings.colors.doorOpenedOutline : renderSettings.colors.doorClosedOutline;

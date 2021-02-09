@@ -138,6 +138,8 @@ const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "User", "ZeroTix", "ZeroFix", 
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");
 const URLRegex = /(https?:\/\/[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+(\/[A-Za-z0-9-_]+)*(\.[a-z]+)?(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)/g;
+let id = "";
+let bots = [];
 
 let maxLU = 0;
 let lastUpdate = 0;
@@ -169,6 +171,11 @@ const logoutDiv = document.getElementById("logoutDiv");
 const play = document.getElementById("play");
 const loginData = document.getElementById("loginData");
 const loginDiv = document.getElementById("loginDiv");
+
+const playerColor = document.getElementById("playerColor");
+const changingRoom = document.getElementById("changingRoom");
+const changingRoomBtn = document.getElementById("changingRoomBtn");
+const backtoLoginFromChangingRoom = document.getElementById("backToLogout");
 
 // Changelog
 const changelogBtn = document.getElementById("changelogBtn");

@@ -25,6 +25,25 @@ ws.addEventListener("open", () => {
             }
         });
     });
+    changingRoomBtn.addEventListener("click", () => {
+        send({ e: "getStyle" });
+        hide(logoutDiv);
+        show(changingRoom);
+    });
+    backtoLoginFromChangingRoom.addEventListener("click", () => {
+        hide(changingRoom);
+        show(logoutDiv);
+    });
+    playerColor.addEventListener("input", () => {
+        send({
+            e: "colorChange",
+            c: [
+                parseInt(playerColor.value.slice(1, 3), 16),
+                parseInt(playerColor.value.slice(3, 5), 16),
+                parseInt(playerColor.value.slice(5, 7), 16)
+            ]
+        });
+    });
     logout.addEventListener("click", () => {
         send({
             e: "logout"
@@ -161,15 +180,16 @@ ws.addEventListener("open", () => {
                             m: `
 Commands:<br>
 Without perms:<ul>
+<li>/list - Tells you who has perms</li>
+<li>/respawn - Respawns you to Home</li>
+<li>/banned - Check bans</li>
 <li>/help - [CLIENT] Displays this message</li>
 <li>/block &lt;username&gt; - [CLIENT] Blocks a user</li>
 <li>/unblock &lt;username&gt; - [CLIENT] Unblocks a user</li>
 <li>/shrug &lt;message&gt; - [CLIENT] Appends ¯\\_(ツ)_/¯ to the end of the message.</li>
 <li>/tableflip &lt;message&gt; - [CLIENT] Appends (╯°□°）╯︵ ┻━┻ to the end of the message.</li>
 <li>/unflip &lt;message&gt; - [CLIENT] Appends ┬─┬ ノ( ゜-゜ノ) to the end of the message.</li>
-<li>/list - Tells you who has perms</li>
-<li>/respawn - Respawns you to Home</li>
-<li>/banned - Check bans</li>
+<li>/killbot &lt;username&gt; - [CLIENT] Removes a bot (use if the bot is lagging behind)</li>
 </ul>
 With perms:<ul>
 <li>/res - Rescues yourself</li>
@@ -193,6 +213,34 @@ Owner:<ul>
                     sendMessage(msg.slice(11) + " (╯°□°）╯︵ ┻━┻");
                 } else if (msg.startsWith("/unflip")) {
                     sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
+                } else if (msg.startsWith("/killbot ")) {
+                    let n = msg.slice(9);
+                    let found = false;
+                    for (let b in bots) {
+                        if (bots[b].name === n) {
+                            bots[b].close();
+                            bots.splice(b, 1);
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        message({
+                            m: {
+                                s: "[CLIENT]",
+                                r: 1, 
+                                m: "Successfully killed bot " + n
+                            }
+                        }, true);
+                    } else {
+                        message({
+                            m: {
+                                s: "[CLIENT]",
+                                r: 1, 
+                                m: "Could not kill bot " + n
+                            }
+                        }, true);
+                    }
                 } else {
                     sendMessage(msg);
                 }
@@ -260,6 +308,7 @@ ws.addEventListener("message", e => {
                         e: "join",
                         g: g.id
                     });
+                    id = g.id;
                     console.log(g.id);
                 });
                 gameListDiv.appendChild(div);
@@ -298,6 +347,15 @@ ws.addEventListener("message", e => {
                                 value: true
                             }
                         });
+                        for (let b of bots) {
+                            b.send(JSON.stringify({
+                                e: "input",
+                                input: {
+                                    keys: keys.indexOf(e.key.toLowerCase()),
+                                    value: true
+                                }
+                            }));
+                        }
                     }
                     switch (e.key.toLowerCase()) {
                         case "o":
@@ -321,6 +379,58 @@ ws.addEventListener("message", e => {
                             camScale *= 1.5;
                             customAlert(`Camera Scale: ${camScale}`);
                             break;
+                        case "+":
+                        case "=":
+                            let bot = new WebSocket("wss://skap.io");
+                            bot.addEventListener("open", () => {
+                                bot.send(`{"e": "guest"}`);
+                            });
+                            bot.addEventListener("message", e => {
+                                let msg = JSON.parse(e.data);
+                                switch (msg.e) {
+                                    case "result":
+                                        if (msg.m) message({
+                                            m: {
+                                                s: "[CLIENT]",
+                                                r: 1,
+                                                m: "Bot failed to login as guest"
+                                            }
+                                        }, true);
+                                        else {
+                                            bot.name = msg.t.slice(13)
+                                            message({
+                                                m: {
+                                                    s: "[CLIENT]",
+                                                    r: 1,
+                                                    m: `Bot ${bot.name} logged in`
+                                                }
+                                            }, true);
+                                            bot.send(`{"e":"join", "g":"${id}"}`)
+                                        }
+                                        break;
+                                    case "join":
+                                        if (!msg.m) {
+                                            console.log(msg);
+                                            message({
+                                                m: {
+                                                    s: "[CLIENT]",
+                                                    r: 1,
+                                                    m: `Bot ${bot.name} joined`
+                                                }
+                                            }, true);
+                                            bots.push(bot);
+                                        }
+                                        break;
+                                }
+                            });
+                            break;
+                        case "-":
+                        case "_":
+                            for (let b in bots) {
+                                bots[b].close();
+                                bots.splice(b, 1);
+                            }
+                            break;
                         case "enter":
                         case "/":
                             chatInput.focus();
@@ -336,6 +446,15 @@ ws.addEventListener("message", e => {
                                 value: false
                             }
                         });
+                        for (let b of bots) {
+                            b.send(JSON.stringify({
+                                e: "input",
+                                input: {
+                                    keys: keys.indexOf(e.key.toLowerCase()),
+                                    value: false
+                                }
+                            }));
+                        }
                     }
                 });
                 canvas.addEventListener("mousedown", e => {
@@ -432,20 +551,32 @@ ws.addEventListener("message", e => {
                 for (let o of msg.m.add) {
                     if (o.type === "box")
                         parsedMap.box.push(o);
+                    map.objects.push(o);
                 }
             if (msg.m.remove)
-                for (let o of msg.m.remove)
+                for (let o of msg.m.remove) {
                     if (o.type === "box")
                         for (let i in parsedMap.box)
                             if (parsedMap.box[i].id === o.id) {
                                 parsedMap.box.splice(i, 1);
                                 break;
                             }
+                    for (let i in map.objects) {
+                        if (map.objects[i].id === o.id) {
+                            map.objects.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
+
             break;
         case "power":
             for (let i of msg.m) {
                 powers.add(i);
             }
+            break;
+        case "style":
+            playerColor.value = `#${msg.c[0].toString(16)}${msg.c[1].toString(16)}${msg.c[2].toString(16)}`;
             break;
     }
 });
@@ -455,6 +586,8 @@ ws.addEventListener("message", e => {
 function initMap(i) {
     map = i;
     renderSettings.colors.obstacle = "rgb(" +
+
+
         (240 + (i.backgroundColor[0] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[2] - 240) * i.backgroundColor[3]) + ")";
@@ -493,7 +626,7 @@ function initMap(i) {
             case "teleporter":
             case "button":
                 o.dir = o.dir.toString();
-                parsedMap[o.type].push(o); 
+                parsedMap[o.type].push(o);
                 break;
             case "rotatingLava":
                 o.angle = o.angle * Math.PI / 180;
