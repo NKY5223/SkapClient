@@ -41,9 +41,11 @@ let renderSettings = {
         button: "#404040",
         buttonPressed: "#505050",
         doorClosedOutline: "#404040",
-        doorClosedFill: "#404040c0",
+        doorFill: "#404040c0",
         doorOpenedOutline: "#40404080",
-        doorOpenedFill: "#40404000",
+
+        doorLineOn: "#ffff0040",
+        doorLineOff: "#40404040",
 
         turretBody: "#404040",
         turretCannon: "#303030",
@@ -137,7 +139,7 @@ let noUS = false;
 const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "User", "ZeroTix", "ZeroFix", "haha0201", "[CLIENT]"];
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");
-const URLRegex = /(https?:\/\/[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+(\/[A-Za-z0-9-_]+)*(\.[a-z]+)?(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)/g;
+const URLRegex = /((https?:\/\/)?[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+(\/[A-Za-z0-9-_]+)*(\.[a-z]+)?(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)/g;
 let id = "";
 let bots = [];
 

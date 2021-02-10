@@ -20,6 +20,8 @@
  * @property {[number, number, number]} color
  * @property {number} opacity
  * @property {number} angle
+ * @property {number[]} linkIds
+ * @property {SkapObject[]} links
  * 
  * @typedef SkapEntity
  * @property {"bomb" | "bouncer" | "spike" | "normal" | "megaBouncer" | "taker" | "wavy" | "freezer" | "snek" | "immune" | "monster" | "stutter" | "contractor" | "expanding" | "turretBullet" | "enemyBullet" | "shield" | "healingGhost" | "meteorBullet" | "path"} type
@@ -221,32 +223,45 @@ function render(e) {
     for (let obj of parsedMap.switch) {
         ctx.beginPath();
         ctx.moveTo(
-            obj.pos.x - (obj.dir === "3" && !obj.switch ? 5 : 0),
-            obj.pos.y - (obj.dir === "0" && obj.switch ? 5 : 0)
+            obj.pos.x - (obj.dir === "3" && !obj.switch ? 2 : 0),
+            obj.pos.y - (obj.dir === "0" && obj.switch ? 2 : 0)
         );
         ctx.lineTo(
-            obj.pos.x + (obj.dir === "1" && obj.switch ? 5 : 0) + obj.size.x,
-            obj.pos.y - (obj.dir === "0" && !obj.switch ? 5 : 0)
+            obj.pos.x + (obj.dir === "1" && obj.switch ? 2 : 0) + obj.size.x,
+            obj.pos.y - (obj.dir === "0" && !obj.switch ? 2 : 0)
         );
         ctx.lineTo(
-            obj.pos.x + (obj.dir === "1" && !obj.switch ? 5 : 0) + obj.size.x,
-            obj.pos.y + (obj.dir === "2" && obj.switch ? 5 : 0) + obj.size.y
+            obj.pos.x + (obj.dir === "1" && !obj.switch ? 2 : 0) + obj.size.x,
+            obj.pos.y + (obj.dir === "2" && obj.switch ? 2 : 0) + obj.size.y
         );
         ctx.lineTo(
-            obj.pos.x - (obj.dir === "3" && obj.switch ? 5 : 0),
-            obj.pos.y + (obj.dir === "2" ? 5 : 0) + obj.size.y
+            obj.pos.x - (obj.dir === "3" && obj.switch ? 2 : 0),
+            obj.pos.y + (obj.dir === "2" && !obj.switch ? 2 : 0) + obj.size.y
         );
-        ctx.fillStyle = obj.pressed ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
+        ctx.fillStyle = obj.switch ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
         ctx.fill();
     }
     // Render doors
+    ctx.fillStyle = renderSettings.colors.doorFill;
     for (let obj of parsedMap.door) {
         ctx.strokeStyle = obj.opened ? renderSettings.colors.doorOpenedOutline : renderSettings.colors.doorClosedOutline;
-        ctx.fillStyle = obj.opened ? renderSettings.colors.doorOpenedFill : renderSettings.colors.doorClosedFill;
-        ctx.save();
         ctx.strokeRect(obj.pos.x + 0.5, obj.pos.y + 0.5, obj.size.x - 1, obj.size.y - 1);
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-        ctx.restore();
+        if (!obj.opened) ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        for (let b of obj.links) {
+            ctx.beginPath();
+            ctx.strokeStyle = b.pressed || b.switch ? renderSettings.colors.doorLineOn : renderSettings.colors.doorLineOff;
+            ctx.moveTo(obj.pos.x + obj.size.x / 2, obj.pos.y + obj.size.y / 2);
+            ctx.lineTo(b.pos.x + b.size.x / 2, b.pos.y + b.size.y / 2);
+            ctx.stroke();
+        }
+    }
+    // Render blocks(0)
+    ctx.globalAlpha = 1;
+    if (renderSettings.render.block0) {
+        for (let obj of parsedMap.block0) {
+            ctx.fillStyle = obj.color;
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
     }
 
     // ENTITIES
@@ -321,8 +336,6 @@ function render(e) {
                 ctx.closePath();
                 break;
             case "shield":
-                ctx.globalAlpha = 1;
-                ctx.fillStyle = renderSettings.colors.shield;
                 ctx.lineWidth = obj.size.y * 2;
                 ctx.save();
                 ctx.translate(obj.pos.x, obj.pos.y);
@@ -330,6 +343,8 @@ function render(e) {
                 ctx.beginPath();
                 ctx.moveTo(-obj.size.x, 0);
                 ctx.lineTo(obj.size.x, 0);
+                ctx.globalAlpha = 1;
+                ctx.strokeStyle = renderSettings.colors.shield;
                 ctx.stroke();
                 ctx.restore();
                 break;
@@ -365,14 +380,6 @@ function render(e) {
         }
     }
 
-    // Render blocks(0)
-    ctx.globalAlpha = 1;
-    if (renderSettings.render.block0) {
-        for (let obj of parsedMap.block0) {
-            ctx.fillStyle = obj.color;
-            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-        }
-    }
     // Render turrets
     ctx.globalAlpha = 1;
     for (let obj of parsedMap.turret) {

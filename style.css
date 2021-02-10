@@ -292,13 +292,18 @@ canvas {
     overflow: hidden;
 }
 #chatContent {
-    padding: 5px;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-wrap: break-word;
     height: calc(100% - 40px);
 }
 #chat p {
     margin: 0;
+}
+.wrapper:nth-of-type(odd) {
+    background-color: #ffffff20;
+}
+.wrapper {
+    padding: 5px;
 }
 #chat a {
     color: #4040ff;

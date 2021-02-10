@@ -87,8 +87,8 @@ ws.addEventListener("open", () => {
         el.addEventListener("click", () => {
             send({
                 e: "powerChange",
-                m: Number(e.dataset.slot),
-                i: Number(e.dataset.power)
+                m: Number(el.dataset.slot),
+                i: Number(el.dataset.power)
             });
         });
     }
@@ -228,7 +228,7 @@ Owner:<ul>
                         message({
                             m: {
                                 s: "[CLIENT]",
-                                r: 1, 
+                                r: 1,
                                 m: "Successfully killed bot " + n
                             }
                         }, true);
@@ -236,12 +236,17 @@ Owner:<ul>
                         message({
                             m: {
                                 s: "[CLIENT]",
-                                r: 1, 
+                                r: 1,
                                 m: "Could not kill bot " + n
                             }
                         }, true);
                     }
                 } else {
+                    if (chatInput.value === "/respawn") {
+                        for (let b of bots) {
+                            b.send(`{"e":"message","message":"/respawn"}`);
+                        }
+                    }
                     sendMessage(msg);
                 }
                 chatInput.value = "";
@@ -410,7 +415,6 @@ ws.addEventListener("message", e => {
                                         break;
                                     case "join":
                                         if (!msg.m) {
-                                            console.log(msg);
                                             message({
                                                 m: {
                                                     s: "[CLIENT]",
@@ -426,10 +430,7 @@ ws.addEventListener("message", e => {
                             break;
                         case "-":
                         case "_":
-                            for (let b in bots) {
-                                bots[b].close();
-                                bots.splice(b, 1);
-                            }
+                            if (bots.length) bots.pop().close();
                             break;
                         case "enter":
                         case "/":
@@ -574,6 +575,7 @@ ws.addEventListener("message", e => {
             for (let i of msg.m) {
                 powers.add(i);
             }
+            customAlert("Gained power(s) " + msg.m.join(", "));
             break;
         case "style":
             playerColor.value = `#${msg.c[0].toString(16)}${msg.c[1].toString(16)}${msg.c[2].toString(16)}`;
@@ -619,12 +621,11 @@ function initMap(i) {
             case "text":
             case "box":
             case "turret":
-            case "switch":
-            case "door":
                 parsedMap[o.type].push(o);
                 break;
             case "teleporter":
             case "button":
+            case "switch":
                 o.dir = o.dir.toString();
                 parsedMap[o.type].push(o);
                 break;
@@ -632,6 +633,25 @@ function initMap(i) {
                 o.angle = o.angle * Math.PI / 180;
                 parsedMap.rotatingLava.push(o);
                 break;
+        }
+    }
+    for (let o of i.objects) {
+        if (o.type === "door") {
+            for (let l in o.linkIds) {
+                o.linkIds[l] = parseInt(o.linkIds[l])
+            }
+            o.links = [];
+            for (let b of parsedMap.button) {
+                if (o.linkIds.includes(Math.floor(Math.abs(b.linkId)))) {
+                    o.links.push(b);
+                }
+            }
+            for (let s of parsedMap.switch) {
+                if (o.linkIds.includes(Math.floor(Math.abs(s.linkId)))) {
+                    o.links.push(s);
+                }
+            }
+            parsedMap.door.push(o);
         }
     }
 }
@@ -649,6 +669,8 @@ function message(msg, force = false) {
         return;
     }
     let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
+    let wrapper = document.createElement("div");
+    wrapper.className = "wrapper";
     let p = document.createElement("p");
     p.className =
         (msg.m.s === "[SKAP]" || msg.m.s === "[CLIENT]")
@@ -662,7 +684,8 @@ function message(msg, force = false) {
             ? msg.m.m.replace(URLRegex, '<a href="$1" target="_blank">$1</a>')
             : msg.m.m.safe().replace(URLRegex, '<a href="$1" target="_blank">$1</a>')
         );
-    chat.appendChild(p);
+    wrapper.appendChild(p);
+    chat.appendChild(wrapper);
     if (scroll) p.scrollIntoView();
     return p;
 }
