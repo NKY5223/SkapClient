@@ -191,7 +191,7 @@ Without perms:<ul>
 <li>/tableflip &lt;message&gt; - [CLIENT] Appends (╯°□°）╯︵ ┻━┻ to the end of the message.</li>
 <li>/unflip &lt;message&gt; - [CLIENT] Appends ┬─┬ ノ( ゜-゜ノ) to the end of the message.</li>
 <li>/killbot &lt;username&gt; - [CLIENT] Removes a bot (use if the bot is lagging behind)</li>
-<li>/createbot &lt;username&gt; &lt;password&gt; - [CLIENT] Creates a bot user with username and password</li>
+<li>/bot &lt;username&gt; &lt;password&gt; - [CLIENT] Creates a bot user with username and password</li>
 </ul>
 With perms:<ul>
 <li>/res - Rescues yourself</li>
@@ -243,16 +243,33 @@ Owner:<ul>
                             }
                         }, true);
                     }
-                } else if (chatInput.value.startsWith("/createbot ")) {
-                    let x = chatInput.value.slice(11).split(" ");
-                    if (x.length >= 2) createBot(x[0], x[1]);
-                    else message({
-                        m: {
-                            s: "[CLIENT]",
-                            r: 1,
-                            m: "I need the username AND password."
+                } else if (chatInput.value.startsWith("/bot ")) {
+                    let x = chatInput.value.slice(5).split(" ");
+                    if (!x[0]) {
+                        message({
+                            m: {
+                                s: "[CLIENT]",
+                                r: 1,
+                                m: "I need the username AND password."
+                            }
+                        }, true);
+                    } else if (x[0] && !x[1]) {
+                        if (botPw[x[0]]) {
+                            createBot(0, x[0], botPw[x[0]]);
+                        } else {
+                            message({
+                                m: {
+                                    s: "[CLIENT]",
+                                    r: 1,
+                                    m: "I need the password."
+                                }
+                            }, true);
                         }
-                    }, true);
+                    } else if (x[0] && x[1]) {
+                        createBot(0, x[0], x[1]);
+                        botPw[x[0]] = x[1];
+                        localStorage.setItem("botPw", JSON.stringify(botPw));
+                    }
                 } else {
                     if (chatInput.value === "/respawn") {
                         for (let b of bots) {
@@ -398,7 +415,7 @@ ws.addEventListener("message", e => {
                             break;
                         case "+":
                         case "=":
-                            createBot();
+                            createBot(1);
                             break;
                         case "-":
                         case "_":
@@ -660,11 +677,11 @@ function message(msg, force = false) {
     return p;
 }
 /**
- * 
+ * @param {boolean} co color
  * @param {string} un username 
  * @param {string} pw password 
  */
-function createBot(un, pw) {
+function createBot(co, un, pw) {
     let bot = new WebSocket("wss://skap.io");
     bot.addEventListener("open", () => {
         if (un && pw) bot.send(`{"e":"login","m":{"username":"${un}","password":"${SHA256(un + pw)}"}}`);
@@ -678,11 +695,11 @@ function createBot(un, pw) {
                     m: {
                         s: "[CLIENT]",
                         r: 1,
-                        m: "Bot failed to login as guest"
+                        m: "Bot failed to login"
                     }
                 }, true);
                 else {
-                    if (botColor) {
+                    if (co && botColor) {
                         bot.send(`{"e":"colorChange","c":${botColor}}`);
                     }
                     bot.name = msg.t.slice(13)
