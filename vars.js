@@ -287,31 +287,3 @@ String.prototype.safe = function () {
 function clamp(min, num, max) {
     return Math.max(Math.min(num, max), min);
 }
-/**
- * @param {string} msg 
- */
-function sendMessage(msg) {
-    // Test for n-words and stuff
-    for (let i of seriousProfanCheck) {
-        if (msg.toLowerCase().match(new RegExp("(^|\\s)" + i, "gi"))) {
-            if (window.location.href.endsWith("index.html"))
-                window.location.replace(window.location.pathname.slice(0, window.location.pathname.length - 10) + "bad.html");
-            else window.location.pathname = "bad.html";
-        }
-    }
-    // Bypass the profan
-    if (bypassProfan) {
-        for (let i of profanCheck) {
-            let match = msg.match(new RegExp(i, "gi"));
-            if (match) {
-                for (let m of match) {
-                    msg = msg.replace(m, m[0] + "\u200C" + m.slice(1));
-                }
-            }
-        }
-    }
-    send({
-        e: "message",
-        message: msg
-    });
-}
