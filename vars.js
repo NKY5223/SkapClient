@@ -139,9 +139,11 @@ let noUS = false;
 const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "User", "ZeroTix", "ZeroFix", "haha0201", "[CLIENT]"];
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");
-const URLRegex = /((https?:\/\/)?[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+(\/[A-Za-z0-9-_]+)*(\.[a-z]+)?(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)/g;
+const URLRegex = /(\s|^)((https?:\/\/)?[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+(\/[A-Za-z0-9-_]+)*(\.[a-z]+)?(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)/g;
 let id = "";
 let bots = [];
+let botColor = localStorage.getItem("color");
+let canSend = false;
 
 let maxLU = 0;
 let lastUpdate = 0;
@@ -244,7 +246,7 @@ function customAlert(s, t = 1) {
  * @param {string} obj.e The event
  */
 function send(obj) {
-    ws.send(JSON.stringify(obj));
+    if (canSend) ws.send(JSON.stringify(obj));
 }
 /**
  * Hide Element

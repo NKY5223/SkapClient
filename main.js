@@ -2,6 +2,7 @@ if (localStorage.getItem("username")) username.value = localStorage.getItem("use
 if (localStorage.getItem("username")) password.value = localStorage.getItem("password");
 
 ws.addEventListener("open", () => {
+    canSend = true;
     hide(connectP);
     show(loginDiv);
     if (localStorage.getItem("cookie")) {
@@ -146,7 +147,7 @@ ws.addEventListener("open", () => {
                 } else if (msg.startsWith("/unblock ") && msg.length > 9) {
                     let p = msg.slice(9);
                     if (blocked.includes(p)) {
-                        blocked.splice(blocked.indexOf(p));
+                        blocked.splice(blocked.indexOf(p),);
                         message({
                             m: {
                                 s: "[CLIENT]",
@@ -190,6 +191,7 @@ Without perms:<ul>
 <li>/tableflip &lt;message&gt; - [CLIENT] Appends (╯°□°）╯︵ ┻━┻ to the end of the message.</li>
 <li>/unflip &lt;message&gt; - [CLIENT] Appends ┬─┬ ノ( ゜-゜ノ) to the end of the message.</li>
 <li>/killbot &lt;username&gt; - [CLIENT] Removes a bot (use if the bot is lagging behind)</li>
+<li>/createbot &lt;username&gt; &lt;password&gt; - [CLIENT] Creates a bot user with username and password</li>
 </ul>
 With perms:<ul>
 <li>/res - Rescues yourself</li>
@@ -241,6 +243,16 @@ Owner:<ul>
                             }
                         }, true);
                     }
+                } else if (chatInput.value.startsWith("/createbot ")) {
+                    let x = chatInput.value.slice(11).split(" ");
+                    if (x.length >= 2) createBot(x[0], x[1]);
+                    else message({
+                        m: {
+                            s: "[CLIENT]",
+                            r: 1,
+                            m: "I need the username AND password."
+                        }
+                    }, true);
                 } else {
                     if (chatInput.value === "/respawn") {
                         for (let b of bots) {
@@ -386,47 +398,7 @@ ws.addEventListener("message", e => {
                             break;
                         case "+":
                         case "=":
-                            let bot = new WebSocket("wss://skap.io");
-                            bot.addEventListener("open", () => {
-                                bot.send(`{"e": "guest"}`);
-                            });
-                            bot.addEventListener("message", e => {
-                                let msg = JSON.parse(e.data);
-                                switch (msg.e) {
-                                    case "result":
-                                        if (msg.m) message({
-                                            m: {
-                                                s: "[CLIENT]",
-                                                r: 1,
-                                                m: "Bot failed to login as guest"
-                                            }
-                                        }, true);
-                                        else {
-                                            bot.name = msg.t.slice(13)
-                                            message({
-                                                m: {
-                                                    s: "[CLIENT]",
-                                                    r: 1,
-                                                    m: `Bot ${bot.name} logged in`
-                                                }
-                                            }, true);
-                                            bot.send(`{"e":"join", "g":"${id}"}`)
-                                        }
-                                        break;
-                                    case "join":
-                                        if (!msg.m) {
-                                            message({
-                                                m: {
-                                                    s: "[CLIENT]",
-                                                    r: 1,
-                                                    m: `Bot ${bot.name} joined`
-                                                }
-                                            }, true);
-                                            bots.push(bot);
-                                        }
-                                        break;
-                                }
-                            });
+                            createBot();
                             break;
                         case "-":
                         case "_":
@@ -588,8 +560,6 @@ ws.addEventListener("message", e => {
 function initMap(i) {
     map = i;
     renderSettings.colors.obstacle = "rgb(" +
-
-
         (240 + (i.backgroundColor[0] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[2] - 240) * i.backgroundColor[3]) + ")";
@@ -681,18 +651,71 @@ function message(msg, force = false) {
     p.innerHTML =
         (force ? msg.m.s : msg.m.s.safe()) + ":&nbsp;" +
         (force
-            ? msg.m.m.replace(URLRegex, '<a href="$1" target="_blank">$1</a>')
-            : msg.m.m.safe().replace(URLRegex, '<a href="$1" target="_blank">$1</a>')
+            ? msg.m.m.replace(URLRegex, '<a href="$2" target="_blank">$2</a>')
+            : msg.m.m.safe().replace(URLRegex, '<a href="$2" target="_blank">$2</a>')
         );
     wrapper.appendChild(p);
     chat.appendChild(wrapper);
     if (scroll) p.scrollIntoView();
     return p;
 }
+/**
+ * 
+ * @param {string} un username 
+ * @param {string} pw password 
+ */
+function createBot(un, pw) {
+    let bot = new WebSocket("wss://skap.io");
+    bot.addEventListener("open", () => {
+        if (un && pw) bot.send(`{"e":"login","m":{"username":"${un}","password":"${SHA256(un + pw)}"}}`);
+        else bot.send(`{"e":"guest"}`);
+    });
+    bot.addEventListener("message", e => {
+        let msg = JSON.parse(e.data);
+        switch (msg.e) {
+            case "result":
+                if (msg.m) message({
+                    m: {
+                        s: "[CLIENT]",
+                        r: 1,
+                        m: "Bot failed to login as guest"
+                    }
+                }, true);
+                else {
+                    if (botColor) {
+                        bot.send(`{"e":"colorChange","c":${botColor}}`);
+                    }
+                    bot.name = msg.t.slice(13)
+                    message({
+                        m: {
+                            s: "[CLIENT]",
+                            r: 1,
+                            m: `Bot ${bot.name} logged in`
+                        }
+                    }, true);
+                    bot.send(`{"e":"join","g":"${id}"}`);
+                }
+                break;
+            case "join":
+                if (!msg.m) {
+                    message({
+                        m: {
+                            s: "[CLIENT]",
+                            r: 1,
+                            m: `Bot ${bot.name} joined`
+                        }
+                    }, true);
+                    bots.push(bot);
+                }
+                break;
+        }
+    });
+}
 ws.addEventListener("close", () => {
+    canSend = false;
     hide(gameDiv);
     document.title = "Disconnected";
-    customAlert("The WebSocket closed for unknown reasons.<br>Please reload the client. If that doesn't work, try again later.<br>Skap may have been taken down for maintenence", 100);
+    customAlert("The WebSocket closed for unknown reasons.<br>Please reload the client. If that doesn't work, try again later.<br>Skap may have been taken down for maintenence", Infinity);
 });
 document.addEventListener("keydown", e => {
     if (!e.repeat && e.key.toLowerCase() === "p") {
