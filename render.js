@@ -129,6 +129,13 @@ function render(e) {
             mY
         ]
     });
+    for (let b of bots) b.send(JSON.stringify({
+        e: "aim",
+        m: [
+            mX,
+            mY
+        ]
+    }))
 
     if (renderSettings.render.obstacle) {
         // Render obstacles

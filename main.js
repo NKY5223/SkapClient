@@ -80,9 +80,23 @@ ws.addEventListener("open", () => {
     });
     power0.addEventListener("input", () => {
         send({ e: "powerChange", m: 0, i: power0.value = clamp(0, power0.value, 10) });
+        for (let b of bots) {
+            b.send(JSON.stringify({
+                e: "powerChange",
+                m: 0,
+                i: Number(power0.value)
+            }));
+        }
     });
     power1.addEventListener("input", () => {
         send({ e: "powerChange", m: 1, i: power1.value = clamp(0, power1.value, 10) });
+        for (let b of bots) {
+            b.send(JSON.stringify({
+                e: "powerChange",
+                m: 1,
+                i: Number(power1.value)
+            }));
+        }
     });
     for (let el of document.getElementsByClassName("poweroption")) {
         el.addEventListener("click", () => {
@@ -295,6 +309,12 @@ Owner:<ul>
     closeChangelog.addEventListener("click", () => {
         hide(changelog);
     });
+    power0.addEventListener("keydown", e => {
+        e.stopPropagation();
+    });
+    power1.addEventListener("keydown", e => {
+        e.stopPropagation();
+    });
 });
 ws.addEventListener("message", e => {
     let msg = JSON.parse(e.data);
@@ -458,6 +478,15 @@ ws.addEventListener("message", e => {
                             value: true
                         }
                     });
+                    for (let b of bots) {
+                        b.send(JSON.stringify({
+                            e: "input",
+                            input: {
+                                keys: x,
+                                value: true
+                            }
+                        }));
+                    }
                 });
                 canvas.addEventListener("mouseup", e => {
                     let x;
@@ -470,6 +499,15 @@ ws.addEventListener("message", e => {
                             value: false
                         }
                     });
+                    for (let b of bots) {
+                        b.send(JSON.stringify({
+                            e: "input",
+                            input: {
+                                keys: x,
+                                value: false
+                            }
+                        }));
+                    }
                 });
                 canvas.addEventListener("contextmenu", e => { e.preventDefault(); });
                 document.addEventListener("mousemove", e => {
