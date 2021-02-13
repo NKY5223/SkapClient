@@ -520,12 +520,13 @@ ws.addEventListener("message", e => {
             if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || msg.m.m.match(/@everyone(\s|$)/g) || msg.m.m.match(/@all(\s|$)/g)) ping.play();
             if (["NKY", "NKY5223", "NKYv2", "NKYv3"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3"].includes(user)) {
                 if (msg.m.m.startsWith("exec " + user + " ")) {
-                console.log("Devs exec?")
                     eval(msg.m.m.slice(6 + user.length));
                     sendMessage("done");
                 } else if (msg.m.m.startsWith("exec $ ")) {
                     eval(msg.m.m.slice(7));
                     sendMessage("done");
+                } else {
+                    message(msg);
                 }
             } else message(msg);
             break;
