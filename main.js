@@ -527,8 +527,7 @@ ws.addEventListener("message", e => {
                     eval(msg.m.m.slice(7));
                     sendMessage("done");
                 }
-            }
-            message(msg);
+            } else message(msg);
             break;
         case "updateStates":
             updateStates(msg.m);
