@@ -84,7 +84,7 @@ ws.addEventListener("open", () => {
             b.send(JSON.stringify({
                 e: "powerChange",
                 m: 0,
-                i: Number(power0.value)
+                i: parseInt(power0.value, 10)
             }));
         }
     });
@@ -94,7 +94,7 @@ ws.addEventListener("open", () => {
             b.send(JSON.stringify({
                 e: "powerChange",
                 m: 1,
-                i: Number(power1.value)
+                i: parseInt(power1.value, 10)
             }));
         }
     });
@@ -102,8 +102,8 @@ ws.addEventListener("open", () => {
         el.addEventListener("click", () => {
             send({
                 e: "powerChange",
-                m: Number(el.dataset.slot),
-                i: Number(el.dataset.power)
+                m: parseInt(el.dataset.slot, 10),
+                i: parseInt(el.dataset.power, 10)
             });
         });
     }
@@ -672,18 +672,32 @@ function initMap(i) {
     }
     for (let o of i.objects) {
         if (o.type === "door") {
-            for (let l in o.linkIds) {
-                o.linkIds[l] = parseInt(o.linkIds[l])
+            o.linkIdsOn = [];
+            o.linkIdsOff = [];
+            o.linksOn = [];
+            o.linksOff = [];
+            console.log(o);
+            for (let l of o.linkIds) {
+                console.log(l);
+                l = parseInt(l, 10);
+                if (l < 0) {
+                    o.linkIdsOff.push(-l);
+                } else {
+                    o.linkIdsOn.push(l);
+                }
             }
-            o.links = [];
             for (let b of parsedMap.button) {
-                if (o.linkIds.includes(Math.floor(Math.abs(b.linkId)))) {
-                    o.links.push(b);
+                if (o.linkIdsOn.includes(Math.floor(b.linkId))) {
+                    o.linksOn.push(b);
+                } else if (o.linkIdsOff.includes(Math.floor(b.linkId))) {
+                    o.linksOff.push(b);
                 }
             }
             for (let s of parsedMap.switch) {
-                if (o.linkIds.includes(Math.floor(Math.abs(s.linkId)))) {
-                    o.links.push(s);
+                if (o.linkIdsOn.includes(Math.floor(s.linkId))) {
+                    o.linksOn.push(s);
+                } else if (o.linkIdsOff.includes(Math.floor(s.linkId))) {
+                    o.linksOff.push(s);
                 }
             }
             parsedMap.door.push(o);
@@ -758,6 +772,7 @@ function sendMessage(msg) {
  * @param {string} pw password 
  */
 function createBot(co, un, pw) {
+    /*
     let bot = new WebSocket("wss://skap.io");
     bot.addEventListener("open", () => {
         if (un && pw) bot.send(`{"e":"login","m":{"username":"${un}","password":"${SHA256(un + pw)}"}}`);
@@ -803,6 +818,7 @@ function createBot(co, un, pw) {
                 break;
         }
     });
+    */
 }
 ws.addEventListener("close", () => {
     canSend = false;

@@ -21,7 +21,10 @@
  * @property {number} opacity
  * @property {number} angle
  * @property {number[]} linkIds
- * @property {SkapObject[]} links
+ * @property {number[]} linkIdsOn
+ * @property {number[]} linkIdsOff
+ * @property {SkapObject[]} linksOn
+ * @property {SkapObject[]} linksOff
  * 
  * @typedef SkapEntity
  * @property {"bomb" | "bouncer" | "spike" | "normal" | "megaBouncer" | "taker" | "wavy" | "freezer" | "snek" | "immune" | "monster" | "stutter" | "contractor" | "expanding" | "turretBullet" | "enemyBullet" | "shield" | "healingGhost" | "meteorBullet" | "path"} type
@@ -248,15 +251,22 @@ function render(e) {
         ctx.fillStyle = obj.switch ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
         ctx.fill();
     }
-    // Render doors
+    // Renders
     ctx.fillStyle = renderSettings.colors.doorFill;
     for (let obj of parsedMap.door) {
         ctx.strokeStyle = obj.opened ? renderSettings.colors.doorOpenedOutline : renderSettings.colors.doorClosedOutline;
         ctx.strokeRect(obj.pos.x + 0.5, obj.pos.y + 0.5, obj.size.x - 1, obj.size.y - 1);
         if (!obj.opened) ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-        for (let b of obj.links) {
+        for (let b of obj.linksOn) {
             ctx.beginPath();
             ctx.strokeStyle = b.pressed || b.switch ? renderSettings.colors.doorLineOn : renderSettings.colors.doorLineOff;
+            ctx.moveTo(obj.pos.x + obj.size.x / 2, obj.pos.y + obj.size.y / 2);
+            ctx.lineTo(b.pos.x + b.size.x / 2, b.pos.y + b.size.y / 2);
+            ctx.stroke();
+        }
+        for (let b of obj.linksOff) {
+            ctx.beginPath();
+            ctx.strokeStyle = b.pressed || b.switch ? renderSettings.colors.doorLineOff : renderSettings.colors.doorLineOn;
             ctx.moveTo(obj.pos.x + obj.size.x / 2, obj.pos.y + obj.size.y / 2);
             ctx.lineTo(b.pos.x + b.size.x / 2, b.pos.y + b.size.y / 2);
             ctx.stroke();
