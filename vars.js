@@ -139,7 +139,24 @@ let noUS = false;
 const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "ZeroTix", "ZeroFix", "haha0201", "[CLIENT]"];
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");
-const URLRegex = /(\s|^)(https?:\/\/[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+(\/[A-Za-z0-9-_]+)*(\.[a-z]+)?(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?)*)?(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)/g;
+const URLRegex = /(\s|^)(https?:\/\/[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+(\/[A-Za-z0-9-_]+)*?\/(\.[a-z]+)?(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?)*)?(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)/g;
+/*
+(\s|^)
+HTTP
+(https?:\/\/
+DOMAIN
+[a-z0-9][a-z0-9-]*
+CODOMAIN
+(\.[a-z0-9][a-z0-9-]*)+
+PATH
+(\/[A-Za-z0-9-_]+)*\/?
+FILE
+(\.[a-z]+)?
+QUERY
+(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?)*)?
+FRAGMENT
+(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)
+*/
 let id = "";
 let bots = [];   
 let botPw = JSON.parse(localStorage.getItem("botPw") || "{}");
@@ -192,6 +209,20 @@ const backtoLogin = document.getElementById("backtoLogin");
 const gamesDiv = document.getElementById("gamesDiv");
 const gameListDiv = document.getElementById("games");
 const refresh = document.getElementById("refresh");
+
+// createGame
+const createGameMenuBtn = document.getElementById("createGameMenuBtn");
+const createGameMenu = document.getElementById("createGameMenu");
+const gameName = document.getElementById("gameName");
+const gameFile = document.getElementById("gameFile");
+const gameFileLabel = document.getElementById("gameFileLabel");
+const createGameBtn = document.getElementById("createGameBtn");
+const perms = document.getElementById("perms");
+const private = document.getElementById("private");
+const gamePwWrapper = document.getElementById("gamePwWrapper");
+const gamePw = document.getElementById("gamePw");
+const powerRestrict = document.getElementById("powerRestrict");
+const uploadMap = document.getElementById("uploadMap");
 
 // GameDiv
 const gameDiv = document.getElementById("gameDiv");

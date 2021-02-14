@@ -315,6 +315,51 @@ Owner:<ul>
     power1.addEventListener("keydown", e => {
         e.stopPropagation();
     });
+    createGameMenuBtn.addEventListener("click", () => {
+        hide(gamesDiv);
+        show(createGameMenu);
+    });
+    gameFile.addEventListener("input", () => {
+        gameFileLabel.innerHTML = gameFile.files[0].name;
+    });
+    private.addEventListener("input", () => {
+        if (private.checked) show(gamePwWrapper);
+        else hide(gamePwWrapper);
+    });
+    createGameBtn.addEventListener("click", () => {
+        if (gameFile.files.length) {
+            gameFile.files[0].text().then(e => {
+                try {
+                    send({
+                        e: "createGame",
+                        j: JSON.parse(e),
+                        s: {
+                            n: gameName.value,
+                            g: perms.checked,
+                            p: private.checked,
+                            pa: gamePw.value,
+                            r: powerRestrict.checked,
+                            u: uploadMap.checked
+                        }
+                    });
+                } catch {
+                    customAlert("Something went wrong. The JSON file was probably not JSON.")
+                }
+            });
+        } else {
+            send({
+                e: "createGame",
+                s: {
+                    n: gameName.value,
+                    g: perms.checked,
+                    p: private.checked,
+                    pa: gamePw.value,
+                    r: powerRestrict.checked,
+                    u: uploadMap.checked
+                }
+            });
+        }
+    });
 });
 ws.addEventListener("message", e => {
     let msg = JSON.parse(e.data);
@@ -375,6 +420,7 @@ ws.addEventListener("message", e => {
             else {
                 initMap(msg.i.map);
                 hide(gamesDiv);
+                hide(createGameMenu);
                 show(gameDiv);
                 for (let i of msg.i.powers) {
                     powers.add(i);

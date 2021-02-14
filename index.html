@@ -10,10 +10,11 @@
     </head>
     <body>
         <h2 id="connecting">Connecting...</h2>
+
         <div id="loginDiv" class="hidden">
             <h1 id="logo">Skap Client<span id="scuffed">Scuffed</span><span id="hacked">>hacked</span></h1>
             <p id="update">
-                <del>BOTS GALORE</del> RIP Bots
+                You can create games now
             </p>
             <br>
             <div id="loginData">
@@ -62,6 +63,8 @@
                 <h2>Changelog</h2>
                 <button id="closeChangelog">&times;</button>
                 
+                <h3>createGame</h3>
+
                 <h3>Bots removed due to backlash</h3>
                 <ul>
                     <li>Yeah...</li>
@@ -145,14 +148,55 @@
                 </ul>
             </div>
         </div>
+
         <div id="gamesDiv" class="hidden">
             <button id="backtoLogin">Back</button>
             <div id="gamesMenu">
                 <h2>Game list</h2>
                 <button id="refresh">Refresh</button>
+                <button id="createGameMenuBtn">Create game</button>
             </div><br>
             <div id="games"></div>
         </div>
+
+        <div id="createGameMenu" class="hidden">
+            <h1>Create Game</h1>
+            <input type="text" id="gameName" placeholder="Game Name (optional)" />
+            <br><br>
+            <label id="gameFileLabel" for="gameFile">Game JSON file (default overworld)</label>
+            <input type="file" name="gameFile" id="gameFile" accept=".json" class="hidden" />
+            <br><br>
+            <label for="perms" class="switchLabel">
+                Perms:
+                <input type="checkbox" name="perms" id="perms" class="hidden" checked />
+                <span class="switch"></span>
+            </label>
+            <br>
+            <label for="private" class="switchLabel">
+                Private?
+                <input type="checkbox" name="private" id="private" class="hidden" />
+                <span class="switch"></span>
+            </label>
+            <div id="gamePwWrapper" class="hidden">
+                <br>
+                <input type="text" name="gamePw" id="gamePw" placeholder="Password" />
+            </div>
+            <br>
+            <label for="powerRestrict" class="switchLabel" class="hidden">
+                Restrict powers?
+                <input type="checkbox" name="powerRestrict" id="powerRestrict" class="hidden" />
+                <span class="switch"></span>
+            </label>
+            <br>
+            <label for="uploadMap" class="switchLabel">
+                Upload map?
+                <input type="checkbox" name="uploadMap" id="uploadMap" class="hidden" />
+                <span class="switch"></span>
+            </label>
+            <br><br>
+            <button id="createGameBtn">Let's go! (this will take a while for large maps)</button>
+        </div>
+
         <div id="gameDiv" class="hidden">
             <div id="UI">
                 <div id="playerList" class="noselect"></div>
