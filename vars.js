@@ -62,10 +62,10 @@ let renderSettings = {
         playerFreeze: "#00ffff",
         playerFreezeDead: "#ff0080",
 
-        meteor: "#c08000",
-        ghost: "#20a040",
+        meteor: "#c08000c0",
+        ghost: "#20a040c0",
         blueFire: "#4040ff10",
-        shield: "#383838",
+        shield: "#383838c0",
         frost: "#00ffff40"
     },
     textures: {
@@ -139,24 +139,8 @@ let noUS = false;
 const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "ZeroTix", "ZeroFix", "haha0201", "[CLIENT]"];
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");
-const URLRegex = /(\s|^)(https?:\/\/[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+(\/[A-Za-z0-9-_]+)*?\/(\.[a-z]+)?(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?)*)?(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)/g;
-/*
-(\s|^)
-HTTP
-(https?:\/\/
-DOMAIN
-[a-z0-9][a-z0-9-]*
-CODOMAIN
-(\.[a-z0-9][a-z0-9-]*)+
-PATH
-(\/[A-Za-z0-9-_]+)*\/?
-FILE
-(\.[a-z]+)?
-QUERY
-(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?)*)?
-FRAGMENT
-(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)
-*/
+const URLRegex = /(\s|^)(https?:\/\/[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+((\/[A-Za-z0-9-_]+)*)?(\.[a-z]+)?\/?(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?)*)?(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)/g;
+
 let id = "";
 let bots = [];   
 let botPw = JSON.parse(localStorage.getItem("botPw") || "{}");

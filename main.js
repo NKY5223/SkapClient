@@ -105,6 +105,8 @@ ws.addEventListener("open", () => {
                 m: parseInt(el.dataset.slot, 10),
                 i: parseInt(el.dataset.power, 10)
             });
+            if (el.dataset.slot === "0") power0.value = el.dataset.power;
+            else power1.value = el.dataset.power;
         });
     }
 
