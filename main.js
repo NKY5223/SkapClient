@@ -24,8 +24,8 @@ ws.addEventListener("open", () => {
         ws.send(`{
             "e": "login",
             "m": {
-                "username": ${username.value},
-                "password": ${SHA256(username.value + password.value)}
+                "username": "${username.value}",
+                "password": "${SHA256(username.value + password.value)}"
             }
         }`);
     });
