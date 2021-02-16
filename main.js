@@ -9,10 +9,10 @@ ws.addEventListener("open", () => {
         show(play);
     }
     if (localStorage.getItem("cookie")) {
-        send({
-            e: "session",
-            cookie: localStorage.getItem("cookie")
-        });
+        ws.send(`{
+            "e": "session",
+            "cookie": "${localStorage.getItem("cookie")}"
+        }`);
     }
     username.addEventListener("keydown", e => {
         e.stopPropagation();
@@ -21,16 +21,16 @@ ws.addEventListener("open", () => {
         e.stopPropagation();
     });
     login.addEventListener("click", () => {
-        send({
-            e: "login",
-            m: {
-                username: username.value,
-                password: SHA256(username.value + password.value)
+        ws.send(`{
+            "e": "login",
+            "m": {
+                "username": ${username.value},
+                "password": ${SHA256(username.value + password.value)}
             }
-        });
+        }`);
     });
     changingRoomBtn.addEventListener("click", () => {
-        send({ e: "getStyle" });
+        ws.send(`{ "e": "getStyle" }`);
         hide(logoutDiv);
         show(changingRoom);
     });
@@ -39,75 +39,75 @@ ws.addEventListener("open", () => {
         show(logoutDiv);
     });
     playerColor.addEventListener("input", () => {
-        send({
-            e: "colorChange",
-            c: [
+        ws.send(`{
+            "e": "colorChange",
+            "c": [
                 parseInt(playerColor.value.slice(1, 3), 16),
                 parseInt(playerColor.value.slice(3, 5), 16),
                 parseInt(playerColor.value.slice(5, 7), 16)
             ]
-        });
+        }`);
     });
     logout.addEventListener("click", () => {
-        send({
-            e: "logout"
-        });
+        ws.send(`{ "e": "logout" }`);
     });
     guest.addEventListener("click", () => {
-        send({
-            e: "guest"
-        });
+        ws.send(`{ "e": "guest" }`);
     });
     register.addEventListener("click", () => {
-        send({
-            e: "register",
-            m: {
-                username: username.value,
-                password: SHA256(username.value + password.value)
+        ws.send(`{
+            "e": "register",
+            "m": {
+                "username": "${username.value}",
+                "password": "${SHA256(username.value + password.value)}"
             }
-        });
+        }`);
     });
     play.addEventListener("click", () => {
-        send({
-            e: "games"
-        });
+        ws.send(`{ "e": "games" }`);
     });
     backtoLogin.addEventListener("click", () => {
         hide(gamesDiv);
         show(loginDiv);
     });
     refresh.addEventListener("click", () => {
-        send({
-            e: "games"
-        });
+        ws.send(`{ "e": "games" }`);
     });
     power0.addEventListener("input", () => {
-        send({ e: "powerChange", m: 0, i: power0.value = clamp(0, power0.value, 10) });
+        ws.send(`{
+            "e": "powerChange",
+            "m": 0,
+            "i": ${power0.value = clamp(0, power0.value, 10)}
+        }`);
         for (let b of bots) {
-            b.send(JSON.stringify({
-                e: "powerChange",
-                m: 0,
-                i: parseInt(power0.value, 10)
-            }));
+            b.send(`{
+                "e": "powerChange",
+                "m": 0,
+                "i": ${parseInt(power0.value)}
+            }`);
         }
     });
     power1.addEventListener("input", () => {
-        send({ e: "powerChange", m: 1, i: power1.value = clamp(0, power1.value, 10) });
+        ws.send(`{
+            "e": "powerChange",
+            "m": 1,
+            "i": ${power1.value = clamp(0, power1.value, 10)}
+        }`);
         for (let b of bots) {
-            b.send(JSON.stringify({
-                e: "powerChange",
-                m: 1,
-                i: parseInt(power1.value, 10)
-            }));
+            b.send(`{
+                "e": "powerChange",
+                "m": 1,
+                "i": ${parseInt(power1.value)}
+            }`);
         }
     });
     for (let el of document.getElementsByClassName("poweroption")) {
         el.addEventListener("click", () => {
-            send({
-                e: "powerChange",
-                m: parseInt(el.dataset.slot, 10),
-                i: parseInt(el.dataset.power, 10)
-            });
+            ws.send(`{
+                "e": "powerChange",
+                "m": ${parseInt(el.dataset.slot, 10)},
+                "i": ${parseInt(el.dataset.power, 10)}
+            }`);
             if (el.dataset.slot === "0") power0.value = el.dataset.power;
             else power1.value = el.dataset.power;
         });
@@ -357,34 +357,34 @@ Owner:<ul>
         if (gameFile.files.length) {
             gameFile.files[0].text().then(e => {
                 try {
-                    send({
-                        e: "createGame",
-                        j: JSON.parse(e),
-                        s: {
-                            n: gameName.value,
-                            g: perms.checked,
-                            p: private.checked,
-                            pa: gamePw.value,
-                            r: powerRestrict.checked,
-                            u: uploadMap.checked
+                    ws.send(`{
+                        "e": "createGame",
+                        "j": ${e},
+                        "s": {
+                            "n": "${gameName.value}",
+                            "g": ${perms.checked},
+                            "p": ${private.checked},
+                            "pa": "${gamePw.value}",
+                            "r": ${powerRestrict.checked},
+                            "u": ${uploadMap.checked}
                         }
-                    });
+                    }`);
                 } catch {
                     customAlert("Something went wrong. The JSON file was probably not JSON.")
                 }
             });
         } else {
-            send({
-                e: "createGame",
-                s: {
-                    n: gameName.value,
-                    g: perms.checked,
-                    p: private.checked,
-                    pa: gamePw.value,
-                    r: powerRestrict.checked,
-                    u: uploadMap.checked
+            ws.send(`{
+                "e": "createGame",=
+                "s": {
+                    "n": "${gameName.value}",
+                    "g": ${perms.checked},
+                    "p": ${private.checked},
+                    "pa": "${gamePw.value}",
+                    "r": ${powerRestrict.checked},
+                    "u": ${uploadMap.checked}
                 }
-            });
+            }`);
         }
     });
 });
@@ -425,15 +425,15 @@ ws.addEventListener("message", e => {
                 div.innerHTML = `<h2>${g.name}<br>${g.players} players</h2><h5>${g.id}</h5><p>${String(g.mapName).safe()} by ${String(g.creator).safe()}</p>`;
                 div.addEventListener("click", () => {
                     if (g.private) {
-                        send({
-                            e: "join",
-                            g: g.id,
-                            p: prompt("Password?")
-                        });
-                    } else send({
-                        e: "join",
-                        g: g.id
-                    });
+                        ws.send(`{
+                            "e": "join",
+                            "g": "${g.id}",
+                            "p": "${prompt("Password?")}"
+                        }`);
+                    } else ws.send(`{
+                        "e": "join",
+                        "g": "${g.id}"
+                    }`);
                     id = g.id;
                     if (i < 4) noBot = true;
                 });
@@ -467,21 +467,21 @@ ws.addEventListener("message", e => {
                 // Handle game controls
                 document.addEventListener("keydown", e => {
                     if (keys.includes(e.key.toLowerCase())) {
-                        send({
-                            e: "input",
-                            input: {
-                                keys: keys.indexOf(e.key.toLowerCase()),
-                                value: true
+                        ws.send(`{
+                            "e": "input",
+                            "input": {
+                                "keys": ${keys.indexOf(e.key.toLowerCase())},
+                                "value": true
                             }
-                        });
+                        }`);
                         for (let b of bots) {
-                            b.send(JSON.stringify({
-                                e: "input",
-                                input: {
-                                    keys: keys.indexOf(e.key.toLowerCase()),
-                                    value: true
+                            b.send(`{
+                                "e": "input",
+                                "input": {
+                                    "keys": ${keys.indexOf(e.key.toLowerCase())},
+                                    "value": true
                                 }
-                            }));
+                            }`);
                         }
                     }
                     switch (e.key.toLowerCase()) {
@@ -522,21 +522,21 @@ ws.addEventListener("message", e => {
                 });
                 document.addEventListener("keyup", e => {
                     if (keys.includes(e.key.toLowerCase())) {
-                        send({
-                            e: "input",
-                            input: {
-                                keys: keys.indexOf(e.key.toLowerCase()),
-                                value: false
+                        ws.send(`{
+                            "e": "input",
+                            "input": {
+                                "keys": ${keys.indexOf(e.key.toLowerCase())},
+                                "value": false
                             }
-                        });
+                        }`);
                         for (let b of bots) {
-                            b.send(JSON.stringify({
-                                e: "input",
-                                input: {
-                                    keys: keys.indexOf(e.key.toLowerCase()),
-                                    value: false
+                            b.send(`{
+                                "e": "input",
+                                "input": {
+                                    "keys": ${keys.indexOf(e.key.toLowerCase())},
+                                    "value": false
                                 }
-                            }));
+                            }`);
                         }
                     }
                 });
@@ -544,42 +544,42 @@ ws.addEventListener("message", e => {
                     let x;
                     if (e.button === 0) x = 5;
                     else if (e.button === 2) x = 6;
-                    send({
-                        e: "input",
-                        input: {
-                            keys: x,
-                            value: true
+                    ws.send(`{
+                        "e": "input",
+                        "input": {
+                            "keys": ${x},
+                            "value": true
                         }
-                    });
+                    }`);
                     for (let b of bots) {
-                        b.send(JSON.stringify({
-                            e: "input",
-                            input: {
-                                keys: x,
-                                value: true
+                        b.send(`{
+                            "e": "input",
+                            "input": {
+                                "keys": ${x},
+                                "value": true
                             }
-                        }));
+                        }`);
                     }
                 });
                 canvas.addEventListener("mouseup", e => {
                     let x;
                     if (e.button === 0) x = 5;
                     else if (e.button === 2) x = 6;
-                    send({
-                        e: "input",
-                        input: {
-                            keys: x,
-                            value: false
+                    ws.send(`{
+                        "e": "input",
+                        "input": {
+                            "keys": ${x},
+                            "value": false
                         }
-                    });
+                    }`);
                     for (let b of bots) {
-                        b.send(JSON.stringify({
-                            e: "input",
-                            input: {
-                                keys: x,
-                                value: false
+                        b.send(`{
+                            "e": "input",
+                            "input": {
+                                "keys": ${x},
+                                "value": false
                             }
-                        }));
+                        }`);
                     }
                 });
                 canvas.addEventListener("contextmenu", e => { e.preventDefault(); });
@@ -846,10 +846,10 @@ function sendMessage(msg) {
             }
         }
     }
-    send({
-        e: "message",
-        message: msg
-    });
+    ws.send(`{
+        "e": "message",
+        "message": "${msg}"
+    }`);
 }
 /**
  * @param {boolean} co color
@@ -870,7 +870,7 @@ function createBot(co, un, pw) {
     let bot = new WebSocket("wss://skap.io");
     bot.addEventListener("open", () => {
         if (un && pw) bot.send(`{"e":"login","m":{"username":"${un}","password":"${SHA256(un + pw)}"}}`);
-        else bot.send(`{"e":"guest"}`); 
+        else bot.send(`{"e":"guest"}`);
     });
     bot.addEventListener("message", e => {
         let msg = JSON.parse(e.data);
