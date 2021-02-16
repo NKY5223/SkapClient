@@ -62,10 +62,10 @@ let renderSettings = {
         playerFreeze: "#00ffff",
         playerFreezeDead: "#ff0080",
 
-        meteor: "#c08000c0",
-        ghost: "#20a040c0",
+        meteor: "#c08000e0",
+        ghost: "#20a040e0",
         blueFire: "#4040ff10",
-        shield: "#383838c0",
+        shield: "#383838e0",
         frost: "#00ffff40"
     },
     textures: {
@@ -146,6 +146,7 @@ let bots = [];
 let botPw = JSON.parse(localStorage.getItem("botPw") || "{}");
 let botColor = localStorage.getItem("color");
 let canSend = false;
+let noBot = false;
 
 let maxLU = 0;
 let lastUpdate = 0;

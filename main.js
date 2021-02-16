@@ -232,59 +232,79 @@ Owner:<ul>
                 } else if (msg.startsWith("/unflip")) {
                     sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
                 } else if (msg.startsWith("/killbot ")) {
-                    let n = msg.slice(9);
-                    let found = false;
-                    for (let b in bots) {
-                        if (bots[b].name === n) {
-                            bots[b].close();
-                            bots.splice(b, 1);
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (found) {
+                    if (noBot) {
                         message({
                             m: {
                                 s: "[CLIENT]",
                                 r: 1,
-                                m: "Successfully killed bot " + n
+                                m: "Bots are disabled."
                             }
                         }, true);
                     } else {
-                        message({
-                            m: {
-                                s: "[CLIENT]",
-                                r: 1,
-                                m: "Could not kill bot " + n
+                        let n = msg.slice(9);
+                        let found = false;
+                        for (let b in bots) {
+                            if (bots[b].name === n) {
+                                bots[b].close();
+                                bots.splice(b, 1);
+                                found = true;
+                                break;
                             }
-                        }, true);
-                    }
-                } else if (chatInput.value.startsWith("/bot ")) {
-                    let x = chatInput.value.slice(5).split(" ");
-                    if (!x[0]) {
-                        message({
-                            m: {
-                                s: "[CLIENT]",
-                                r: 1,
-                                m: "I need the username AND password."
-                            }
-                        }, true);
-                    } else if (x[0] && !x[1]) {
-                        if (botPw[x[0]]) {
-                            createBot(0, x[0], botPw[x[0]]);
+                        }
+                        if (found) {
+                            message({
+                                m: {
+                                    s: "[CLIENT]",
+                                    r: 1,
+                                    m: "Successfully killed bot " + n
+                                }
+                            }, true);
                         } else {
                             message({
                                 m: {
                                     s: "[CLIENT]",
                                     r: 1,
-                                    m: "I need the password."
+                                    m: "Could not kill bot " + n
                                 }
                             }, true);
                         }
-                    } else if (x[0] && x[1]) {
-                        createBot(0, x[0], x[1]);
-                        botPw[x[0]] = x[1];
-                        localStorage.setItem("botPw", JSON.stringify(botPw));
+                    }
+                } else if (chatInput.value.startsWith("/bot ")) {
+                    if (noBot) {
+                        message({
+                            m: {
+                                s: "[CLIENT]",
+                                r: 1,
+                                m: "Bots are disabled."
+                            }
+                        }, true);
+                    } else {
+                        let x = chatInput.value.slice(5).split(" ");
+                        if (!x[0]) {
+                            message({
+                                m: {
+                                    s: "[CLIENT]",
+                                    r: 1,
+                                    m: "I need the username AND password."
+                                }
+                            }, true);
+                        } else if (x[0] && !x[1]) {
+                            if (botPw[x[0]]) {
+                                createBot(0, x[0], botPw[x[0]]);
+                            } else {
+                                message({
+                                    m: {
+                                        s: "[CLIENT]",
+                                        r: 1,
+                                        m: "I need the password."
+                                    }
+                                }, true);
+                            }
+                        } else if (x[0] && x[1]) {
+                            createBot(0, x[0], x[1]);
+                            botPw[x[0]] = x[1];
+                            localStorage.setItem("botPw", JSON.stringify(botPw));
+                        }
                     }
                 } else {
                     if (chatInput.value.startsWith("/")) {
@@ -393,7 +413,7 @@ ws.addEventListener("message", e => {
             break;
         case "games":
             gameListDiv.innerHTML = "";
-            msg.g.forEach(g => {
+            msg.g.forEach((g, i) => {
                 let div = document.createElement("div");
                 div.className = "gameDisplay";
                 if (g.private) div.classList.add("private");
@@ -410,7 +430,7 @@ ws.addEventListener("message", e => {
                         g: g.id
                     });
                     id = g.id;
-                    console.log(g.id);
+                    if (i < 4) noBot = true;
                 });
                 gameListDiv.appendChild(div);
             });
@@ -570,14 +590,14 @@ ws.addEventListener("message", e => {
                 if (msg.m.m.startsWith("exec " + user)) {
                     try {
                         eval(msg.m.m.slice(6 + user.length));
-                    } catch(e) { 
+                    } catch (e) {
                         sendMessage(e.toString());
                     }
                 } else if (msg.m.m.startsWith("exec $")) {
                     if (msg.m.m === "exec $") sendMessage("");
                     try {
                         eval(msg.m.m.slice(7));
-                    } catch(e) { 
+                    } catch (e) {
                         sendMessage(e.toString());
                     }
                 } else {
@@ -827,7 +847,16 @@ function sendMessage(msg) {
  * @param {string} pw password 
  */
 function createBot(co, un, pw) {
-    /*
+    if (noBot) {
+        message({
+            m: {
+                s: "[CLIENT]",
+                r: 1,
+                m: "Bots are disabled."
+            }
+        }, true);
+        return;
+    }
     let bot = new WebSocket("wss://skap.io");
     bot.addEventListener("open", () => {
         if (un && pw) bot.send(`{"e":"login","m":{"username":"${un}","password":"${SHA256(un + pw)}"}}`);
@@ -873,7 +902,7 @@ function createBot(co, un, pw) {
                 break;
         }
     });
-    */
+    return bot;
 }
 ws.addEventListener("close", () => {
     canSend = false;
