@@ -846,10 +846,10 @@ function sendMessage(msg) {
             }
         }
     }
-    ws.send(`{
-        "e": "message",
-        "message": "${msg}"
-    }`);
+    ws.send(JSON.stringify({
+        e: "message",
+        message: msg
+    }));
 }
 /**
  * @param {boolean} co color
