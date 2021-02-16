@@ -751,9 +751,7 @@ function initMap(i) {
             o.linkIdsOff = [];
             o.linksOn = [];
             o.linksOff = [];
-            console.log(o);
             for (let l of o.linkIds) {
-                console.log(l);
                 l = parseInt(l, 10);
                 if (l < 0) {
                     o.linkIdsOff.push(-l);
@@ -790,6 +788,13 @@ function initMap(i) {
  */
 function message(msg, force = false) {
     if (!force && blocked.includes(msg.m.s) && !devs.includes(msg.m.s)) {
+        message({
+            m: {
+                s: msg.m.s,
+                r: msg.m.r,
+                m: "<i>[Blocked]</i>"
+            }
+        }, true);
         return;
     }
     let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
@@ -860,7 +865,7 @@ function createBot(co, un, pw) {
     let bot = new WebSocket("wss://skap.io");
     bot.addEventListener("open", () => {
         if (un && pw) bot.send(`{"e":"login","m":{"username":"${un}","password":"${SHA256(un + pw)}"}}`);
-        else bot.send(`{"e":"guest"}`);
+        else bot.send(`{"e":"guest"}`); 
     });
     bot.addEventListener("message", e => {
         let msg = JSON.parse(e.data);
