@@ -44,7 +44,7 @@
                 <label for="playerColor">Color: </label>
                 <input type="color" id="playerColor" />
             </div>
-            <br>    
+            <br>
             <div id="logoutDiv" class="hidden">
                 <button id="changingRoomBtn">Changing Room</button>
                 <br><br>
@@ -62,13 +62,20 @@
                 <a href="https://discord.gg/NsmaBUb" target="_blank" title="Join the Discord">
                     <img src="discord.png" width="50" height="50" />
                 </a>
-                <button id="changelogBtn">Changelog</button> &lt;&lt;&lt; HERE
+                <button id="changelogBtn">Changelog</button>
             </div>
             <!-- CHANGELOG -->
             <div id="changelog" class="hidden">
                 <h2>Changelog</h2>
                 <button id="closeChangelog">&times;</button>
-
+                <h3> Update !!</h3>
+                <ul>
+                	<li>H to toggle displaying the leaderboard and chat</li>
+                	<li>Small Performance Optimizations</li>
+                	<li>Removed some of the useless debug text</li>
+                	<li>Removed the redundant fuel bar at the bottom</li>
+                	<li>Shuffled some of the fonts</li>
+                </ul>
                 <h3>Misc</h3>
                 <ul>
                     <li>Fixed URL parsing</li>
@@ -218,22 +225,22 @@
         <div id="gameDiv" class="hidden">
             <div id="UI">
                 <div id="playerList" class="noselect"></div>
-                <div id="fuelBarWrap"><div id="fuelBarInner"></div></div>
+                <!-- <div id="fuelBarWrap"><div id="fuelBarInner"></div></div> -->
                 <div id="chat">
                     <div id="chatContent"></div>
                     <input id="chatInput" placeholder="Say something...">
                 </div>
-                <div id="pos">
+                <!-- <div id="pos">
                     <p>pos: <span id="posX"></span>, <span id="posY"></span></p>
                     <p>vel: <span id="vel"></span> (<span id="velX"></span>, <span id="velY"></span>)</p>
                     <P>maxVel: <span id="maxVel"></span></P>
                     <p>aim: <span id="aimX"></span>, <span id="aimY"></span></p>
-                </div>
-                <div id="lastUpdateDiv">
+                </div> -->
+                <!-- <div id="lastUpdateDiv">
                     <span id="lastUpdateDisplay" class="noselect">0</span>ms since last update<br>
                     (<span id="minMaxUpdateDisplay" class="noselect">0 - 0</span>ms)<br>
                     <span id="FPS">0</span>fps
-                </div>
+                </div> -->
                 <h3 id="deathText" class="hidden noselect">
                     You are dead. Wait for someone to rescue you or press R to respawn.<br>
                     If you have perms, you can type /res in chat to rescue yourself.

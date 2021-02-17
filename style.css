@@ -83,6 +83,7 @@ input {
 #update {
     color: yellow;
     position: relative;
+    top: 25px;
     animation: cubic-bezier(.5, .3, .3, .5) pulse 1s infinite;
 }
 
@@ -94,10 +95,10 @@ button {
     cursor: pointer;
 }
 #play {
-    color: #ffffff;
+    color: black;
     border: 2.5px solid #202020;
     border-radius: 10px;
-    background: #404040;
+    background: #6b6b6b;
     padding: 20px 40px;
 }
 
@@ -131,6 +132,36 @@ code {
     background: #808080;
     padding: 2px 5px;
 }
+#changelogBtn {
+	border: none;
+	background-color: #5e63ad;
+	animation: animateChangelog 4s ease-in-out infinite;
+}
+
+#changingRoomBtn {
+	background-color: #e87838;
+	border: none;
+	padding: 5px;
+}
+
+@keyframes animateChangelog {
+	0% {
+		background-color: #5e63ad;
+	}
+	50% {
+		background-color: #55e088;
+	}
+	100% {
+		background-color: #5e63ad;
+	}
+}
+
+#logout {
+	background-color: #ad2634;
+	border: none;
+	padding: 5px;
+}
+
 #closeChangelog {
     color: red;
     position: absolute;

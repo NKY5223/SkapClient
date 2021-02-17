@@ -1,3 +1,5 @@
+
+
 const ws = new WebSocket("wss://skap.io");
 const URLParams = new URLSearchParams(location.search);
 
@@ -115,7 +117,7 @@ let parsedMap = {
     block1: [],
     box: []
 };
-let camScale = 5;
+let camScale = 8;
 let camX = 0;
 let camY = 0;
 let camSpeed = 5;
@@ -213,9 +215,10 @@ const uploadMap = document.getElementById("uploadMap");
 // GameDiv
 const gameDiv = document.getElementById("gameDiv");
 const playerList = document.getElementById("playerList");
+const chatDiv = document.getElementById("chat");
 const chat = document.getElementById("chatContent");
 const chatInput = document.getElementById("chatInput");
-const fuelBar = document.getElementById("fuelBarInner");
+// const fuelBar = document.getElementById("fuelBarInner");
 const lastUpdateDisplay = document.getElementById("lastUpdateDisplay");
 const minMaxUpdate = document.getElementById("minMaxUpdateDisplay");
 const FPSDisplay = document.getElementById("FPS");
@@ -280,6 +283,14 @@ function hide(el) {
 function show(el) {
     el.classList.remove("hidden");
 }
+
+
+// round number
+
+function round(value, decimals) {
+	return Math.round(value * 10 ** decimals) / 10 ** decimals;
+}
+
 /**
  * LOAD IMAGE
  * @param {string} src 

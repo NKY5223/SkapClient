@@ -1,0 +1,20 @@
+{
+  "name": "SkapClient",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "serve": "live-server --port=80",
+    "lint": "eslint . --ext .js --fix"
+  },
+  "keywords": [],
+  "author": "NKY && ZeroTix",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "live-server": "^1.2.1",
+    "prettier": "^2.2.1"
+  }
+}
