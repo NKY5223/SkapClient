@@ -1,27 +1,47 @@
 /**
  * @typedef SkapObject
  * @property {string} id
- * @property {"obstacle" | "lava" | "slime" | "teleporter" | "text"} type
- * @property {number} dir
+ * @property {"obstacle" | "lava" | "slime" | "teleporter" | "text" | "door" | "button"} type
+ * @property {"0" | "1" | "2" | "3"} dir
  * @property {Object} pos
  * @property {number} pos.x
  * @property {number} pos.y
  * @property {Object} size
  * @property {number} size.x
  * @property {number} size.y
+ * @property {Object} center
+ * @property {number} center.x
+ * @property {number} center.y
  * @property {string} text
  * @property {boolean} opened
+ * @property {boolean} pressed
+ * @property {boolean} switch
+ * @property {0 | 1} layer
+ * @property {[number, number, number]} color
+ * @property {number} opacity
+ * @property {number} angle
+ * @property {number[]} linkIds
+ * @property {number[]} linkIdsOn
+ * @property {number[]} linkIdsOff
+ * @property {SkapObject[]} linksOn
+ * @property {SkapObject[]} linksOff
  * 
  * @typedef SkapEntity
- * @property {"bomb" | "bouncer" | "spike" | "normal"} type
+ * @property {"bomb" | "bouncer" | "spike" | "normal" | "megaBouncer" | "taker" | "wavy" | "freezer" | "snek" | "immune" | "monster" | "stutter" | "contractor" | "expanding" | "turretBullet" | "enemyBullet" | "shield" | "healingGhost" | "meteorBullet" | "path"} type
  * bombs/bouncers/normal/spike
  * @property {number} radius
  * @property {number} opacity
  * @property {boolean} phase
- * @property {boolean} explosing
+ * @property {boolean} exploding FINALLY TYPO                      v 
+ * @property {boolean} triggered why can't you merge these two .-. ^
  * @property {Object} pos
  * @property {number} pos.x
  * @property {number} pos.y
+ * rotating >:(
+ * @property {number} angle
+ * snek >:(
+ * @property {number} dir
+ * @property {{ x: number, y: number, radius: number, time: number }[]} states
  * 
  * @typedef Player
  * @property {Object} pos
@@ -35,8 +55,17 @@
  * @property {0 | 1 | 2 | 3} gravDir
  * @property {3 | 2.25} radius
  * @property {string} name
- * @property {string} color
- * @property {boolean} died
+ * @property {[number, number, number]} color
+ * @property {string} hat
+ */
+/**
+ * @typedef SkapMap
+ * @property {Object} areaSize
+ * @property {number} areaSize.x
+ * @property {number} areaSize.y
+ * @property {[number, number, number]} areaColor
+ * @property {[number, number, number, number]} backgroundColor
+ * @property {SkapObject[]} objects
  */
 
 /**
@@ -51,184 +80,332 @@
  * @param {Object<string, Player>} e.players id:Player
  * @param {[string, string, boolean][]} e.playerList
  * @param {SkapEntity[]} e.entities
- * @param {Object} map
- * @param {Object} map.areaSize
- * @param {number} map.areaSize.x
- * @param {number} map.areaSize.y
- * @param {SkapObject[]} map.objects
  */
-function render(e, map) {
-    ctx.fillStyle = fill.background;
-    ctx.fillRect(0, 0, map.areaSize.x, map.areaSize.y);
-    // Render grav zones
-    ctx.setLineDash([2, 6]);
+function render(e) {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
     ctx.lineCap = "round";
-    for (let obj of map.objects.filter(obj => obj.type === "gravityZone")) {
-        ctx.strokeStyle = fill.gravOutline[obj.dir];
-        ctx.fillStyle = fill.gravFill[obj.dir];
-        ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+
+
+    ctx.fillStyle = renderSettings.colors.obstacle;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.resetTransform();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.scale(camScale, camScale);
+    ctx.translate(-camX, -camY);
+
+    ctx.fillStyle = parsedMap.background;
+    ctx.fillRect(0, 0, map.areaSize.x, map.areaSize.y);
+
+    // Camera
+    if (freeCam) {
+        camX += camSpeed / camScale * (keysDown.has("arrowright") - keysDown.has("arrowleft"));
+        camY += camSpeed / camScale * (keysDown.has("arrowdown") - keysDown.has("arrowup"));
     }
-    ctx.setLineDash([]);
-    // Render obstacles
-    ctx.fillStyle = fill.obstacle;
-    for (let obj of map.objects.filter(obj => obj.type === "obstacle")) {
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+
+    if (!e) {
+        e = {
+            infos: {
+                id: "TEMPORARY_ID",
+                fuel: 12,
+                oneCooldown: null,
+                twoCooldown: null,
+                oneHeat: 0,
+                twoHeat: 0
+            },
+            players: {},
+            playerList: ["Sorry, but the data has not yet loaded.", "", true],
+            entities: []
+        }
     }
-    // Render slime
-    ctx.fillStyle = fill.slime;
-    for (let obj of map.objects.filter(obj => obj.type === "slime")) {
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-    }
-    // Render lava
-    ctx.fillStyle = fill.lava;
-    for (let obj of map.objects.filter(obj => obj.type === "lava")) {
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+    let mX = (mouse.x - canvas.width / 2) / camScale + camX;
+    let mY = (mouse.y - canvas.height / 2) / camScale + camY;
+    aimXSpan.innerHTML = mX.toFixed(3);
+    aimYSpan.innerHTML = mY.toFixed(3);
+    send({
+        e: "aim",
+        m: [
+            mX,
+            mY
+        ]
+    });
+    for (let b of bots) b.send(JSON.stringify({
+        e: "aim",
+        m: [
+            mX,
+            mY
+        ]
+    }))
+
+    if (renderSettings.render.obstacle) {
+        // Render obstacles
+        ctx.fillStyle = renderSettings.colors.obstacle;
+        for (let obj of parsedMap.obstacle) {
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
     }
     // Render the ****ing teleporters (they suck)
-    for (let obj of map.objects.filter(obj => obj.type === "teleporter")) {
+    if (renderSettings.render.teleporter) {
+        for (let obj of parsedMap.teleporter) {
+            ctx.save();
+            ctx.translate(obj.pos.x, obj.pos.y);
+            let gradient;
+            switch (obj.dir) {
+                case "0":
+                    gradient = ctx.createLinearGradient(0, 0, 0, obj.size.y);
+                    break;
+                case "1":
+                    gradient = ctx.createLinearGradient(obj.size.x, 0, 0, 0);
+                    break;
+                case "2":
+                    gradient = ctx.createLinearGradient(0, obj.size.y, 0, 0);
+                    break;
+                case "3":
+                    gradient = ctx.createLinearGradient(0, 0, obj.size.x, 0);
+                    break;
+            }
+            if (gradient) {
+                gradient.addColorStop(0, parsedMap.background);
+                gradient.addColorStop(1, renderSettings.colors.obstacle);
+            } else gradient = parsedMap.background;
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, obj.size.x, obj.size.y);
+            ctx.restore();
+        }
+    }
+    if (renderSettings.render.lava) {
+        // Render lava
+        ctx.fillStyle = renderSettings.colors.lava;
+        for (let obj of parsedMap.lava) {
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
+    }
+    // Render rotLava
+    ctx.globalAlpha = 1;
+    for (let obj of parsedMap.rotatingLava) {
         ctx.save();
-        ctx.translate(obj.pos.x, obj.pos.y);
-        let gradient;
-        switch (obj.dir.toString()) {
-            case "0":
-                gradient = ctx.createLinearGradient(0, 0, 0, obj.size.y);
+        ctx.translate(obj.center.x, obj.center.y);
+        ctx.rotate(obj.angle);
+        ctx.fillRect(-obj.size.x / 2, -obj.size.y / 2, obj.size.x, obj.size.y);
+        ctx.restore();
+    }
+    if (renderSettings.render.ice) {
+        // Render ice
+        ctx.fillStyle = renderSettings.colors.ice;
+        for (let obj of parsedMap.ice) {
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
+    }
+    if (renderSettings.render.slime) {
+        // Render slime
+        ctx.fillStyle = renderSettings.colors.slime;
+        for (let obj of parsedMap.slime) {
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
+    }
+    // Render buttons
+    ctx.setLineDash([]);
+    for (let obj of parsedMap.button) {
+        ctx.beginPath();
+        ctx.moveTo(
+            obj.pos.x + (obj.dir === "0" ? obj.size.x * 0.1 : 0),
+            obj.pos.y + (obj.dir === "3" ? obj.size.y * 0.1 : 0)
+        );
+        ctx.lineTo(
+            obj.pos.x + (obj.dir === "0" ? obj.size.x * 0.9 : obj.size.x),
+            obj.pos.y + (obj.dir === "1" ? obj.size.y * 0.1 : 0)
+        );
+        ctx.lineTo(
+            obj.pos.x + (obj.dir === "2" ? obj.size.x * 0.9 : obj.size.x),
+            obj.pos.y + (obj.dir === "1" ? obj.size.y * 0.9 : obj.size.y)
+        );
+        ctx.lineTo(
+            obj.pos.x + (obj.dir === "2" ? obj.size.x * 0.1 : 0),
+            obj.pos.y + (obj.dir === "3" ? obj.size.y * 0.9 : obj.size.y)
+        );
+        ctx.fillStyle = obj.pressed ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
+        ctx.fill();
+    }
+    // Render switches?
+    for (let obj of parsedMap.switch) {
+        ctx.beginPath();
+        ctx.moveTo(
+            obj.pos.x - (obj.dir === "3" && !obj.switch ? 2 : 0),
+            obj.pos.y - (obj.dir === "0" && obj.switch ? 2 : 0)
+        );
+        ctx.lineTo(
+            obj.pos.x + (obj.dir === "1" && obj.switch ? 2 : 0) + obj.size.x,
+            obj.pos.y - (obj.dir === "0" && !obj.switch ? 2 : 0)
+        );
+        ctx.lineTo(
+            obj.pos.x + (obj.dir === "1" && !obj.switch ? 2 : 0) + obj.size.x,
+            obj.pos.y + (obj.dir === "2" && obj.switch ? 2 : 0) + obj.size.y
+        );
+        ctx.lineTo(
+            obj.pos.x - (obj.dir === "3" && obj.switch ? 2 : 0),
+            obj.pos.y + (obj.dir === "2" && !obj.switch ? 2 : 0) + obj.size.y
+        );
+        ctx.fillStyle = obj.switch ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
+        ctx.fill();
+    }
+    // Renders
+    ctx.fillStyle = renderSettings.colors.doorFill;
+    for (let obj of parsedMap.door) {
+        ctx.strokeStyle = obj.opened ? renderSettings.colors.doorOpenedOutline : renderSettings.colors.doorClosedOutline;
+        ctx.strokeRect(obj.pos.x + 0.5, obj.pos.y + 0.5, obj.size.x - 1, obj.size.y - 1);
+        if (!obj.opened) ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        for (let b of obj.linksOn) {
+            ctx.beginPath();
+            ctx.strokeStyle = b.pressed || b.switch ? renderSettings.colors.doorLineOn : renderSettings.colors.doorLineOff;
+            ctx.moveTo(obj.pos.x + obj.size.x / 2, obj.pos.y + obj.size.y / 2);
+            ctx.lineTo(b.pos.x + b.size.x / 2, b.pos.y + b.size.y / 2);
+            ctx.stroke();
+        }
+        for (let b of obj.linksOff) {
+            ctx.beginPath();
+            ctx.strokeStyle = b.pressed || b.switch ? renderSettings.colors.doorLineOff : renderSettings.colors.doorLineOn;
+            ctx.moveTo(obj.pos.x + obj.size.x / 2, obj.pos.y + obj.size.y / 2);
+            ctx.lineTo(b.pos.x + b.size.x / 2, b.pos.y + b.size.y / 2);
+            ctx.stroke();
+        }
+    }
+    // Render blocks(0)
+    ctx.globalAlpha = 1;
+    if (renderSettings.render.block0) {
+        for (let obj of parsedMap.block0) {
+            ctx.fillStyle = obj.color;
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
+    }
+
+    // ENTITIES
+    for (let obj of e.entities) {
+        switch (obj.type) {
+            case "bomb":
+                ctx.globalAlpha = obj.opacity;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
+                ctx.fillStyle = obj.exploding ? renderSettings.colors.mineExpRegion : renderSettings.colors.mineRegion;
+                ctx.fill();
+                ctx.drawImage(renderSettings.textures.enemies.bomb[obj.phase & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
                 break;
-            case "1":
-                gradient = ctx.createLinearGradient(obj.size.x, 0, 0, 0);
+            case "following":
+                ctx.globalAlpha = obj.opacity;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
+                ctx.fillStyle = renderSettings.colors.followingRegion;
+                ctx.fill();
+                ctx.drawImage(renderSettings.textures.enemies.following, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
                 break;
-            case "2":
-                gradient = ctx.createLinearGradient(0, obj.size.y, 0, 0);
+            case "contractor":
+                ctx.globalAlpha = obj.opacity;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
+                ctx.fillStyle = obj.triggered ? renderSettings.colors.contracTriggerRegion : renderSettings.colors.contracRegion;
+                ctx.fill();
+                ctx.drawImage(renderSettings.textures.enemies.contractor[obj.triggered & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
                 break;
-            case "3":
-                gradient = ctx.createLinearGradient(0, 0, obj.size.x, 0);
+            case "bouncer":
+            case "normal":
+            case "reverse":
+            case "spike":
+            case "megaBouncer":
+            case "freezer":
+            case "taker":
+            case "immune":
+            case "monster":
+            case "stutter":
+            case "expanding":
+                ctx.globalAlpha = obj.opacity;
+                ctx.drawImage(renderSettings.textures.enemies[obj.type], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                break;
+            case "rotating":
+                ctx.save();
+                ctx.translate(obj.pos.x, obj.pos.y);
+                ctx.rotate(obj.angle);
+                ctx.globalAlpha = obj.opacity;
+                ctx.drawImage(renderSettings.textures.enemies.rotating, -obj.radius, -obj.radius, obj.radius * 2, obj.radius * 2);
+                ctx.restore();
+                break;
+            case "turretBullet":
+            case "enemyBullet":
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = renderSettings.colors.lava;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
+                ctx.fill();
+                break;
+            case "meteorBullet":
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = renderSettings.colors.meteor;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
+                ctx.fill();
+                break;
+            case "path":
+                ctx.fillStyle = renderSettings.colors.blueFire;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, 0, 0, 7);
+                ctx.fill();
+                ctx.closePath();
+                break;
+            case "shield":
+                ctx.lineWidth = obj.size.y * 2;
+                ctx.save();
+                ctx.translate(obj.pos.x, obj.pos.y);
+                ctx.rotate(obj.dir);
+                ctx.beginPath();
+                ctx.moveTo(-obj.size.x, 0);
+                ctx.lineTo(obj.size.x, 0);
+                ctx.globalAlpha = 1;
+                ctx.strokeStyle = renderSettings.colors.shield;
+                ctx.stroke();
+                ctx.restore();
+                break;
+            case "healingGhost":
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = renderSettings.colors.ghost;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, 2, 2, 2, 0, 7);
+                ctx.fill();
+                break;
+            case "frostEntity":
+                ctx.globalAlpha = obj.opacity;
+                ctx.beginPath();
+                ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, 0, 0, 7);
+                ctx.fillStyle = renderSettings.colors.frost;
+                ctx.fill();
+                break;
+            case "snek":
+                ctx.save();
+                for (let i = obj.states.length - 1, o = obj.states[i]; i >= 0; i--, o = obj.states[i]) {
+                    ctx.drawImage(renderSettings.textures.enemies.snekBody, o.x - obj.radius, o.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                }
+                ctx.globalAlpha = obj.opacity;
+                ctx.translate(obj.pos.x, obj.pos.y);
+                ctx.rotate(obj.dir);
+                ctx.drawImage(renderSettings.textures.enemies.snekHead, -obj.radius, -obj.radius, obj.radius * 3, obj.radius * 2);
+                ctx.restore();
+                break;
+            default:
+                ctx.globalAlpha = obj.opacity || 1;
+                ctx.drawImage(renderSettings.textures.enemies.none, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
                 break;
         }
-        if (gradient) {
-            gradient.addColorStop(0, fill.background);
-            gradient.addColorStop(1, fill.obstacleColor);
-        } else gradient = fill.background;
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, obj.size.x, obj.size.y);
-        ctx.restore();
     }
-    // Render text
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "5px Russo One, Verdana, Arial, Helvetica, sans-serif";
-    for (let obj of map.objects.filter(obj => obj.type === "text")) {
-        ctx.fillText(obj.text, obj.pos.x, obj.pos.y);
-    }
-    // Render doors
-    for (let obj of map.objects.filter(obj => obj.type === "door")) {
-        ctx.strokeStyle = obj.opened ? fill.doorOpenedOutline : fill.doorClosedOutline;
-        ctx.fillStyle = obj.opened ? fill.doorOpenedFill : fill.doorClosedFill;
-        ctx.save();
-        ctx.strokeRect(obj.pos.x + 0.5, obj.pos.y + 0.5, obj.size.x - 1, obj.size.y - 1);
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-        ctx.restore();
-    }
-    // Render bombs
-    for (let obj of e.entities.filter(obj => obj.type === "bomb")) {
-        ctx.save();
-        ctx.globalAlpha = obj.opacity;
-        ctx.translate(obj.pos.x, obj.pos.y);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, obj.region, obj.region, 0, 0, 7);
-        ctx.fillStyle = obj.explosing ? fill.mineExpRegion : fill.mineRegion;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.ellipse(0, 0, obj.radius, obj.radius, 0, 0, 7);
-        ctx.fillStyle = obj.phase ? fill.minePhaseOuter : fill.mineOuter;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.ellipse(0, 0, obj.radius / 4, obj.radius / 4, 0, 0, 7);
-        ctx.fillStyle = obj.phase ? fill.minePhaseInner : fill.mineInner;
-        ctx.fill();
-        ctx.restore();
-    }
-    // Render bouncers
-    for (let obj of e.entities.filter(obj => obj.type === "bouncer")) {
-        ctx.save();
-        ctx.globalAlpha = obj.opacity;
-        ctx.translate(obj.pos.x, obj.pos.y);
-        ctx.scale(obj.radius, obj.radius);
-        ctx.fillStyle = fill.bouncerGreen;
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
-        ctx.fill();
-        ctx.fillStyle = fill.bouncerBlack;
-        ctx.beginPath();
-        ctx.ellipse(0, 0, .9, .9, 0, 0, 7);
-        ctx.fill();
-        ctx.fillStyle = fill.bouncerGreen;
-        ctx.fillRect(-.5, -.5, 1, 1);
-        ctx.rotate(Math.PI / 4);
-        ctx.fillRect(-.5, -.5, 1, 1);
-        ctx.restore();
-    }
-    // Render bouncers
-    for (let obj of e.entities.filter(obj => obj.type === "spike")) {
-        ctx.save();
-        ctx.globalAlpha = obj.opacity;
-        ctx.translate(obj.pos.x, obj.pos.y);
-        ctx.scale(obj.radius, obj.radius);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
-        ctx.fillStyle = fill.spikeOutline;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.ellipse(0, 0, .9, .9, 0, 0, 7);
-        ctx.fillStyle = fill.spikeFill;
-        ctx.fill();
-        ctx.restore();
-    }
-    // Render normal enemies
-    for (let obj of e.entities.filter(obj => obj.type === "normal")) {
-        ctx.save();
-        ctx.globalAlpha = obj.opacity;
-        ctx.translate(obj.pos.x, obj.pos.y);
-        ctx.scale(obj.radius, obj.radius);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
-        ctx.fillStyle = fill.normalOutline;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(0, 0, .9, 0, Math.PI);
-        ctx.fillStyle = fill.normalBottom;
-        ctx.fill();
-        ctx.restore();
-    }
-    // Render reverse enemies
-    for (let obj of e.entities.filter(obj => obj.type === "reverse")) {
-        ctx.save();
-        ctx.globalAlpha = obj.opacity;
-        ctx.translate(obj.pos.x, obj.pos.y);
-        ctx.scale(obj.radius, obj.radius);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 1, 1, 0, 0, 7);
-        ctx.fillStyle = fill.normalOutline;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(0, 0, .9, 0, Math.PI);
-        ctx.fillStyle = fill.normalTop;
-        ctx.fill();
-        ctx.restore();
-    }
-    // Render bullets
-    ctx.fillStyle = fill.bullet;
-    for (let obj of e.entities.filter(obj => obj.type === "turretBullet")) {
-        ctx.beginPath();
-        ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
-        ctx.fill();
-    }
+
     // Render turrets
-    for (let obj of map.objects.filter(obj => obj.type === "turret")) {
+    ctx.globalAlpha = 1;
+    for (let obj of parsedMap.turret) {
         ctx.save();
         ctx.translate(obj.pos.x + obj.size.x / 2, obj.pos.y + obj.size.y / 2);
         ctx.rotate(obj.dir);
-        ctx.fillStyle = fill.turretCannon;
+        ctx.fillStyle = renderSettings.colors.turretCannon;
         ctx.fillRect(0, -2, 5, 4);
-        ctx.fillStyle = fill.turretBody;
+        ctx.fillStyle = renderSettings.colors.turretBody;
         ctx.beginPath();
         ctx.ellipse(0, 0, obj.size.x / 2, obj.size.y / 2, 0, 0, 7);
         ctx.fill();
@@ -238,20 +415,73 @@ function render(e, map) {
     ctx.font = "2px Tahoma, Verdana, Segoe, sans-serif";
     for (let i in e.players) {
         let p = e.players[i];
+        let died = p.states.includes("Died");
+        let freeze = p.states.includes("Freeze");
         ctx.save();
         ctx.translate(p.pos.x, p.pos.y);
         ctx.rotate(p.gravDir / 2 * Math.PI);
         ctx.beginPath();
+        // Body
         ctx.ellipse(0, 0, p.radius, p.radius, 0, 0, 7);
-        ctx.fillStyle = p.died ? "#ff0000" : p.color;
+        ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : fromColArr(p.color);
         ctx.fill();
-        ctx.fillStyle = p.died ? "#ff0000" : "#ffffff";
+        // Hat
+        // if (renderSettings.textures.hats.hasOwnProperty(p.hat)) ctx.drawImage(renderSettings.textures.hats[p.hat], -2 * p.radius, -2 * p.radius, 4 * p.radius, 4 * p.radius);
+        // Name
+        ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#202020";
         ctx.fillText(p.name, 0, -p.radius - 0.5);
-        ctx.fillStyle = p.died ? "#ff0000" : "#ffff40";
-        ctx.fillRect(-5, p.radius + 1, p.fuel / 6 * 5, 2.5);
+        // fuelBar™️
+        ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#ffff40";
+        ctx.fillRect(-5, p.radius + 1, p.fuel, 2.5);
         ctx.strokeStyle = "#202020";
         ctx.lineWidth = 0.5;
         ctx.strokeRect(-5, p.radius + 1, 10, 2.5);
         ctx.restore();
     }
+    // Render blocks(1)
+    ctx.globalAlpha = 1;
+    if (renderSettings.render.block1) {
+        for (let obj of parsedMap.block1) {
+            ctx.fillStyle = obj.color;
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
+    }
+    // Render grav zones
+    ctx.setLineDash([2, 6]);
+    ctx.lineWidth = 1;
+    ctx.lineCap = "round";
+    for (let obj of map.objects.filter(obj => obj.type === "gravityZone")) {
+        ctx.strokeStyle = renderSettings.colors.gravOutline[obj.dir];
+        ctx.fillStyle = renderSettings.colors.gravFill[obj.dir];
+        ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+    }
+    // Render boxes (build power)
+    for (let obj of parsedMap.box) {
+        ctx.fillStyle = renderSettings.colors.box;
+        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+    }
+    // Render text
+    ctx.font = "5px Russo One, Verdana, Arial, Helvetica, sans-serif";
+    ctx.strokeStyle = "#000000";
+    ctx.setLineDash([]);
+    for (let obj of map.objects.filter(obj => obj.type === "text")) {
+        ctx.strokeText(obj.text, obj.pos.x, obj.pos.y);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(obj.text, obj.pos.x, obj.pos.y);
+        ctx.fillStyle = "#000000";
+    }
+    // Render hitboxes
+    ctx.setLineDash([]);
+    if (renderSettings.renderHitboxes) {
+        ctx.lineWidth = 2 / camScale;
+        ctx.strokeStyle = renderSettings.colors.hitbox;
+        for (let o of map.objects) ctx.strokeRect(o.pos.x, o.pos.y, o.size.x, o.size.y);
+    }
+}
+/**
+ * @param {number[]} arr 
+ */
+function fromColArr(arr) {
+    return `rgba(${arr.join(", ")})`;
 }

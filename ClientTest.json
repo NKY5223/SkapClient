@@ -1,0 +1,82 @@
+{
+    "settings": {
+        "name": "Client.Test()",
+        "creator": "NKY",
+        "spawnPosition": [
+            50,
+            50
+        ],
+        "spawnArea": "Home"
+    },
+    "maps": [
+        {
+            "name": "Home",
+            "size": [
+                100,
+                100
+            ],
+            "objects": [
+                {
+                    "type": "spawner",
+                    "position": [
+                        10,
+                        5
+                    ],
+                    "size": [
+                        0,
+                        0
+                    ],
+                    "entityType": "wavy",
+                    "number": 1,
+                    "speed": 0,
+                    "radius": 5
+                },
+                {
+                    "type": "spawner",
+                    "position": [
+                        20,
+                        5
+                    ],
+                    "size": [
+                        0,
+                        0
+                    ],
+                    "entityType": "taker",
+                    "number": 1,
+                    "speed": 0,
+                    "radius": 5
+                },
+                {
+                    "type": "spawner",
+                    "position": [
+                        30,
+                        5
+                    ],
+                    "size": [
+                        0,
+                        0
+                    ],
+                    "entityType": "contractor",
+                    "number": 1,
+                    "speed": 0,
+                    "radius": 5
+                },
+                {
+                    "type": "spawner",
+                    "position": [
+                        40,
+                        5
+                    ],
+                    "size": [
+                        0,
+                        0
+                    ],
+                    "entityType": "shooter",
+                    "number": 1,
+                    "speed": 0,
+                    "radius": 5
+                }
+            ]
+        }
+    ]
+}

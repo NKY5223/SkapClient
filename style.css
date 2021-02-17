@@ -1,8 +1,3 @@
-:root {
-    --obscolor: #808080;
-    --BG: #404040;
-    --color: #ffffff;
-}
 html {
     height: 100%;
     overflow: hidden;
@@ -14,8 +9,8 @@ body {
     justify-content: center;
     align-items: center;
     font-family: Verdana, Arial, Helvetica, sans-serif;
-    background: var(--BG);
-    color: var(--color);
+    background: #404040;
+    color: #ffffff;
 }
 ::-webkit-scrollbar {
     width: 7px;
@@ -25,6 +20,11 @@ body {
 }
 ::-webkit-scrollbar-thumb {
     background: #606060;
+}
+
+input {
+    font-size: 20px;
+    padding: 1px 5px;
 }
 
 .hidden {
@@ -69,6 +69,23 @@ body {
     position: absolute;
     transform: translate(-250px, -30px);
 }
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+#update {
+    color: yellow;
+    position: relative;
+    animation: cubic-bezier(.5, .3, .3, .5) pulse 1s infinite;
+}
+
 #loginDiv {
     text-align: center;
 }
@@ -77,13 +94,58 @@ button {
     cursor: pointer;
 }
 #play {
-    color: var(--color);
+    color: #ffffff;
     border: 2.5px solid #202020;
     border-radius: 10px;
-    background: var(--BG);
+    background: #404040;
     padding: 20px 40px;
 }
 
+#links {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    display: flex;
+    flex-direction: row;
+}
+#links * {
+    display: block;
+    height: 50px;
+    margin-right: 5px;
+    text-decoration: none;
+}
+
+#changelog {
+    padding: 5px;
+    position: absolute;
+    left: 10%;
+    top: 10%;
+    width: 80%;
+    height: 80%;
+    background: #404040;
+    border: solid 3px #202020;
+    border-radius: 5px;
+    overflow-y: auto;
+}
+code {
+    background: #808080;
+    padding: 2px 5px;
+}
+#closeChangelog {
+    color: red;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background: transparent;
+    border: none;
+    font-size: 30px;
+}
+
+#backtoLogin, #backToLogout {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
 #gamesDiv {
     height: 100%;
     width: 100%;
@@ -96,6 +158,7 @@ button {
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
+    overflow-y: scroll;
 }
 .gameDisplay {
     border-radius: 10px;
@@ -109,6 +172,152 @@ button {
     background: #404000;
 }
 
+#createGameMenu {
+    text-align: center;
+}
+#gameFileLabel {
+    padding: 5px 20px;
+    background: #00000080;
+    cursor: pointer;
+}
+#gameFileLabel:hover {
+    background: #000000c0;
+}
+
+.switchLabel {
+    font-size: 25px;
+    cursor: pointer;
+    user-select: none;
+}
+.switch {
+    width: 60px;
+    height: 35px;
+    display: inline-block;
+    position: relative;
+    background: #808080;
+    border-radius: 20px;
+    transition: .4s;
+    bottom: -10px;
+}
+.switch::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 5px;
+    left: 5px;
+    background: #ffffff;
+    transition: .4s;
+    border-radius: 50%;
+}
+input:checked+.switch {
+    background: #2080ff;
+}
+input:checked+.switch::before {
+    left: 30px;
+}
+
+#deathText, #freezeText {
+    color: #ff0000;
+    position: absolute;
+    top: 10px;
+    text-align: center;
+    width: 100%;
+    text-shadow: 
+        1px 1px #101010,
+        2px 2px #101010;
+}
+#freezeText {
+    color: #00ffff;
+}
+
+.power {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    background: #80808040;
+    border: 5px solid black;
+    border-radius: 5px;
+}
+#power0 {
+    transform: translate(0, -112.5%);
+}
+#power1 {
+    transform: translate(0, 12.5%);
+}
+#power0input, #power1input {
+    background: transparent;
+    border: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 15px;
+    padding: 0;
+}
+#power0input:focus, #power1input:focus {
+    outline: none;
+}
+.coolDown, .heat {
+    position: absolute;
+    bottom: 0;
+    background: #ff404040;
+    width: 100%;
+}
+.heat {
+    background: #2040ff80;
+}
+.select {
+    height: 100%;
+    position: absolute;
+    background: #c0c0c080;
+    border-radius: 5px 0 0 5px;
+    transition: .5s;
+    display: flex;
+}
+.selectclip {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    clip-path: polygon(-100vw 0, -5px 0, -5px 100%, -100vw 100%);
+}
+.power:hover .select {
+    transform: translate(calc(-100% - 5px), 0);
+}
+
+.poweroption {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+.poweroption img {
+    margin: 5px;
+}
+.poweroption:first-child {
+    border-radius: 5px 0 0 5px;
+}
+.poweroption:hover {
+    background: #2080ff;
+}
+
+/* W3Schools */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+canvas {
+    background: #f0f0f0;
+}
 #playerList {
     position: absolute;
     top: 10px;
@@ -130,19 +339,36 @@ button {
     position: absolute;
     bottom: 10px;
     left: 10px;
-    width: 300px;
-    height: 200px;
-    background: #00000080;
+    width: 350px;
+    height: 250px;
+    background: #000000c0;
     overflow: hidden;
 }
 #chatContent {
-    padding: 5px;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-wrap: break-word;
     height: calc(100% - 40px);
 }
 #chat p {
     margin: 0;
+}
+.wrapper:nth-of-type(odd) {
+    background-color: #ffffff20;
+}
+.wrapper {
+    padding: 5px;
+}
+#chat a {
+    color: #4040ff;
+}
+#chat a:visited {
+    color: #8000ff;
+}
+#chat a:active {
+    color: #0000c0;
+}
+#chat a:visited:active {
+    color: #4000c0;
 }
 #chat input {
     box-sizing: border-box;
@@ -154,12 +380,20 @@ button {
     bottom: 0;
     left: 0;
     padding: 5px;
-    color: var(--color);
+    color: #ffffff;
     font-size: 17px;
     font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 #chat input:focus {
     outline: none;
+}
+
+.discordMsg {
+    color: #7289da;
+}
+.discordMsg:before {
+    content: '[DISCORD]';
+    margin-right: 5px;
 }
 .guestMsg {
     color: #808080;
@@ -167,34 +401,34 @@ button {
 .userMsg {
     color: #ffffff;
 }
+.SYSMsg {
+    background-image: repeating-linear-gradient(45deg, #ff0000, #ffff00, #ff0000);
+    animation: slide 7s linear infinite;
+    background-size: 700% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
 .modMsg {
-    animation: rainbow 10s infinite;
+    /* Haha's CSS */
+    background-image: repeating-linear-gradient(45deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+    animation: slide 7s linear infinite;
+    background-size: 4900% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
-.SKAPMsg {
-    color: #ffff00;
+.devMsg {
+    background-image: repeating-linear-gradient(45deg, #80ff80, #00ff80, #8080ff, #00ff80, #80ff80);
+    animation: slide 3s linear infinite;
+    background-size: 700% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
-@keyframes rainbow {
-    0% {
-        color: hsl(0, 100%, 50%);
-    }
-    16.67% {
-        color: hsl(60, 100%, 50%);
-    }
-    33.33% {
-        color: hsl(120, 100%, 50%);
-    }
-    50% {
-        color: hsl(180, 100%, 50%);
-    }
-    76.67% {
-        color: hsl(240, 100%, 50%);
-    }
-    83.33% {
-        color: hsl(300, 100%, 50%);
-    }
-    100% {
-        color: hsl(360, 100%, 50%);
-    }
+@keyframes slide { 
+    0%{ background-position: 0% 0; }
+    100%{ background-position: 100% 0; }
 }
 
 #fuelBarWrap {
