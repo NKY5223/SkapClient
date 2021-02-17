@@ -515,6 +515,7 @@ function render(e) {
    }
    // Render grav zones
    ctx.setLineDash([2, 6]);
+   ctx.lineDashOffset = timer * 10;
    ctx.lineWidth = 1;
    ctx.lineCap = 'round';
    for (const obj of map.objects.filter((obj) => obj.type === 'gravityZone')) {
@@ -523,6 +524,7 @@ function render(e) {
       ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
       ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
    }
+   ctx.lineDashOffset = 0;
    // Render boxes (build power)
    for (const obj of parsedMap.box) {
       ctx.fillStyle = renderSettings.colors.box;

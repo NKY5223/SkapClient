@@ -506,6 +506,7 @@ ws.addEventListener('message', (e) => {
                // if (calcFPS != Infinity && FPSDisplay.innerHTML !== String(calcFPS)) {
                //    FPSDisplay.innerHTML = calcFPS;
                // }
+               timer += (now - lastFrame) / 1000;
                lastFrame = now;
                render(data);
                requestAnimationFrame(run);

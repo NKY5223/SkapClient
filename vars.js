@@ -144,7 +144,7 @@ const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU
 const URLRegex = /(\s|^)(https?:\/\/[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+((\/[A-Za-z0-9-_]+)*)?(\.[a-z]+)?\/?(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?)*)?(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)/g;
 
 let id = "";
-let bots = [];   
+let bots = [];
 let botPw = JSON.parse(localStorage.getItem("botPw") || "{}");
 let botColor = localStorage.getItem("color");
 let canSend = false;
@@ -240,6 +240,7 @@ const power1CD = document.getElementById("power1CD");
 const power0Heat = document.getElementById("power0Heat");
 const power1Heat = document.getElementById("power1Heat");
 let powers = new Set();
+let timer = 0;
 
 // Functions
 /**
