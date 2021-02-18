@@ -82,6 +82,19 @@
  * @param {SkapEntity[]} e.entities
  */
 function render(e) {
+    // Particles
+    particles.dash = particles.dash.filter(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.r += 0.1;
+        return (p.o -= 0.1) > 0;
+    });
+    particles.shrink = particles.shrink.filter(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        return (p.r -= 0.1) > 0;
+    });
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     ctx.textAlign = "center";
@@ -395,6 +408,22 @@ function render(e) {
                 ctx.drawImage(renderSettings.textures.enemies.none, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
                 break;
         }
+    }
+
+    // Particles
+    ctx.fillStyle = renderSettings.colors.dash;
+    for (let p of particles.dash) {
+        ctx.globalAlpha = p.o;
+        ctx.beginPath();
+        ctx.ellipse(p.x, p.y, p.r, p.r, 0, 0, 7);
+        ctx.fill();
+    }
+    ctx.fillStyle = renderSettings.colors.shrink;
+    ctx.globalAlpha = 1;
+    for (let p of particles.shrink) {
+        ctx.beginPath();
+        ctx.ellipse(p.x, p.y, p.r, p.r, 0, 0, 7);
+        ctx.fill();
     }
 
     // Render turrets

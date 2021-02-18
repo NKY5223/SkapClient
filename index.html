@@ -69,6 +69,12 @@
                 <h2>Changelog</h2>
                 <button id="closeChangelog">&times;</button>
 
+                <h3>Particles</h3>
+                <ul>
+                    <li>Dash and shrink particles</li>
+                    <li>Debug mode</li>
+                </ul>
+
                 <h3>Misc</h3>
                 <ul>
                     <li>Fixed URL parsing</li>
@@ -223,13 +229,13 @@
                     <div id="chatContent"></div>
                     <input id="chatInput" placeholder="Say something...">
                 </div>
-                <div id="pos">
+                <div id="pos" class="hidden">
                     <p>pos: <span id="posX"></span>, <span id="posY"></span></p>
                     <p>vel: <span id="vel"></span> (<span id="velX"></span>, <span id="velY"></span>)</p>
                     <P>maxVel: <span id="maxVel"></span></P>
                     <p>aim: <span id="aimX"></span>, <span id="aimY"></span></p>
                 </div>
-                <div id="lastUpdateDiv">
+                <div id="lastUpdateDiv" class="hidden">
                     <span id="lastUpdateDisplay" class="noselect">0</span>ms since last update<br>
                     (<span id="minMaxUpdateDisplay" class="noselect">0 - 0</span>ms)<br>
                     <span id="FPS">0</span>fps

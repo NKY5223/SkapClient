@@ -10,6 +10,7 @@
  * @param {Object<string, Player>} m.players id:Player
  * @param {[string, string, boolean][]} m.playerList
  * @param {SkapEntity[]} m.entities
+ * @param {Object[]} m.particles
  */
 function updateStates(m) {
     let now = Date.now();
@@ -27,7 +28,7 @@ function updateStates(m) {
         camX = player.pos.x;
         camY = player.pos.y;
     }
-    
+
     power0CD.style.height = m.infos.oneCooldown * 100 + "%";
     power1CD.style.height = m.infos.twoCooldown * 100 + "%";
     power0Heat.style.height = m.infos.oneHeat * 100 + "%";
@@ -64,4 +65,29 @@ function updateStates(m) {
 
     // Set entities... (totally not render)
     data = m;
+    // Particles
+    for (let p of m.particles) {
+        switch (p.type) {
+            case "dash":
+                p.vx = -Math.cos(p.dir);
+                p.vy = -Math.sin(p.dir);
+                p.r = 5;
+                p.o = 1;
+                particles.dash.push(p);
+                break;
+            case "shrinking":
+                for (let i = 0; i < 100; i++) {
+                    let r = Math.random() * Math.PI;
+                    let s = Math.random() / 4 + 0.5;
+                    particles.shrink.push({
+                        r: 2,
+                        x: p.x,
+                        y: p.y,
+                        vx: s * Math.cos(r),
+                        vy: -s * Math.sin(r)
+                    });
+                }
+                break;
+        }
+    }
 }

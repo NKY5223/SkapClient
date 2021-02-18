@@ -66,7 +66,9 @@ let renderSettings = {
         ghost: "#20a040e0",
         blueFire: "#4040ff10",
         shield: "#383838e0",
-        frost: "#00ffff40"
+        frost: "#00ffff40",
+        dash: "#00ffc0c0",
+        shrink: "#b000ff"
     },
     textures: {
         enemies: {
@@ -127,6 +129,10 @@ else keys = ["w", "a", "s", "d", "shift", "", "", "r"];
 
 let map = null;
 let data = null;
+let particles = {
+    dash: [],
+    shrink: []
+};
 let bypassProfan = true;
 let mouse = { x: 0, y: 0 };
 let user = "";
@@ -135,6 +141,7 @@ const ping = document.getElementById("ping");
 let chatFocus = false;
 let blocked = localStorage.getItem("blocked") ? localStorage.getItem("blocked").split(" ") : [];
 let viewWS = Boolean(localStorage.getItem("viewWS"));
+let debug = Boolean(localStorage.getItem("debug"));
 let noUS = false;
 const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "ZeroTix", "ZeroFix", "haha0201", "[CLIENT]"];
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
@@ -142,7 +149,7 @@ const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU
 const URLRegex = /(\s|^)(https?:\/\/[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+((\/[A-Za-z0-9-_]+)*)?(\.[a-z]+)?\/?(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?)*)?(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)/g;
 
 let id = "";
-let bots = [];   
+let bots = [];
 let botPw = JSON.parse(localStorage.getItem("botPw") || "{}");
 let botColor = localStorage.getItem("color");
 let canSend = false;
@@ -216,9 +223,11 @@ const playerList = document.getElementById("playerList");
 const chat = document.getElementById("chatContent");
 const chatInput = document.getElementById("chatInput");
 const fuelBar = document.getElementById("fuelBarInner");
+const lastUpdateDiv = document.getElementById("lastUpdateDiv");
 const lastUpdateDisplay = document.getElementById("lastUpdateDisplay");
 const minMaxUpdate = document.getElementById("minMaxUpdateDisplay");
 const FPSDisplay = document.getElementById("FPS");
+const posDiv = document.getElementById("pos");
 const posXSpan = document.getElementById("posX");
 const posYSpan = document.getElementById("posY");
 const velSpan = document.getElementById("vel");
@@ -226,6 +235,10 @@ const velXSpan = document.getElementById("velX");
 const velYSpan = document.getElementById("velY");
 const aimXSpan = document.getElementById("aimX");
 const aimYSpan = document.getElementById("aimY");
+if (debug) {
+    show(posDiv);
+    show(lastUpdateDiv);
+}
 
 const deathM = document.getElementById("deathText");
 const freezeM = document.getElementById("freezeText");
