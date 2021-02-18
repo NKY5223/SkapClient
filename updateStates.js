@@ -79,8 +79,8 @@ function updateStates(m) {
                 });
                 break;
             case "shrinking":
-                for (let i = 0; i < 100; i++) {
-                    let dir = Math.random() * Math.PI;
+                for (let i = 0; i < 20; i++) {
+                    let dir = Math.random() * (Math.PI + 1) - 0.5;
                     let s = Math.random() / 4 + 0.5;
                     particles.shrink.push({
                         r: 2,
