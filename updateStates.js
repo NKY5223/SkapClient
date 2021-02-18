@@ -90,15 +90,14 @@ function updateStates(m) {
                 break;
             case "bombExplosion":
                 for (let i = 0; i < 100; i++) {
-                    let rEnd = p.region - Math.random() / 5;
                     let rStart = p.region * Math.random() / 2;
                     let dir = 2 * Math.PI * Math.random();
                     particles.bomb.push({
                         o: 1,
                         x: p.x + rStart * Math.cos(dir),
                         y: p.y + rStart * Math.sin(dir),
-                        vx: p.region * Math.cos(dir) / 25,
-                        vy: p.region * Math.sin(dir) / 25
+                        vx: p.region * Math.cos(dir) / 50,
+                        vy: p.region * Math.sin(dir) / 50
                     });
                 }
                 break;
