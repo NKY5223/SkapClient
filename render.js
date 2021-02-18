@@ -94,6 +94,11 @@ function render(e) {
         p.y += p.vy;
         return (p.r -= 0.1) > 0;
     });
+    particles.bomb = particles.bomb.filter(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        return (p.o -= 0.04) > 0;
+    });
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -413,9 +418,9 @@ function render(e) {
     // Particles
     ctx.fillStyle = renderSettings.colors.dash;
     for (let p of particles.dash) {
-        ctx.globalAlpha = p.o;
         ctx.beginPath();
         ctx.ellipse(p.x, p.y, p.r, p.r, 0, 0, 7);
+        ctx.globalAlpha = p.o;
         ctx.fill();
     }
     ctx.fillStyle = renderSettings.colors.shrink;
@@ -423,6 +428,13 @@ function render(e) {
     for (let p of particles.shrink) {
         ctx.beginPath();
         ctx.ellipse(p.x, p.y, p.r, p.r, 0, 0, 7);
+        ctx.fill();
+    }
+    ctx.fillStyle = renderSettings.colors.bombParticle;
+    for (let p of particles.bomb) {
+        ctx.beginPath();
+        ctx.ellipse(p.x, p.y, 2, 2, 0, 0, 7);
+        ctx.globalAlpha = p.o;
         ctx.fill();
     }
 

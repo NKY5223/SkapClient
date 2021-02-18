@@ -77,14 +77,28 @@ function updateStates(m) {
                 break;
             case "shrinking":
                 for (let i = 0; i < 100; i++) {
-                    let r = Math.random() * Math.PI;
+                    let dir = Math.random() * Math.PI;
                     let s = Math.random() / 4 + 0.5;
                     particles.shrink.push({
                         r: 2,
                         x: p.x,
                         y: p.y,
-                        vx: s * Math.cos(r),
-                        vy: -s * Math.sin(r)
+                        vx: s * Math.cos(dir),
+                        vy: -s * Math.sin(dir)
+                    });
+                }
+                break;
+            case "bombExplosion":
+                for (let i = 0; i < 100; i++) {
+                    let rEnd = p.region - Math.random() / 5;
+                    let rStart = p.region * Math.random() / 2;
+                    let dir = 2 * Math.PI * Math.random();
+                    particles.bomb.push({
+                        o: 1,
+                        x: p.x + rStart * Math.cos(dir),
+                        y: p.y + rStart * Math.sin(dir),
+                        vx: p.region * Math.cos(dir) / 25,
+                        vy: p.region * Math.sin(dir) / 25
                     });
                 }
                 break;

@@ -68,7 +68,8 @@ let renderSettings = {
         shield: "#383838e0",
         frost: "#00ffff40",
         dash: "#00ffc0c0",
-        shrink: "#b000ff"
+        shrink: "#b000ff",
+        bombParticle: "#d0100010"
     },
     textures: {
         enemies: {
@@ -131,7 +132,8 @@ let map = null;
 let data = null;
 let particles = {
     dash: [],
-    shrink: []
+    shrink: [],
+    bomb: []
 };
 let bypassProfan = true;
 let mouse = { x: 0, y: 0 };
