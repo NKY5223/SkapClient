@@ -694,7 +694,10 @@ ws.addEventListener("message", e => {
             customAlert("Gained power(s) " + msg.m.join(", "));
             break;
         case "style":
-            playerColor.value = `#${msg.c[0].toString(16)}${msg.c[1].toString(16)}${msg.c[2].toString(16)}`;
+            let r = msg.c[0].toString(16);
+            let g = msg.c[1].toString(16);
+            let b = msg.c[2].toString(16);
+            playerColor.value = `#${"0".repeat(2 - r.length) + r}${"0".repeat(2 - g.length) + g}${"0".repeat(2 - b.length) + b}`;
             break;
     }
 });
