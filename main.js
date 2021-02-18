@@ -42,9 +42,9 @@ ws.addEventListener("open", () => {
         ws.send(`{
             "e": "colorChange",
             "c": [
-                parseInt(playerColor.value.slice(1, 3), 16),
-                parseInt(playerColor.value.slice(3, 5), 16),
-                parseInt(playerColor.value.slice(5, 7), 16)
+                ${parseInt(playerColor.value.slice(1, 3), 16)},
+                ${parseInt(playerColor.value.slice(3, 5), 16)},
+                ${parseInt(playerColor.value.slice(5, 7), 16)}
             ]
         }`);
     });
