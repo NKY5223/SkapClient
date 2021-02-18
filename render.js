@@ -106,8 +106,8 @@ function render(e) {
     particles.ghost = particles.ghost.filter(p => {
         p.x += p.vx;
         p.y += p.vy;
-        p.o -= 0.05;
-        return (p.r -= 0.1) > 0;
+        p.r -= 0.05;
+        return (p.o -= 0.05) > 0;
     });
 
     canvas.width = window.innerWidth;
