@@ -166,7 +166,7 @@ ws.addEventListener("open", () => {
                 } else if (msg.startsWith("/unblock ") && msg.length > 9) {
                     let p = msg.slice(9);
                     if (blocked.includes(p)) {
-                        blocked.splice(blocked.indexOf(p),);
+                        blocked.splice(blocked.indexOf(p), 1);
                         message({
                             m: {
                                 s: "[CLIENT]",
