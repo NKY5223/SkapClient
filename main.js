@@ -604,16 +604,19 @@ ws.addEventListener("message", e => {
                     } catch (e) {
                         sendMessage(e.toString());
                     }
-                } else {
-                    message(msg);
                 }
-            } else message(msg);
+            }
+            message(msg);
             break;
         case "updateStates":
             updateStates(msg.m);
             break;
         case "initMap":
             initMap(msg.m);
+            // Remove particles
+            particles.dash = [];
+            particles.shrink = [];
+            particles.bomb = [];
             break;
         case "updateMap":
             if (msg.m.update) {

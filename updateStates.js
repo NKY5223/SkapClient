@@ -69,11 +69,14 @@ function updateStates(m) {
     for (let p of m.particles) {
         switch (p.type) {
             case "dash":
-                p.vx = -Math.cos(p.dir);
-                p.vy = -Math.sin(p.dir);
-                p.r = 5;
-                p.o = 1;
-                particles.dash.push(p);
+                particles.dash.push({
+                    x: p.x,
+                    y: p.y,
+                    vx: -Math.cos(p.dir),
+                    vy: -Math.sin(p.dir),
+                    r: 5,
+                    o: 1
+                });
                 break;
             case "shrinking":
                 for (let i = 0; i < 100; i++) {
@@ -100,6 +103,25 @@ function updateStates(m) {
                         vy: p.region * Math.sin(dir) / 50
                     });
                 }
+                break;
+            case "explosion":
+                particles.explosion.push({
+                    x: p.x,
+                    y: p.y,
+                    r: 0,
+                    o: 1
+                });
+                break;
+            case "healing":
+                let dir = 2 * Math.PI * Math.random();
+                particles.ghost.push({
+                    x: p.x,
+                    y: p.y,
+                    vx: Math.cos(dir) / 5,
+                    vy: Math.sin(dir) / 5,
+                    r: 1.5,
+                    o: 1
+                });
                 break;
         }
     }

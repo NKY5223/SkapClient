@@ -69,7 +69,9 @@ let renderSettings = {
         frost: "#00ffff40",
         dash: "#00ffc0c0",
         shrink: "#b000ff",
-        bombParticle: "#d0100010"
+        bombParticle: "#d0100010",
+        explosion: "#00000008",
+        ghostParticles: "#40a040c0"
     },
     textures: {
         enemies: {
@@ -133,7 +135,9 @@ let data = null;
 let particles = {
     dash: [],
     shrink: [],
-    bomb: []
+    bomb: [],
+    explosion: [],
+    ghost: []
 };
 let bypassProfan = true;
 let mouse = { x: 0, y: 0 };
@@ -145,7 +149,7 @@ let blocked = localStorage.getItem("blocked") ? localStorage.getItem("blocked").
 let viewWS = Boolean(localStorage.getItem("viewWS"));
 let debug = Boolean(localStorage.getItem("debug"));
 let noUS = false;
-const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "ZeroTix", "ZeroFix", "haha0201", "[CLIENT]"];
+const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "ZeroFix", "haha0201", "[CLIENT]"];
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");
 const URLRegex = /(\s|^)(https?:\/\/[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+((\/[A-Za-z0-9-_]+)*)?(\.[a-z]+)?\/?(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?)*)?(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)/g;

@@ -92,12 +92,22 @@ function render(e) {
     particles.shrink = particles.shrink.filter(p => {
         p.x += p.vx;
         p.y += p.vy;
-        return (p.r -= 0.1) > 0;
+        return (p.r -= 0.1) > 0.2;
     });
     particles.bomb = particles.bomb.filter(p => {
         p.x += p.vx;
         p.y += p.vy;
-        return (p.o -= 0.04) > 0;
+        return (p.o -= 0.1) > 0;
+    });
+    particles.explosion = particles.explosion.filter(p => {
+        p.r += 5;
+        return (p.o -= 0.05) > 0;
+    });
+    particles.ghost = particles.ghost.filter(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.o -= 0.05;
+        return (p.r -= 0.1) > 0;
     });
 
     canvas.width = window.innerWidth;
@@ -434,6 +444,20 @@ function render(e) {
     for (let p of particles.bomb) {
         ctx.beginPath();
         ctx.ellipse(p.x, p.y, 2, 2, 0, 0, 7);
+        ctx.globalAlpha = p.o;
+        ctx.fill();
+    }
+    ctx.fillStyle = renderSettings.colors.explosion;
+    for (let p of particles.explosion) {
+        ctx.beginPath();
+        ctx.ellipse(p.x, p.y, p.r, p.r, 0, 0, 7);
+        ctx.globalAlpha = p.o;
+        ctx.fill();
+    }
+    ctx.fillStyle = renderSettings.colors.ghostParticles;
+    for (let p of particles.ghost) {
+        ctx.beginPath();
+        ctx.ellipse(p.x, p.y, p.r, p.r, 0, 0, 7);
         ctx.globalAlpha = p.o;
         ctx.fill();
     }
