@@ -410,13 +410,7 @@ canvas {
     color: transparent;
 }
 .modMsg {
-    /* Haha's CSS */
-    background-image: repeating-linear-gradient(45deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
-    animation: slide 7s linear infinite;
-    background-size: 4900% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    animation: rainbow 7s linear infinite;
 }
 .devMsg {
     background-image: repeating-linear-gradient(45deg, #80ff80, #00ff80, #8080ff, #00ff80, #80ff80);
@@ -429,6 +423,15 @@ canvas {
 @keyframes slide { 
     0%{ background-position: 0% 0; }
     100%{ background-position: 100% 0; }
+}
+@keyframes rainbow {
+    0%{ color: #ff0000; }
+    16.6667%{ color: #ffff00; }
+    33.3333%{ color: #00ff00; }
+    50%{ color: #00ffff; }
+    66.6667%{ color: #0000ff; }
+    73.3333%{ color: #ff00ff; }
+    100%{ color: #ff0000; }
 }
 
 #fuelBarWrap {

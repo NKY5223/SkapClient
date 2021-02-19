@@ -109,6 +109,11 @@ function render(e) {
         p.r -= 0.05;
         return (p.o -= 0.05) > 0;
     });
+    particles.refuel = particles.refuel.filter(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        return (p.o -= 0.05) > 0;
+    });
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -347,6 +352,9 @@ function render(e) {
             case "monster":
             case "stutter":
             case "expanding":
+            case "wavy":
+            case "shooter":
+            case "expander":
                 ctx.globalAlpha = obj.opacity;
                 ctx.drawImage(renderSettings.textures.enemies[obj.type], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
                 break;
@@ -409,6 +417,7 @@ function render(e) {
                 break;
             case "snek":
                 ctx.save();
+                ctx.globalAlpha = 1;
                 for (let i = obj.states.length - 1, o = obj.states[i]; i >= 0; i--, o = obj.states[i]) {
                     ctx.drawImage(renderSettings.textures.enemies.snekBody, o.x - obj.radius, o.y - obj.radius, obj.radius * 2, obj.radius * 2);
                 }
@@ -458,6 +467,13 @@ function render(e) {
     for (let p of particles.ghost) {
         ctx.beginPath();
         ctx.ellipse(p.x, p.y, p.r, p.r, 0, 0, 7);
+        ctx.globalAlpha = p.o;
+        ctx.fill();
+    }
+    ctx.fillStyle = renderSettings.colors.refuel;
+    for (let p of particles.refuel) {
+        ctx.beginPath();
+        ctx.ellipse(p.x, p.y, 1, 1, 0, 0, 7);
         ctx.globalAlpha = p.o;
         ctx.fill();
     }

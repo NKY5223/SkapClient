@@ -132,7 +132,7 @@ ws.addEventListener("open", () => {
                         message({
                             m: {
                                 s: "[CLIENT]",
-                                r: 1,
+                                r: 0,
                                 m: `You can't block yourself :/`
                             }
                         }, true);
@@ -140,7 +140,7 @@ ws.addEventListener("open", () => {
                         message({
                             m: {
                                 s: "[CLIENT]",
-                                r: 1,
+                                r: 0,
                                 m: `Seriously? Blocking a DEV?`
                             }
                         }, true);
@@ -148,7 +148,7 @@ ws.addEventListener("open", () => {
                         message({
                             m: {
                                 s: "[CLIENT]",
-                                r: 1,
+                                r: 0,
                                 m: `User ${p.safe()} is already blocked`
                             }
                         }, true);
@@ -157,7 +157,7 @@ ws.addEventListener("open", () => {
                         message({
                             m: {
                                 s: "[CLIENT]",
-                                r: 1,
+                                r: 0,
                                 m: `Blocked user ${p.safe()}`
                             }
                         }, true);
@@ -170,7 +170,7 @@ ws.addEventListener("open", () => {
                         message({
                             m: {
                                 s: "[CLIENT]",
-                                r: 1,
+                                r: 0,
                                 m: `Unblocked user ${p.safe()}`
                             }
                         }, true);
@@ -179,7 +179,7 @@ ws.addEventListener("open", () => {
                         message({
                             m: {
                                 s: "[CLIENT]",
-                                r: 1,
+                                r: 0,
                                 m: `Could not unblock user ${p.safe()}<br>because they are not in the blocked list, or something went wrong.`
                             }
                         }, true);
@@ -188,7 +188,7 @@ ws.addEventListener("open", () => {
                     message({
                         m: {
                             s: "[CLIENT]",
-                            r: 1,
+                            r: 0,
                             m: blocked.length ? "Blocked users: " + blocked.join(", ") : "No blocked users"
                         }
                     }, true);
@@ -196,7 +196,7 @@ ws.addEventListener("open", () => {
                     message({
                         m: {
                             s: "[CLIENT]",
-                            r: 1,
+                            r: 0,
                             m: `
 Commands:<br>
 Without perms:<ul>
@@ -239,7 +239,7 @@ Owner:<ul>
                         message({
                             m: {
                                 s: "[CLIENT]",
-                                r: 1,
+                                r: 0,
                                 m: "Bots are disabled."
                             }
                         }, true);
@@ -258,7 +258,7 @@ Owner:<ul>
                             message({
                                 m: {
                                     s: "[CLIENT]",
-                                    r: 1,
+                                    r: 0,
                                     m: "Successfully killed bot " + n
                                 }
                             }, true);
@@ -266,7 +266,7 @@ Owner:<ul>
                             message({
                                 m: {
                                     s: "[CLIENT]",
-                                    r: 1,
+                                    r: 0,
                                     m: "Could not kill bot " + n
                                 }
                             }, true);
@@ -277,7 +277,7 @@ Owner:<ul>
                         message({
                             m: {
                                 s: "[CLIENT]",
-                                r: 1,
+                                r: 0,
                                 m: "Bots are disabled."
                             }
                         }, true);
@@ -287,7 +287,7 @@ Owner:<ul>
                             message({
                                 m: {
                                     s: "[CLIENT]",
-                                    r: 1,
+                                    r: 0,
                                     m: "I need the username AND password."
                                 }
                             }, true);
@@ -298,7 +298,7 @@ Owner:<ul>
                                 message({
                                     m: {
                                         s: "[CLIENT]",
-                                        r: 1,
+                                        r: 0,
                                         m: "I need the password."
                                     }
                                 }, true);
@@ -357,33 +357,35 @@ Owner:<ul>
         if (gameFile.files.length) {
             gameFile.files[0].text().then(e => {
                 try {
+                    let settings = {
+                        n: gameName.value,
+                        g: perms.checked,
+                        p: private.checked,
+                        pa: gamePw.value,
+                        r: powerRestrict.checked,
+                        u: uploadMap.checked
+                    };
                     ws.send(`{
                         "e": "createGame",
                         "j": ${e},
-                        "s": {
-                            "n": "${gameName.value}",
-                            "g": ${perms.checked},
-                            "p": ${private.checked},
-                            "pa": "${gamePw.value}",
-                            "r": ${powerRestrict.checked},
-                            "u": ${uploadMap.checked}
-                        }
+                        "s": ${JSON.stringify(settings)}
                     }`);
                 } catch {
                     customAlert("Something went wrong. The JSON file was probably not JSON.")
                 }
             });
         } else {
+            let settings = {
+                n: gameName.value,
+                g: perms.checked,
+                p: private.checked,
+                pa: gamePw.value,
+                r: powerRestrict.checked,
+                u: uploadMap.checked
+            };
             ws.send(`{
-                "e": "createGame",=
-                "s": {
-                    "n": "${gameName.value}",
-                    "g": ${perms.checked},
-                    "p": ${private.checked},
-                    "pa": "${gamePw.value}",
-                    "r": ${powerRestrict.checked},
-                    "u": ${uploadMap.checked}
-                }
+                "e": "createGame",
+                "s": ${JSON.stringify(settings)}
             }`);
         }
     });
@@ -613,10 +615,6 @@ ws.addEventListener("message", e => {
             break;
         case "initMap":
             initMap(msg.m);
-            // Remove particles
-            particles.dash = [];
-            particles.shrink = [];
-            particles.bomb = [];
             break;
         case "updateMap":
             if (msg.m.update) {
@@ -786,6 +784,10 @@ function initMap(i) {
             parsedMap.door.push(o);
         }
     }
+    // Remove particles
+    particles.dash = [];
+    particles.shrink = [];
+    particles.bomb = [];
 }
 /**
  * 
@@ -812,18 +814,19 @@ function message(msg, force = false) {
     let wrapper = document.createElement("div");
     wrapper.className = "wrapper";
     let p = document.createElement("p");
-    p.className =
-        (msg.m.s === "[SKAP]" || msg.m.s === "[CLIENT]")
-            ? "SYSMsg"
-            : devs.includes(msg.m.s) && msg.m.r !== -2
-                ? "devMsg"
-                : ["discordMsg", "guestMsg", "userMsg", "modMsg"][msg.m.r + 2];
-    p.innerHTML =
-        (force ? msg.m.s : msg.m.s.safe()) + ":&nbsp;" +
-        (force
+    p.className = msg.m.s === "[SKAP]" || msg.m.s === "[CLIENT]"
+        ? "SYSMsg"
+        : ["discordMsg", "guestMsg", "userMsg", "modMsg"][msg.m.r + 2];
+    p.innerHTML = `<span class="
+    ${devs.includes(msg.m.s)
+            ? "devMsg"
+            : ""
+        }">
+        ${force ? msg.m.s : msg.m.s.safe()}:&nbsp;</span>
+        ${force
             ? msg.m.m.replace(URLRegex, '<a href="$2" target="_blank">$2</a>')
             : msg.m.m.safe().replace(URLRegex, '<a href="$2" target="_blank">$2</a>')
-        );
+        }`;
     wrapper.appendChild(p);
     chat.appendChild(wrapper);
     if (scroll) p.scrollIntoView();
@@ -867,7 +870,7 @@ function createBot(co, un, pw) {
         message({
             m: {
                 s: "[CLIENT]",
-                r: 1,
+                r: 0,
                 m: "Bots are disabled."
             }
         }, true);
@@ -885,7 +888,7 @@ function createBot(co, un, pw) {
                 if (msg.m) message({
                     m: {
                         s: "[CLIENT]",
-                        r: 1,
+                        r: 0,
                         m: "Bot failed to login"
                     }
                 }, true);
@@ -897,7 +900,7 @@ function createBot(co, un, pw) {
                     message({
                         m: {
                             s: "[CLIENT]",
-                            r: 1,
+                            r: 0,
                             m: `Bot ${bot.name} logged in`
                         }
                     }, true);
@@ -909,7 +912,7 @@ function createBot(co, un, pw) {
                     message({
                         m: {
                             s: "[CLIENT]",
-                            r: 1,
+                            r: 0,
                             m: `Bot ${bot.name} joined`
                         }
                     }, true);

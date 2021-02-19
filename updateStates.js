@@ -123,6 +123,19 @@ function updateStates(m) {
                     o: 1
                 });
                 break;
+            case "refuel":
+                for (let i = 0; i < 20; i++) {
+                    let dir = Math.random() * 2 - Math.PI / 2 - 1;
+                    let s = Math.random() / 5 + 0.3;
+                    particles.refuel.push({
+                        x: p.x,
+                        y: p.y,
+                        vx: s * Math.cos(dir),
+                        vy: -s * Math.sin(dir),
+                        o: 1
+                    });
+                }
+                break;
         }
     }
 }
