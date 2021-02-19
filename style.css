@@ -421,7 +421,7 @@ canvas {
     color: transparent;
 }
 .Sweatyfuckingbitchmsg {
-    background-image: repeating-linear-gradient(45deg, #00000000, #0000ff);
+    background-image: repeating-linear-gradient(45deg, #00000000, #0000ff, #00000000);
     animation: slide 1s linear infinite;
     background-size: 700% 100%;
     -webkit-background-clip: text;
