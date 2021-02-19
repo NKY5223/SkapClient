@@ -356,23 +356,19 @@ Owner:<ul>
     createGameBtn.addEventListener("click", () => {
         if (gameFile.files.length) {
             gameFile.files[0].text().then(e => {
-                try {
-                    let settings = {
-                        n: gameName.value,
-                        g: perms.checked,
-                        p: private.checked,
-                        pa: gamePw.value,
-                        r: powerRestrict.checked,
-                        u: uploadMap.checked
-                    };
-                    ws.send(`{
+                let settings = {
+                    n: gameName.value,
+                    g: perms.checked,
+                    p: private.checked,
+                    pa: gamePw.value,
+                    r: powerRestrict.checked,
+                    u: uploadMap.checked
+                };
+                ws.send(`{
                         "e": "createGame",
                         "j": ${e},
                         "s": ${JSON.stringify(settings)}
                     }`);
-                } catch {
-                    customAlert("Something went wrong. The JSON file was probably not JSON.")
-                }
             });
         } else {
             let settings = {
@@ -427,15 +423,17 @@ ws.addEventListener("message", e => {
                 div.innerHTML = `<h2>${g.name}<br>${g.players} players</h2><h5>${g.id}</h5><p>${String(g.mapName).safe()} by ${String(g.creator).safe()}</p>`;
                 div.addEventListener("click", () => {
                     if (g.private) {
-                        ws.send(`{
-                            "e": "join",
-                            "g": "${g.id}",
-                            "p": "${prompt("Password?")}"
-                        }`);
-                    } else ws.send(`{
-                        "e": "join",
-                        "g": "${g.id}"
-                    }`);
+                        ws.send(JSON.stringify({
+                            e: "join",
+                            g: g.id,
+                            p: prompt("Password?")
+                        }));
+                    } else {
+                        ws.send(JSON.stringify({
+                            e: "join",
+                            g: g.id,
+                        }));
+                    }
                     id = g.id;
                     if (i < 4) noBot = true;
                 });
@@ -816,7 +814,9 @@ function message(msg, force = false) {
     let p = document.createElement("p");
     p.className = msg.m.s === "[SKAP]" || msg.m.s === "[CLIENT]"
         ? "SYSMsg"
-        : ["discordMsg", "guestMsg", "userMsg", "modMsg"][msg.m.r + 2];
+        : msg.m.s === "Sweaty"
+            ? "Sweatyfuckingbitchmsg"
+            : ["discordMsg", "guestMsg", "userMsg", "modMsg"][msg.m.r + 2];
     p.innerHTML = `<span class="
     ${devs.includes(msg.m.s)
             ? "devMsg"

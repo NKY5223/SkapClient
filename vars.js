@@ -328,3 +328,10 @@ String.prototype.safe = function () {
 function clamp(min, num, max) {
     return Math.max(Math.min(num, max), min);
 }
+
+/**
+ * When i want to punish u
+ */
+function rickroll() {
+    location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+}
