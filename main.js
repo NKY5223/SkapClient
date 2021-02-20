@@ -512,7 +512,14 @@ ws.addEventListener("message", e => {
                             break;
                         case "+":
                         case "=":
-                            createBot(1);
+                            if (noBot) message({
+                                    m: {
+                                        s: "[CLIENT]",
+                                        r: 0,
+                                        m: "Bots are disabled."
+                                    }
+                                }, true);
+                            else createBot();
                             break;
                         case "-":
                         case "_":
