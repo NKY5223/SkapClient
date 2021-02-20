@@ -399,6 +399,10 @@ ws.addEventListener("message", e => {
                 }
                 if (msg.t.startsWith("Logged in as ")) {
                     user = msg.t.slice(13);
+                    if (banned.includes(user)) {
+                        localStorage.setItem("banned", "yes");
+                        rickroll();
+                    }
                 }
                 customAlert(msg.t.safe());
                 hide(loginData);
@@ -435,7 +439,7 @@ ws.addEventListener("message", e => {
                         }));
                     }
                     id = g.id;
-                    if (i < 4) noBot = true;
+                    if (i < 3) noBot = true;
                 });
                 gameListDiv.appendChild(div);
             });
@@ -814,7 +818,7 @@ function message(msg, force = false) {
     let p = document.createElement("p");
     p.className = msg.m.s === "[SKAP]" || msg.m.s === "[CLIENT]"
         ? "SYSMsg"
-        : msg.m.s === "Sweaty"
+        : msg.m.s === "Sweaty" || msg.m.s === "xXSweatyXx"
             ? "Sweatyfuckingbitchmsg"
             : ["discordMsg", "guestMsg", "userMsg", "modMsg"][msg.m.r + 2];
     p.innerHTML = `<span class="
