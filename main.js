@@ -818,7 +818,7 @@ function message(msg, force = false) {
     let p = document.createElement("p");
     p.className = msg.m.s === "[SKAP]" || msg.m.s === "[CLIENT]"
         ? "SYSMsg"
-        : msg.m.s === "Sweaty" || msg.m.s === "xXSweatyXx"
+        : msg.m.s === "Sweaty" || msg.m.s === "XxSweatyxX"
             ? "Sweatyfuckingbitchmsg"
             : ["discordMsg", "guestMsg", "userMsg", "modMsg"][msg.m.r + 2];
     p.innerHTML = `<span class="
