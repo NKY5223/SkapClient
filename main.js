@@ -21,13 +21,20 @@ ws.addEventListener("open", () => {
         e.stopPropagation();
     });
     login.addEventListener("click", () => {
-        ws.send(`{
-            "e": "login",
-            "m": {
-                "username": "${username.value}",
-                "password": "${SHA256(username.value + password.value)}"
-            }
-        }`);
+        grecaptcha.ready(() => {
+            grecaptcha.execute("6Ld2wFMaAAAAAIL8fjR5Bwg6kn3fP2t-b9NFoK_R", {
+                action: "submit"
+            }).then(token => {
+                ws.send(JSON.stringify({
+                    e: "login",
+                    m: {
+                        username: username.value,
+                        password: SHA256(username.value + password.value)
+                    },
+                    t: token
+                }));
+            });
+        });
     });
     changingRoomBtn.addEventListener("click", () => {
         ws.send(`{ "e": "getStyle" }`);
@@ -52,16 +59,32 @@ ws.addEventListener("open", () => {
         ws.send(`{ "e": "logout" }`);
     });
     guest.addEventListener("click", () => {
-        ws.send(`{ "e": "guest" }`);
+        grecaptcha.ready(() => {
+            grecaptcha.execute("6Ld2wFMaAAAAAIL8fjR5Bwg6kn3fP2t-b9NFoK_R", {
+                action: "submit"
+            }).then(token => {
+                ws.send(JSON.stringify({
+                    e: "guest",
+                    t: token
+                }));
+            });
+        });
     });
     register.addEventListener("click", () => {
-        ws.send(`{
-            "e": "register",
-            "m": {
-                "username": "${username.value}",
-                "password": "${SHA256(username.value + password.value)}"
-            }
-        }`);
+        grecaptcha.ready(() => {
+            grecaptcha.execute("6Ld2wFMaAAAAAIL8fjR5Bwg6kn3fP2t-b9NFoK_R", {
+                action: "submit"
+            }).then(token => {
+                ws.send(JSON.stringify({
+                    e: "register",
+                    m: {
+                        username: username.value,
+                        password: SHA256(username.value + password.value)
+                    },
+                    t: token
+                }));
+            });
+        });
     });
     play.addEventListener("click", () => {
         ws.send(`{ "e": "games" }`);
@@ -77,7 +100,7 @@ ws.addEventListener("open", () => {
         ws.send(`{
             "e": "powerChange",
             "m": 0,
-            "i": ${power0.value = clamp(0, power0.value, 10)}
+            "i": ${power0.value = clamp(0, power0.value, 11)}
         }`);
         for (let b of bots) {
             b.send(`{
@@ -91,7 +114,7 @@ ws.addEventListener("open", () => {
         ws.send(`{
             "e": "powerChange",
             "m": 1,
-            "i": ${power1.value = clamp(0, power1.value, 10)}
+            "i": ${power1.value = clamp(0, power1.value, 11)}
         }`);
         for (let b of bots) {
             b.send(`{
@@ -513,12 +536,12 @@ ws.addEventListener("message", e => {
                         case "+":
                         case "=":
                             if (noBot) message({
-                                    m: {
-                                        s: "[CLIENT]",
-                                        r: 0,
-                                        m: "Bots are disabled."
-                                    }
-                                }, true);
+                                m: {
+                                    s: "[CLIENT]",
+                                    r: 0,
+                                    m: "Bots are disabled."
+                                }
+                            }, true);
                             else createBot();
                             break;
                         case "-":
@@ -915,7 +938,10 @@ function createBot(co, un, pw) {
                             m: `Bot ${bot.name} logged in`
                         }
                     }, true);
-                    bot.send(`{"e":"join","g":"${id}"}`);
+                    bot.send(JSON.stringify({
+                        e: "join",
+                        g: msg.g.id
+                    }));
                 }
                 break;
             case "join":

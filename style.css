@@ -140,6 +140,9 @@ code {
     border: none;
     font-size: 30px;
 }
+.grecaptcha-badge {
+    display: none;
+}
 
 #backtoLogin, #backToLogout {
     position: absolute;
