@@ -102,13 +102,6 @@ ws.addEventListener("open", () => {
             "m": 0,
             "i": ${power0.value = clamp(0, power0.value, 11)}
         }`);
-        for (let b of bots) {
-            b.send(`{
-                "e": "powerChange",
-                "m": 0,
-                "i": ${parseInt(power0.value)}
-            }`);
-        }
     });
     power1.addEventListener("input", () => {
         ws.send(`{
@@ -116,13 +109,6 @@ ws.addEventListener("open", () => {
             "m": 1,
             "i": ${power1.value = clamp(0, power1.value, 11)}
         }`);
-        for (let b of bots) {
-            b.send(`{
-                "e": "powerChange",
-                "m": 1,
-                "i": ${parseInt(power1.value)}
-            }`);
-        }
     });
     for (let el of document.getElementsByClassName("poweroption")) {
         el.addEventListener("click", () => {
@@ -232,8 +218,6 @@ Without perms:<ul>
 <li>/shrug &lt;message&gt; - [CLIENT] Appends ¯\\_(ツ)_/¯ to the end of the message.</li>
 <li>/tableflip &lt;message&gt; - [CLIENT] Appends (╯°□°）╯︵ ┻━┻ to the end of the message.</li>
 <li>/unflip &lt;message&gt; - [CLIENT] Appends ┬─┬ ノ( ゜-゜ノ) to the end of the message.</li>
-<li>/killbot &lt;username&gt; - [CLIENT] Removes a bot (use if the bot is lagging behind)</li>
-<li>/bot &lt;username&gt; &lt;password&gt; - [CLIENT] Creates a bot user with username and password</li>
 </ul>
 With perms:<ul>
 <li>/res - Rescues yourself</li>
@@ -257,87 +241,7 @@ Owner:<ul>
                     sendMessage(msg.slice(11) + " (╯°□°）╯︵ ┻━┻");
                 } else if (msg.startsWith("/unflip")) {
                     sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
-                } else if (msg.startsWith("/killbot ")) {
-                    if (noBot) {
-                        message({
-                            m: {
-                                s: "[CLIENT]",
-                                r: 0,
-                                m: "Bots are disabled."
-                            }
-                        }, true);
-                    } else {
-                        let n = msg.slice(9);
-                        let found = false;
-                        for (let b in bots) {
-                            if (bots[b].name === n) {
-                                bots[b].close();
-                                bots.splice(b, 1);
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (found) {
-                            message({
-                                m: {
-                                    s: "[CLIENT]",
-                                    r: 0,
-                                    m: "Successfully killed bot " + n
-                                }
-                            }, true);
-                        } else {
-                            message({
-                                m: {
-                                    s: "[CLIENT]",
-                                    r: 0,
-                                    m: "Could not kill bot " + n
-                                }
-                            }, true);
-                        }
-                    }
-                } else if (chatInput.value.startsWith("/bot ")) {
-                    if (noBot) {
-                        message({
-                            m: {
-                                s: "[CLIENT]",
-                                r: 0,
-                                m: "Bots are disabled."
-                            }
-                        }, true);
-                    } else {
-                        let x = chatInput.value.slice(5).split(" ");
-                        if (!x[0]) {
-                            message({
-                                m: {
-                                    s: "[CLIENT]",
-                                    r: 0,
-                                    m: "I need the username AND password."
-                                }
-                            }, true);
-                        } else if (x[0] && !x[1]) {
-                            if (botPw[x[0]]) {
-                                createBot(0, x[0], botPw[x[0]]);
-                            } else {
-                                message({
-                                    m: {
-                                        s: "[CLIENT]",
-                                        r: 0,
-                                        m: "I need the password."
-                                    }
-                                }, true);
-                            }
-                        } else if (x[0] && x[1]) {
-                            createBot(0, x[0], x[1]);
-                            botPw[x[0]] = x[1];
-                            localStorage.setItem("botPw", JSON.stringify(botPw));
-                        }
-                    }
                 } else {
-                    if (chatInput.value.startsWith("/")) {
-                        for (let b of bots) {
-                            b.send(`{"e":"message","message":"${chatInput.value}"}`);
-                        }
-                    }
                     sendMessage(msg);
                 }
                 chatInput.value = "";
@@ -462,7 +366,6 @@ ws.addEventListener("message", e => {
                         }));
                     }
                     id = g.id;
-                    if (i < 3) noBot = true;
                 });
                 gameListDiv.appendChild(div);
             });
@@ -501,15 +404,6 @@ ws.addEventListener("message", e => {
                                 "value": true
                             }
                         }`);
-                        for (let b of bots) {
-                            b.send(`{
-                                "e": "input",
-                                "input": {
-                                    "keys": ${keys.indexOf(e.key.toLowerCase())},
-                                    "value": true
-                                }
-                            }`);
-                        }
                     }
                     switch (e.key.toLowerCase()) {
                         case "o":
@@ -533,21 +427,6 @@ ws.addEventListener("message", e => {
                             camScale *= 1.5;
                             customAlert(`Camera Scale: ${camScale}`);
                             break;
-                        case "+":
-                        case "=":
-                            if (noBot) message({
-                                m: {
-                                    s: "[CLIENT]",
-                                    r: 0,
-                                    m: "Bots are disabled."
-                                }
-                            }, true);
-                            else createBot();
-                            break;
-                        case "-":
-                        case "_":
-                            if (bots.length) bots.pop().close();
-                            break;
                         case "enter":
                         case "/":
                             chatInput.focus();
@@ -563,15 +442,6 @@ ws.addEventListener("message", e => {
                                 "value": false
                             }
                         }`);
-                        for (let b of bots) {
-                            b.send(`{
-                                "e": "input",
-                                "input": {
-                                    "keys": ${keys.indexOf(e.key.toLowerCase())},
-                                    "value": false
-                                }
-                            }`);
-                        }
                     }
                 });
                 canvas.addEventListener("mousedown", e => {
@@ -585,15 +455,6 @@ ws.addEventListener("message", e => {
                             "value": true
                         }
                     }`);
-                    for (let b of bots) {
-                        b.send(`{
-                            "e": "input",
-                            "input": {
-                                "keys": ${x},
-                                "value": true
-                            }
-                        }`);
-                    }
                 });
                 canvas.addEventListener("mouseup", e => {
                     let x;
@@ -606,15 +467,6 @@ ws.addEventListener("message", e => {
                             "value": false
                         }
                     }`);
-                    for (let b of bots) {
-                        b.send(`{
-                            "e": "input",
-                            "input": {
-                                "keys": ${x},
-                                "value": false
-                            }
-                        }`);
-                    }
                 });
                 canvas.addEventListener("contextmenu", e => { e.preventDefault(); });
                 document.addEventListener("mousemove", e => {
@@ -656,6 +508,13 @@ ws.addEventListener("message", e => {
                             if (o.id === u.id) {
                                 u.angle = (o.angle % 360) * Math.PI / 180;
                                 u.center = o.center;
+                                break;
+                            }
+                        }
+                    } else if (o.type === "movingLava") {
+                        for (let u of parsedMap.movingLava) {
+                            if (o.id === u.id) {
+                                u.pos = o.pos;
                                 break;
                             }
                         }
@@ -748,6 +607,7 @@ function initMap(i) {
     parsedMap.teleporter = [];
     parsedMap.lava = [];
     parsedMap.rotatingLava = [];
+    parsedMap.movingLava = [];
     parsedMap.ice = [];
     parsedMap.slime = [];
     parsedMap.button = [];
@@ -771,6 +631,7 @@ function initMap(i) {
             case "text":
             case "box":
             case "turret":
+            case "movingLava":
                 parsedMap[o.type].push(o);
                 break;
             case "teleporter":
@@ -893,72 +754,6 @@ function sendMessage(msg) {
         e: "message",
         message: msg
     }));
-}
-/**
- * @param {boolean} co color
- * @param {string} un username 
- * @param {string} pw password 
- */
-function createBot(co, un, pw) {
-    if (noBot) {
-        message({
-            m: {
-                s: "[CLIENT]",
-                r: 0,
-                m: "Bots are disabled."
-            }
-        }, true);
-        return;
-    }
-    let bot = new WebSocket("wss://skap.io");
-    bot.addEventListener("open", () => {
-        if (un && pw) bot.send(`{"e":"login","m":{"username":"${un}","password":"${SHA256(un + pw)}"}}`);
-        else bot.send(`{"e":"guest"}`);
-    });
-    bot.addEventListener("message", e => {
-        let msg = JSON.parse(e.data);
-        switch (msg.e) {
-            case "result":
-                if (msg.m) message({
-                    m: {
-                        s: "[CLIENT]",
-                        r: 0,
-                        m: "Bot failed to login"
-                    }
-                }, true);
-                else {
-                    if (co && botColor) {
-                        bot.send(`{"e":"colorChange","c":${botColor}}`);
-                    }
-                    bot.name = msg.t.slice(13)
-                    message({
-                        m: {
-                            s: "[CLIENT]",
-                            r: 0,
-                            m: `Bot ${bot.name} logged in`
-                        }
-                    }, true);
-                    bot.send(JSON.stringify({
-                        e: "join",
-                        g: msg.g.id
-                    }));
-                }
-                break;
-            case "join":
-                if (!msg.m) {
-                    message({
-                        m: {
-                            s: "[CLIENT]",
-                            r: 0,
-                            m: `Bot ${bot.name} joined`
-                        }
-                    }, true);
-                    bots.push(bot);
-                }
-                break;
-        }
-    });
-    return bot;
 }
 ws.addEventListener("close", () => {
     canSend = false;

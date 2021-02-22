@@ -165,13 +165,6 @@ function render(e) {
             mY
         ]
     });
-    for (let b of bots) b.send(JSON.stringify({
-        e: "aim",
-        m: [
-            mX,
-            mY
-        ]
-    }))
 
     if (renderSettings.render.obstacle) {
         // Render obstacles
@@ -209,21 +202,29 @@ function render(e) {
             ctx.restore();
         }
     }
+    ctx.fillStyle = renderSettings.colors.lava;
     if (renderSettings.render.lava) {
         // Render lava
-        ctx.fillStyle = renderSettings.colors.lava;
         for (let obj of parsedMap.lava) {
             ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
         }
     }
-    // Render rotLava
-    ctx.globalAlpha = 1;
-    for (let obj of parsedMap.rotatingLava) {
-        ctx.save();
-        ctx.translate(obj.center.x, obj.center.y);
-        ctx.rotate(obj.angle);
-        ctx.fillRect(-obj.size.x / 2, -obj.size.y / 2, obj.size.x, obj.size.y);
-        ctx.restore();
+    if (renderSettings.render.movLava) {
+        // Render movLava
+        for (let obj of parsedMap.movingLava) {
+            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        }
+    }
+    if (renderSettings.render.rotLava) {
+        // Render rotLava
+        ctx.globalAlpha = 1;
+        for (let obj of parsedMap.rotatingLava) {
+            ctx.save();
+            ctx.translate(obj.center.x, obj.center.y);
+            ctx.rotate(obj.angle);
+            ctx.fillRect(-obj.size.x / 2, -obj.size.y / 2, obj.size.x, obj.size.y);
+            ctx.restore();
+        }
     }
     if (renderSettings.render.ice) {
         // Render ice
@@ -355,6 +356,10 @@ function render(e) {
             case "wavy":
             case "shooter":
             case "expander":
+            case "gravityUp":
+            case "gravityDown":
+            case "gravityLeft":
+            case "gravityRight":
                 ctx.globalAlpha = obj.opacity;
                 ctx.drawImage(renderSettings.textures.enemies[obj.type], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
                 break;

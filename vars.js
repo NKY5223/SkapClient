@@ -15,6 +15,8 @@ let renderSettings = {
     render: {
         obstacle: true,
         lava: true,
+        movLava: true,
+        rotLava: true,
         slime: true,
         ice: true,
         block0: true,
@@ -105,6 +107,10 @@ let renderSettings = {
             wavy: loadImage("enemies/wavy"),
             shooter: loadImage("enemies/shooter"),
             expander: loadImage("enemies/expander"),
+            gravityUp: loadImage("enemies/gravityUp"),
+            gravityDown: loadImage("enemies/gravityDown"),
+            gravityLeft: loadImage("enemies/gravityLeft"),
+            gravityRight: loadImage("enemies/gravityRight"),
 
             none: loadImage("enemies/none")
         },
@@ -117,6 +123,7 @@ let parsedMap = {
     teleporter: [],
     lava: [],
     rotatingLava: [],
+    movingLava: [],
     ice: [],
     slime: [],
     button: [],
@@ -158,18 +165,14 @@ let blocked = localStorage.getItem("blocked") ? localStorage.getItem("blocked").
 let viewWS = Boolean(localStorage.getItem("viewWS"));
 let debug = Boolean(localStorage.getItem("debug"));
 let noUS = false;
-const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "ZeroFix", "haha0201"];
+const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "ZeroFix"];
 const banned = [];
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");
 const URLRegex = /(\s|^)(https?:\/\/[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+((\/[A-Za-z0-9-_]+)*)?(\.[a-z]+)?\/?(\?[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-%]+)?)*)?(#[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?(&[A-Za-z0-9\._\-]+(=[A-Za-z0-9\._\-]+)?)*)?)/g;
 
 let id = "";
-let bots = [];
-let botPw = JSON.parse(localStorage.getItem("botPw") || "{}");
-let botColor = localStorage.getItem("color");
 let canSend = false;
-let noBot = false;
 
 
 let maxLU = 0;
