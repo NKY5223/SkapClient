@@ -114,6 +114,11 @@ function render(e) {
         p.y += p.vy;
         return (p.o -= 0.05) > 0;
     });
+    // Camera
+    if (freeCam) {
+        camX += camSpeed / camScale * (keysDown.has("arrowright") - keysDown.has("arrowleft"));
+        camY += camSpeed / camScale * (keysDown.has("arrowdown") - keysDown.has("arrowup"));
+    }
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -125,19 +130,13 @@ function render(e) {
     ctx.fillStyle = renderSettings.colors.obstacle;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.resetTransform();
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.scale(camScale, camScale);
-    ctx.translate(-camX, -camY);
-
     ctx.fillStyle = parsedMap.background;
-    ctx.fillRect(0, 0, map.areaSize.x, map.areaSize.y);
+    ctx.fillRect(
+        Math.round(canvas.width / 2 - camScale * camX),
+        Math.round(canvas.height / 2 - camScale * camY),
+        Math.round(map.areaSize.x * camScale),
+        Math.round(map.areaSize.y * camScale));
 
-    // Camera
-    if (freeCam) {
-        camX += camSpeed / camScale * (keysDown.has("arrowright") - keysDown.has("arrowleft"));
-        camY += camSpeed / camScale * (keysDown.has("arrowdown") - keysDown.has("arrowup"));
-    }
 
     if (!e) {
         e = {
@@ -170,27 +169,42 @@ function render(e) {
         // Render obstacles
         ctx.fillStyle = renderSettings.colors.obstacle;
         for (let obj of parsedMap.obstacle) {
-            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
         }
     }
     // Render the ****ing teleporters (they suck)
     if (renderSettings.render.teleporter) {
         for (let obj of parsedMap.teleporter) {
-            ctx.save();
-            ctx.translate(obj.pos.x, obj.pos.y);
             let gradient;
             switch (obj.dir) {
                 case "0":
-                    gradient = ctx.createLinearGradient(0, 0, 0, obj.size.y);
+                    gradient = ctx.createLinearGradient(
+                        0, Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                        0, Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.size.y - camY))
+                    );
                     break;
                 case "1":
-                    gradient = ctx.createLinearGradient(obj.size.x, 0, 0, 0);
+                    gradient = ctx.createLinearGradient(
+                        Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x - camX)), 0,
+                        Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)), 0
+                    );
                     break;
                 case "2":
-                    gradient = ctx.createLinearGradient(0, obj.size.y, 0, 0);
+                    gradient = ctx.createLinearGradient(
+                        0, Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.size.y - camY)),
+                        0, Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY))
+                    );
                     break;
                 case "3":
-                    gradient = ctx.createLinearGradient(0, 0, obj.size.x, 0);
+                    gradient = ctx.createLinearGradient(
+                        Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)), 0,
+                        Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x - camX)), 0
+                    );
                     break;
             }
             if (gradient) {
@@ -198,21 +212,35 @@ function render(e) {
                 gradient.addColorStop(1, renderSettings.colors.obstacle);
             } else gradient = parsedMap.background;
             ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, obj.size.x, obj.size.y);
-            ctx.restore();
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
         }
     }
     ctx.fillStyle = renderSettings.colors.lava;
     if (renderSettings.render.lava) {
         // Render lava
         for (let obj of parsedMap.lava) {
-            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
         }
     }
     if (renderSettings.render.movLava) {
         // Render movLava
         for (let obj of parsedMap.movingLava) {
-            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
         }
     }
     if (renderSettings.render.rotLava) {
@@ -220,7 +248,10 @@ function render(e) {
         ctx.globalAlpha = 1;
         for (let obj of parsedMap.rotatingLava) {
             ctx.save();
-            ctx.translate(obj.center.x, obj.center.y);
+            ctx.translate(
+                Math.round(canvas.width / 2 + camScale * (obj.canter.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.center.y - camY))
+            );
             ctx.rotate(obj.angle);
             ctx.fillRect(-obj.size.x / 2, -obj.size.y / 2, obj.size.x, obj.size.y);
             ctx.restore();
@@ -230,14 +261,24 @@ function render(e) {
         // Render ice
         ctx.fillStyle = renderSettings.colors.ice;
         for (let obj of parsedMap.ice) {
-            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
         }
     }
     if (renderSettings.render.slime) {
         // Render slime
         ctx.fillStyle = renderSettings.colors.slime;
         for (let obj of parsedMap.slime) {
-            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
         }
     }
     // Render buttons
@@ -311,7 +352,12 @@ function render(e) {
     if (renderSettings.render.block0) {
         for (let obj of parsedMap.block0) {
             ctx.fillStyle = obj.color;
-            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
         }
     }
 
@@ -321,26 +367,62 @@ function render(e) {
             case "bomb":
                 ctx.globalAlpha = obj.opacity;
                 ctx.beginPath();
-                ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
+                ctx.ellipse(
+                    canvas.width / 2 + camScale * (obj.pos.x - camX),
+                    canvas.height / 2 + camScale * (obj.pos.y - camY),
+                    camScale * (obj.region + obj.radius),
+                    camScale * (obj.region + obj.radius),
+                    0, 0, 7
+                );
                 ctx.fillStyle = obj.exploding ? renderSettings.colors.mineExpRegion : renderSettings.colors.mineRegion;
                 ctx.fill();
-                ctx.drawImage(renderSettings.textures.enemies.bomb[obj.phase & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                ctx.drawImage(
+                    renderSettings.textures.enemies.bomb[obj.phase & 1],
+                    canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX),
+                    canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY),
+                    camScale * obj.radius * 2,
+                    camScale * obj.radius * 2
+                );
                 break;
             case "following":
                 ctx.globalAlpha = obj.opacity;
                 ctx.beginPath();
-                ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
+                ctx.ellipse(
+                    canvas.width / 2 + camScale * (obj.pos.x - camX),
+                    canvas.height / 2 + camScale * (obj.pos.y - camY),
+                    camScale * (obj.region + obj.radius),
+                    camScale * (obj.region + obj.radius),
+                    0, 0, 7
+                );
                 ctx.fillStyle = renderSettings.colors.followingRegion;
                 ctx.fill();
-                ctx.drawImage(renderSettings.textures.enemies.following, obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                ctx.drawImage(
+                    renderSettings.textures.enemies.following,
+                    canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX),
+                    canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY),
+                    camScale * obj.radius * 2,
+                    camScale * obj.radius * 2
+                );
                 break;
             case "contractor":
                 ctx.globalAlpha = obj.opacity;
                 ctx.beginPath();
-                ctx.ellipse(obj.pos.x, obj.pos.y, obj.region + obj.radius, obj.region + obj.radius, 0, 0, 7);
+                ctx.ellipse(
+                    canvas.width / 2 + camScale * (obj.pos.x - camX),
+                    canvas.height / 2 + camScale * (obj.pos.y - camY),
+                    camScale * (obj.region + obj.radius),
+                    camScale * (obj.region + obj.radius),
+                    0, 0, 7
+                );
                 ctx.fillStyle = obj.triggered ? renderSettings.colors.contracTriggerRegion : renderSettings.colors.contracRegion;
                 ctx.fill();
-                ctx.drawImage(renderSettings.textures.enemies.contractor[obj.triggered & 1], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                ctx.drawImage(
+                    renderSettings.textures.enemies.contractor[obj.triggered & 1], 
+                    canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), 
+                    canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), 
+                    camScale * obj.radius * 2, 
+                    camScale * obj.radius * 2
+                );
                 break;
             case "bouncer":
             case "normal":
@@ -361,14 +443,14 @@ function render(e) {
             case "gravityLeft":
             case "gravityRight":
                 ctx.globalAlpha = obj.opacity;
-                ctx.drawImage(renderSettings.textures.enemies[obj.type], obj.pos.x - obj.radius, obj.pos.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                ctx.drawImage(renderSettings.textures.enemies[obj.type], canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
                 break;
             case "rotating":
                 ctx.save();
-                ctx.translate(obj.pos.x, obj.pos.y);
+                ctx.translate(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
                 ctx.rotate(obj.angle);
                 ctx.globalAlpha = obj.opacity;
-                ctx.drawImage(renderSettings.textures.enemies.rotating, -obj.radius, -obj.radius, obj.radius * 2, obj.radius * 2);
+                ctx.drawImage(renderSettings.textures.enemies.rotating, -camScale * obj.radius, -camScale * obj.radius, camScale * obj.radius * 2, camScale * obj.radius * 2);
                 ctx.restore();
                 break;
             case "turretBullet":
@@ -376,20 +458,20 @@ function render(e) {
                 ctx.globalAlpha = 1;
                 ctx.fillStyle = renderSettings.colors.lava;
                 ctx.beginPath();
-                ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
+                ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
                 ctx.fill();
                 break;
             case "meteorBullet":
                 ctx.globalAlpha = 1;
                 ctx.fillStyle = renderSettings.colors.meteor;
                 ctx.beginPath();
-                ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, obj.radius, 0, 7);
+                ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
                 ctx.fill();
                 break;
             case "path":
                 ctx.fillStyle = renderSettings.colors.blueFire;
                 ctx.beginPath();
-                ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, 0, 0, 7);
+                ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
                 ctx.fill();
                 ctx.closePath();
                 break;
@@ -408,15 +490,15 @@ function render(e) {
                 break;
             case "healingGhost":
                 ctx.globalAlpha = 1;
-                ctx.fillStyle = renderSettings.colors.ghost;
                 ctx.beginPath();
-                ctx.ellipse(obj.pos.x, obj.pos.y, 2, 2, 2, 0, 7);
+                ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
+                ctx.fillStyle = renderSettings.colors.ghost;
                 ctx.fill();
                 break;
             case "frostEntity":
                 ctx.globalAlpha = obj.opacity;
                 ctx.beginPath();
-                ctx.ellipse(obj.pos.x, obj.pos.y, obj.radius, obj.radius, 0, 0, 7);
+                ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
                 ctx.fillStyle = renderSettings.colors.frost;
                 ctx.fill();
                 break;
@@ -424,12 +506,12 @@ function render(e) {
                 ctx.save();
                 ctx.globalAlpha = 1;
                 for (let i = obj.states.length - 1, o = obj.states[i]; i >= 0; i--, o = obj.states[i]) {
-                    ctx.drawImage(renderSettings.textures.enemies.snekBody, o.x - obj.radius, o.y - obj.radius, obj.radius * 2, obj.radius * 2);
+                    ctx.drawImage(renderSettings.textures.enemies.snekBody, canvas.width / 2 + camScale * (o.x - obj.radius - camX), canvas.height / 2 + camScale * (o.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
                 }
                 ctx.globalAlpha = obj.opacity;
-                ctx.translate(obj.pos.x, obj.pos.y);
+                ctx.translate(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
                 ctx.rotate(obj.dir);
-                ctx.drawImage(renderSettings.textures.enemies.snekHead, -obj.radius, -obj.radius, obj.radius * 3, obj.radius * 2);
+                ctx.drawImage(renderSettings.textures.enemies.snekHead, -camScale * obj.radius, -camScale * obj.radius, camScale * obj.radius * 3, camScale * obj.radius * 2);
                 ctx.restore();
                 break;
             default:
@@ -487,41 +569,41 @@ function render(e) {
     ctx.globalAlpha = 1;
     for (let obj of parsedMap.turret) {
         ctx.save();
-        ctx.translate(obj.pos.x + obj.size.x / 2, obj.pos.y + obj.size.y / 2);
+        ctx.translate(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
         ctx.rotate(obj.dir);
         ctx.fillStyle = renderSettings.colors.turretCannon;
-        ctx.fillRect(0, -2, 5, 4);
+        ctx.fillRect(0, -camScale * 2, camScale * 5, camScale * 4);
         ctx.fillStyle = renderSettings.colors.turretBody;
         ctx.beginPath();
-        ctx.ellipse(0, 0, obj.size.x / 2, obj.size.y / 2, 0, 0, 7);
+        ctx.ellipse(0, 0, camScale * obj.size.x / 2, camScale * obj.size.y / 2, 0, 0, 7);
         ctx.fill();
         ctx.restore();
     }
     // Render players
-    ctx.font = "2px Tahoma, Verdana, Segoe, sans-serif";
+    ctx.font = camScale * 2 + "px Tahoma, Verdana, Segoe, sans-serif";
     for (let i in e.players) {
         let p = e.players[i];
         let died = p.states.includes("Died");
         let freeze = p.states.includes("Freeze");
         ctx.save();
-        ctx.translate(p.pos.x, p.pos.y);
+        ctx.translate(canvas.width / 2 + camScale * (p.pos.x - camX), canvas.height / 2 + camScale * (p.pos.y - camY));
         ctx.rotate(p.gravDir / 2 * Math.PI);
         ctx.beginPath();
         // Body
-        ctx.ellipse(0, 0, p.radius, p.radius, 0, 0, 7);
+        ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
         ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : fromColArr(p.color);
         ctx.fill();
         // Hat
         // if (renderSettings.textures.hats.hasOwnProperty(p.hat)) ctx.drawImage(renderSettings.textures.hats[p.hat], -2 * p.radius, -2 * p.radius, 4 * p.radius, 4 * p.radius);
         // Name
         ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#202020";
-        ctx.fillText(p.name, 0, -p.radius - 0.5);
+        ctx.fillText(p.name, 0, -camScale * (p.radius + 0.5));
         // fuelBar™️
         ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#ffff40";
-        ctx.fillRect(-5, p.radius + 1, p.fuel, 2.5);
+        ctx.fillRect(-camScale * 5, camScale * (p.radius + 1), camScale * p.fuel, camScale * 2.5);
         ctx.strokeStyle = "#202020";
-        ctx.lineWidth = 0.5;
-        ctx.strokeRect(-5, p.radius + 1, 10, 2.5);
+        ctx.lineWidth = camScale / 2;
+        ctx.strokeRect(-camScale * 5, camScale * (p.radius + 1), camScale * 10, camScale * 2.5);
         ctx.restore();
     }
     // Render blocks(1)
@@ -529,18 +611,34 @@ function render(e) {
     if (renderSettings.render.block1) {
         for (let obj of parsedMap.block1) {
             ctx.fillStyle = obj.color;
-            ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
         }
     }
     // Render grav zones
-    ctx.setLineDash([2, 6]);
-    ctx.lineWidth = 1;
+    ctx.setLineDash([Math.round(2 * camScale), Math.round(6 * camScale)]);
+    ctx.lineDashOffset = Math.round((gravZoneAnim += 0.5) * camScale);
+    ctx.lineWidth = Math.round(camScale);
     ctx.lineCap = "round";
     for (let obj of map.objects.filter(obj => obj.type === "gravityZone")) {
         ctx.strokeStyle = renderSettings.colors.gravOutline[obj.dir];
         ctx.fillStyle = renderSettings.colors.gravFill[obj.dir];
-        ctx.strokeRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.strokeRect(
+            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+            Math.round(camScale * obj.size.x),
+            Math.round(camScale * obj.size.y)
+        );
+        ctx.fillRect(
+            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+            Math.round(camScale * obj.size.x),
+            Math.round(camScale * obj.size.y)
+        );
     }
     // Render boxes (build power)
     for (let obj of parsedMap.box) {
@@ -548,13 +646,13 @@ function render(e) {
         ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
     }
     // Render text
-    ctx.font = "5px Russo One, Verdana, Arial, Helvetica, sans-serif";
+    ctx.font = camScale * 5 + "px Russo One, Verdana, Arial, Helvetica, sans-serif";
     ctx.strokeStyle = "#000000";
     ctx.setLineDash([]);
     for (let obj of map.objects.filter(obj => obj.type === "text")) {
-        ctx.strokeText(obj.text, obj.pos.x, obj.pos.y);
+        ctx.strokeText(obj.text, canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
         ctx.fillStyle = "#ffffff";
-        ctx.fillText(obj.text, obj.pos.x, obj.pos.y);
+        ctx.fillText(obj.text, canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
         ctx.fillStyle = "#000000";
     }
     // Render hitboxes

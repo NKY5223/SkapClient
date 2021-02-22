@@ -141,6 +141,8 @@ let camY = 0;
 let camSpeed = 5;
 let freeCam = false;
 
+let gravZoneAnim = 0;
+
 let keys;
 if (localStorage.getItem("keys")) keys = localStorage.getItem("keys").split(" ");
 else keys = ["w", "a", "s", "d", "shift", "", "", "r"];
