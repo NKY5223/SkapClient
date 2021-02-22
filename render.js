@@ -253,7 +253,7 @@ function render(e) {
                 Math.round(canvas.height / 2 + camScale * (obj.center.y - camY))
             );
             ctx.rotate(obj.angle);
-            ctx.fillRect(-obj.size.x / 2, -obj.size.y / 2, obj.size.x, obj.size.y);
+            ctx.fillRect(-camScale * obj.size.x / 2, -camScale * obj.size.y / 2, camScale * obj.size.x, camScale * obj.size.y);
             ctx.restore();
         }
     }
