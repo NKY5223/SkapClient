@@ -249,7 +249,7 @@ function render(e) {
         for (let obj of parsedMap.rotatingLava) {
             ctx.save();
             ctx.translate(
-                Math.round(canvas.width / 2 + camScale * (obj.canter.x - camX)),
+                Math.round(canvas.width / 2 + camScale * (obj.center.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.center.y - camY))
             );
             ctx.rotate(obj.angle);
