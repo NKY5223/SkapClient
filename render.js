@@ -417,10 +417,10 @@ function render(e) {
                 ctx.fillStyle = obj.triggered ? renderSettings.colors.contracTriggerRegion : renderSettings.colors.contracRegion;
                 ctx.fill();
                 ctx.drawImage(
-                    renderSettings.textures.enemies.contractor[obj.triggered & 1], 
-                    canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), 
-                    canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), 
-                    camScale * obj.radius * 2, 
+                    renderSettings.textures.enemies.contractor[obj.triggered & 1],
+                    canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX),
+                    canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY),
+                    camScale * obj.radius * 2,
                     camScale * obj.radius * 2
                 );
                 break;
@@ -643,7 +643,12 @@ function render(e) {
     // Render boxes (build power)
     for (let obj of parsedMap.box) {
         ctx.fillStyle = renderSettings.colors.box;
-        ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.fillRect(
+            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+            Math.round(camScale * obj.size.x),
+            Math.round(camScale * obj.size.y)
+        );
     }
     // Render text
     ctx.font = camScale * 5 + "px Russo One, Verdana, Arial, Helvetica, sans-serif";
@@ -658,9 +663,15 @@ function render(e) {
     // Render hitboxes
     ctx.setLineDash([]);
     if (renderSettings.renderHitboxes) {
-        ctx.lineWidth = 2 / camScale;
+        ctx.lineWidth = 2;
         ctx.strokeStyle = renderSettings.colors.hitbox;
-        for (let o of map.objects) ctx.strokeRect(o.pos.x, o.pos.y, o.size.x, o.size.y);
+        for (let o of map.objects)
+            ctx.strokeRect(
+                Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
+                Math.round(camScale * o.size.x),
+                Math.round(camScale * o.size.y)
+            );
     }
 }
 /**

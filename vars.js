@@ -270,6 +270,7 @@ const power0CD = document.getElementById("power0CD");
 const power1CD = document.getElementById("power1CD");
 const power0Heat = document.getElementById("power0Heat");
 const power1Heat = document.getElementById("power1Heat");
+const poweroptions = document.getElementsByClassName("poweroption");
 let powers = new Set();
 
 // Functions

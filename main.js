@@ -110,7 +110,7 @@ ws.addEventListener("open", () => {
             "i": ${power1.value = clamp(0, power1.value, 11)}
         }`);
     });
-    for (let el of document.getElementsByClassName("poweroption")) {
+    for (let el of poweroptions) {
         el.addEventListener("click", () => {
             ws.send(`{
                 "e": "powerChange",
@@ -379,8 +379,10 @@ ws.addEventListener("message", e => {
                 hide(gamesDiv);
                 hide(createGameMenu);
                 show(gameDiv);
-                for (let i of msg.i.powers) {
-                    powers.add(i);
+                for (let el of poweroptions) {
+                    if (msg.i.powers.includes(parseInt(el.dataset.power))) {
+                        show(el);
+                    }
                 }
                 power0.value = msg.i.powers[0];
                 power1.value = msg.i.powers[1];
@@ -580,8 +582,10 @@ ws.addEventListener("message", e => {
 
             break;
         case "power":
-            for (let i of msg.m) {
-                powers.add(i);
+            for (let el of poweroptions) {
+                if (msg.m.includes(parseInt(el.dataset.power))) {
+                    show(el);
+                }
             }
             customAlert("Gained power(s) " + msg.m.join(", "));
             break;

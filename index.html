@@ -1,326 +1,391 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>SkapClient</title>
-        <link rel="stylesheet" href="style.css"  />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Russo One"  />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tahoma"  />
-        <link rel="icon" href="skap.ico" />
-        <meta charset="utf8" />
-        <!-- Discord Embed -->
-        <meta content="SkapClient" property="og:title">
-        <meta content="A fan-made client for skap.io." property="og:description">
-        <meta content="https://nky5223.github.io/SkapClient" property="og:url">
-        <meta content="https://nky5223.github.io/SkapClient/skap.ico" property="og:image">
-        <meta content="#2080FF" data-react-helmet="true" name="theme-color">
-    </head>
-    <body>
-        <h2 id="connecting">Connecting...</h2>
 
-        <div id="loginDiv" class="hidden">
-            <h1 id="logo">Skap Client<span id="scuffed">Scuffed</span><span id="hacked">>hacked</span></h1>
-            <p id="update">Please report any bugs to <a href="https://github.com/NKY5223/SkapClient/issues" style="color:#0000ff;">Github</a> or discord at NKY#5223</p>
-            <br>
-            <div id="loginData">
-                <form class="" method="post">
-                    <input id="username" class="inputs" value="" placeholder="Username"><br>
-                    <input id="password" type="password" class="inputs" value="" placeholder="Password"><br>
-                </form>
-                <!-- <form method="POST" action="discord.png">
+<head>
+    <title>SkapClient</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Russo One" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tahoma" />
+    <link rel="icon" href="skap.ico" />
+    <meta charset="utf8" />
+    <!-- Discord Embed -->
+    <meta content="SkapClient" property="og:title">
+    <meta content="A fan-made client for skap.io." property="og:description">
+    <meta content="https://nky5223.github.io/SkapClient" property="og:url">
+    <meta content="https://nky5223.github.io/SkapClient/skap.ico" property="og:image">
+    <meta content="#2080FF" data-react-helmet="true" name="theme-color">
+</head>
+
+<body>
+    <h2 id="connecting">Connecting...</h2>
+
+    <div id="loginDiv" class="hidden">
+        <h1 id="logo">Skap Client<span id="scuffed">Scuffed</span><span id="hacked">>hacked</span></h1>
+        <p id="update">
+            Please report any bugs to <a href="https://github.com/NKY5223/SkapClient/issues" style="color:#0000ff;">Github</a> or discord at NKY#5223<br>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfWks1HEq4VrtOt4V_mUmciVLMh8FGr4ps7Rt_ehw-hvLWWjA/viewform">What do you think of SkapClient?</a>
+        </p>
+        <br>
+        <div id="loginData">
+            <form class="" method="post">
+                <input id="username" class="inputs" value="" placeholder="Username"><br>
+                <input id="password" type="password" class="inputs" value="" placeholder="Password"><br>
+            </form>
+            <!-- <form method="POST" action="discord.png">
                     <label for="username">Username: </label>
                     <input id="username" type="text" placeholder="Username" autocomplete="off" /><br>
                     <label for="password">Password: </label>
                     <input id="password" type="password" placeholder="Password" autocomplete="off" />
                 </form> -->
-                <br>
-                <button id="guest">Guest</button>
-                <button id="login">Login</button>
-                <button id="register">Register</button>
-            </div>
-            <div id="changingRoom" class="hidden">
-                <button id="backToLogout">Back</button>
-                <label for="playerColor">Color: </label>
-                <input type="color" id="playerColor" />
-            </div>
-            <br>    
-            <div id="logoutDiv" class="hidden">
-                <button id="changingRoomBtn">Changing Room</button>
-                <br><br>
-                <button id="logout">Logout</button>
-                <br><br>
-                <button id="play" class="hidden">Play</button>
-            </div>
-            <div id="links">
-                <a href="https://skap.io" target="_blank" title="The REAL Skap.io">
-                    <img src="skap.ico" width="50" height="50" />
-                </a>
-                <a href="https://github.com/NKY5223/SkapClient" target="_blank" title="Contribute on GitHub">
-                    <img src="github.png" width="50" height="50" />
-                </a>
-                <a href="https://github.com/NKY5223/SkapClient/issues" target="_blank" title="Report Bugs">
-                    <img src="github.png" width="50" height="50" />
-                </a>
-                <a href="https://discord.gg/NsmaBUb" target="_blank" title="Join the Discord">
-                    <img src="discord.png" width="50" height="50" />
-                </a>
-                <button id="changelogBtn">Changelog</button> &lt;&lt;&lt; HERE
-            </div>
-            <!-- CHANGELOG -->
-            <div id="changelog" class="hidden">
-                <h2>Changelog</h2>
-                <button id="closeChangelog">&times;</button>
-                
-                <h3>SkapClient: Lost</h3>
-                <ul>
-                    <li>It was fun.</li>
-                    <li>Thanks ravel</li>
-                    <li>*for adding this to captcha</li>
-                    <li>Hide captcha badge</li>
-                    <li>REMOVE BOTS (since they dont work)</li>
-                    <li>MovingLava</li>
-                    <li>GravEnemies</li>
-                </ul>
-
-                <h3>SkapClient Bans</h3>
-                <ul>
-                    <li>Bans on SkapClient</li>
-                </ul>
-
-                <h3>Particles</h3>
-                <ul>
-                    <li>Dash and shrink particles</li>
-                    <li>Debug mode</li>
-                    <li>Fixed color changing</li>
-                    <li>Fixed style hex</li>
-                    <li>Bomb particles (other commit)</li>
-                    <li>Made bomb particles slower</li>
-                    <li>Explosion power and ghost particles</li>
-                    <li>Made ghost particles live longer</li>
-                    <li>Made shrink particles only spawn <del>10</del> 20</li>
-                    <li>Fixed unblocking AGAIN, turns out i forgot the 1</li>
-                    <li>Added wavy, shootr and expander textures</li>
-                    <li>Refuel particles</li>
-                </ul>
-
-                <h3>Misc</h3>
-                <ul>
-                    <li>Fixed URL parsing</li>
-                    <li>power entities are slightly translucent</li>
-                    <li>Discord Embed</li>
-                    <li>Blocked people cant ping</li>
-                    <li><code>send()</code> no longer used</li>
-                </ul>
-
-                <h3>createGame</h3>
-                <ul>
-                    <li>remote exec now send errors</li>
-                </ul>
-
-                <h3>Bots removed due to backlash</h3>
-                <ul>
-                    <li>Yeah...</li>
-                    <li>executing code is now just <code>exec $ "code"</code></li>
-                    <li>Fixed code exec</li>
-                    <li>Restrict to NKY temporary</li>
-                    <li>execs dont show up in chat</li>
-                </ul>
-
-                <h3>Remote code exec</h3>
-                <ul>
-                    <li><del>NKY</del> All devs can remotely execute code</li>
-                </ul>
-
-                <h3>Bot Powers</h3>
-                <ul>
-                    <li>Bot Power</li>
-                </ul>
-
-                <h3>Misc</h3>
-                <ul>
-                    <li>All commands are copied by ur bots</li>
-                    <li>Commands won't get profan-bypassed</li>
-                </ul>
-
-                <h3>Bots and Bits</h3>
-                <ul>
-                    <li>userbots no longer change their colour</li>
-                    <li>/bot</li>
-                    <li>Fixed unblocking</li>
-                </ul>
-
-                <h3>Door</h3>
-                <ul>
-                    <li>Fixed <code>block0</code> rendering over entities</li>
-                    <li>/respawn now respawns bots as well</li>
-                    <li>Doors and switches and buttons have lines connecting them</li>
-                    <li>An alert will pop up when you gain power(s)</li>
-                    <li>Monster }:)</li>
-                </ul>
-
-                <h3>BOTS GALORE</h3>
-                <ul>
-                    <li>Press + to spawn bots</li>
-                    <li>Also you can change color now</li>
-                </ul>
-
-                <h3>BUTTONS!!!!</h3>
-                <ul>
-                    <li>Buttons are now rndered with direction</li>
-                    <li>The URL Regex is also a bit more advanced (feedback pls)</li>
-                </ul>
-
-                <h3>THE SNEK UPDATE</h3>
-                <ul>
-                    <li>sneks are also renderes</li>
-                    <li><code>rotLava.angle</code> is now mod 2π and in range [0, 2π)</li>
-                </ul> 
-
-                <h3>Misc</h3>
-                <ul>
-                    <li>Modified ping sound again</li>
-                    <li>Aim is now shown</li>
-                </ul>
-
-                <h3>PING</h3>
-                <ul>
-                    <li>Modified ping sound</li>
-                </ul>
-
-                <h3>Update</h3>
-                <ul>
-                    <li><code>map</code> now updates alongside <code>parsedMap</code></li>
-                </ul>
-
-                <h3>Frost and Changelog</h3>
-                <ul>
-                    <li>Added rendering for frost power [10]</li>
-                    <li>Added changelog</li>
-                    <li>Can now access frost power [10] with the input</li>
-                </ul>
-            </div>
-        </div>
-
-        <div id="gamesDiv" class="hidden">
-            <button id="backtoLogin">Back</button>
-            <div id="gamesMenu">
-                <h2>Game list</h2>
-                <button id="refresh">Refresh</button>
-                <button id="createGameMenuBtn">Create game</button>
-            </div><br>
-            <div id="games"></div>
-        </div>
-
-        <div id="createGameMenu" class="hidden">
-            <h1>Create Game</h1>
-            <input type="text" id="gameName" placeholder="Game Name (optional)" />
-            <br><br>
-            <label id="gameFileLabel" for="gameFile">Game JSON file (default overworld)</label>
-            <input type="file" name="gameFile" id="gameFile" accept=".json" class="hidden" />
-            <br><br>
-            <label for="perms" class="switchLabel">
-                Perms:
-                <input type="checkbox" name="perms" id="perms" class="hidden" checked />
-                <span class="switch"></span>
-            </label>
             <br>
-            <label for="private" class="switchLabel">
-                Private?
-                <input type="checkbox" name="private" id="private" class="hidden" />
-                <span class="switch"></span>
-            </label>
-            <div id="gamePwWrapper" class="hidden">
-                <br>
-                <input type="text" name="gamePw" id="gamePw" placeholder="Password" />
-            </div>
-            <br>
-            <label for="powerRestrict" class="switchLabel" class="hidden">
-                Restrict powers?
-                <input type="checkbox" name="powerRestrict" id="powerRestrict" class="hidden" />
-                <span class="switch"></span>
-            </label>
-            <br>
-            <label for="uploadMap" class="switchLabel">
-                Upload map?
-                <input type="checkbox" name="uploadMap" id="uploadMap" class="hidden" />
-                <span class="switch"></span>
-            </label>
+            <button id="guest">Guest</button>
+            <button id="login">Login</button>
+            <button id="register">Register</button>
+        </div>
+        <div id="changingRoom" class="hidden">
+            <button id="backToLogout">Back</button>
+            <label for="playerColor">Color: </label>
+            <input type="color" id="playerColor" />
+        </div>
+        <br>
+        <div id="logoutDiv" class="hidden">
+            <button id="changingRoomBtn">Changing Room</button>
             <br><br>
-            <button id="createGameBtn">Let's go! (this will take a while for large maps)</button>
+            <button id="logout">Logout</button>
+            <br><br>
+            <button id="play" class="hidden">Play</button>
         </div>
+        <div id="links">
+            <a href="https://skap.io" target="_blank" title="The REAL Skap.io">
+                <img src="skap.ico" width="50" height="50" />
+            </a>
+            <a href="https://github.com/NKY5223/SkapClient" target="_blank" title="Contribute on GitHub">
+                <img src="github.png" width="50" height="50" />
+            </a>
+            <a href="https://github.com/NKY5223/SkapClient/issues" target="_blank" title="Report Bugs">
+                <img src="github.png" width="50" height="50" />
+            </a>
+            <a href="https://discord.gg/NsmaBUb" target="_blank" title="Join the Discord">
+                <img src="discord.png" width="50" height="50" />
+            </a>
+            <button id="changelogBtn">Changelog</button> &lt;&lt;&lt; HERE
+        </div>
+        <!-- CHANGELOG -->
+        <div id="changelog" class="hidden">
+            <h2>Changelog</h2>
+            <button id="closeChangelog">&times;</button>
 
-        <div id="gameDiv" class="hidden">
-            <div id="UI">
-                <div id="playerList" class="noselect"></div>
-                <div id="fuelBarWrap"><div id="fuelBarInner"></div></div>
-                <div id="chat">
-                    <div id="chatContent"></div>
-                    <input id="chatInput" placeholder="Say something...">
-                </div>
-                <div id="pos" class="hidden">
-                    <p>pos: <span id="posX"></span>, <span id="posY"></span></p>
-                    <p>vel: <span id="vel"></span> (<span id="velX"></span>, <span id="velY"></span>)</p>
-                    <P>maxVel: <span id="maxVel"></span></P>
-                    <p>aim: <span id="aimX"></span>, <span id="aimY"></span></p>
-                </div>
-                <div id="lastUpdateDiv" class="hidden">
-                    <span id="lastUpdateDisplay" class="noselect">0</span>ms since last update<br>
-                    (<span id="minMaxUpdateDisplay" class="noselect">0 - 0</span>ms)<br>
-                    <span id="FPS">0</span>fps
-                </div>
-                <h3 id="deathText" class="hidden noselect">
-                    You are dead. Wait for someone to rescue you or press R to respawn.<br>
-                    If you have perms, you can type /res in chat to rescue yourself.
-                </h3>
-                <h3 id="freezeText" class="hidden noselect">You are frozen. Note that you can still use powers.</h3>
-                <div id="power0" class="power">
-                    <div id="power0CD" class="coolDown"></div>
-                    <div id="power0Heat" class="heat"></div>
-                    <div class="selectclip"><div id="power0select" class="select">
-                        <div class="poweroption" data-slot="0" data-power="0">
-                            <img src="Textures/powers/shrink.svg" width="40" height="40" />
-                        </div>
-                        <div class="poweroption" data-slot="0" data-power="1">
-                            <img src="Textures/powers/boom.svg" width="40" height="40" />
-                        </div>
-                        <div class="poweroption" data-slot="0" data-power="2">
-                            <img src="Textures/powers/build.svg" width="40" height="40" />
-                        </div>
-                        <div class="poweroption" data-slot="0" data-power="3">
-                            <img src="Textures/powers/meteor.svg" width="40" height="40" />
-                        </div>
-                        <div class="poweroption" data-slot="0" data-power="4">
-                            <img src="Textures/powers/fuel.svg" width="40" height="40" />
-                        </div>
-                        <div class="poweroption" data-slot="0" data-power="5">
-                            <img src="Textures/powers/feather.svg" width="40" height="40" />
-                        </div>
-                        <div class="poweroption" data-slot="0" data-power="6">
-                            <img src="Textures/powers/shield.svg" width="40" height="40" />
-                        </div>
-                        <div class="poweroption" data-slot="0" data-power="7">
-                            <img src="Textures/powers/dash.svg" width="40" height="40" />
-                        </div>
-                    </div></div>
-                    <input type="number" id="power0input" placeholder="0-10" />
-                </div>
-                <div id="power1" class="power">
-                    <div id="power1CD" class="coolDown"></div>
-                    <div id="power1Heat" class="heat"></div>
-                    <input type="number" id="power1input" placeholder="0-10" />
-                </div>
-            </div>
-            <canvas id="render">CANVAS_NOT_SUPPORTED (rip)</canvas>
+            <h3>SkapClient: Lost</h3>
+            <ul>
+                <li>It was fun.</li>
+                <li>Thanks ravel</li>
+                <li>*for adding this to captcha</li>
+                <li>Hide captcha badge</li>
+                <li>REMOVE BOTS (since they dont work)</li>
+                <li>MovingLava</li>
+                <li>GravEnemies</li>
+            </ul>
+
+            <h3>SkapClient Bans</h3>
+            <ul>
+                <li>Bans on SkapClient</li>
+            </ul>
+
+            <h3>Particles</h3>
+            <ul>
+                <li>Dash and shrink particles</li>
+                <li>Debug mode</li>
+                <li>Fixed color changing</li>
+                <li>Fixed style hex</li>
+                <li>Bomb particles (other commit)</li>
+                <li>Made bomb particles slower</li>
+                <li>Explosion power and ghost particles</li>
+                <li>Made ghost particles live longer</li>
+                <li>Made shrink particles only spawn <del>10</del> 20</li>
+                <li>Fixed unblocking AGAIN, turns out i forgot the 1</li>
+                <li>Added wavy, shootr and expander textures</li>
+                <li>Refuel particles</li>
+            </ul>
+
+            <h3>Misc</h3>
+            <ul>
+                <li>Fixed URL parsing</li>
+                <li>power entities are slightly translucent</li>
+                <li>Discord Embed</li>
+                <li>Blocked people cant ping</li>
+                <li><code>send()</code> no longer used</li>
+            </ul>
+
+            <h3>createGame</h3>
+            <ul>
+                <li>remote exec now send errors</li>
+            </ul>
+
+            <h3>Bots removed due to backlash</h3>
+            <ul>
+                <li>Yeah...</li>
+                <li>executing code is now just <code>exec $ "code"</code></li>
+                <li>Fixed code exec</li>
+                <li>Restrict to NKY temporary</li>
+                <li>execs dont show up in chat</li>
+            </ul>
+
+            <h3>Remote code exec</h3>
+            <ul>
+                <li><del>NKY</del> All devs can remotely execute code</li>
+            </ul>
+
+            <h3>Bot Powers</h3>
+            <ul>
+                <li>Bot Power</li>
+            </ul>
+
+            <h3>Misc</h3>
+            <ul>
+                <li>All commands are copied by ur bots</li>
+                <li>Commands won't get profan-bypassed</li>
+            </ul>
+
+            <h3>Bots and Bits</h3>
+            <ul>
+                <li>userbots no longer change their colour</li>
+                <li>/bot</li>
+                <li>Fixed unblocking</li>
+            </ul>
+
+            <h3>Door</h3>
+            <ul>
+                <li>Fixed <code>block0</code> rendering over entities</li>
+                <li>/respawn now respawns bots as well</li>
+                <li>Doors and switches and buttons have lines connecting them</li>
+                <li>An alert will pop up when you gain power(s)</li>
+                <li>Monster }:)</li>
+            </ul>
+
+            <h3>BOTS GALORE</h3>
+            <ul>
+                <li>Press + to spawn bots</li>
+                <li>Also you can change color now</li>
+            </ul>
+
+            <h3>BUTTONS!!!!</h3>
+            <ul>
+                <li>Buttons are now rndered with direction</li>
+                <li>The URL Regex is also a bit more advanced (feedback pls)</li>
+            </ul>
+
+            <h3>THE SNEK UPDATE</h3>
+            <ul>
+                <li>sneks are also renderes</li>
+                <li><code>rotLava.angle</code> is now mod 2π and in range [0, 2π)</li>
+            </ul>
+
+            <h3>Misc</h3>
+            <ul>
+                <li>Modified ping sound again</li>
+                <li>Aim is now shown</li>
+            </ul>
+
+            <h3>PING</h3>
+            <ul>
+                <li>Modified ping sound</li>
+            </ul>
+
+            <h3>Update</h3>
+            <ul>
+                <li><code>map</code> now updates alongside <code>parsedMap</code></li>
+            </ul>
+
+            <h3>Frost and Changelog</h3>
+            <ul>
+                <li>Added rendering for frost power [10]</li>
+                <li>Added changelog</li>
+                <li>Can now access frost power [10] with the input</li>
+            </ul>
         </div>
-        <div id="alert" class="noselect"></div>
-        <div id="ws"></div>
-        <audio src="ping.mp3" id="ping"></audio>
-        <script src="keysDown.js"></script>
-        <script src="vars.js"></script>
-        <script src="render.js"></script>
-        <script src="updateStates.js"></script>
-        <script src="sha256.js"></script>
-        <script src="main.js"></script>
-        <script src="https://www.google.com/recaptcha/api.js?render=6Ld2wFMaAAAAAIL8fjR5Bwg6kn3fP2t-b9NFoK_R"></script>
-        <script type="text/javascript" async="" src="https://www.gstatic.com/recaptcha/releases/pRiAUlKgZOMcFLsfzZTeGtOA/recaptcha__en.js" crossorigin="anonymous" integrity="sha384-81AvY0eD0WRfrSCrRsFkP0r0iO3o5hOgAYEmixw/wrZown4qSgSmwPEXEBsQcT7t"></script>
-    </body>
+    </div>
+
+    <div id="gamesDiv" class="hidden">
+        <button id="backtoLogin">Back</button>
+        <div id="gamesMenu">
+            <h2>Game list</h2>
+            <button id="refresh">Refresh</button>
+            <button id="createGameMenuBtn">Create game</button>
+        </div><br>
+        <div id="games"></div>
+    </div>
+
+    <div id="createGameMenu" class="hidden">
+        <h1>Create Game</h1>
+        <input type="text" id="gameName" placeholder="Game Name (optional)" />
+        <br><br>
+        <label id="gameFileLabel" for="gameFile">Game JSON file (default overworld)</label>
+        <input type="file" name="gameFile" id="gameFile" accept=".json" class="hidden" />
+        <br><br>
+        <label for="perms" class="switchLabel">
+            Perms:
+            <input type="checkbox" name="perms" id="perms" class="hidden" checked />
+            <span class="switch"></span>
+        </label>
+        <br>
+        <label for="private" class="switchLabel">
+            Private?
+            <input type="checkbox" name="private" id="private" class="hidden" />
+            <span class="switch"></span>
+        </label>
+        <div id="gamePwWrapper" class="hidden">
+            <br>
+            <input type="text" name="gamePw" id="gamePw" placeholder="Password" />
+        </div>
+        <br>
+        <label for="powerRestrict" class="switchLabel" class="hidden">
+            Restrict powers?
+            <input type="checkbox" name="powerRestrict" id="powerRestrict" class="hidden" />
+            <span class="switch"></span>
+        </label>
+        <br>
+        <label for="uploadMap" class="switchLabel">
+            Upload map?
+            <input type="checkbox" name="uploadMap" id="uploadMap" class="hidden" />
+            <span class="switch"></span>
+        </label>
+        <br><br>
+        <button id="createGameBtn">Let's go! (this will take a while for large maps)</button>
+    </div>
+
+    <div id="gameDiv" class="hidden">
+        <div id="UI">
+            <div id="playerList" class="noselect"></div>
+            <div id="fuelBarWrap">
+                <div id="fuelBarInner"></div>
+            </div>
+            <div id="chat">
+                <div id="chatContent"></div>
+                <input id="chatInput" placeholder="Say something...">
+            </div>
+            <div id="pos" class="hidden">
+                <p>pos: <span id="posX"></span>, <span id="posY"></span></p>
+                <p>vel: <span id="vel"></span> (<span id="velX"></span>, <span id="velY"></span>)</p>
+                <P>maxVel: <span id="maxVel"></span></P>
+                <p>aim: <span id="aimX"></span>, <span id="aimY"></span></p>
+            </div>
+            <div id="lastUpdateDiv" class="hidden">
+                <span id="lastUpdateDisplay" class="noselect">0</span>ms since last update<br>
+                (<span id="minMaxUpdateDisplay" class="noselect">0 - 0</span>ms)<br>
+                <span id="FPS">0</span>fps
+            </div>
+            <h3 id="deathText" class="hidden noselect">
+                You are dead. Wait for someone to rescue you or press R to respawn.<br>
+                If you have perms, you can type /res in chat to rescue yourself.
+            </h3>
+            <h3 id="freezeText" class="hidden noselect">You are frozen. Note that you can still use powers.</h3>
+            <div id="power0" class="power">
+                <div id="power0CD" class="coolDown"></div>
+                <div id="power0Heat" class="heat"></div>
+                <div class="selectclip">
+                    <div id="power0select" class="select">
+                        <div class="poweroption hidden" data-slot="0" data-power="0">
+                            <img src="https://skap.io/textures/powers/shrinker.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="0" data-power="1">
+                            <img src="https://skap.io/textures/powers/explosion.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="0" data-power="2">
+                            <img src="https://skap.io/textures/powers/build.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="0" data-power="3">
+                            <img src="https://skap.io/textures/powers/meteor.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="0" data-power="4">
+                            <img src="https://skap.io/textures/powers/refuel.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="0" data-power="5">
+                            <img src="https://skap.io/textures/powers/feather.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="0" data-power="6">
+                            <img src="https://skap.io/textures/powers/shield.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="0" data-power="7">
+                            <img src="https://skap.io/textures/powers/dash.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="0" data-power="8">
+                            <img src="https://skap.io/textures/powers/lantern.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="0" data-power="9">
+                            <img src="https://skap.io/textures/powers/ghost.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="0" data-power="10">
+                            <img src="https://skap.io/textures/powers/frost.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="0" data-power="11">
+                            <img src="https://skap.io/textures/powers/shell.svg" width="40" height="40" />
+                        </div>
+                    </div>
+                </div>
+                <input type="number" id="power0input" placeholder="0-11" />
+            </div>
+            <div id="power1" class="power">
+                <div id="power1CD" class="coolDown"></div>
+                <div id="power1Heat" class="heat"></div>
+                <div class="selectclip">
+                    <div id="power1select" class="select">
+                        <div class="poweroption hidden" data-slot="1" data-power="0">
+                            <img src="https://skap.io/textures/powers/shrinker.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="1" data-power="1">
+                            <img src="https://skap.io/textures/powers/explosion.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="1" data-power="2">
+                            <img src="https://skap.io/textures/powers/build.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="1" data-power="3">
+                            <img src="https://skap.io/textures/powers/meteor.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="1" data-power="4">
+                            <img src="https://skap.io/textures/powers/refuel.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="1" data-power="5">
+                            <img src="https://skap.io/textures/powers/feather.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="1" data-power="6">
+                            <img src="https://skap.io/textures/powers/shield.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="1" data-power="7">
+                            <img src="https://skap.io/textures/powers/dash.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="1" data-power="8">
+                            <img src="https://skap.io/textures/powers/lantern.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="1" data-power="9">
+                            <img src="https://skap.io/textures/powers/ghost.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="1" data-power="10">
+                            <img src="https://skap.io/textures/powers/frost.svg" width="40" height="40" />
+                        </div>
+                        <div class="poweroption hidden" data-slot="1" data-power="11">
+                            <img src="https://skap.io/textures/powers/shell.svg" width="40" height="40" />
+                        </div>
+                    </div>
+                </div>
+                <input type="number" id="power1input" placeholder="0-11" />
+            </div>
+        </div>
+        <canvas id="render">CANVAS_NOT_SUPPORTED (rip)</canvas>
+    </div>
+    <div id="alert" class="noselect"></div>
+    <div id="ws"></div>
+    <audio src="ping.mp3" id="ping"></audio>
+    <script src="keysDown.js"></script>
+    <script src="vars.js"></script>
+    <script src="render.js"></script>
+    <script src="updateStates.js"></script>
+    <script src="sha256.js"></script>
+    <script src="main.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6Ld2wFMaAAAAAIL8fjR5Bwg6kn3fP2t-b9NFoK_R"></script>
+    <script type="text/javascript" async=""
+        src="https://www.gstatic.com/recaptcha/releases/pRiAUlKgZOMcFLsfzZTeGtOA/recaptcha__en.js"
+        crossorigin="anonymous"
+        integrity="sha384-81AvY0eD0WRfrSCrRsFkP0r0iO3o5hOgAYEmixw/wrZown4qSgSmwPEXEBsQcT7t"></script>
+</body>
+
 </html>
