@@ -540,6 +540,24 @@ ws.addEventListener("message", e => {
                                 u.pressed = o.pressed;
                                 u.pos = o.pos;
                                 u.size = o.size;
+                                u.points = [
+                                    [
+                                        u.pos.x + (u.dir === "0" ? u.size.x * 0.1 : 0),
+                                        u.pos.y + (u.dir === "3" ? u.size.y * 0.1 : 0)
+                                    ],
+                                    [
+                                        u.pos.x + (u.dir === "0" ? u.size.x * 0.9 : u.size.x),
+                                        u.pos.y + (u.dir === "1" ? u.size.y * 0.1 : 0)
+                                    ],
+                                    [
+                                        u.pos.x + (u.dir === "2" ? u.size.x * 0.9 : u.size.x),
+                                        u.pos.y + (u.dir === "1" ? u.size.y * 0.9 : u.size.y)
+                                    ],
+                                    [
+                                        u.pos.x + (u.dir === "2" ? u.size.x * 0.1 : 0),
+                                        u.pos.y + (u.dir === "3" ? u.size.y * 0.9 : u.size.y)
+                                    ]
+                                ];
                                 break;
                             }
                         }
@@ -547,6 +565,24 @@ ws.addEventListener("message", e => {
                         for (let u of parsedMap.switch) {
                             if (o.id === u.id) {
                                 u.switch = o.switch;
+                                u.points = [
+                                    [
+                                        u.pos.x - (u.dir === "3" && !u.switch ? 2 : 0),
+                                        u.pos.y - (u.dir === "0" && u.switch ? 2 : 0)
+                                    ],
+                                    [
+                                        u.pos.x + (u.dir === "1" && u.switch ? 2 : 0) + u.size.x,
+                                        u.pos.y - (u.dir === "0" && !u.switch ? 2 : 0)
+                                    ],
+                                    [
+                                        u.pos.x + (u.dir === "1" && !u.switch ? 2 : 0) + u.size.x,
+                                        u.pos.y + (u.dir === "2" && u.switch ? 2 : 0) + u.size.y
+                                    ],
+                                    [
+                                        u.pos.x - (u.dir === "3" && u.switch ? 2 : 0),
+                                        u.pos.y + (u.dir === "2" && !u.switch ? 2 : 0) + u.size.y
+                                    ]
+                                ];
                                 break;
                             }
                         }
@@ -620,6 +656,7 @@ function initMap(i) {
     parsedMap.block0 = [];
     parsedMap.text = [];
     parsedMap.turret = [];
+    parsedMap.rewards = [];
     parsedMap.box = [];
     parsedMap.block1 = [];
     for (let o of i.objects) {
@@ -639,15 +676,60 @@ function initMap(i) {
                 parsedMap[o.type].push(o);
                 break;
             case "teleporter":
+                o.dir = o.dir.toString();
+                parsedMap.teleporter.push(o);
+                break;
             case "button":
+                o.dir = o.dir.toString();
+                o.points = [
+                    [
+                        o.pos.x + (o.dir === "0" ? o.size.x * 0.1 : 0),
+                        o.pos.y + (o.dir === "3" ? o.size.y * 0.1 : 0)
+                    ],
+                    [
+                        o.pos.x + (o.dir === "0" ? o.size.x * 0.9 : o.size.x),
+                        o.pos.y + (o.dir === "1" ? o.size.y * 0.1 : 0)
+                    ],
+                    [
+                        o.pos.x + (o.dir === "2" ? o.size.x * 0.9 : o.size.x),
+                        o.pos.y + (o.dir === "1" ? o.size.y * 0.9 : o.size.y)
+                    ],
+                    [
+                        o.pos.x + (o.dir === "2" ? o.size.x * 0.1 : 0),
+                        o.pos.y + (o.dir === "3" ? o.size.y * 0.9 : o.size.y)
+                    ]
+                ];
+                parsedMap.button.push(o);
+                break;
             case "switch":
                 o.dir = o.dir.toString();
-                parsedMap[o.type].push(o);
+                o.points = [
+                    [
+                        o.pos.x - (o.dir === "3" && !o.switch ? 2 : 0),
+                        o.pos.y - (o.dir === "0" && o.switch ? 2 : 0)
+                    ],
+                    [
+                        o.pos.x + (o.dir === "1" && o.switch ? 2 : 0) + o.size.x,
+                        o.pos.y - (o.dir === "0" && !o.switch ? 2 : 0)
+                    ],
+                    [
+                        o.pos.x + (o.dir === "1" && !o.switch ? 2 : 0) + o.size.x,
+                        o.pos.y + (o.dir === "2" && o.switch ? 2 : 0) + o.size.y
+                    ],
+                    [
+                        o.pos.x - (o.dir === "3" && o.switch ? 2 : 0),
+                        o.pos.y + (o.dir === "2" && !o.switch ? 2 : 0) + o.size.y
+                    ]
+                ];
+                parsedMap.switch.push(o);
                 break;
             case "rotatingLava":
                 o.angle = o.angle * Math.PI / 180;
                 parsedMap.rotatingLava.push(o);
                 break;
+            case "reward":
+                o.image = renderSettings.textures.powers[Math.min(o.reward, renderSettings.textures.powers.length - 1)];
+                parsedMap.reward.push(o);
         }
     }
     for (let o of i.objects) {

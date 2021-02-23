@@ -286,20 +286,20 @@ function render(e) {
     for (let obj of parsedMap.button) {
         ctx.beginPath();
         ctx.moveTo(
-            obj.pos.x + (obj.dir === "0" ? obj.size.x * 0.1 : 0),
-            obj.pos.y + (obj.dir === "3" ? obj.size.y * 0.1 : 0)
+            Math.round(canvas.width / 2 + camScale * (obj.points[0][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.points[0][1] - camY))
         );
         ctx.lineTo(
-            obj.pos.x + (obj.dir === "0" ? obj.size.x * 0.9 : obj.size.x),
-            obj.pos.y + (obj.dir === "1" ? obj.size.y * 0.1 : 0)
+            Math.round(canvas.width / 2 + camScale * (obj.points[1][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.points[1][1] - camY))
         );
         ctx.lineTo(
-            obj.pos.x + (obj.dir === "2" ? obj.size.x * 0.9 : obj.size.x),
-            obj.pos.y + (obj.dir === "1" ? obj.size.y * 0.9 : obj.size.y)
+            Math.round(canvas.width / 2 + camScale * (obj.points[2][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.points[2][1] - camY))
         );
         ctx.lineTo(
-            obj.pos.x + (obj.dir === "2" ? obj.size.x * 0.1 : 0),
-            obj.pos.y + (obj.dir === "3" ? obj.size.y * 0.9 : obj.size.y)
+            Math.round(canvas.width / 2 + camScale * (obj.points[3][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.points[3][1] - camY))
         );
         ctx.fillStyle = obj.pressed ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
         ctx.fill();
@@ -308,42 +308,53 @@ function render(e) {
     for (let obj of parsedMap.switch) {
         ctx.beginPath();
         ctx.moveTo(
-            obj.pos.x - (obj.dir === "3" && !obj.switch ? 2 : 0),
-            obj.pos.y - (obj.dir === "0" && obj.switch ? 2 : 0)
+            Math.round(canvas.width / 2 + camScale * (obj.points[0][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.points[0][1] - camY))
         );
         ctx.lineTo(
-            obj.pos.x + (obj.dir === "1" && obj.switch ? 2 : 0) + obj.size.x,
-            obj.pos.y - (obj.dir === "0" && !obj.switch ? 2 : 0)
+            Math.round(canvas.width / 2 + camScale * (obj.points[1][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.points[1][1] - camY))
         );
         ctx.lineTo(
-            obj.pos.x + (obj.dir === "1" && !obj.switch ? 2 : 0) + obj.size.x,
-            obj.pos.y + (obj.dir === "2" && obj.switch ? 2 : 0) + obj.size.y
+            Math.round(canvas.width / 2 + camScale * (obj.points[2][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.points[2][1] - camY))
         );
         ctx.lineTo(
-            obj.pos.x - (obj.dir === "3" && obj.switch ? 2 : 0),
-            obj.pos.y + (obj.dir === "2" && !obj.switch ? 2 : 0) + obj.size.y
+            Math.round(canvas.width / 2 + camScale * (obj.points[3][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.points[3][1] - camY))
         );
         ctx.fillStyle = obj.switch ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
         ctx.fill();
     }
     // Renders
     ctx.fillStyle = renderSettings.colors.doorFill;
+    ctx.lineWidth = camScale;
     for (let obj of parsedMap.door) {
         ctx.strokeStyle = obj.opened ? renderSettings.colors.doorOpenedOutline : renderSettings.colors.doorClosedOutline;
-        ctx.strokeRect(obj.pos.x + 0.5, obj.pos.y + 0.5, obj.size.x - 1, obj.size.y - 1);
-        if (!obj.opened) ctx.fillRect(obj.pos.x, obj.pos.y, obj.size.x, obj.size.y);
+        ctx.strokeRect(
+            Math.round(canvas.width / 2 + camScale * (obj.pos.x + 0.5 - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.pos.y + 0.5 - camY)),
+            Math.round(camScale * (obj.size.x - 1)),
+            Math.round(camScale * (obj.size.y - 1))
+        );
+        if (!obj.opened) ctx.fillRect(
+            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+            Math.round(camScale * obj.size.x),
+            Math.round(camScale * obj.size.y)
+        );
         for (let b of obj.linksOn) {
             ctx.beginPath();
             ctx.strokeStyle = b.pressed || b.switch ? renderSettings.colors.doorLineOn : renderSettings.colors.doorLineOff;
-            ctx.moveTo(obj.pos.x + obj.size.x / 2, obj.pos.y + obj.size.y / 2);
-            ctx.lineTo(b.pos.x + b.size.x / 2, b.pos.y + b.size.y / 2);
+            ctx.moveTo(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
+            ctx.lineTo(canvas.width / 2 + camScale * (b.pos.x + b.size.x / 2 - camX), canvas.height / 2 + camScale * (b.pos.y + b.size.y / 2 - camY));
             ctx.stroke();
         }
         for (let b of obj.linksOff) {
             ctx.beginPath();
             ctx.strokeStyle = b.pressed || b.switch ? renderSettings.colors.doorLineOff : renderSettings.colors.doorLineOn;
-            ctx.moveTo(obj.pos.x + obj.size.x / 2, obj.pos.y + obj.size.y / 2);
-            ctx.lineTo(b.pos.x + b.size.x / 2, b.pos.y + b.size.y / 2);
+            ctx.moveTo(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
+            ctx.lineTo(canvas.width / 2 + camScale * (b.pos.x + b.size.x / 2 - camX), canvas.height / 2 + camScale * (b.pos.y + b.size.y / 2 - camY));
             ctx.stroke();
         }
     }
@@ -525,7 +536,7 @@ function render(e) {
     ctx.fillStyle = renderSettings.colors.dash;
     for (let p of particles.dash) {
         ctx.beginPath();
-        ctx.ellipse(p.x, p.y, p.r, p.r, 0, 0, 7);
+        ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * p.r, camScale * p.r, 0, 0, 7);
         ctx.globalAlpha = p.o;
         ctx.fill();
     }
@@ -533,34 +544,34 @@ function render(e) {
     ctx.globalAlpha = 1;
     for (let p of particles.shrink) {
         ctx.beginPath();
-        ctx.ellipse(p.x, p.y, p.r, p.r, 0, 0, 7);
+        ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * p.r, camScale * p.r, 0, 0, 7);
         ctx.fill();
     }
     ctx.fillStyle = renderSettings.colors.bombParticle;
     for (let p of particles.bomb) {
         ctx.beginPath();
-        ctx.ellipse(p.x, p.y, 2, 2, 0, 0, 7);
+        ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * 2, camScale * 2, 0, 0, 7);
         ctx.globalAlpha = p.o;
         ctx.fill();
     }
     ctx.fillStyle = renderSettings.colors.explosion;
     for (let p of particles.explosion) {
         ctx.beginPath();
-        ctx.ellipse(p.x, p.y, p.r, p.r, 0, 0, 7);
+        ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * p.r, camScale * p.r, 0, 0, 7);
         ctx.globalAlpha = p.o;
         ctx.fill();
     }
     ctx.fillStyle = renderSettings.colors.ghostParticles;
     for (let p of particles.ghost) {
         ctx.beginPath();
-        ctx.ellipse(p.x, p.y, p.r, p.r, 0, 0, 7);
+        ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * p.r, camScale * p.r, 0, 0, 7);
         ctx.globalAlpha = p.o;
         ctx.fill();
     }
     ctx.fillStyle = renderSettings.colors.refuel;
     for (let p of particles.refuel) {
         ctx.beginPath();
-        ctx.ellipse(p.x, p.y, 1, 1, 0, 0, 7);
+        ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale, camScale, 0, 0, 7);
         ctx.globalAlpha = p.o;
         ctx.fill();
     }
@@ -621,7 +632,7 @@ function render(e) {
     }
     // Render grav zones
     ctx.setLineDash([Math.round(2 * camScale), Math.round(6 * camScale)]);
-    ctx.lineDashOffset = Math.round((gravZoneAnim += 0.5) * camScale);
+    ctx.lineDashOffset = Math.round((time += 0.5) * camScale);
     ctx.lineWidth = Math.round(camScale);
     ctx.lineCap = "round";
     for (let obj of map.objects.filter(obj => obj.type === "gravityZone")) {
@@ -646,6 +657,17 @@ function render(e) {
         ctx.fillRect(
             Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
             Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+            Math.round(camScale * obj.size.x),
+            Math.round(camScale * obj.size.y)
+        );
+    }
+    // Render rewards
+    for (let obj of parsedMap.reward) {
+        ctx.fillStyle = renderSettings.colors.box;
+        ctx.drawImage(
+            obj.image,
+            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.pos.y + Math.sin(time / 10) * 3 - camY)),
             Math.round(camScale * obj.size.x),
             Math.round(camScale * obj.size.y)
         );

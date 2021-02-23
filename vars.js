@@ -114,7 +114,21 @@ let renderSettings = {
 
             none: loadImage("enemies/none")
         },
-        hats: {}
+        hats: {},
+        powers: [
+            loadImage("https://skap.io/textures/powers/shrinker.svg"),
+            loadImage("https://skap.io/textures/powers/explosion.svg"),
+            loadImage("https://skap.io/textures/powers/meteor.svg"),
+            loadImage("https://skap.io/textures/powers/refuel.svg"),
+            loadImage("https://skap.io/textures/powers/feather.svg"),
+            loadImage("https://skap.io/textures/powers/shield.svg"),
+            loadImage("https://skap.io/textures/powers/dash.svg"),
+            loadImage("https://skap.io/textures/powers/lantern.svg"),
+            loadImage("https://skap.io/textures/powers/ghost.svg"),
+            loadImage("https://skap.io/textures/powers/frost.svg"),
+            loadImage("https://skap.io/textures/powers/shell.svg"),
+            loadImage("enemies/none"),
+        ]
     }
 };
 let parsedMap = {
@@ -133,6 +147,7 @@ let parsedMap = {
     text: [],
     turret: [],
     block1: [],
+    reward: [],
     box: []
 };
 let camScale = 5;
@@ -141,7 +156,7 @@ let camY = 0;
 let camSpeed = 5;
 let freeCam = false;
 
-let gravZoneAnim = 0;
+let time = 0;
 
 let keys;
 if (localStorage.getItem("keys")) keys = localStorage.getItem("keys").split(" ");
