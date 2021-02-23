@@ -361,3 +361,6 @@ function clamp(min, num, max) {
 function rickroll() {
     location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 }
+function zerotix(x = "ZeroTix") {
+    sendMessage(x + " pro");
+}
