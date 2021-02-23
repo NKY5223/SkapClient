@@ -788,7 +788,7 @@ function message(msg, force = false) {
         }, true);
         return;
     }
-    if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || msg.m.m.match(/@everyone(\s|$)/g) || msg.m.m.match(/@all(\s|$)/g)) ping.play();
+    if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || msg.m.m.match(/@everyone(\s|$)/g) || msg.m.m.match(/@all(\s|$)/g) || (msg.m.m.match(/@devs(\s|$)/g) && devs.includes(user))) ping.play();
     let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
     let wrapper = document.createElement("div");
     wrapper.className = "wrapper";
