@@ -656,7 +656,7 @@ function initMap(i) {
     parsedMap.block0 = [];
     parsedMap.text = [];
     parsedMap.turret = [];
-    parsedMap.rewards = [];
+    parsedMap.reward = [];
     parsedMap.box = [];
     parsedMap.block1 = [];
     for (let o of i.objects) {

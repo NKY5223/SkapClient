@@ -527,7 +527,7 @@ function render(e) {
                 break;
             default:
                 ctx.globalAlpha = obj.opacity || 1;
-                ctx.drawImage(renderSettings.textures.enemies[obj.type], canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
+                ctx.drawImage(renderSettings.textures.enemies.none, canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
                 break;
         }
     }
