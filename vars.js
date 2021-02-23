@@ -118,6 +118,7 @@ let renderSettings = {
         powers: [
             loadImage("https://skap.io/textures/powers/shrinker.svg"),
             loadImage("https://skap.io/textures/powers/explosion.svg"),
+            loadImage("https://skap.io/textures/powers/build.svg"),
             loadImage("https://skap.io/textures/powers/meteor.svg"),
             loadImage("https://skap.io/textures/powers/refuel.svg"),
             loadImage("https://skap.io/textures/powers/feather.svg"),

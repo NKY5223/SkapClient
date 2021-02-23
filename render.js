@@ -487,15 +487,15 @@ function render(e) {
                 ctx.closePath();
                 break;
             case "shield":
-                ctx.lineWidth = obj.size.y * 2;
+                ctx.lineWidth = camScale * obj.size.y * 2;
+                ctx.strokeStyle = renderSettings.colors.shield;
+                ctx.globalAlpha = 1;
                 ctx.save();
-                ctx.translate(obj.pos.x, obj.pos.y);
+                ctx.translate(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
                 ctx.rotate(obj.dir);
                 ctx.beginPath();
-                ctx.moveTo(-obj.size.x, 0);
-                ctx.lineTo(obj.size.x, 0);
-                ctx.globalAlpha = 1;
-                ctx.strokeStyle = renderSettings.colors.shield;
+                ctx.moveTo(-camScale * obj.size.x, 0);
+                ctx.lineTo(camScale * obj.size.x, 0);
                 ctx.stroke();
                 ctx.restore();
                 break;
