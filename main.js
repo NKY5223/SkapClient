@@ -629,6 +629,29 @@ ws.addEventListener("message", e => {
             let r = msg.c[0].toString(16);
             let g = msg.c[1].toString(16);
             let b = msg.c[2].toString(16);
+            hatsDiv.innerHTML = "";
+            for (let h of msg.h) {
+                // Create DIV
+                let div = document.createElement("div");
+                div.className = "hat";
+                if (msg.s === h) div.classList.add("active");
+
+                // Create Image
+                let img = document.createElement("img");
+                img.src = `https://skap.io/textures/hats/${h}.png`;
+                img.addEventListener("click", () => {
+                    ws.send(`{
+                        "e":"hatChange",
+                        "c":"${h}"
+                    }`);
+                });
+
+                div.appendChild(img);
+                div.appendChild(document.createElement("br"));
+                div.appendChild(document.createTextNode(h));
+                
+                hatsDiv.appendChild(div);
+            }
             playerColor.value = `#${"0".repeat(2 - r.length) + r}${"0".repeat(2 - g.length) + g}${"0".repeat(2 - b.length) + b}`;
             break;
     }

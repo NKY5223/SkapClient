@@ -149,6 +149,28 @@ code {
     top: 10px;
     left: 10px;
 }
+input[type=color] {
+    cursor: pointer;
+}
+#hats {
+    display: flex;
+    flex-direction: row;
+}
+.hat {
+    width: 100px;
+    margin: 0 20px;
+}
+.hat img{
+    width: 50px;
+    height: 50px;
+    background: #ffffff20;
+    border: 5px solid transparent;
+    cursor: pointer;
+}
+.hat.active img {
+    background: #00ff0020
+}
+
 #gamesDiv {
     height: 100%;
     width: 100%;

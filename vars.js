@@ -114,7 +114,103 @@ let renderSettings = {
 
             none: loadImage("enemies/none")
         },
-        hats: {},
+        hats: {
+            none: {
+                offset: [0, 0],
+                size: [0, 0],
+                texture: loadImage('https://skap.io/textures/hats/none.png')
+            },
+            catEars: {
+                offset: [-1.09, -2.0],
+                size: [2.2, 2.2],
+                texture: loadImage('https://skap.io/textures/hats/catEars.png')
+            },
+            tophat: {
+                offset: [-1.3, -2.4],
+                size: [2.6, 2.6],
+                texture: loadImage('https://skap.io/textures/hats/topHat.png')
+            },
+            guest: {
+                offset: [0, 0],
+                size: [0, 0],
+                texture: loadImage('https://skap.io/textures/hats/none.png')
+            },
+            santa: {
+                offset: [-1.3, -2.4],
+                size: [3.2, 3.2],
+                texture: loadImage('https://skap.io/textures/hats/santa.png')
+            },
+            militaryHat: {
+                offset: [-1.55, -2],
+                size: [3, 3],
+                texture: loadImage('https://skap.io/textures/hats/militaryHat.png')
+            },
+            nookyHat: {
+                offset: [-1.2, -2.8],
+                size: [2.6, 2.6],
+                texture: loadImage('https://skap.io/textures/hats/nookyHat.png')
+            },
+            ravelHat: {
+                offset: [-1.2, -2.8],
+                size: [2.6, 2.6],
+                texture: loadImage('https://skap.io/textures/hats/eggplant.png')
+            },
+            wolf: {
+                offset: [-1.5, -2.0],
+                size: [3, 3],
+                texture: loadImage('https://skap.io/textures/hats/wolf.png')
+            },
+            trumpHat: {
+                offset: [-1.53, -2.1],
+                size: [3.2, 3.2],
+                texture: loadImage('https://skap.io/textures/hats/trumpHat1.png')
+            },
+            bunnyEars: {
+                offset: [-1.4, -3],
+                size: [3, 3],
+                texture: loadImage('https://skap.io/textures/hats/bunnyEars.png')
+            },
+            crown: {
+                offset: [-1.55, -2.65],
+                size: [3.2, 3.2],
+                texture: loadImage('https://skap.io/textures/hats/crown.png')
+            },
+            kite: {
+                offset: [-0.8, -0.8],
+                size: [1.6, 1.6],
+                texture: loadImage('https://skap.io/textures/hats/kite.png')
+            },
+            sakura: {
+                offset: [-1.05, -1.4],
+                size: [2.0, 2.0],
+                texture: loadImage('https://skap.io/textures/hats/sakura.png')
+            },
+            cowboy: {
+                offset: [-1.6, -2.4],
+                size: [3.2, 3.2],
+                texture: loadImage('https://skap.io/textures/hats/cowboy.png')
+            },
+            party: {
+                offset: [-1.36, -2.1],
+                size: [2.65, 2.65],
+                texture: loadImage('https://skap.io/textures/hats/party.png')
+            },
+            bimbo: {
+                offset: [-1.2, -1.8],
+                size: [2.4, 2.4],
+                texture: loadImage('https://skap.io/textures/hats/bimbo.png')
+            },
+            uwu: {
+                offset: [-2.8, -3.5],
+                size: [5.6, 5.6],
+                texture: loadImage('https://skap.io/textures/hats/wowo.png')
+            },
+            flowerHat: {
+                offset: [-1.55, -2.4],
+                size: [3.2, 3.2],
+                texture: loadImage('https://skap.io/textures/hats/flowerHat.png')
+            }
+        },
         powers: [
             loadImage("https://skap.io/textures/powers/shrinker.svg"),
             loadImage("https://skap.io/textures/powers/explosion.svg"),
@@ -224,10 +320,12 @@ const play = document.getElementById("play");
 const loginData = document.getElementById("loginData");
 const loginDiv = document.getElementById("loginDiv");
 
+// Changing room
 const playerColor = document.getElementById("playerColor");
 const changingRoom = document.getElementById("changingRoom");
 const changingRoomBtn = document.getElementById("changingRoomBtn");
 const backtoLoginFromChangingRoom = document.getElementById("backToLogout");
+const hatsDiv = document.getElementById("hats");
 
 // Changelog
 const changelogBtn = document.getElementById("changelogBtn");

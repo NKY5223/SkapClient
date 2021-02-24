@@ -596,6 +596,12 @@ function render(e) {
         let p = e.players[i];
         let died = p.states.includes("Died");
         let freeze = p.states.includes("Freeze");
+        // Initiate hat
+        let hat = null;
+        if (renderSettings.textures.hats.hasOwnProperty(p.hat)) {
+            hat = renderSettings.textures.hats[p.hat];
+        }
+
         ctx.save();
         ctx.translate(canvas.width / 2 + camScale * (p.pos.x - camX), canvas.height / 2 + camScale * (p.pos.y - camY));
         ctx.rotate(p.gravDir / 2 * Math.PI);
@@ -605,10 +611,18 @@ function render(e) {
         ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : fromColArr(p.color);
         ctx.fill();
         // Hat
-        // if (renderSettings.textures.hats.hasOwnProperty(p.hat)) ctx.drawImage(renderSettings.textures.hats[p.hat], -2 * p.radius, -2 * p.radius, 4 * p.radius, 4 * p.radius);
+        if (hat) {
+            ctx.drawImage(
+                hat.texture,
+                camScale * hat.offset[0] * p.radius,
+                camScale * hat.offset[1] * p.radius,
+                camScale * hat.size[0] * p.radius,
+                camScale * hat.size[1] * p.radius
+            );
+        }
         // Name
         ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#202020";
-        ctx.fillText(p.name, 0, -camScale * (p.radius + 0.5));
+        ctx.fillText(p.name, 0, camScale * (-p.radius + hat.offset[0] * 1.5 - 0.5));
         // fuelBar™️
         ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#ffff40";
         ctx.fillRect(-camScale * 5, camScale * (p.radius + 1), camScale * p.fuel, camScale * 2.5);
