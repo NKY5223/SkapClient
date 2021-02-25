@@ -1,3 +1,4 @@
+localStorage.removeItem("banned");
 if (localStorage.getItem("banned")) {
     rickroll();
 }
