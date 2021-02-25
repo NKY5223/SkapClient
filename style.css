@@ -264,7 +264,7 @@ input:checked+.switch::before {
     position: absolute;
     right: 10px;
     top: 50%;
-    background: #80808040;
+    background: #c0c0c0c0;
     border: 5px solid black;
     border-radius: 5px;
 }
@@ -457,6 +457,9 @@ canvas {
 }
 .msg2121 {
     color: #00ffff;
+}
+.wolfiemsg {
+    color: #9c9c9c;
 }
 @keyframes slide { 
     0%{ background-position: 0% 0; }

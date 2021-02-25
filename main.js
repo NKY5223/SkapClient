@@ -21,19 +21,15 @@ ws.addEventListener("open", () => {
         e.stopPropagation();
     });
     login.addEventListener("click", () => {
-        grecaptcha.ready(() => {
-            grecaptcha.execute("6Ld2wFMaAAAAAIL8fjR5Bwg6kn3fP2t-b9NFoK_R", {
-                action: "submit"
-            }).then(token => {
-                ws.send(JSON.stringify({
-                    e: "login",
-                    m: {
-                        username: username.value,
-                        password: SHA256(username.value + password.value)
-                    },
-                    t: token
-                }));
-            });
+        getToken(token => {
+            ws.send(JSON.stringify({
+                e: "login",
+                m: {
+                    username: username.value,
+                    password: SHA256(username.value + password.value)
+                },
+                t: token
+            }));
         });
     });
     changingRoomBtn.addEventListener("click", () => {
@@ -59,31 +55,23 @@ ws.addEventListener("open", () => {
         ws.send(`{ "e": "logout" }`);
     });
     guest.addEventListener("click", () => {
-        grecaptcha.ready(() => {
-            grecaptcha.execute("6Ld2wFMaAAAAAIL8fjR5Bwg6kn3fP2t-b9NFoK_R", {
-                action: "submit"
-            }).then(token => {
-                ws.send(JSON.stringify({
-                    e: "guest",
-                    t: token
-                }));
-            });
+        getToken(token => {
+            ws.send(JSON.stringify({
+                e: "guest",
+                t: token
+            }));
         });
     });
     register.addEventListener("click", () => {
-        grecaptcha.ready(() => {
-            grecaptcha.execute("6Ld2wFMaAAAAAIL8fjR5Bwg6kn3fP2t-b9NFoK_R", {
-                action: "submit"
-            }).then(token => {
-                ws.send(JSON.stringify({
-                    e: "register",
-                    m: {
-                        username: username.value,
-                        password: SHA256(username.value + password.value)
-                    },
-                    t: token
-                }));
-            });
+        getToken(token => {
+            ws.send(JSON.stringify({
+                e: "register",
+                m: {
+                    username: username.value,
+                    password: SHA256(username.value + password.value)
+                },
+                t: token
+            }));
         });
     });
     play.addEventListener("click", () => {
@@ -649,7 +637,7 @@ ws.addEventListener("message", e => {
                 div.appendChild(img);
                 div.appendChild(document.createElement("br"));
                 div.appendChild(document.createTextNode(h));
-                
+
                 hatsDiv.appendChild(div);
             }
             playerColor.value = `#${"0".repeat(2 - r.length) + r}${"0".repeat(2 - g.length) + g}${"0".repeat(2 - b.length) + b}`;
@@ -824,9 +812,11 @@ function message(msg, force = false) {
     p.innerHTML = `<span class="
     ${devs.includes(msg.m.s)
             ? "devMsg"
-            : msg.m.s === "2121212121212" || msg.m.s === "XxSweatyxX"
+            : msg.m.s === "2121212121212"
                 ? "msg2121"
-                : ""
+                : msg.m.s === "wolfie" || msg.m.s === "wolfer"
+                    ? "wolfiemsg"
+                    : ""
         }">
         ${force ? msg.m.s : msg.m.s.safe()}:&nbsp;</span>
         ${force
