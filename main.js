@@ -5,9 +5,6 @@ ws.addEventListener("open", () => {
     canSend = true;
     hide(connectP);
     show(loginDiv);
-    if (localStorage.getItem("checkedChangelog")) {
-        show(play);
-    }
     if (localStorage.getItem("cookie")) {
         ws.send(`{
             "e": "session",
@@ -245,8 +242,6 @@ Owner:<ul>
     });
     changelogBtn.addEventListener("click", () => {
         show(changelog);
-        show(play);
-        localStorage.setItem("checkedChangelog", "yes");
     });
     closeChangelog.addEventListener("click", () => {
         hide(changelog);
