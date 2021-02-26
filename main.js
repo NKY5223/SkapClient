@@ -818,15 +818,27 @@ function message(msg, force = false) {
                     ? "wolfiemsg"
                     : ""
         }">
-        ${force ? msg.m.s : msg.m.s.safe()}:&nbsp;</span>
+        ${force
+            ? msg.m.s
+            : checkProfanityString(msg.m.s.safe())
+        }:&nbsp;</span>
         ${force
             ? msg.m.m.replace(URLRegex, '<a href="$2" target="_blank">$2</a>')
-            : msg.m.m.safe().replace(URLRegex, '<a href="$2" target="_blank">$2</a>')
+            : checkProfanityString(msg.m.m.safe().replace(URLRegex, '<a href="$2" target="_blank">$2</a>'))
         }`;
     wrapper.appendChild(p);
     chat.appendChild(wrapper);
     if (scroll) p.scrollIntoView();
     return p;
+}
+/**
+ * @param {string} str 
+ */
+function checkProfanityString(str) {
+    for (let i of seriousProfanCheck) {
+        str = str.replace(new RegExp(i, "gi"), "*".repeat(i.length));
+    }
+    return str;
 }
 /**
  * @param {string} msg 
