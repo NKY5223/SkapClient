@@ -224,7 +224,7 @@ let renderSettings = {
             loadImage("https://skap.io/textures/powers/ghost.svg"),
             loadImage("https://skap.io/textures/powers/frost.svg"),
             loadImage("https://skap.io/textures/powers/shell.svg"),
-            loadImage("enemies/none"),
+            loadImage("none"),
         ]
     }
 };
@@ -245,6 +245,7 @@ let parsedMap = {
     turret: [],
     block1: [],
     reward: [],
+    hatReward: [],
     box: []
 };
 let camScale = 5;
@@ -458,7 +459,7 @@ function clamp(min, num, max) {
  * When i want to punish u
  */
 function rickroll() {
-    location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 }
 function zerotix(x = "ZeroTix") {
     sendMessage(x + " pro");

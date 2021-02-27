@@ -663,6 +663,7 @@ function initMap(i) {
     parsedMap.text = [];
     parsedMap.turret = [];
     parsedMap.reward = [];
+    parsedMap.hatReward = [];
     parsedMap.box = [];
     parsedMap.block1 = [];
     for (let o of i.objects) {
@@ -734,8 +735,13 @@ function initMap(i) {
                 parsedMap.rotatingLava.push(o);
                 break;
             case "reward":
-                o.image = renderSettings.textures.powers[Math.min(o.reward, renderSettings.textures.powers.length - 1)];
+                o.image = renderSettings.textures.powers[o.reward] || renderSettings.textures.powers[11];
                 parsedMap.reward.push(o);
+                break;
+            case "hatReward":
+                o.image = (renderSettings.textures.hats[o.reward] || renderSettings.textures.hats.none).texture;
+                parsedMap.hatReward.push(o);
+                break;
         }
     }
     for (let o of i.objects) {

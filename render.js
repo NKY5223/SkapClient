@@ -681,7 +681,18 @@ function render(e) {
         ctx.drawImage(
             obj.image,
             Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.pos.y + Math.sin(time / 10) * 3 - camY)),
+            Math.round(canvas.height / 2 + camScale * (obj.pos.y + Math.sin(time / 15) * 3 - camY)),
+            Math.round(camScale * obj.size.x),
+            Math.round(camScale * obj.size.y)
+        );
+    }
+    // Render hat rewards
+    for (let obj of parsedMap.hatReward) {
+        ctx.fillStyle = renderSettings.colors.box;
+        ctx.drawImage(
+            obj.image,
+            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.pos.y + Math.sin(time / 15) * 3 - camY)),
             Math.round(camScale * obj.size.x),
             Math.round(camScale * obj.size.y)
         );
