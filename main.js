@@ -1,7 +1,17 @@
-if (localStorage.getItem("username")) username.value = localStorage.getItem("username");
-if (localStorage.getItem("username")) password.value = localStorage.getItem("password");
-
 ws.addEventListener("open", () => {
+    if (localStorage.getItem("username")) {
+        username.value = localStorage.getItem("username");
+        getToken(token => {
+            ws.send(JSON.stringify({
+                e: "login",
+                m: {
+                    username: username.value,
+                    password: localStorage.getItem("shaed")
+                },
+                t: token
+            }));
+        });
+    }
     canSend = true;
     hide(connectP);
     show(loginDiv);
@@ -305,7 +315,7 @@ ws.addEventListener("message", e => {
                 if (msg.cookie !== "") {
                     localStorage.setItem("cookie", msg.cookie);
                     localStorage.setItem("username", username.value);
-                    localStorage.setItem("password", password.value);
+                    localStorage.setItem("shaed", SHA256(username.value + password.value));
                 }
                 if (msg.t.startsWith("Logged in as ")) {
                     user = msg.t.slice(13);
