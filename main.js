@@ -835,10 +835,12 @@ function checkProfanityString(str) {
     }
     return str;
 }
+
 /**
  * @param {string} msg 
  */
 function sendMessage(msg) {
+    msg = msg.replace(/:tm:/g, "™️");
     // Test for n-words and stuff
     for (let i of seriousProfanCheck) {
         if (msg.toLowerCase().match(new RegExp("(^|\\s)" + i, "gi"))) {
