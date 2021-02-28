@@ -600,14 +600,17 @@ ws.addEventListener("message", e => {
                 }
 
             break;
-        case "power":
-            for (let el of poweroptions) {
-                if (msg.m.includes(parseInt(el.dataset.power))) {
-                    show(el);
+            case "power":
+                for (let el of poweroptions) {
+                    if (msg.m.includes(parseInt(el.dataset.power))) {
+                        show(el);
+                    }
                 }
-            }
-            customAlert("Gained power(s) " + msg.m.join(", "));
-            break;
+                customAlert("Gained power(s) " + msg.m.join(", "));
+                break;
+                case "power":
+                    customAlert("Gained hat(s) " + msg.m.join(", "));
+                    break;
         case "style":
             let r = msg.c[0].toString(16);
             let g = msg.c[1].toString(16);
@@ -846,6 +849,7 @@ function checkProfanityString(str) {
  * @param {string} msg 
  */
 function sendMessage(msg) {
+    msg = String(msg);
     msg = msg.replace(/:tm:/g, "™️");
     // Test for n-words and stuff
     for (let i of seriousProfanCheck) {
