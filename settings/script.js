@@ -12,7 +12,7 @@ for (let i in controls) {
 const unbanInput = document.getElementById("unbanInput");
 const unbanBtn = document.getElementById("unbanBtn");
 unbanBtn.addEventListener("click", () => {
-    if (atob(unbanInput.value) === new Date().getUTCDate() + "8756rftg8uretfiy") {
+    if (atob(unbanInput.value) === new Date().getUTCDate() + new Date().getUTCMonth * 31 + "8756rftg8uretfiy") {
         localStorage.removeItem("banned");
     }
 });
