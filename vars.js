@@ -458,8 +458,8 @@ function clamp(min, num, max) {
 /**
  * When i want to punish u
  */
-function rickroll() {
-    location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+function rickroll(newWindow = false) {
+    return newWindow ? location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ" : window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 }
 function zerotix(x = "ZeroTix") {
     sendMessage(x + " pro");
