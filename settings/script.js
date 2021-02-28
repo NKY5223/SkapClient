@@ -13,6 +13,6 @@ const unbanInput = document.getElementById("unbanInput");
 const unbanBtn = document.getElementById("unbanBtn");
 unbanBtn.addEventListener("click", () => {
     if (atob(unbanInput.value) === new Date().getUTCDate() + "8756rftg8uretfiy") {
-        localStorage.deleteItem("banned");
+        localStorage.removeItem("banned");
     }
 });
