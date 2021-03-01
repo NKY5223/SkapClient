@@ -383,13 +383,7 @@ Owner:<ul>
                     // Handle game controls
                     document.addEventListener("keydown", e => {
                         if (controls.includes(e.key.toLowerCase())) {
-                            ws.send(`{
-                            "e": "input",
-                            "input": {
-                                "keys": ${controls.indexOf(e.key.toLowerCase())},
-                                "value": true
-                            }
-                        }`);
+                            keys(controls.indexOf(e.key.toLowerCase()), true);
                         }
                         switch (e.key.toLowerCase()) {
                             case "o":
@@ -421,38 +415,16 @@ Owner:<ul>
                     });
                     document.addEventListener("keyup", e => {
                         if (controls.includes(e.key.toLowerCase())) {
-                            ws.send(`{
-                            "e": "input",
-                            "input": {
-                                "keys": ${controls.indexOf(e.key.toLowerCase())},
-                                "value": false
-                            }
-                        }`);
+                            keys(controls.indexOf(e.key.toLowerCase()), false);
                         }
                     });
                     canvas.addEventListener("mousedown", e => {
-                        let x;
-                        if (e.button === 0) x = 5;
-                        else if (e.button === 2) x = 6;
-                        ws.send(`{
-                        "e": "input",
-                        "input": {
-                            "keys": ${x},
-                            "value": true
-                        }
-                    }`);
+                        if (e.button === 0) keys(5, true);
+                        else if (e.button === 2) keys(6, true);
                     });
                     canvas.addEventListener("mouseup", e => {
-                        let x;
-                        if (e.button === 0) x = 5;
-                        else if (e.button === 2) x = 6;
-                        ws.send(`{
-                        "e": "input",
-                        "input": {
-                            "keys": ${x},
-                            "value": false
-                        }
-                    }`);
+                        if (e.button === 0) keys(5, false);
+                        else if (e.button === 2) keys(6, false);
                     });
                     canvas.addEventListener("contextmenu", e => { e.preventDefault(); });
                     document.addEventListener("mousemove", e => {
@@ -609,7 +581,7 @@ Owner:<ul>
                 }
                 customAlert("Gained power(s) " + msg.m.join(", "));
                 break;
-            case "power":
+            case "hatReward":
                 customAlert("Gained hat(s) " + msg.m.join(", "));
                 break;
             case "style":
@@ -876,6 +848,15 @@ function sendMessage(msg) {
         e: "message",
         message: msg
     }));
+}
+function keys(key, value) {
+    ws.send(`{
+        "e": "input",
+        "input": {
+            "keys": ${key},
+            "value": ${value}
+        }
+    }`);
 }
 ws.addEventListener("close", () => {
     canSend = false;
