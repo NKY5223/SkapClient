@@ -1,5 +1,9 @@
+function ban() {
+    localStorage.setItem("banned", "yes");
+    location.reload();
+}
 if (localStorage.getItem("banned")) {
-    rickroll();
+    document.getElementById("connecting").innerHTML = "You are banned.";
 }
 
 const ws = new WebSocket("wss://skap.io");
@@ -264,9 +268,9 @@ let freeCam = false;
 
 let time = 0;
 
-let keys;
-if (localStorage.getItem("keys")) keys = localStorage.getItem("keys").split(" ");
-else keys = ["w", "a", "s", "d", "shift", "", "", "r"];
+let controls;
+if (localStorage.getItem("keys")) controls = localStorage.getItem("keys").split(" ");
+else controls = ["w", "a", "s", "d", "shift", "", "", "r"];
 
 let map = null;
 let data = null;
@@ -483,11 +487,4 @@ function getToken(func, onerr = console.error) {
             action: "submit"
         }).then(func).catch(onerr);
     });
-}
-/**
- * Haha yes get banned from skapclient
- */
-function ban() {
-    localStorage.setItem("banned", "yes");
-    rickroll();
 }

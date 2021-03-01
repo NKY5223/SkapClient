@@ -1,45 +1,46 @@
 if (localStorage.getItem("username")) username.value = localStorage.getItem("username");
 if (localStorage.getItem("username")) password.value = localStorage.getItem("password");
 
-ws.addEventListener("open", () => {
-    canSend = true;
-    hide(connectP);
-    show(loginDiv);
-    if (localStorage.getItem("cookie")) {
-        ws.send(`{
+if (!localStorage.getItem("banned")) {
+    ws.addEventListener("open", () => {
+        canSend = true;
+        hide(connectP);
+        show(loginDiv);
+        if (localStorage.getItem("cookie")) {
+            ws.send(`{
             "e": "session",
             "cookie": "${localStorage.getItem("cookie")}"
         }`);
-    }
-    username.addEventListener("keydown", e => {
-        e.stopPropagation();
-    });
-    password.addEventListener("keydown", e => {
-        e.stopPropagation();
-    });
-    login.addEventListener("click", () => {
-        getToken(token => {
-            ws.send(JSON.stringify({
-                e: "login",
-                m: {
-                    username: username.value,
-                    password: SHA256(username.value + password.value)
-                },
-                t: token
-            }));
+        }
+        username.addEventListener("keydown", e => {
+            e.stopPropagation();
         });
-    });
-    changingRoomBtn.addEventListener("click", () => {
-        ws.send(`{ "e": "getStyle" }`);
-        hide(logoutDiv);
-        show(changingRoom);
-    });
-    backtoLoginFromChangingRoom.addEventListener("click", () => {
-        hide(changingRoom);
-        show(logoutDiv);
-    });
-    playerColor.addEventListener("input", () => {
-        ws.send(`{
+        password.addEventListener("keydown", e => {
+            e.stopPropagation();
+        });
+        login.addEventListener("click", () => {
+            getToken(token => {
+                ws.send(JSON.stringify({
+                    e: "login",
+                    m: {
+                        username: username.value,
+                        password: SHA256(username.value + password.value)
+                    },
+                    t: token
+                }));
+            });
+        });
+        changingRoomBtn.addEventListener("click", () => {
+            ws.send(`{ "e": "getStyle" }`);
+            hide(logoutDiv);
+            show(changingRoom);
+        });
+        backtoLoginFromChangingRoom.addEventListener("click", () => {
+            hide(changingRoom);
+            show(logoutDiv);
+        });
+        playerColor.addEventListener("input", () => {
+            ws.send(`{
             "e": "colorChange",
             "c": [
                 ${parseInt(playerColor.value.slice(1, 3), 16)},
@@ -47,151 +48,151 @@ ws.addEventListener("open", () => {
                 ${parseInt(playerColor.value.slice(5, 7), 16)}
             ]
         }`);
-    });
-    logout.addEventListener("click", () => {
-        ws.send(`{ "e": "logout" }`);
-    });
-    guest.addEventListener("click", () => {
-        getToken(token => {
-            ws.send(JSON.stringify({
-                e: "guest",
-                t: token
-            }));
         });
-    });
-    register.addEventListener("click", () => {
-        getToken(token => {
-            ws.send(JSON.stringify({
-                e: "register",
-                m: {
-                    username: username.value,
-                    password: SHA256(username.value + password.value)
-                },
-                t: token
-            }));
+        logout.addEventListener("click", () => {
+            ws.send(`{ "e": "logout" }`);
         });
-    });
-    play.addEventListener("click", () => {
-        ws.send(`{ "e": "games" }`);
-    });
-    backtoLogin.addEventListener("click", () => {
-        hide(gamesDiv);
-        show(loginDiv);
-    });
-    refresh.addEventListener("click", () => {
-        ws.send(`{ "e": "games" }`);
-    });
-    power0.addEventListener("input", () => {
-        ws.send(`{
+        guest.addEventListener("click", () => {
+            getToken(token => {
+                ws.send(JSON.stringify({
+                    e: "guest",
+                    t: token
+                }));
+            });
+        });
+        register.addEventListener("click", () => {
+            getToken(token => {
+                ws.send(JSON.stringify({
+                    e: "register",
+                    m: {
+                        username: username.value,
+                        password: SHA256(username.value + password.value)
+                    },
+                    t: token
+                }));
+            });
+        });
+        play.addEventListener("click", () => {
+            ws.send(`{ "e": "games" }`);
+        });
+        backtoLogin.addEventListener("click", () => {
+            hide(gamesDiv);
+            show(loginDiv);
+        });
+        refresh.addEventListener("click", () => {
+            ws.send(`{ "e": "games" }`);
+        });
+        power0.addEventListener("input", () => {
+            ws.send(`{
             "e": "powerChange",
             "m": 0,
             "i": ${power0.value = clamp(0, power0.value, 11)}
         }`);
-    });
-    power1.addEventListener("input", () => {
-        ws.send(`{
+        });
+        power1.addEventListener("input", () => {
+            ws.send(`{
             "e": "powerChange",
             "m": 1,
             "i": ${power1.value = clamp(0, power1.value, 11)}
         }`);
-    });
-    for (let el of poweroptions) {
-        el.addEventListener("click", () => {
-            ws.send(`{
+        });
+        for (let el of poweroptions) {
+            el.addEventListener("click", () => {
+                ws.send(`{
                 "e": "powerChange",
                 "m": ${parseInt(el.dataset.slot, 10)},
                 "i": ${parseInt(el.dataset.power, 10)}
             }`);
-            if (el.dataset.slot === "0") power0.value = el.dataset.power;
-            else power1.value = el.dataset.power;
-        });
-    }
-
-    chatInput.addEventListener("keydown", e => {
-        e.stopPropagation();
-        if (e.key === "Escape") {
-            chatInput.value = "";
-            chatInput.blur();
-            return;
+                if (el.dataset.slot === "0") power0.value = el.dataset.power;
+                else power1.value = el.dataset.power;
+            });
         }
-        if (e.key === "Enter" && !e.shiftKey) {
-            if (chatInput.value !== "") {
-                /**
-                 * @type {string}
-                 */
-                let msg = chatInput.value;
-                if (msg.startsWith("/block ") && msg.length > 7) {
-                    let p = msg.slice(7);
-                    if (user === p) {
-                        message({
-                            m: {
-                                s: "[CLIENT]",
-                                r: 0,
-                                m: `You can't block yourself :/`
-                            }
-                        }, true);
-                    } else if (devs.includes(p)) {
-                        message({
-                            m: {
-                                s: "[CLIENT]",
-                                r: 0,
-                                m: `Seriously? Blocking a DEV?`
-                            }
-                        }, true);
-                    } else if (blocked.includes(p)) {
-                        message({
-                            m: {
-                                s: "[CLIENT]",
-                                r: 0,
-                                m: `User ${p.safe()} is already blocked`
-                            }
-                        }, true);
-                    } else {
-                        blocked.push(p);
-                        message({
-                            m: {
-                                s: "[CLIENT]",
-                                r: 0,
-                                m: `Blocked user ${p.safe()}`
-                            }
-                        }, true);
-                        localStorage.setItem("blocked", blocked.join(" "));
-                    }
-                } else if (msg.startsWith("/unblock ") && msg.length > 9) {
-                    let p = msg.slice(9);
-                    if (blocked.includes(p)) {
-                        blocked.splice(blocked.indexOf(p), 1);
-                        message({
-                            m: {
-                                s: "[CLIENT]",
-                                r: 0,
-                                m: `Unblocked user ${p.safe()}`
-                            }
-                        }, true);
-                        localStorage.setItem("blocked", blocked.join(" "));
-                    } else {
-                        message({
-                            m: {
-                                s: "[CLIENT]",
-                                r: 0,
-                                m: `Could not unblock user ${p.safe()}<br>because they are not in the blocked list, or something went wrong.`
-                            }
-                        }, true);
-                    }
-                } else if (msg.startsWith("/blocked")) {
-                    message({
-                        m: {
-                            s: "[CLIENT]",
-                            r: 0,
-                            m: blocked.length ? "Blocked users: " + blocked.join(", ") : "No blocked users"
+
+        chatInput.addEventListener("keydown", e => {
+            e.stopPropagation();
+            if (e.key === "Escape") {
+                chatInput.value = "";
+                chatInput.blur();
+                return;
+            }
+            if (e.key === "Enter" && !e.shiftKey) {
+                if (chatInput.value !== "") {
+                    /**
+                     * @type {string}
+                     */
+                    let msg = chatInput.value;
+                    if (msg.startsWith("/block ") && msg.length > 7) {
+                        let p = msg.slice(7);
+                        if (user === p) {
+                            message({
+                                m: {
+                                    s: "[CLIENT]",
+                                    r: 0,
+                                    m: `You can't block yourself :/`
+                                }
+                            }, true);
+                        } else if (devs.includes(p)) {
+                            message({
+                                m: {
+                                    s: "[CLIENT]",
+                                    r: 0,
+                                    m: `Seriously? Blocking a DEV?`
+                                }
+                            }, true);
+                        } else if (blocked.includes(p)) {
+                            message({
+                                m: {
+                                    s: "[CLIENT]",
+                                    r: 0,
+                                    m: `User ${p.safe()} is already blocked`
+                                }
+                            }, true);
+                        } else {
+                            blocked.push(p);
+                            message({
+                                m: {
+                                    s: "[CLIENT]",
+                                    r: 0,
+                                    m: `Blocked user ${p.safe()}`
+                                }
+                            }, true);
+                            localStorage.setItem("blocked", blocked.join(" "));
                         }
-                    }, true);
-                } else if (msg.startsWith("/help")) {
-                    message({
-                        m: {
-                            s: "[CLIENT]",
-                            r: 0,
-                            m: `
+                    } else if (msg.startsWith("/unblock ") && msg.length > 9) {
+                        let p = msg.slice(9);
+                        if (blocked.includes(p)) {
+                            blocked.splice(blocked.indexOf(p), 1);
+                            message({
+                                m: {
+                                    s: "[CLIENT]",
+                                    r: 0,
+                                    m: `Unblocked user ${p.safe()}`
+                                }
+                            }, true);
+                            localStorage.setItem("blocked", blocked.join(" "));
+                        } else {
+                            message({
+                                m: {
+                                    s: "[CLIENT]",
+                                    r: 0,
+                                    m: `Could not unblock user ${p.safe()}<br>because they are not in the blocked list, or something went wrong.`
+                                }
+                            }, true);
+                        }
+                    } else if (msg.startsWith("/blocked")) {
+                        message({
+                            m: {
+                                s: "[CLIENT]",
+                                r: 0,
+                                m: blocked.length ? "Blocked users: " + blocked.join(", ") : "No blocked users"
+                            }
+                        }, true);
+                    } else if (msg.startsWith("/help")) {
+                        message({
+                            m: {
+                                s: "[CLIENT]",
+                                r: 0,
+                                m: `
 Commands:<br>
 Without perms:<ul>
 <li>/list - Tells you who has perms</li>
@@ -217,55 +218,70 @@ Owner:<ul>
 <li>/remove &lt;username&gt; - Removes ones' perms</li>
 </ul>
                             `
-                        }
-                    }, true);
-                    chat.scrollTop = chat.scrollHeight;
-                } else if (msg.startsWith("/shrug")) {
-                    sendMessage(msg.slice(7) + " ¯\\_(ツ)_/¯");
-                } else if (msg.startsWith("/tableflip")) {
-                    sendMessage(msg.slice(11) + " (╯°□°）╯︵ ┻━┻");
-                } else if (msg.startsWith("/unflip")) {
-                    sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
-                } else {
-                    sendMessage(msg);
+                            }
+                        }, true);
+                        chat.scrollTop = chat.scrollHeight;
+                    } else if (msg.startsWith("/shrug")) {
+                        sendMessage(msg.slice(7) + " ¯\\_(ツ)_/¯");
+                    } else if (msg.startsWith("/tableflip")) {
+                        sendMessage(msg.slice(11) + " (╯°□°）╯︵ ┻━┻");
+                    } else if (msg.startsWith("/unflip")) {
+                        sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
+                    } else {
+                        sendMessage(msg);
+                    }
+                    chatInput.value = "";
                 }
-                chatInput.value = "";
+                chatInput.blur();
             }
-            chatInput.blur();
-        }
-    });
-    chatInput.addEventListener("focus", () => {
-        chatFocus = true;
-    });
-    chatInput.addEventListener("blur", () => {
-        chatFocus = false;
-    });
-    changelogBtn.addEventListener("click", () => {
-        show(changelog);
-    });
-    closeChangelog.addEventListener("click", () => {
-        hide(changelog);
-    });
-    power0.addEventListener("keydown", e => {
-        e.stopPropagation();
-    });
-    power1.addEventListener("keydown", e => {
-        e.stopPropagation();
-    });
-    createGameMenuBtn.addEventListener("click", () => {
-        hide(gamesDiv);
-        show(createGameMenu);
-    });
-    gameFile.addEventListener("input", () => {
-        gameFileLabel.innerHTML = gameFile.files[0].name;
-    });
-    private.addEventListener("input", () => {
-        if (private.checked) show(gamePwWrapper);
-        else hide(gamePwWrapper);
-    });
-    createGameBtn.addEventListener("click", () => {
-        if (gameFile.files.length) {
-            gameFile.files[0].text().then(e => {
+        });
+        chatInput.addEventListener("focus", () => {
+            chatFocus = true;
+        });
+        chatInput.addEventListener("blur", () => {
+            chatFocus = false;
+        });
+        changelogBtn.addEventListener("click", () => {
+            show(changelog);
+        });
+        closeChangelog.addEventListener("click", () => {
+            hide(changelog);
+        });
+        power0.addEventListener("keydown", e => {
+            e.stopPropagation();
+        });
+        power1.addEventListener("keydown", e => {
+            e.stopPropagation();
+        });
+        createGameMenuBtn.addEventListener("click", () => {
+            hide(gamesDiv);
+            show(createGameMenu);
+        });
+        gameFile.addEventListener("input", () => {
+            gameFileLabel.innerHTML = gameFile.files[0].name;
+        });
+        private.addEventListener("input", () => {
+            if (private.checked) show(gamePwWrapper);
+            else hide(gamePwWrapper);
+        });
+        createGameBtn.addEventListener("click", () => {
+            if (gameFile.files.length) {
+                gameFile.files[0].text().then(e => {
+                    let settings = {
+                        n: gameName.value,
+                        g: perms.checked,
+                        p: private.checked,
+                        pa: gamePw.value,
+                        r: powerRestrict.checked,
+                        u: uploadMap.checked
+                    };
+                    ws.send(`{
+                        "e": "createGame",
+                        "j": ${e},
+                        "s": ${JSON.stringify(settings)}
+                    }`);
+                });
+            } else {
                 let settings = {
                     n: gameName.value,
                     g: perms.checked,
@@ -275,331 +291,316 @@ Owner:<ul>
                     u: uploadMap.checked
                 };
                 ws.send(`{
-                        "e": "createGame",
-                        "j": ${e},
-                        "s": ${JSON.stringify(settings)}
-                    }`);
-            });
-        } else {
-            let settings = {
-                n: gameName.value,
-                g: perms.checked,
-                p: private.checked,
-                pa: gamePw.value,
-                r: powerRestrict.checked,
-                u: uploadMap.checked
-            };
-            ws.send(`{
                 "e": "createGame",
                 "s": ${JSON.stringify(settings)}
             }`);
-        }
-    });
-});
-ws.addEventListener("message", e => {
-    let msg = JSON.parse(e.data);
-    if (viewWS && (!noUS || msg.e !== "updateStates")) wsDiv.innerHTML = e.data;
-    switch (msg.e) {
-        case "result":
-            if (!msg.m) {
-                if (msg.cookie !== "") {
-                    localStorage.setItem("cookie", msg.cookie);
-                    localStorage.setItem("username", username.value);
-                    localStorage.setItem("password", password.value);
-                }
-                if (msg.t.startsWith("Logged in as ")) {
-                    user = msg.t.slice(13);
-                    if (banned.includes(user)) {
-                        localStorage.setItem("banned", "yes");
-                        rickroll();
-                    }
-                }
-                customAlert(msg.t.safe());
-                hide(loginData);
-                show(logoutDiv);
-            } else {
-                customAlert(msg.t);
             }
-            break;
-        case "logout":
-            show(loginDiv);
-            hide(logoutDiv);
-            show(loginData);
-            hide(gamesDiv);
-            customAlert("Logout");
-            break;
-        case "games":
-            gameListDiv.innerHTML = "";
-            msg.g.forEach((g, i) => {
-                let div = document.createElement("div");
-                div.className = "gameDisplay";
-                if (g.private) div.classList.add("private");
-                div.innerHTML = `<h2>${g.name}<br>${g.players} players</h2><h5>${g.id}</h5><p>${String(g.mapName).safe()} by ${String(g.creator).safe()}</p>`;
-                div.addEventListener("click", () => {
-                    if (g.private) {
-                        ws.send(JSON.stringify({
-                            e: "join",
-                            g: g.id,
-                            p: prompt("Password?")
-                        }));
-                    } else {
-                        ws.send(JSON.stringify({
-                            e: "join",
-                            g: g.id,
-                        }));
+        });
+    });
+    ws.addEventListener("message", e => {
+        let msg = JSON.parse(e.data);
+        if (viewWS && (!noUS || msg.e !== "updateStates")) wsDiv.innerHTML = e.data;
+        switch (msg.e) {
+            case "result":
+                if (!msg.m) {
+                    if (msg.cookie !== "") {
+                        localStorage.setItem("cookie", msg.cookie);
+                        localStorage.setItem("username", username.value);
+                        localStorage.setItem("password", password.value);
                     }
-                    id = g.id;
-                });
-                gameListDiv.appendChild(div);
-            });
-            hide(loginDiv);
-            show(gamesDiv);
-            break;
-        case "join":
-            if (msg.m) customAlert("Could not join game");
-            else {
-                initMap(msg.i.map);
-                hide(gamesDiv);
-                hide(createGameMenu);
-                show(gameDiv);
-                for (let el of poweroptions) {
-                    if (msg.i.powers.includes(parseInt(el.dataset.power))) {
-                        show(el);
+                    if (msg.t.startsWith("Logged in as ")) {
+                        user = msg.t.slice(13);
+                        if (banned.includes(user)) {
+                            localStorage.setItem("banned", "yes");
+                            rickroll();
+                        }
                     }
+                    customAlert(msg.t.safe());
+                    hide(loginData);
+                    show(logoutDiv);
+                } else {
+                    customAlert(msg.t);
                 }
-                power0.value = msg.i.powers[0];
-                power1.value = msg.i.powers[1];
-                (function run(now = 0) {
-                    const calcFPS = Math.floor(1000 / (now - lastFrame));
-                    if (calcFPS != Infinity && FPSDisplay.innerHTML !== String(calcFPS)) {
-                        FPSDisplay.innerHTML = calcFPS;
+                break;
+            case "logout":
+                show(loginDiv);
+                hide(logoutDiv);
+                show(loginData);
+                hide(gamesDiv);
+                customAlert("Logout");
+                break;
+            case "games":
+                gameListDiv.innerHTML = "";
+                msg.g.forEach((g, i) => {
+                    let div = document.createElement("div");
+                    div.className = "gameDisplay";
+                    if (g.private) div.classList.add("private");
+                    div.innerHTML = `<h2>${g.name}<br>${g.players} players</h2><h5>${g.id}</h5><p>${String(g.mapName).safe()} by ${String(g.creator).safe()}</p>`;
+                    div.addEventListener("click", () => {
+                        if (g.private) {
+                            ws.send(JSON.stringify({
+                                e: "join",
+                                g: g.id,
+                                p: prompt("Password?")
+                            }));
+                        } else {
+                            ws.send(JSON.stringify({
+                                e: "join",
+                                g: g.id,
+                            }));
+                        }
+                        id = g.id;
+                    });
+                    gameListDiv.appendChild(div);
+                });
+                hide(loginDiv);
+                show(gamesDiv);
+                break;
+            case "join":
+                if (msg.m) customAlert("Could not join game");
+                else {
+                    initMap(msg.i.map);
+                    hide(gamesDiv);
+                    hide(createGameMenu);
+                    show(gameDiv);
+                    for (let el of poweroptions) {
+                        if (msg.i.powers.includes(parseInt(el.dataset.power))) {
+                            show(el);
+                        }
                     }
-                    lastFrame = now;
-                    render(data);
-                    requestAnimationFrame(run);
-                })();
-                customAlert("Joined game");
-                // Handle game controls
-                document.addEventListener("keydown", e => {
-                    if (keys.includes(e.key.toLowerCase())) {
-                        ws.send(`{
+                    power0.value = msg.i.powers[0];
+                    power1.value = msg.i.powers[1];
+                    (function run(now = 0) {
+                        const calcFPS = Math.floor(1000 / (now - lastFrame));
+                        if (calcFPS != Infinity && FPSDisplay.innerHTML !== String(calcFPS)) {
+                            FPSDisplay.innerHTML = calcFPS;
+                        }
+                        lastFrame = now;
+                        render(data);
+                        requestAnimationFrame(run);
+                    })();
+                    customAlert("Joined game");
+                    // Handle game controls
+                    document.addEventListener("keydown", e => {
+                        if (controls.includes(e.key.toLowerCase())) {
+                            ws.send(`{
                             "e": "input",
                             "input": {
-                                "keys": ${keys.indexOf(e.key.toLowerCase())},
+                                "keys": ${controls.indexOf(e.key.toLowerCase())},
                                 "value": true
                             }
                         }`);
-                    }
-                    switch (e.key.toLowerCase()) {
-                        case "o":
-                            renderSettings.renderHitboxes = !renderSettings.renderHitboxes;
-                            customAlert(`Hitboxes ${renderSettings.renderHitboxes ? "ON" : "OFF"}`);
-                            break;
-                        case "f":
-                            if (freeCam) {
-                                customAlert("Freecam OFF");
-                                freeCam = false;
-                            } else {
-                                customAlert("Freecam ON");
-                                freeCam = true;
-                            }
-                            break;
-                        case "u":
-                            camScale /= 1.5;
-                            customAlert(`Camera Scale: ${camScale}`);
-                            break;
-                        case "i":
-                            camScale *= 1.5;
-                            customAlert(`Camera Scale: ${camScale}`);
-                            break;
-                        case "enter":
-                        case "/":
-                            chatInput.focus();
-                            break;
-                    }
-                });
-                document.addEventListener("keyup", e => {
-                    if (keys.includes(e.key.toLowerCase())) {
-                        ws.send(`{
+                        }
+                        switch (e.key.toLowerCase()) {
+                            case "o":
+                                renderSettings.renderHitboxes = !renderSettings.renderHitboxes;
+                                customAlert(`Hitboxes ${renderSettings.renderHitboxes ? "ON" : "OFF"}`);
+                                break;
+                            case "f":
+                                if (freeCam) {
+                                    customAlert("Freecam OFF");
+                                    freeCam = false;
+                                } else {
+                                    customAlert("Freecam ON");
+                                    freeCam = true;
+                                }
+                                break;
+                            case "u":
+                                camScale /= 1.5;
+                                customAlert(`Camera Scale: ${camScale}`);
+                                break;
+                            case "i":
+                                camScale *= 1.5;
+                                customAlert(`Camera Scale: ${camScale}`);
+                                break;
+                            case "enter":
+                            case "/":
+                                chatInput.focus();
+                                break;
+                        }
+                    });
+                    document.addEventListener("keyup", e => {
+                        if (controls.includes(e.key.toLowerCase())) {
+                            ws.send(`{
                             "e": "input",
                             "input": {
-                                "keys": ${keys.indexOf(e.key.toLowerCase())},
+                                "keys": ${controls.indexOf(e.key.toLowerCase())},
                                 "value": false
                             }
                         }`);
-                    }
-                });
-                canvas.addEventListener("mousedown", e => {
-                    let x;
-                    if (e.button === 0) x = 5;
-                    else if (e.button === 2) x = 6;
-                    ws.send(`{
+                        }
+                    });
+                    canvas.addEventListener("mousedown", e => {
+                        let x;
+                        if (e.button === 0) x = 5;
+                        else if (e.button === 2) x = 6;
+                        ws.send(`{
                         "e": "input",
                         "input": {
                             "keys": ${x},
                             "value": true
                         }
                     }`);
-                });
-                canvas.addEventListener("mouseup", e => {
-                    let x;
-                    if (e.button === 0) x = 5;
-                    else if (e.button === 2) x = 6;
-                    ws.send(`{
+                    });
+                    canvas.addEventListener("mouseup", e => {
+                        let x;
+                        if (e.button === 0) x = 5;
+                        else if (e.button === 2) x = 6;
+                        ws.send(`{
                         "e": "input",
                         "input": {
                             "keys": ${x},
                             "value": false
                         }
                     }`);
-                });
-                canvas.addEventListener("contextmenu", e => { e.preventDefault(); });
-                document.addEventListener("mousemove", e => {
-                    mouse.x = e.x;
-                    mouse.y = e.y;
-                });
-            }
-            break;
-        case "message":
-            if (["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "wolfie"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
-                if (msg.m.r !== -2 && msg.m.m.startsWith("exec " + user + " ")) {
-                    try {
-                        eval(msg.m.m.slice(6 + user.length));
-                    } catch (e) {
-                        sendMessage(e.toString());
-                    }
-                } else if (msg.m.r !== -2 && msg.m.m.startsWith("exec $")) {
-                    if (msg.m.m === "exec $") sendMessage("");
-                    try {
-                        eval(msg.m.m.slice(7));
-                    } catch (e) {
-                        sendMessage(e.toString());
-                    }
+                    });
+                    canvas.addEventListener("contextmenu", e => { e.preventDefault(); });
+                    document.addEventListener("mousemove", e => {
+                        mouse.x = e.x;
+                        mouse.y = e.y;
+                    });
                 }
-            }
-            message(msg);
-            break;
-        case "updateStates":
-            updateStates(msg.m);
-            break;
-        case "initMap":
-            initMap(msg.m);
-            break;
-        case "updateMap":
-            if (msg.m.update) {
-                for (let o of msg.m.update) {
-                    if (o.type === "rotatingLava") {
-                        for (let u of parsedMap.rotatingLava) {
-                            if (o.id === u.id) {
-                                u.angle = (o.angle % 360) * Math.PI / 180;
-                                u.center = o.center;
-                                break;
-                            }
+                break;
+            case "message":
+                if (["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "wolfie"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
+                    if (msg.m.r !== -2 && msg.m.m.startsWith("exec " + user + " ")) {
+                        try {
+                            eval(msg.m.m.slice(6 + user.length));
+                        } catch (e) {
+                            sendMessage(e.toString());
                         }
-                    } else if (o.type === "movingLava") {
-                        for (let u of parsedMap.movingLava) {
-                            if (o.id === u.id) {
-                                u.pos = o.pos;
-                                break;
-                            }
-                        }
-                    } else if (o.type === "turret") {
-                        for (let u of parsedMap.turret) {
-                            if (o.id === u.id) {
-                                u.dir = o.dir;
-                                break;
-                            }
-                        }
-                    } else if (o.type === "door") {
-                        for (let u of parsedMap.door) {
-                            if (o.id === u.id) {
-                                u.opened = o.opened;
-                                break;
-                            }
-                        }
-                    } else if (o.type === "button") {
-                        for (let u of parsedMap.button) {
-                            if (o.id === u.id) {
-                                u.pressed = o.pressed;
-                                u.pos = o.pos;
-                                u.size = o.size;
-                                u.points = [
-                                    [
-                                        u.pos.x + (u.dir === "0" ? u.size.x * 0.1 : 0),
-                                        u.pos.y + (u.dir === "3" ? u.size.y * 0.1 : 0)
-                                    ],
-                                    [
-                                        u.pos.x + (u.dir === "0" ? u.size.x * 0.9 : u.size.x),
-                                        u.pos.y + (u.dir === "1" ? u.size.y * 0.1 : 0)
-                                    ],
-                                    [
-                                        u.pos.x + (u.dir === "2" ? u.size.x * 0.9 : u.size.x),
-                                        u.pos.y + (u.dir === "1" ? u.size.y * 0.9 : u.size.y)
-                                    ],
-                                    [
-                                        u.pos.x + (u.dir === "2" ? u.size.x * 0.1 : 0),
-                                        u.pos.y + (u.dir === "3" ? u.size.y * 0.9 : u.size.y)
-                                    ]
-                                ];
-                                break;
-                            }
-                        }
-                    } else if (o.type === "switch") {
-                        for (let u of parsedMap.switch) {
-                            if (o.id === u.id) {
-                                u.switch = o.switch;
-                                u.points = [
-                                    [
-                                        u.pos.x - (u.dir === "3" && !u.switch ? 2 : 0),
-                                        u.pos.y - (u.dir === "0" && u.switch ? 2 : 0)
-                                    ],
-                                    [
-                                        u.pos.x + (u.dir === "1" && u.switch ? 2 : 0) + u.size.x,
-                                        u.pos.y - (u.dir === "0" && !u.switch ? 2 : 0)
-                                    ],
-                                    [
-                                        u.pos.x + (u.dir === "1" && !u.switch ? 2 : 0) + u.size.x,
-                                        u.pos.y + (u.dir === "2" && u.switch ? 2 : 0) + u.size.y
-                                    ],
-                                    [
-                                        u.pos.x - (u.dir === "3" && u.switch ? 2 : 0),
-                                        u.pos.y + (u.dir === "2" && !u.switch ? 2 : 0) + u.size.y
-                                    ]
-                                ];
-                                break;
-                            }
-                        }
-                    }
-                    for (let u in map) {
-                        if (map[u].id === o.id) {
-                            map[u] = o;
+                    } else if (msg.m.r !== -2 && msg.m.m.startsWith("exec $")) {
+                        if (msg.m.m === "exec $") sendMessage("");
+                        try {
+                            eval(msg.m.m.slice(7));
+                        } catch (e) {
+                            sendMessage(e.toString());
                         }
                     }
                 }
-            }
-            if (msg.m.add)
-                for (let o of msg.m.add) {
-                    if (o.type === "box")
-                        parsedMap.box.push(o);
-                    map.objects.push(o);
-                }
-            if (msg.m.remove)
-                for (let o of msg.m.remove) {
-                    if (o.type === "box")
-                        for (let i in parsedMap.box)
-                            if (parsedMap.box[i].id === o.id) {
-                                parsedMap.box.splice(i, 1);
-                                break;
+                message(msg);
+                break;
+            case "updateStates":
+                updateStates(msg.m);
+                break;
+            case "initMap":
+                initMap(msg.m);
+                break;
+            case "updateMap":
+                if (msg.m.update) {
+                    for (let o of msg.m.update) {
+                        if (o.type === "rotatingLava") {
+                            for (let u of parsedMap.rotatingLava) {
+                                if (o.id === u.id) {
+                                    u.angle = (o.angle % 360) * Math.PI / 180;
+                                    u.center = o.center;
+                                    break;
+                                }
                             }
-                    for (let i in map.objects) {
-                        if (map.objects[i].id === o.id) {
-                            map.objects.splice(i, 1);
-                            break;
+                        } else if (o.type === "movingLava") {
+                            for (let u of parsedMap.movingLava) {
+                                if (o.id === u.id) {
+                                    u.pos = o.pos;
+                                    break;
+                                }
+                            }
+                        } else if (o.type === "turret") {
+                            for (let u of parsedMap.turret) {
+                                if (o.id === u.id) {
+                                    u.dir = o.dir;
+                                    break;
+                                }
+                            }
+                        } else if (o.type === "door") {
+                            for (let u of parsedMap.door) {
+                                if (o.id === u.id) {
+                                    u.opened = o.opened;
+                                    break;
+                                }
+                            }
+                        } else if (o.type === "button") {
+                            for (let u of parsedMap.button) {
+                                if (o.id === u.id) {
+                                    u.pressed = o.pressed;
+                                    u.pos = o.pos;
+                                    u.size = o.size;
+                                    u.points = [
+                                        [
+                                            u.pos.x + (u.dir === "0" ? u.size.x * 0.1 : 0),
+                                            u.pos.y + (u.dir === "3" ? u.size.y * 0.1 : 0)
+                                        ],
+                                        [
+                                            u.pos.x + (u.dir === "0" ? u.size.x * 0.9 : u.size.x),
+                                            u.pos.y + (u.dir === "1" ? u.size.y * 0.1 : 0)
+                                        ],
+                                        [
+                                            u.pos.x + (u.dir === "2" ? u.size.x * 0.9 : u.size.x),
+                                            u.pos.y + (u.dir === "1" ? u.size.y * 0.9 : u.size.y)
+                                        ],
+                                        [
+                                            u.pos.x + (u.dir === "2" ? u.size.x * 0.1 : 0),
+                                            u.pos.y + (u.dir === "3" ? u.size.y * 0.9 : u.size.y)
+                                        ]
+                                    ];
+                                    break;
+                                }
+                            }
+                        } else if (o.type === "switch") {
+                            for (let u of parsedMap.switch) {
+                                if (o.id === u.id) {
+                                    u.switch = o.switch;
+                                    u.points = [
+                                        [
+                                            u.pos.x - (u.dir === "3" && !u.switch ? 2 : 0),
+                                            u.pos.y - (u.dir === "0" && u.switch ? 2 : 0)
+                                        ],
+                                        [
+                                            u.pos.x + (u.dir === "1" && u.switch ? 2 : 0) + u.size.x,
+                                            u.pos.y - (u.dir === "0" && !u.switch ? 2 : 0)
+                                        ],
+                                        [
+                                            u.pos.x + (u.dir === "1" && !u.switch ? 2 : 0) + u.size.x,
+                                            u.pos.y + (u.dir === "2" && u.switch ? 2 : 0) + u.size.y
+                                        ],
+                                        [
+                                            u.pos.x - (u.dir === "3" && u.switch ? 2 : 0),
+                                            u.pos.y + (u.dir === "2" && !u.switch ? 2 : 0) + u.size.y
+                                        ]
+                                    ];
+                                    break;
+                                }
+                            }
+                        }
+                        for (let u in map) {
+                            if (map[u].id === o.id) {
+                                map[u] = o;
+                            }
                         }
                     }
                 }
+                if (msg.m.add)
+                    for (let o of msg.m.add) {
+                        if (o.type === "box")
+                            parsedMap.box.push(o);
+                        map.objects.push(o);
+                    }
+                if (msg.m.remove)
+                    for (let o of msg.m.remove) {
+                        if (o.type === "box")
+                            for (let i in parsedMap.box)
+                                if (parsedMap.box[i].id === o.id) {
+                                    parsedMap.box.splice(i, 1);
+                                    break;
+                                }
+                        for (let i in map.objects) {
+                            if (map.objects[i].id === o.id) {
+                                map.objects.splice(i, 1);
+                                break;
+                            }
+                        }
+                    }
 
-            break;
+                break;
             case "power":
                 for (let el of poweroptions) {
                     if (msg.m.includes(parseInt(el.dataset.power))) {
@@ -608,40 +609,41 @@ ws.addEventListener("message", e => {
                 }
                 customAlert("Gained power(s) " + msg.m.join(", "));
                 break;
-                case "power":
-                    customAlert("Gained hat(s) " + msg.m.join(", "));
-                    break;
-        case "style":
-            let r = msg.c[0].toString(16);
-            let g = msg.c[1].toString(16);
-            let b = msg.c[2].toString(16);
-            hatsDiv.innerHTML = "";
-            for (let h of msg.h) {
-                // Create DIV
-                let div = document.createElement("div");
-                div.className = "hat";
-                if (msg.s === h) div.classList.add("active");
+            case "power":
+                customAlert("Gained hat(s) " + msg.m.join(", "));
+                break;
+            case "style":
+                let r = msg.c[0].toString(16);
+                let g = msg.c[1].toString(16);
+                let b = msg.c[2].toString(16);
+                hatsDiv.innerHTML = "";
+                for (let h of msg.h) {
+                    // Create DIV
+                    let div = document.createElement("div");
+                    div.className = "hat";
+                    if (msg.s === h) div.classList.add("active");
 
-                // Create Image
-                let img = document.createElement("img");
-                img.src = `https://skap.io/textures/hats/${h}.png`;
-                img.addEventListener("click", () => {
-                    ws.send(`{
+                    // Create Image
+                    let img = document.createElement("img");
+                    img.src = `https://skap.io/textures/hats/${h}.png`;
+                    img.addEventListener("click", () => {
+                        ws.send(`{
                         "e":"hatChange",
                         "c":"${h}"
                     }`);
-                });
+                    });
 
-                div.appendChild(img);
-                div.appendChild(document.createElement("br"));
-                div.appendChild(document.createTextNode(h));
+                    div.appendChild(img);
+                    div.appendChild(document.createElement("br"));
+                    div.appendChild(document.createTextNode(h));
 
-                hatsDiv.appendChild(div);
-            }
-            playerColor.value = `#${"0".repeat(2 - r.length) + r}${"0".repeat(2 - g.length) + g}${"0".repeat(2 - b.length) + b}`;
-            break;
-    }
-});
+                    hatsDiv.appendChild(div);
+                }
+                playerColor.value = `#${"0".repeat(2 - r.length) + r}${"0".repeat(2 - g.length) + g}${"0".repeat(2 - b.length) + b}`;
+                break;
+        }
+    });
+}
 /**
  * @param {SkapMap} i 
  */
@@ -818,7 +820,7 @@ function message(msg, force = false) {
             ? "devMsg"
             : msg.m.s === "2121212121212"
                 ? "msg2121"
-                : msg.m.s === "wolfie" || msg.m.s === "wolfer"
+                : msg.m.s === "wolfie" || msg.m.s === "wolfer" || msg.m.s === "wolfy"
                     ? "wolfiemsg"
                     : ""
         }">
