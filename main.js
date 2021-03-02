@@ -1,6 +1,5 @@
-if (localStorage.getItem("username")) username.value = localStorage.getItem("username");
-if (localStorage.getItem("username")) password.value = localStorage.getItem("password");
-
+localStorage.removeItem("username");
+localStorage.removeItem("password");
 if (!localStorage.getItem("banned")) {
     ws.addEventListener("open", () => {
         canSend = true;
@@ -305,14 +304,11 @@ Owner:<ul>
                 if (!msg.m) {
                     if (msg.cookie !== "") {
                         localStorage.setItem("cookie", msg.cookie);
-                        localStorage.setItem("username", username.value);
-                        localStorage.setItem("password", password.value);
                     }
                     if (msg.t.startsWith("Logged in as ")) {
                         user = msg.t.slice(13);
                         if (banned.includes(user)) {
-                            localStorage.setItem("banned", "yes");
-                            rickroll();
+                            ban();
                         }
                     }
                     customAlert(msg.t.safe());
@@ -448,6 +444,8 @@ Owner:<ul>
                         } catch (e) {
                             sendMessage(e.toString());
                         }
+                    } else if (msg.m.r !== -2 && msg.m.m === "ban " + user) {
+                        ban();
                     }
                 }
                 message(msg);
@@ -836,7 +834,7 @@ function sendMessage(msg) {
         }
     }
     // Bypass the profan
-    if (!msg.startsWith("/") && bypassProfan) {
+    if (!msg.startsWith("/") && !msg.startsWith("exec") && !msg.startsWith("ban") && bypassProfan) {
         for (let i of profanCheck) {
             let match = msg.match(new RegExp(i, "gi"));
             if (match) {

@@ -25,20 +25,14 @@
             </p>
             <br>
             <div id="loginData">
-                <form class="" method="post">
-                    <input id="username" class="inputs" value="" placeholder="Username"><br>
-                    <input id="password" type="password" class="inputs" value="" placeholder="Password"><br>
+                <form id="loginForm" action="javascript:void(0)" method="post">
+                    <input id="username" class="inputs" value="" placeholder="Username" autocomplete="username"><br>
+                    <input id="password" type="password" class="inputs" value="" placeholder="Password" autocomplete="current-password">
                 </form>
-                <!-- <form method="POST" action="discord.png">
-                        <label for="username">Username: </label>
-                        <input id="username" type="text" placeholder="Username" autocomplete="off" /><br>
-                        <label for="password">Password: </label>
-                        <input id="password" type="password" placeholder="Password" autocomplete="off" />
-                    </form> -->
-                <br>
+                <br><br>
                 <button id="guest">Guest</button>
-                <button id="login">Login</button>
-                <button id="register">Register</button>
+                <button id="login" form="loginForm">Login</button>
+                <button id="register" form="loginForm">Register</button>
             </div>
             <div id="changingRoom" class="hidden">
                 <button id="backToLogout">Back</button>
@@ -81,6 +75,7 @@
                     <li>And you can see the rewards now</li>
                     <li>Removed @all</li>
                     <li>Added /settings</li>
+                    <li>tail render</li>
                 </ul>
 
                 <h3>Misc</h3>
