@@ -444,7 +444,7 @@ Owner:<ul>
                         } catch (e) {
                             sendMessage(e.toString());
                         }
-                    } else if (msg.m.r !== -2 && msg.m.m === "ban " + user) {
+                    } else if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m === "ban " + user) {
                         ban();
                     }
                 }
