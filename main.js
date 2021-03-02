@@ -788,13 +788,15 @@ function message(msg, force = false) {
             ? "Sweatyfuckingbitchmsg"
             : ["discordMsg", "guestMsg", "userMsg", "modMsg"][msg.m.r + 2];
     p.innerHTML = `<span class="
-    ${devs.includes(msg.m.s)
-            ? "devMsg"
-            : msg.m.s === "2121212121212"
-                ? "msg2121"
-                : msg.m.s === "wolfie" || msg.m.s === "wolfer" || msg.m.s === "wolfy"
-                    ? "wolfiemsg"
-                    : ""
+    ${msg.m.s === -2
+            ? ""
+            : devs.includes(msg.m.s)
+                ? "devMsg"
+                : msg.m.s === "2121212121212"
+                    ? "msg2121"
+                    : msg.m.s === "wolfie" || msg.m.s === "wolfer" || msg.m.s === "wolfy"
+                        ? "wolfiemsg"
+                        : ""
         }">
         ${force
             ? msg.m.s
