@@ -486,6 +486,13 @@ function render(e) {
                 ctx.fill();
                 ctx.closePath();
                 break;
+            case "tail":
+                ctx.fillStyle = renderSettings.colors.tail;
+                ctx.beginPath();
+                ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
+                ctx.fill();
+                ctx.closePath();
+                break;
             case "shield":
                 ctx.lineWidth = camScale * obj.size.y * 2;
                 ctx.strokeStyle = renderSettings.colors.shield;

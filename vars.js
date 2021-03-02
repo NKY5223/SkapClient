@@ -77,6 +77,7 @@ let renderSettings = {
         blueFire: "#4040ff10",
         shield: "#383838e0",
         frost: "#00ffff40",
+        tail: "#d0a020e0",
         dash: "#00ffc0c0",
         shrink: "#b000ff",
         bombParticle: "#d0100010",
