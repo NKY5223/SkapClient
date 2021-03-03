@@ -9,6 +9,26 @@ for (let i in controls) {
     });
 }
 
+const debugInput = document.getElementById("debug");
+debugInput.checked = localStorage.getItem("debug");
+debugInput.addEventListener("input", () => {
+    if (debugInput.checked) {
+        localStorage.setItem("debug", "yes");
+    } else {
+        localStorage.removeItem("debug");
+    }
+});
+
+const overlayInput = document.getElementById("overlay");
+overlayInput.checked = localStorage.getItem("overlay");
+overlayInput.addEventListener("input", () => {
+    if (overlayInput.checked) {
+        localStorage.setItem("overlay", "yes");
+    } else {
+        localStorage.removeItem("overlay");
+    }
+});
+
 const unbanInput = document.getElementById("unbanInput");
 const unbanBtn = document.getElementById("unbanBtn");
 unbanBtn.addEventListener("click", () => {

@@ -577,10 +577,12 @@ Owner:<ul>
                         show(el);
                     }
                 }
-                customAlert("Gained power(s) " + msg.m.join(", "));
+                break;
+            case "reward":
+                customAlert("Gained power " + msg.m);
                 break;
             case "hatReward":
-                customAlert("Gained hat(s) " + msg.m.join(", "));
+                customAlert("Gained hat " + msg.m);
                 break;
             case "style":
                 let r = msg.c[0].toString(16);
@@ -857,6 +859,8 @@ function keys(key, value) {
             "value": ${value}
         }
     }`);
+    if (value) overlays[key].classList.add("overlayactive");
+    else overlays[key].classList.remove("overlayactive");
 }
 ws.addEventListener("close", () => {
     canSend = false;

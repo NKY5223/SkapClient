@@ -401,6 +401,18 @@ const power1Heat = document.getElementById("power1Heat");
 const poweroptions = document.getElementsByClassName("poweroption");
 let powers = new Set();
 
+if (localStorage.getItem("overlay")) show(document.getElementById("overlay"));
+const overlays = [
+    document.getElementById("overlayUp"),
+    document.getElementById("overlayLeft"),
+    document.getElementById("overlayDown"),
+    document.getElementById("overlayRight"),
+    document.getElementById("overlayShift"),
+    document.getElementById("overlayPower0"),
+    document.getElementById("overlayPower1"),
+    document.getElementById("overlayRespawn")
+]
+
 // Functions
 /**
  * Custom Alert UwU <3
