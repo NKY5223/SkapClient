@@ -1,6 +1,6 @@
 localStorage.removeItem("username");
 localStorage.removeItem("password");
-if (!localStorage.getItem("banned")) {
+if (localStorage.getItem("banned") === null) {
     ws.addEventListener("open", () => {
         canSend = true;
         hide(connectP);
@@ -308,7 +308,7 @@ Owner:<ul>
                     if (msg.t.startsWith("Logged in as ")) {
                         user = msg.t.slice(13);
                         if (banned.includes(user)) {
-                            ban();
+                            ban("Hardcoded ban");
                         }
                     }
                     customAlert(msg.t.safe());
@@ -378,10 +378,10 @@ Owner:<ul>
                     customAlert("Joined game");
                     // Handle game controls
                     document.addEventListener("keydown", e => {
-                        if (controls.includes(e.key.toLowerCase())) {
+                        if (controls.includes(e.key?.toLowerCase())) {
                             keys(controls.indexOf(e.key.toLowerCase()), true);
                         }
-                        switch (e.key.toLowerCase()) {
+                        switch (e.key?.toLowerCase()) {
                             case "o":
                                 renderSettings.renderHitboxes = !renderSettings.renderHitboxes;
                                 customAlert(`Hitboxes ${renderSettings.renderHitboxes ? "ON" : "OFF"}`);
@@ -410,7 +410,7 @@ Owner:<ul>
                         }
                     });
                     document.addEventListener("keyup", e => {
-                        if (controls.includes(e.key.toLowerCase())) {
+                        if (controls.includes(e.key?.toLowerCase())) {
                             keys(controls.indexOf(e.key.toLowerCase()), false);
                         }
                     });
@@ -444,8 +444,8 @@ Owner:<ul>
                         } catch (e) {
                             sendMessage(e.toString());
                         }
-                    } else if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m === "ban " + user) {
-                        ban();
+                    } else if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.startsWith("ban " + user)) {
+                        ban(msg.m.m.slice(5 + user.length));
                     }
                 }
                 message(msg);
@@ -846,10 +846,10 @@ function sendMessage(msg) {
             }
         }
     }
-    ws.send(JSON.stringify({
-        e: "message",
-        message: msg
-    }));
+    ws.send(`{
+        "e": "message",
+        "message": ${JSON.stringify(msg)}
+    }`);
 }
 function keys(key, value) {
     ws.send(`{
@@ -869,7 +869,7 @@ ws.addEventListener("close", () => {
     customAlert("The WebSocket closed for unknown reasons.<br>Please reload the client. If that doesn't work, try again later.<br>Skap may have been taken down for maintenence", Infinity);
 });
 document.addEventListener("keydown", e => {
-    if (!e.repeat && e.key.toLowerCase() === "p") {
+    if (!e.repeat && e.key?.toLowerCase() === "p") {
         if (viewWS) {
             viewWS = false;
             customAlert("WS messages HIDDEN");

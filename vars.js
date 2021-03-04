@@ -1,9 +1,9 @@
-function ban() {
-    localStorage.setItem("banned", "yes");
+function ban(reason = "") {
+    localStorage.setItem("banned", reason);
     location.reload();
 }
-if (localStorage.getItem("banned")) {
-    document.getElementById("connecting").innerHTML = "You are banned.";
+if (localStorage.getItem("banned") !== null) {
+    document.getElementById("connecting").innerHTML = `You are banned.<br><small>${localStorage.getItem("banned")}</small>`;
 }
 
 const ws = new WebSocket("wss://skap.io");
@@ -122,7 +122,7 @@ let renderSettings = {
         },
         hats: {
             none: {
-                offset: [0, 0],
+                offset: [0, -1.3],
                 size: [0, 0],
                 texture: loadImage('https://skap.io/textures/hats/none.png')
             },
@@ -137,7 +137,7 @@ let renderSettings = {
                 texture: loadImage('https://skap.io/textures/hats/topHat.png')
             },
             guest: {
-                offset: [0, 0],
+                offset: [0, -1.3],
                 size: [0, 0],
                 texture: loadImage('https://skap.io/textures/hats/none.png')
             },

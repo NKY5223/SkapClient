@@ -37,6 +37,13 @@ input {
     user-select: none;
 }
 
+#connecting {
+    text-align: center;
+}
+#connecting small {
+    font-size: x-small;
+}
+
 #alert {
     position: absolute;
     top: 20px;

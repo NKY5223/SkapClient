@@ -640,10 +640,23 @@ function render(e) {
             );
         }
         // Name
-        ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#202020";
-        ctx.fillText(p.name, 0, -camScale * (-hat.offset[1] + p.radius + 1));
+        ctx.fillStyle = died
+            ? freeze
+                ? renderSettings.colors.playerFreezeDead
+                : renderSettings.colors.playerDead
+            : freeze
+                ? renderSettings.colors.playerFreeze
+                : "#202020";
+        ctx.fillText(p.name, 0, camScale * hat.offset[1] * p.radius);
+        
         // fuelBar™️
-        ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#ffff40";
+        ctx.fillStyle = died
+            ? freeze
+                ? renderSettings.colors.playerFreezeDead
+                : renderSettings.colors.playerDead
+            : freeze
+                ? renderSettings.colors.playerFreeze
+                : "#ffff40";
         ctx.fillRect(-camScale * 5, camScale * (p.radius + 1), camScale * p.fuel, camScale * 2.5);
         ctx.strokeStyle = "#202020";
         ctx.lineWidth = camScale / 2;
