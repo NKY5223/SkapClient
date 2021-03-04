@@ -614,9 +614,21 @@ function render(e) {
         ctx.rotate(p.gravDir / 2 * Math.PI);
         ctx.beginPath();
         // Body
+        if (p.name === "NKY" && !died && !freeze)
+            ctx.drawImage(renderSettings.textures.NKY, -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
+
         ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
-        ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : fromColArr(p.color);
+        ctx.fillStyle = died
+            ? freeze
+                ? renderSettings.colors.playerFreezeDead
+                : renderSettings.colors.playerDead
+            : freeze
+                ? renderSettings.colors.playerFreeze
+                : p.name === "NKY"
+                    ? "#00000000"
+                    : fromColArr(p.color);
         ctx.fill();
+
         // Hat
         if (hat) {
             ctx.drawImage(
@@ -629,7 +641,7 @@ function render(e) {
         }
         // Name
         ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#202020";
-        ctx.fillText(p.name, 0, camScale * (-p.radius + hat.offset[0] * 1.5 - 0.5));
+        ctx.fillText(p.name, 0, -camScale * (-hat.offset[1] + p.radius + 1));
         // fuelBar™️
         ctx.fillStyle = died ? freeze ? renderSettings.colors.playerFreezeDead : renderSettings.colors.playerDead : freeze ? renderSettings.colors.playerFreeze : "#ffff40";
         ctx.fillRect(-camScale * 5, camScale * (p.radius + 1), camScale * p.fuel, camScale * 2.5);

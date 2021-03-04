@@ -86,38 +86,39 @@ let renderSettings = {
         refuel: "#ffff00c0"
     },
     textures: {
+        NKY: loadImage("NKY.png"),
         enemies: {
-            bouncer: loadImage("enemies/bouncer"),
-            megaBouncer: loadImage("enemies/megabouncer"),
-            freezer: loadImage("enemies/freezer"),
-            spike: loadImage("enemies/spike"),
-            normal: loadImage("enemies/normal"),
-            reverse: loadImage("enemies/reverse"),
-            rotating: loadImage("enemies/rotating"),
+            bouncer: loadImage("enemies/bouncer.svg"),
+            megaBouncer: loadImage("enemies/megabouncer.svg"),
+            freezer: loadImage("enemies/freezer.svg"),
+            spike: loadImage("enemies/spike.svg"),
+            normal: loadImage("enemies/normal.svg"),
+            reverse: loadImage("enemies/reverse.svg"),
+            rotating: loadImage("enemies/rotating.svg"),
             bomb: [
-                loadImage("enemies/bomb0"),
-                loadImage("enemies/bomb1")
+                loadImage("enemies/bomb0.svg"),
+                loadImage("enemies/bomb1.svg")
             ],
             contractor: [
-                loadImage("enemies/contractor0"),
-                loadImage("enemies/contractor1")
+                loadImage("enemies/contractor0.svg"),
+                loadImage("enemies/contractor1.svg")
             ],
-            taker: loadImage("enemies/taker"),
-            immune: loadImage("enemies/immune"),
-            monster: loadImage("enemies/monster"),
-            following: loadImage("enemies/following"),
-            stutter: loadImage("enemies/stutter"),
-            snekHead: loadImage("enemies/snekHead"),
-            snekBody: loadImage("enemies/snekBody"),
-            wavy: loadImage("enemies/wavy"),
-            shooter: loadImage("enemies/shooter"),
-            expander: loadImage("enemies/expander"),
-            gravityUp: loadImage("enemies/gravityUp"),
-            gravityDown: loadImage("enemies/gravityDown"),
-            gravityLeft: loadImage("enemies/gravityLeft"),
-            gravityRight: loadImage("enemies/gravityRight"),
+            taker: loadImage("enemies/taker.svg"),
+            immune: loadImage("enemies/immune.svg"),
+            monster: loadImage("enemies/monster.svg"),
+            following: loadImage("enemies/following.svg"),
+            stutter: loadImage("enemies/stutter.svg"),
+            snekHead: loadImage("enemies/snekHead.svg"),
+            snekBody: loadImage("enemies/snekBody.svg"),
+            wavy: loadImage("enemies/wavy.svg"),
+            shooter: loadImage("enemies/shooter.svg"),
+            expander: loadImage("enemies/expander.svg"),
+            gravityUp: loadImage("enemies/gravityUp.svg"),
+            gravityDown: loadImage("enemies/gravityDown.svg"),
+            gravityLeft: loadImage("enemies/gravityLeft.svg"),
+            gravityRight: loadImage("enemies/gravityRight.svg"),
 
-            none: loadImage("enemies/none")
+            none: loadImage("enemies/none.svg")
         },
         hats: {
             none: {
@@ -229,7 +230,7 @@ let renderSettings = {
             loadImage("https://skap.io/textures/powers/ghost.svg"),
             loadImage("https://skap.io/textures/powers/frost.svg"),
             loadImage("https://skap.io/textures/powers/shell.svg"),
-            loadImage("none"),
+            loadImage("none.svg"),
         ]
     }
 };
@@ -461,7 +462,7 @@ function show(el) {
  */
 function loadImage(src) {
     let image = new Image();
-    image.src = src.startsWith("http") ? src : `Textures/${src}.svg`;
+    image.src = src.startsWith("http") ? src : `Textures/${src}`;
     return image;
 }
 /**
