@@ -296,6 +296,16 @@ Owner:<ul>
             }
         });
     });
+    for (let i of exitPowerRewards) {
+        i.addEventListener("click", () => {
+            hide(i.parentNode);
+        });
+    }
+    for (let i of exitHatRewards) {
+        i.addEventListener("click", () => {
+            hide(i.parentNode);
+        });
+    }
     ws.addEventListener("message", e => {
         let msg = JSON.parse(e.data);
         if (viewWS && (!noUS || msg.e !== "updateStates")) wsDiv.innerHTML = e.data;
@@ -580,9 +590,11 @@ Owner:<ul>
                 break;
             case "reward":
                 customAlert("Gained power " + msg.m);
+                show(powerRewards[msg.m]);
                 break;
             case "hatReward":
                 customAlert("Gained hat " + msg.m);
+                show(hatRewards[msg.m]);
                 break;
             case "style":
                 let r = msg.c[0].toString(16);
@@ -794,9 +806,11 @@ function message(msg, force = false) {
                 ? "devMsg"
                 : msg.m.s === "2121212121212"
                     ? "msg2121"
-                    : msg.m.s === "wolfie" || msg.m.s === "wolfer" || msg.m.s === "wolfy"
+                    : ["wolfie", "wolfer", "wolfy"].includes(msg.m.s)
                         ? "wolfiemsg"
-                        : ""
+                        : ["OwO", "shrekismyson", "shrekismyson1", "shrekismyson2", "shrekismyson3", "shrekismyson4", "shrekismyson5", "shrexcellent", "shrekkamend", "shrektacular", "shrekingball", "shrekwashiss9z", "shrexpected", "shrexcited", "shrextreme", "shrekcepted", "fathershrek"].includes(msg.m.s)
+                            ? "shrekmsg"
+                            : ""
         }">
         ${force
             ? msg.m.s

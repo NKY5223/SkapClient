@@ -13,7 +13,6 @@
         <meta content="https://www.youtube.com/watch?v=dQw4w9WgXcQ" property="og:url">
         <meta content="https://nky5223.github.io/SkapClient/skap.ico" property="og:image">
         <meta content="#2080FF" name="theme-color">
-        <link type="application/json+oembed" href="data:application/json;base64,eyJwcm92aWRlcl9uYW1lIjoiTWFkZSBieSBOS1kifQ==">
     </head>
     <body>
         <h2 id="connecting">Connecting...</h2>
@@ -278,29 +277,35 @@
         <div id="gameDiv" class="hidden">
             <div id="UI">
                 <div id="playerList" class="noselect"></div>
+
                 <div id="fuelBarWrap">
                     <div id="fuelBarInner"></div>
                 </div>
+
                 <div id="chat">
                     <div id="chatContent"></div>
                     <input id="chatInput" placeholder="Say something...">
                 </div>
+
                 <div id="pos" class="hidden">
                     <p>pos: <span id="posX"></span>, <span id="posY"></span></p>
                     <p>vel: <span id="vel"></span> (<span id="velX"></span>, <span id="velY"></span>)</p>
                     <P>maxVel: <span id="maxVel"></span></P>
                     <p>aim: <span id="aimX"></span>, <span id="aimY"></span></p>
                 </div>
+
                 <div id="lastUpdateDiv" class="hidden">
                     <span id="lastUpdateDisplay" class="noselect">0</span>ms since last update<br>
                     (<span id="minMaxUpdateDisplay" class="noselect">0 - 0</span>ms)<br>
                     <span id="FPS">0</span>fps
                 </div>
+
                 <h3 id="deathText" class="hidden noselect">
                     You are dead. Wait for someone to rescue you or press R to respawn.<br>
                     If you have perms, you can type /res in chat to rescue yourself.
                 </h3>
                 <h3 id="freezeText" class="hidden noselect">You are frozen. Note that you can still use powers.</h3>
+
                 <div id="overlay" class="hidden noselect">
                     <div class="overlaykeys" id="overlayShift">Shift</div>
                     <div class="overlaykeys" id="overlayUp">Up</div>
@@ -311,6 +316,132 @@
                     <div class="overlaypowers" id="overlayPower0">Power 1</div>
                     <div class="overlaypowers" id="overlayPower1">Power 2</div>
                 </div>
+
+                <!-- power rewards -->
+                <div class="reward powerreward hidden">
+                    <h3>Shrinker</h3>
+                    <img src="https://skap.io/textures/powers/shrinker.svg" alt="Shrinker" width="300" height="300" />
+                    <p>
+                        This is the shrinker power. It is usually the first power you get.<br>
+                        Using this power changes your height from 6 units to 4.5 units.
+                    </p>
+                    <button class="exitreward exitpowerreward">&times;</button>
+                </div>
+                <div class="reward powerreward hidden">
+                    <h3>Explosion</h3>
+                    <img src="https://skap.io/textures/powers/explosion.svg" alt="Explosion" width="300" height="300" />
+                    <p>
+                        The explosion power destroys all enemies in a 100 unit radius.
+                    </p>
+                    <button class="exitreward exitpowerreward">&times;</button>
+                </div>
+                <div class="reward powerreward hidden">
+                    <h3>Build</h3>
+                    <img src="https://skap.io/textures/powers/build.svg" alt="Build" width="300" height="300" />
+                    <p>
+                        This power places a 36 unit x 7 unit box beneath you.
+                    </p>
+                    <button class="exitreward exitpowerreward">&times;</button>
+                </div>
+                <div class="reward powerreward hidden">
+                    <h3>Meteor (fireball)</h3>
+                    <img src="https://skap.io/textures/powers/meteor.svg" alt="Meteor" width="300" height="300" />
+                    <p>
+                        When used, a meteor spawns in the direction of your cursor.
+                    </p>
+                    <button class="exitreward exitpowerreward">&times;</button>
+                </div>
+                <div class="reward powerreward hidden">
+                    <h3>Refuel (fuel)</h3>
+                    <img src="https://skap.io/textures/powers/refuel.svg" alt="Refuel" width="300" height="300" />
+                    <p>
+                        Fills up your fuel bar.
+                    </p>
+                    <button class="exitreward exitpowerreward">&times;</button>
+                </div>
+                <div class="reward powerreward hidden">
+                    <h3>Feather (formerly Moon)</h3>
+                    <img src="https://skap.io/textures/powers/feather.svg" alt="Feather" width="300" height="300" />
+                    <p>
+                        Cuts gravity in half.
+                    </p>
+                    <button class="exitreward exitpowerreward">&times;</button>
+                </div>
+                <div class="reward powerreward hidden">
+                    <h3>Shield</h3>
+                    <img src="https://skap.io/textures/powers/shield.svg" alt="Shield" width="300" height="300" />
+                    <p>
+                        Spawns a shield that moves with you and deflects enemies.<br>
+                        Control with cursor.
+                    </p>
+                    <button class="exitreward exitpowerreward">&times;</button>
+                </div>
+                <div class="reward powerreward hidden">
+                    <h3>Dash (Boost)</h3>
+                    <img src="https://skap.io/textures/powers/dash.svg" alt="Dash" width="300" height="300" />
+                    <p>
+                        Moves you in a certain direction. Fast.<br>
+                        Also makes you invinicble to enemies while dashing.
+                    </p>
+                    <button class="exitreward exitpowerreward">&times;</button>
+                </div>
+                <div class="reward powerreward hidden">
+                    <h3>Lantern (Blue Fire)</h3>
+                    <img src="https://skap.io/textures/powers/lantern.svg" alt="Lantern" width="300" height="300" />
+                    <p>
+                        Makes a path behind you that shrinks enemies.<br>
+                        The path despawns after a while.
+                    </p>
+                    <button class="exitreward exitpowerreward">&times;</button>
+                </div>
+                <div class="reward powerreward hidden">
+                    <h3>Ghost</h3>
+                    <img src="https://skap.io/textures/powers/ghost.svg" alt="Lantern" width="300" height="300" />
+                    <p>
+                        Can rescue players. If used while dead, the slot becomes unusable.
+                    </p>
+                    <button class="exitreward exitpowerreward">&times;</button>
+                </div>
+                <div class="reward powerreward hidden">
+                    <h3>Frost</h3>
+                    <img src="https://skap.io/textures/powers/frost.svg" alt="Frost" width="300" height="300" />
+                    <p>
+                        Creates a circle that slows down enemies.
+                    </p>
+                    <button class="exitreward exitpowerreward">&times;</button>
+                </div>
+                <div class="reward powerreward hidden">
+                    <h3>Shell (Tail)</h3>
+                    <img src="https://skap.io/textures/powers/shell.svg" alt="Shell" width="300" height="300" />
+                    <p>
+                        Spawns a tail that follows you. Acts as a mini-meteor.
+                    </p>
+                    <button class="exitreward exitpowerreward">&times;</button>
+                </div>
+                <!-- reward hats -->
+                <div class="reward hidden" id="militaryHat">
+                    <h3>Military Hat</h3>
+                    <img src="https://skap.io/textures/hats/militaryHat.png" alt="militaryHat" width="300" height="300" />
+                    <button class="exitreward exithatreward">&times;</button>
+                </div>
+                <div class="reward hidden" id="santa">
+                    <h3>Santa Hat</h3>
+                    <img src="https://skap.io/textures/hats/santa.png" alt="santa" width="300" height="300" />
+                    <button class="exitreward exithatreward">&times;</button>
+                </div>
+
+                <div class="reward hidden" id="crown">
+                    <h3>Crown</h3>
+                    <img src="https://skap.io/textures/hats/crown.png" alt="crown" width="300" height="300" />
+                    <button class="exitreward exithatreward">&times;</button>
+                </div>
+
+                <div class="reward hidden" id="santa">
+                    <h3>Party Hat</h3>
+                    <img src="https://skap.io/textures/hats/party.png" alt="party" width="300" height="300" />
+                    <button class="exitreward exithatreward">&times;</button>
+                </div>
+
                 <div id="power0" class="power">
                     <div id="power0CD" class="coolDown"></div>
                     <div id="power0Heat" class="heat"></div>

@@ -412,7 +412,17 @@ const overlays = [
     document.getElementById("overlayPower0"),
     document.getElementById("overlayPower1"),
     document.getElementById("overlayRespawn")
-]
+];
+
+const powerRewards = document.getElementsByClassName("powerreward");
+const exitPowerRewards = document.getElementsByClassName("exitpowerreward");
+const hatRewards = {
+    militaryHat: document.getElementById("militaryHat"),
+    santa: document.getElementById("santa"),
+    crown: document.getElementById("crown"),
+    party: document.getElementById("party")
+};
+const exitHatRewards = document.getElementsByClassName("exithatreward");
 
 // Functions
 /**
