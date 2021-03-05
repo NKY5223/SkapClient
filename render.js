@@ -135,7 +135,8 @@ function render(e) {
         Math.round(canvas.width / 2 - camScale * camX),
         Math.round(canvas.height / 2 - camScale * camY),
         Math.round(map.areaSize.x * camScale),
-        Math.round(map.areaSize.y * camScale));
+        Math.round(map.areaSize.y * camScale)
+    );
 
 
     if (!e) {
@@ -616,6 +617,8 @@ function render(e) {
         // Body
         if (p.name === "NKY" && !died && !freeze)
             ctx.drawImage(renderSettings.textures.NKY, -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
+        else if (p.name === "haha0201" && !died && !freeze)
+            ctx.drawImage(renderSettings.textures.idot, -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
 
         ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
         ctx.fillStyle = died
@@ -648,7 +651,7 @@ function render(e) {
                 ? renderSettings.colors.playerFreeze
                 : "#202020";
         ctx.fillText(p.name, 0, camScale * hat.offset[1] * p.radius);
-        
+
         // fuelBar™️
         ctx.fillStyle = died
             ? freeze
@@ -681,7 +684,7 @@ function render(e) {
     ctx.lineDashOffset = Math.round((time += 0.5) * camScale);
     ctx.lineWidth = Math.round(camScale);
     ctx.lineCap = "round";
-    for (let obj of map.objects.filter(obj => obj.type === "gravityZone")) {
+    for (let obj of parsedMap.gravityZone) {
         ctx.strokeStyle = renderSettings.colors.gravOutline[obj.dir];
         ctx.fillStyle = renderSettings.colors.gravFill[obj.dir];
         ctx.strokeRect(
@@ -733,7 +736,7 @@ function render(e) {
     ctx.font = camScale * 5 + "px Russo One, Verdana, Arial, Helvetica, sans-serif";
     ctx.strokeStyle = "#000000";
     ctx.setLineDash([]);
-    for (let obj of map.objects.filter(obj => obj.type === "text")) {
+    for (let obj of parsedMap.text) {
         ctx.strokeText(obj.text, canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
         ctx.fillStyle = "#ffffff";
         ctx.fillText(obj.text, canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));

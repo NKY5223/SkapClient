@@ -87,6 +87,7 @@ let renderSettings = {
     },
     textures: {
         NKY: loadImage("NKY.png"),
+        idot: loadImage("idot.png"),
         enemies: {
             bouncer: loadImage("enemies/bouncer.svg"),
             megaBouncer: loadImage("enemies/megabouncer.svg"),
@@ -258,6 +259,7 @@ let parsedMap = {
     text: [],
     turret: [],
     block1: [],
+    gravityZone: [],
     reward: [],
     hatReward: [],
     box: []

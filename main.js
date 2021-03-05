@@ -654,6 +654,7 @@ function initMap(i) {
     parsedMap.reward = [];
     parsedMap.hatReward = [];
     parsedMap.box = [];
+    parsedMap.gravityZone = [];
     parsedMap.block1 = [];
     for (let o of i.objects) {
         switch (o.type) {
@@ -669,6 +670,7 @@ function initMap(i) {
             case "box":
             case "turret":
             case "movingLava":
+            case "gravityZone":
                 parsedMap[o.type].push(o);
                 break;
             case "teleporter":
