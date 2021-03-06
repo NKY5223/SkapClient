@@ -87,7 +87,8 @@ let renderSettings = {
     },
     textures: {
         NKY: loadImage("NKY.png"),
-        idot: loadImage("idot.png"),
+        kinda_pro: loadImage("kinda_pro.png"),
+        zerotixpro: loadImage("zerotixpro.png"),
         enemies: {
             bouncer: loadImage("enemies/bouncer.svg"),
             megaBouncer: loadImage("enemies/megabouncer.svg"),

@@ -618,7 +618,9 @@ function render(e) {
         if (p.name === "NKY" && !died && !freeze)
             ctx.drawImage(renderSettings.textures.NKY, -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
         else if (p.name === "haha0201" && !died && !freeze)
-            ctx.drawImage(renderSettings.textures.idot, -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
+            ctx.drawImage(renderSettings.textures.kinda_pro, -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
+        else if (p.name === "ZeroTix" && !died && !freeze)
+            ctx.drawImage(renderSettings.textures.zerotixpro, -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
 
         ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
         ctx.fillStyle = died
@@ -627,7 +629,7 @@ function render(e) {
                 : renderSettings.colors.playerDead
             : freeze
                 ? renderSettings.colors.playerFreeze
-                : (p.name === "NKY" || p.name === "haha0201")
+                : (p.name === "NKY" || p.name === "haha0201" || p.name === "ZeroTix")
                     ? "#00000000"
                     : fromColArr(p.color);
         ctx.fill();
