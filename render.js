@@ -627,7 +627,7 @@ function render(e) {
                 : renderSettings.colors.playerDead
             : freeze
                 ? renderSettings.colors.playerFreeze
-                : p.name === "NKY"
+                : (p.name === "NKY" || p.name === "haha0201")
                     ? "#00000000"
                     : fromColArr(p.color);
         ctx.fill();
