@@ -605,7 +605,8 @@ function render(e) {
         let died = p.states.includes("Died");
         let freeze = p.states.includes("Freeze");
         // Initiate hat
-        let hat = null;
+        let hat = renderSettings.textures.hats.none;
+        if (RENDER_HAT) p.hat = RENDER_HAT;
         if (renderSettings.textures.hats.hasOwnProperty(p.hat)) {
             hat = renderSettings.textures.hats[p.hat];
         }
@@ -652,7 +653,7 @@ function render(e) {
             : freeze
                 ? renderSettings.colors.playerFreeze
                 : "#202020";
-        ctx.fillText(p.name, 0, camScale * hat.offset[1] * p.radius);
+        ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius);
 
         // fuelBar™️
         ctx.fillStyle = died

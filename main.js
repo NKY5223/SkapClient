@@ -820,7 +820,7 @@ function message(msg, force = false) {
         }:&nbsp;</span>
         ${force
             ? msg.m.m.replace(URLRegex, '<a href="$2" target="_blank">$2</a>')
-            : checkProfanityString(msg.m.m.safe().replace(URLRegex, '<a href="$2" target="_blank">$2</a>'))
+            : checkProfanityString(msg.m.m.replace(URLRegex, '<a href="$2" target="_blank">$2</a>').safe())
         }`;
     wrapper.appendChild(p);
     chat.appendChild(wrapper);
