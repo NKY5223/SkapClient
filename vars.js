@@ -86,9 +86,6 @@ let renderSettings = {
         refuel: "#ffff00c0"
     },
     textures: {
-        NKY: loadImage("NKY.png"),
-        kinda_pro: loadImage("kinda_pro.png"),
-        zerotixpro: loadImage("zerotixpro.png"),
         enemies: {
             bouncer: loadImage("enemies/bouncer.svg"),
             megaBouncer: loadImage("enemies/megabouncer.svg"),
@@ -252,7 +249,13 @@ let renderSettings = {
             loadImage("https://skap.io/textures/powers/frost.svg"),
             loadImage("https://skap.io/textures/powers/shell.svg"),
             loadImage("none.svg"),
-        ]
+        ],
+        skins: {
+            NKY: loadImage("skins/NKY.png"),
+            haha0201: loadImage("skins/kinda_pro.png"),
+            ZeroTix: loadImage("skins/zerotixpro.png"),
+            Sonicexe: loadImage("skins/beggar.png")
+        }
     }
 };
 

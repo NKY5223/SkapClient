@@ -616,13 +616,9 @@ function render(e) {
         ctx.rotate(p.gravDir / 2 * Math.PI);
         ctx.beginPath();
         // Body
-        if (p.name === "NKY" && !died && !freeze)
-            ctx.drawImage(renderSettings.textures.NKY, -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
-        else if (p.name === "haha0201" && !died && !freeze)
-            ctx.drawImage(renderSettings.textures.kinda_pro, -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
-        else if (p.name === "ZeroTix" && !died && !freeze)
-            ctx.drawImage(renderSettings.textures.zerotixpro, -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
-
+        if (renderSettings.textures.skins.hasOwnProperty(p.name) && !died && !freeze) {
+            ctx.drawImage(renderSettings.textures.skins.NKY, -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
+        }
         ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
         ctx.fillStyle = died
             ? freeze
@@ -630,7 +626,7 @@ function render(e) {
                 : renderSettings.colors.playerDead
             : freeze
                 ? renderSettings.colors.playerFreeze
-                : (p.name === "NKY" || p.name === "haha0201" || p.name === "ZeroTix")
+                : renderSettings.textures.skins.hasOwnProperty(p.name)
                     ? "#00000000"
                     : fromColArr(p.color);
         ctx.fill();
