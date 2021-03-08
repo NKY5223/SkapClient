@@ -617,7 +617,7 @@ function render(e) {
         ctx.beginPath();
         // Body
         if (renderSettings.textures.skins.hasOwnProperty(p.name) && !died && !freeze) {
-            ctx.drawImage(renderSettings.textures.skins.NKY, -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
+            ctx.drawImage(renderSettings.textures.skins[p.name], -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
         }
         ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
         ctx.fillStyle = died
