@@ -770,6 +770,10 @@ function initMap(i) {
     particles.dash = [];
     particles.shrink = [];
     particles.bomb = [];
+    particles.explosion = [];
+    particles.ghost = [];
+    particles.refuel = [];
+    particles.jetpack = [];
 }
 /**
  * 
