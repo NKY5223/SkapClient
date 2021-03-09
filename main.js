@@ -880,7 +880,7 @@ ws.addEventListener("close", () => {
     canSend = false;
     hide(gameDiv);
     document.title = "Disconnected";
-    customAlert("The WebSocket closed for unknown reasons.<br>Please reload the client. If that doesn't work, try again later.<br>Skap may have been taken down for maintenence", Infinity);
+    customAlert("The WebSocket closed for unknown reasons.<br>Please reload the client. If that doesn't work, try again later.<br>Skap may have been taken down for maintenance", Infinity);
 });
 document.addEventListener("keydown", e => {
     if (!e.repeat && e.key?.toLowerCase() === "p") {

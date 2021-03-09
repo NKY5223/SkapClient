@@ -138,4 +138,20 @@ function updateStates(m) {
                 break;
         }
     }
+    for (let id in m.players) {
+        let p = m.players[id];
+        if (p.states.includes("jetpack")) {
+            for (let i = 0; i < 5; i++) {
+                let dir = Math.random() * -Math.PI;
+                let s = Math.random() / 10 + 0.1;
+                particles.jetpack.push({
+                    x: p.pos.x,
+                    y: p.pos.y,
+                    vx: s * Math.cos(dir),
+                    vy: -s * Math.sin(dir),
+                    o: 1
+                });
+            }
+        }
+    }
 }

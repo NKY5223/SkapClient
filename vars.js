@@ -83,7 +83,8 @@ let renderSettings = {
         bombParticle: "#d0100010",
         explosion: "#00000008",
         ghostParticles: "#40a040c0",
-        refuel: "#ffff00c0"
+        refuel: "#ffff00c0",
+        jetpack: "#c0c0c040"
     },
     textures: {
         enemies: {
@@ -308,7 +309,8 @@ let particles = {
     bomb: [],
     explosion: [],
     ghost: [],
-    refuel: []
+    refuel: [],
+    jetpack: []
 };
 let bypassProfan = true;
 let mouse = { x: 0, y: 0 };

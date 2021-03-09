@@ -114,6 +114,11 @@ function render(e) {
         p.y += p.vy;
         return (p.o -= 0.05) > 0;
     });
+    particles.jetpack = particles.jetpack.filter(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        return (p.o -= 0.02) > 0;
+    });
     // Camera
     if (freeCam) {
         camX += camSpeed / camScale * (keysDown.has("arrowright") - keysDown.has("arrowleft"));
@@ -582,6 +587,11 @@ function render(e) {
         ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale, camScale, 0, 0, 7);
         ctx.globalAlpha = p.o;
         ctx.fill();
+    }
+    ctx.fillStyle = renderSettings.colors.jetpack;
+    for (let p of particles.jetpack) {
+        ctx.globalAlpha = p.o;
+        ctx.fillRect(canvas.width / 2 + camScale * (p.x - 2.5 - camX), canvas.height / 2 + camScale * (p.y - 1 - camY), 5 * camScale, 2 * camScale);
     }
 
     // Render turrets
