@@ -84,7 +84,7 @@ let renderSettings = {
         explosion: "#00000008",
         ghostParticles: "#40a040c0",
         refuel: "#ffff00c0",
-        jetpack: "#c0c0c040"
+        jetpack: "#c0c0c020"
     },
     textures: {
         enemies: {
