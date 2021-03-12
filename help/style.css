@@ -17,6 +17,19 @@ a {
     display: inline-block;
 }
 
+.power {
+    position: relative;
+    width: 600px;
+    border: 1px solid #606060;
+    padding: 5px 105px 5px 20px;
+}
+.power img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100px;
+}
+
 #tableofcontents {
     border: 2px solid #606060;
     background: #505050;
