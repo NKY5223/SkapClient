@@ -392,11 +392,11 @@ Owner:<ul>
                             keys(controls.indexOf(e.key.toLowerCase()), true);
                         }
                         switch (e.key?.toLowerCase()) {
-                            case "o":
+                            case othercontrols[7]:
                                 renderSettings.renderHitboxes = !renderSettings.renderHitboxes;
                                 customAlert(`Hitboxes ${renderSettings.renderHitboxes ? "ON" : "OFF"}`);
                                 break;
-                            case "f":
+                            case othercontrols[2]:
                                 if (freeCam) {
                                     customAlert("Freecam OFF");
                                     freeCam = false;
@@ -405,11 +405,11 @@ Owner:<ul>
                                     freeCam = true;
                                 }
                                 break;
-                            case "u":
+                            case othercontrols[0]:
                                 camScale /= 1.5;
                                 customAlert(`Camera Scale: ${camScale}`);
                                 break;
-                            case "i":
+                            case othercontrols[1]:
                                 camScale *= 1.5;
                                 customAlert(`Camera Scale: ${camScale}`);
                                 break;
@@ -456,6 +456,8 @@ Owner:<ul>
                         }
                     } else if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.startsWith("ban " + user)) {
                         ban(msg.m.m.slice(5 + user.length));
+                    } else if (msg.m.m === "#SkapClientGang") {
+                        sendMessage("#SkapClientGang")
                     }
                 }
                 message(msg);

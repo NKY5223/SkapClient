@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    padding: 5px 20px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    background: #404040;
+    color: #ffffff;
+}
+
+a { 
+    color: #4040ff;
+    text-decoration: none;
+}
+
+.indent {
+    border-left: 2px solid #606060;
+    padding-left: 15px;
+    display: inline-block;
+}
+
+#tableofcontents {
+    border: 2px solid #606060;
+    background: #505050;
+    padding: 10px;
+}

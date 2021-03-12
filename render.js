@@ -121,8 +121,8 @@ function render(e) {
     });
     // Camera
     if (freeCam) {
-        camX += camSpeed / camScale * (keysDown.has("arrowright") - keysDown.has("arrowleft"));
-        camY += camSpeed / camScale * (keysDown.has("arrowdown") - keysDown.has("arrowup"));
+        camX += camSpeed / camScale * (keysDown.has(othercontrols[6]) - keysDown.has(othercontrols[4]));
+        camY += camSpeed / camScale * (keysDown.has(othercontrols[5]) - keysDown.has(othercontrols[3]));
     }
 
     canvas.width = window.innerWidth;

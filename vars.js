@@ -297,9 +297,8 @@ let freeCam = false;
 
 let time = 0;
 
-let controls;
-if (localStorage.getItem("keys")) controls = localStorage.getItem("keys").split(" ");
-else controls = ["w", "a", "s", "d", "shift", "", "", "r"];
+const controls = (localStorage.getItem("controls") || "w a s d shift   r").split(" ");
+const othercontrols = (localStorage.getItem("othercontrols") || "u i f arrowup arrowleft arrowdown arrowright o").split(" ");
 
 let map = null;
 let data = null;

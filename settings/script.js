@@ -1,11 +1,20 @@
-const controls = (localStorage.getItem("keys") || "w a s d shift   r").split(" ");
+const controls = (localStorage.getItem("controls") || "w a s d shift   r").split(" ");
+const othercontrols = (localStorage.getItem("othercontrols") || "u i f arrowup arrowleft arrowdown arrowright o").split(" ");
 const controlInputs = document.getElementsByClassName("control");
+const othercontrolInputs = document.getElementsByClassName("othercontrol");
 
 for (let i in controls) {
     controlInputs[i].value = controls[i];
     controlInputs[i].addEventListener("input", () => {
         controls[i] = controlInputs[i].value.toLowerCase();
-        localStorage.setItem("keys", controls.join(" "));
+        localStorage.setItem("controls", controls.join(" "));
+    });
+}
+for (let i in othercontrols) {
+    othercontrolInputs[i].value = othercontrols[i];
+    othercontrolInputs[i].addEventListener("input", () => {
+        othercontrols[i] = othercontrolInputs[i].value.toLowerCase();
+        localStorage.setItem("othercontrols", othercontrols.join(" "));
     });
 }
 
