@@ -27,7 +27,8 @@ let renderSettings = {
         text: true,
         teleporter: true,
         block1: true,
-        hitbox: false
+        hitbox: false,
+        teleporterHitbox: false
     },
     colors: {
         obstacle: "#ffffff", // Is variable (shit) (no moar shit)
@@ -36,6 +37,7 @@ let renderSettings = {
         ice: "#00ffff",
         box: "#00000060",
         hitbox: "#ffff00c0",
+        teleporterHitbox: "#0000ffc0",
         gravOutline: [
             "#ffff00",
             "#ff0000",

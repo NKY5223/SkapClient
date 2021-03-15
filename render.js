@@ -753,10 +753,22 @@ function render(e) {
     }
     // Render hitboxes
     ctx.setLineDash([]);
-    if (renderSettings.renderHitboxes) {
+    if (renderSettings.render.hitbox) {
         ctx.lineWidth = 2;
         ctx.strokeStyle = renderSettings.colors.hitbox;
         for (let o of map.objects)
+            ctx.strokeRect(
+                Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
+                Math.round(camScale * o.size.x),
+                Math.round(camScale * o.size.y)
+            );
+    }
+    // Render teleporter hitboxes (for hidden ones)
+    if (renderSettings.render.teleporterHitbox) {
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = renderSettings.colors.teleporterHitbox;
+        for (let o of parsedMap.teleporter)
             ctx.strokeRect(
                 Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),

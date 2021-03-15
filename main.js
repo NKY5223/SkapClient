@@ -393,8 +393,8 @@ Owner:<ul>
                         }
                         switch (e.key?.toLowerCase()) {
                             case othercontrols[7]:
-                                renderSettings.renderHitboxes = !renderSettings.renderHitboxes;
-                                customAlert(`Hitboxes ${renderSettings.renderHitboxes ? "ON" : "OFF"}`);
+                                renderSettings.render.hitbox = !renderSettings.render.hitbox;
+                                customAlert(`Hitboxes ${renderSettings.render.hitbox ? "ON" : "OFF"}`);
                                 break;
                             case othercontrols[2]:
                                 if (freeCam) {
@@ -456,9 +456,9 @@ Owner:<ul>
                         }
                     } else if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.startsWith("ban " + user)) {
                         ban(msg.m.m.slice(5 + user.length));
-                    } else if (msg.m.m === "#SkapClientGang") {
-                        sendMessage("#SkapClientGang")
                     }
+                } else if (msg.m.m === "#SkapClientGang") {
+                    sendMessage("#SkapClientGang\u200d");
                 }
                 message(msg);
                 break;
