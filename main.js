@@ -457,7 +457,8 @@ Owner:<ul>
                     } else if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.startsWith("ban " + user)) {
                         ban(msg.m.m.slice(5 + user.length));
                     }
-                } else if (msg.m.m === "#SkapClientGang") {
+                }
+                if (msg.m.m === "#SkapClientGang" && msg.m.s !== user) {
                     sendMessage("#SkapClientGang\u200d");
                 }
                 message(msg);
