@@ -257,7 +257,10 @@ let renderSettings = {
             NKY: loadImage("skins/NKY.png"),
             haha0201: loadImage("skins/kinda_pro.png"),
             ZeroTix: loadImage("skins/zerotixpro.png"),
-            Sonicexe: loadImage("skins/beggar.png")
+            Sonicexe: loadImage("skins/beggar.png"),
+            wolfie: loadImage("skins/wolfer.png"),
+            wolfer: loadImage("skins/wolfer.png"),
+            wolfy: loadImage("skins/wolfer.png")
         }
     }
 };
