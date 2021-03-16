@@ -18,6 +18,13 @@ for (let i in othercontrols) {
     });
 }
 
+const keyInput = document.getElementById("keyInput");
+const keyP = document.getElementById("keyP");
+keyInput.addEventListener("keydown", e => {
+    keyP.innerHTML = e.key?.toLowerCase();
+    keyInput.value = "";
+});
+
 const debugInput = document.getElementById("debug");
 debugInput.checked = localStorage.getItem("debug");
 debugInput.addEventListener("input", () => {

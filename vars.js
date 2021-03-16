@@ -268,7 +268,7 @@ let renderSettings = {
 // Debug
 for (let img in renderSettings.textures.hats) {
     renderSettings.textures.hats[img].texture.onerror = () => {
-        console.log("ERROR AT", renderSettings.textures.hats[img].texture.src)
+        console.log("ERROR AT", renderSettings.textures.hats[img].texture.src);
     }
 }
 let RENDER_HAT = null;
