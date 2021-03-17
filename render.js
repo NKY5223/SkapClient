@@ -643,13 +643,23 @@ function render(e) {
 
         // Hat
         if (hat) {
-            ctx.drawImage(
-                hat.texture,
-                camScale * hat.offset[0] * p.radius,
-                camScale * hat.offset[1] * p.radius,
-                camScale * hat.size[0] * p.radius,
-                camScale * hat.size[1] * p.radius
-            );
+            if (p.name === "wolfie" || p.name === "wolfer" || p.name === "wolfy") {
+                ctx.drawImage(
+                    hat.texture,
+                    camScale * hat.offset[0] * p.radius / 2,
+                    camScale * hat.offset[1] * p.radius / 2,
+                    camScale * hat.size[0] * p.radius / 2,
+                    camScale * hat.size[1] * p.radius / 2
+                );
+            } else {
+                ctx.drawImage(
+                    hat.texture,
+                    camScale * hat.offset[0] * p.radius,
+                    camScale * hat.offset[1] * p.radius,
+                    camScale * hat.size[0] * p.radius,
+                    camScale * hat.size[1] * p.radius
+                );
+            }
         }
         // Name
         ctx.fillStyle = died
@@ -659,7 +669,11 @@ function render(e) {
             : freeze
                 ? renderSettings.colors.playerFreeze
                 : "#202020";
-        ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius);
+        if (p.name === "wolfie" || p.name === "wolfer" || p.name === "wolfy") {
+            ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius / 2);
+        } else {
+            ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius);
+        }
 
         // fuelBar™️
         ctx.fillStyle = died

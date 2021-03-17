@@ -1,14 +1,16 @@
 localStorage.removeItem("username");
 localStorage.removeItem("password");
+localStorage.removeItem("cookie");
 if (localStorage.getItem("banned") === null) {
     ws.addEventListener("open", () => {
         canSend = true;
         hide(connectP);
         show(loginDiv);
-        if (localStorage.getItem("cookie")) {
+        let sessionCookie = document.cookie.split(";").filter(cookie => cookie.startsWith("session="))[0];
+        if (sessionCookie) {
             ws.send(`{
             "e": "session",
-            "cookie": "${localStorage.getItem("cookie")}"
+            "cookie": "${sessionCookie.slice(8)}"
         }`);
         }
         username.addEventListener("keydown", e => {
@@ -313,7 +315,7 @@ Owner:<ul>
             case "result":
                 if (!msg.m) {
                     if (msg.cookie !== "") {
-                        localStorage.setItem("cookie", msg.cookie);
+                        document.cookie = "session=" + msg.cookie;
                     }
                     if (msg.t.startsWith("Logged in as ")) {
                         user = msg.t.slice(13);
