@@ -650,7 +650,7 @@ function render(e) {
 
         // Hat
         if (hat) {
-            if (!died && !freeze && skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
+            if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
                 ctx.drawImage(
                     hat.texture,
                     camScale * hat.offset[0] * p.radius * 0.55,
