@@ -855,7 +855,7 @@ function sendMessage(msg) {
     // Test for n-words and stuff
     for (let i of seriousProfanCheck) {
         if (msg.toLowerCase().match(new RegExp("(^|\\s)" + i, "gi"))) {
-            ban();
+            ban(`For attempting to say ${i[0] + "*".repeat(i.length - 1)} in chat`);
         }
     }
     // Bypass the profan
