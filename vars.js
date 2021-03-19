@@ -272,6 +272,7 @@ for (let img in renderSettings.textures.hats) {
     }
 }
 let RENDER_HAT = null;
+let RENDER_SKIN = null;
 
 let parsedMap = {
     background: "#ffffff",

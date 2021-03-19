@@ -620,36 +620,43 @@ function render(e) {
         if (renderSettings.textures.hats.hasOwnProperty(p.hat)) {
             hat = renderSettings.textures.hats[p.hat];
         }
+        // Skin?
+        let skin = p.name;
+        if (RENDER_SKIN) skin = RENDER_SKIN;
 
         ctx.save();
         ctx.translate(canvas.width / 2 + camScale * (p.pos.x - camX), canvas.height / 2 + camScale * (p.pos.y - camY));
         ctx.rotate(p.gravDir / 2 * Math.PI);
         ctx.beginPath();
         // Body
-        if (renderSettings.textures.skins.hasOwnProperty(p.name) && !died && !freeze) {
-            ctx.drawImage(renderSettings.textures.skins[p.name], -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
+        if (renderSettings.textures.skins.hasOwnProperty(skin) && !died && !freeze) {
+            ctx.drawImage(renderSettings.textures.skins[skin], -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
         }
-        ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
+        if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
+            ctx.ellipse(p.radius * -0.105 * camScale, p.radius * 0.4 * camScale, p.radius * 0.557 * camScale, p.radius * 0.55 * camScale, 0, 0, 7);
+        } else {
+            ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
+        }
         ctx.fillStyle = died
             ? freeze
                 ? renderSettings.colors.playerFreezeDead
                 : renderSettings.colors.playerDead
             : freeze
                 ? renderSettings.colors.playerFreeze
-                : renderSettings.textures.skins.hasOwnProperty(p.name)
+                : renderSettings.textures.skins.hasOwnProperty(skin)
                     ? "#00000000"
                     : fromColArr(p.color);
         ctx.fill();
 
         // Hat
         if (hat) {
-            if (p.name === "wolfie" || p.name === "wolfer" || p.name === "wolfy") {
+            if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
                 ctx.drawImage(
                     hat.texture,
-                    camScale * hat.offset[0] * p.radius / 2,
-                    camScale * hat.offset[1] * p.radius / 2,
-                    camScale * hat.size[0] * p.radius / 2,
-                    camScale * hat.size[1] * p.radius / 2
+                    camScale * hat.offset[0] * p.radius * 0.55,
+                    camScale * hat.offset[1] * p.radius * 0.55,
+                    camScale * hat.size[0] * p.radius * 0.5,
+                    camScale * hat.size[1] * p.radius * 0.5
                 );
             } else {
                 ctx.drawImage(
@@ -669,7 +676,7 @@ function render(e) {
             : freeze
                 ? renderSettings.colors.playerFreeze
                 : "#202020";
-        if (p.name === "wolfie" || p.name === "wolfer" || p.name === "wolfy") {
+        if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
             ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius / 2);
         } else {
             ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius);

@@ -6,11 +6,11 @@ if (localStorage.getItem("banned") === null) {
         canSend = true;
         hide(connectP);
         show(loginDiv);
-        let sessionCookie = document.cookie.split(";").filter(cookie => cookie.startsWith("session="))[0];
-        if (sessionCookie) {
+        let sessionCookie = document.cookie.split(";").filter(cookie => cookie.startsWith("session="));
+        if (sessionCookie.length) {
             ws.send(`{
             "e": "session",
-            "cookie": "${sessionCookie.slice(8)}"
+            "cookie": "${sessionCookie[0].slice(8)}"
         }`);
         }
         username.addEventListener("keydown", e => {
