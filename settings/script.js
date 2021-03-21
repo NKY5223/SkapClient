@@ -4,16 +4,16 @@ const controlInputs = document.getElementsByClassName("control");
 const othercontrolInputs = document.getElementsByClassName("othercontrol");
 
 for (let i in controls) {
-    controlInputs[i].value = controls[i];
-    controlInputs[i].addEventListener("input", () => {
-        controls[i] = controlInputs[i].value.toLowerCase();
+    controlInputs.item(i).value = controls[i];
+    controlInputs.item(i).addEventListener("input", () => {
+        controls.item(i) = controlInputs.item(i).value.toLowerCase();
         localStorage.setItem("controls", controls.join(" "));
     });
 }
 for (let i in othercontrols) {
-    othercontrolInputs[i].value = othercontrols[i];
-    othercontrolInputs[i].addEventListener("input", () => {
-        othercontrols[i] = othercontrolInputs[i].value.toLowerCase();
+    othercontrolInputs.item(i).value = othercontrols[i];
+    othercontrolInputs.item(i).addEventListener("input", () => {
+        othercontrols[i] = othercontrolInputs.item(i).value.toLowerCase();
         localStorage.setItem("othercontrols", othercontrols.join(" "));
     });
 }
@@ -53,3 +53,18 @@ unbanBtn.addEventListener("click", () => {
         alert("Unbanned. Now don't get banned again.");
     }
 });
+
+const powerKeybinds = document.getElementsByClassName("powerkeybind");
+const powerPresets = document.getElementsByClassName("powerpreset");
+for (let i = 0; i < powerPresets.length; i++) {
+    const powerPreset = powerPresets.item(i);
+    const powerKeybind = powerKeybinds.item(i);
+    powerPreset.value = localStorage.getItem(powerPreset.id);
+    powerKeybind.value = localStorage.getItem(powerKeybind.id);
+    powerKeybind.addEventListener("input", () => {
+        localStorage.setItem(powerKeybind.id, powerKeybind.value);
+    });
+    powerPreset.addEventListener("input", () => {
+        localStorage.setItem(powerPreset.id, powerPreset.value);
+    });
+}

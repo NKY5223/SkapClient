@@ -415,6 +415,27 @@ Owner:<ul>
                                 camScale *= 1.5;
                                 customAlert(`Camera Scale: ${camScale}`);
                                 break;
+                            case localStorage.getItem("powerkeybind0"):
+                                let powerpreset0 = localStorage.getItem("powerpreset0").split(",");
+                                power0.value = powerpreset0[0];
+                                power1.value = powerpreset0[1];
+                                ws.send(`{"e":"powerChange","m":0,"i":${powerpreset0[0]}}`);
+                                ws.send(`{"e":"powerChange","m":1,"i":${powerpreset0[1]}}`);
+                                break;
+                            case localStorage.getItem("powerkeybind1"):
+                                let powerpreset1 = localStorage.getItem("powerpreset1").split(",");
+                                power0.value = powerpreset1[0];
+                                power1.value = powerpreset1[1];
+                                ws.send(`{"e":"powerChange","m":0,"i":${powerpreset1[0]}}`);
+                                ws.send(`{"e":"powerChange","m":1,"i":${powerpreset1[1]}}`);
+                                break;
+                            case localStorage.getItem("powerkeybind2"):
+                                let powerpreset2 = localStorage.getItem("powerpreset2").split(",");
+                                power0.value = powerpreset2[0];
+                                power1.value = powerpreset2[1];
+                                ws.send(`{"e":"powerChange","m":0,"i":${powerpreset2[0]}}`);
+                                ws.send(`{"e":"powerChange","m":1,"i":${powerpreset2[1]}}`);
+                                break;
                             case "enter":
                             case "/":
                                 chatInput.focus();
