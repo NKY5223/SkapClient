@@ -50,5 +50,6 @@ const unbanBtn = document.getElementById("unbanBtn");
 unbanBtn.addEventListener("click", () => {
     if (unbanInput.value === btoa(60000 * Math.floor(Date.now() / 60000) + "8756rftg8uretfiy")) {
         localStorage.removeItem("banned");
+        alert("Unbanned. Now don't get banned again.");
     }
 });
