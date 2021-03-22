@@ -393,7 +393,7 @@ Owner:<ul>
                         if (controls.includes(e.key?.toLowerCase())) {
                             keys(controls.indexOf(e.key.toLowerCase()), true);
                         }
-                        switch (e.key?.toLowerCase()) {
+                        if (!e.ctrlKey) switch (e.key?.toLowerCase()) {
                             case othercontrols[7]:
                                 renderSettings.render.hitbox = !renderSettings.render.hitbox;
                                 customAlert(`Hitboxes ${renderSettings.render.hitbox ? "ON" : "OFF"}`);
