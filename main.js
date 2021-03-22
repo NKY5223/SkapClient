@@ -849,8 +849,8 @@ function message(msg, force = false) {
             : checkProfanityString(msg.m.s.safe())
         }:&nbsp;</span>
         ${force
-            ? msg.m.m.replace(URLRegex, '<a href="$1" target="_blank">$1</a>')
-            : checkProfanityString(msg.m.m.safe().replace(URLRegex, '<a href="$1" target="_blank">$1</a>'))
+            ? msg.m.m.replace(URLRegex, '<a href="$1" target="_blank">$1</a>').replace(EmailRegex, '<a href="mailto:$1" target="_blank">$1</a>')
+            : checkProfanityString(msg.m.m.safe().replace(URLRegex, '<a href="$1" target="_blank">$1</a>').replace(EmailRegex, '<a href="mailto:$1" target="_blank">$1</a>'))
         }`;
     wrapper.appendChild(p);
     chat.appendChild(wrapper);
