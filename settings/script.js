@@ -6,7 +6,7 @@ const othercontrolInputs = document.getElementsByClassName("othercontrol");
 for (let i in controls) {
     controlInputs.item(i).value = controls[i];
     controlInputs.item(i).addEventListener("input", () => {
-        controls.item(i) = controlInputs.item(i).value.toLowerCase();
+        controls[i] = controlInputs.item(i).value.toLowerCase();
         localStorage.setItem("controls", controls.join(" "));
     });
 }
