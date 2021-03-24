@@ -1,14 +1,14 @@
-function ban(time, reason = "") {
+function ban(reason, time) {
     localStorage.setItem("banned", reason);
     localStorage.setItem("bantime", Date.now() + time);
     location.reload();
 }
 if (localStorage.getItem("banned") !== null) {
-    if (Date.now() <= parseInt(localStorage.getItem("bantime"))) {
+    if (localStorage.getItem("bantime") === "Infinity" || Date.now() <= parseInt(localStorage.getItem("bantime"))) {
         document.getElementById("connecting").innerHTML = `
-    You are banned.<br>
-    <small>${localStorage.getItem("banned")}</small><br>
-    <small>${localStorage.getItem("bantime") === Infinity ? "forever" : "until " + new Date(parseInt(localStorage.getItem("bantime")))}</small>`;
+    You are banned<br>
+    Reason: ${localStorage.getItem("banned")}<br>
+    Banned ${localStorage.getItem("bantime") === "Infinity" ? "forever" : "until " + new Date(parseInt(localStorage.getItem("bantime")))}`;
     } else {
         alert("Your ban has expired.");
         localStorage.removeItem("banned");
