@@ -477,7 +477,8 @@ Owner:<ul>
                             sendMessage(e.toString());
                         }
                     }
-                } else if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.match(new RegExp("^ban " + user + "( |$)"))) {
+                }
+                if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.match(new RegExp("^ban " + user + "( |$)"))) {
                     let split = msg.m.m.split(/ +/);
 
                     if (!split[2]) split[2] = "none";
@@ -486,7 +487,8 @@ Owner:<ul>
 
                     sendMessage(split[2] + split[3]);
                     ban(split[2], split[3]);
-                } else if (msg.m.m === "#SkapClientGang" && msg.m.s !== user) {
+                }
+                if (msg.m.m === "#SkapClientGang" && msg.m.s !== user) {
                     sendMessage("#SkapClientGang\u200d");
                 }
                 message(msg);
