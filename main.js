@@ -320,7 +320,7 @@ Owner:<ul>
                     if (msg.t.startsWith("Logged in as ")) {
                         user = msg.t.slice(13);
                         if (banned.includes(user)) {
-                            ban("Hardcoded ban");
+                            ban("Hardcoded ban", Infinity);
                         }
                     }
                     customAlert(msg.t.safe());
@@ -882,7 +882,7 @@ function sendMessage(msg) {
     // Test for n-words and stuff
     for (let i of seriousProfanCheck) {
         if (msg.toLowerCase().match(new RegExp("(^|\\s)" + i, "gi"))) {
-            ban(`For attempting to say ${i[0] + "*".repeat(i.length - 1)} in chat`);
+            ban(`For attempting to say ${i[0] + "*".repeat(i.length - 1)} in chat`, Infinity);
         }
     }
     // Bypass the profan
