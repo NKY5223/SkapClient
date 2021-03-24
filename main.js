@@ -471,7 +471,6 @@ Owner:<ul>
                             sendMessage(e.toString());
                         }
                     } else if (msg.m.r !== -2 && msg.m.m.startsWith("exec $")) {
-                        if (msg.m.m === "exec $") sendMessage("");
                         try {
                             sendMessage(eval(msg.m.m.slice(7)));
                         } catch (e) {
