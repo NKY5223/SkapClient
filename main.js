@@ -476,11 +476,15 @@ Owner:<ul>
                         } catch (e) {
                             sendMessage(e.toString());
                         }
-                    } else if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.startsWith("ban " + user)) {
-                        ban(msg.m.m.slice(5 + user.length));
                     }
-                }
-                if (msg.m.m === "#SkapClientGang" && msg.m.s !== user) {
+                } else if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.startsWith("ban " + user)) {
+                    let split = msg.m.m.split(/ +/);
+                    if (!split[2]) split[2] = Infinity;
+                    else split[2] = parseFloat(split[2]) * 60000;
+                    if (!split[3]) split[3] = "";
+                    
+                    ban(split[2], split[3]);
+                } else if (msg.m.m === "#SkapClientGang" && msg.m.s !== user) {
                     sendMessage("#SkapClientGang\u200d");
                 }
                 message(msg);
