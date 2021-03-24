@@ -479,11 +479,12 @@ Owner:<ul>
                     }
                 } else if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.match(new RegExp("^ban " + user + "( |$)"))) {
                     let split = msg.m.m.split(/ +/);
-                    
+
                     if (!split[2]) split[2] = "none";
                     if (!split[3] || isNaN(split[3])) split[3] = Infinity;
                     else split[3] = parseFloat(split[3]) * 60000;
 
+                    console.log(split[2], split[3]);
                     ban(split[2], split[3]);
                 } else if (msg.m.m === "#SkapClientGang" && msg.m.s !== user) {
                     sendMessage("#SkapClientGang\u200d");

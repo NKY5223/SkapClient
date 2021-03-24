@@ -18,7 +18,7 @@ if (localStorage.getItem("banned") !== null) {
 const ws = new WebSocket("wss://skap.io");
 const URLParams = new URLSearchParams(location.search);
 
-const version = "ban fix, github webhook on testo";
+const version = "debug ban";
 
 /**
  * @type {HTMLCanvasElement}
