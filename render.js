@@ -377,6 +377,16 @@ function render(e) {
             );
         }
     }
+    // Render images(0)
+    for (let obj of parsedMap.image0) {
+        ctx.drawImage(
+            obj.image,
+            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+            Math.round(camScale * obj.size.x),
+            Math.round(camScale * obj.size.y)
+        );
+    }
 
     // ENTITIES
     for (let obj of e.entities) {
@@ -708,6 +718,16 @@ function render(e) {
                 Math.round(camScale * obj.size.y)
             );
         }
+    }
+    // Render images(1)
+    for (let obj of parsedMap.image1) {
+        ctx.drawImage(
+            obj.image,
+            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+            Math.round(camScale * obj.size.x),
+            Math.round(camScale * obj.size.y)
+        );
     }
     // Render grav zones
     ctx.setLineDash([Math.round(2 * camScale), Math.round(6 * camScale)]);

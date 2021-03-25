@@ -18,7 +18,7 @@ if (localStorage.getItem("banned") !== null) {
 const ws = new WebSocket("wss://skap.io");
 const URLParams = new URLSearchParams(location.search);
 
-const version = "fixed ban";
+const version = "SKAPCLIENT.IMAGE";
 
 /**
  * @type {HTMLCanvasElement}
@@ -276,12 +276,6 @@ let renderSettings = {
     }
 };
 
-// Debug
-for (let img in renderSettings.textures.hats) {
-    renderSettings.textures.hats[img].texture.onerror = () => {
-        console.log("ERROR AT", renderSettings.textures.hats[img].texture.src);
-    }
-}
 let RENDER_HAT = null;
 let RENDER_SKIN = null;
 
@@ -304,7 +298,9 @@ let parsedMap = {
     gravityZone: [],
     reward: [],
     hatReward: [],
-    box: []
+    box: [],
+    image0: [],
+    image1: []
 };
 let camScale = 5;
 let camX = 0;
@@ -518,6 +514,9 @@ function show(el) {
 function loadImage(src) {
     let image = new Image();
     image.src = src.startsWith("http") ? src : `Textures/${src}`;
+    image.onerror = () => {
+        console.log("ERROR AT", image.src);
+    }
     return image;
 }
 /**

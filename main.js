@@ -681,6 +681,7 @@ function initMap(i) {
     parsedMap.switch = [];
     parsedMap.door = [];
     parsedMap.block0 = [];
+    parsedMap.image0 = [];
     parsedMap.text = [];
     parsedMap.turret = [];
     parsedMap.reward = [];
@@ -688,17 +689,21 @@ function initMap(i) {
     parsedMap.box = [];
     parsedMap.gravityZone = [];
     parsedMap.block1 = [];
+    parsedMap.image1 = [];
     for (let o of i.objects) {
         switch (o.type) {
             case "block":
                 o.color = fromColArr(o.color.concat(o.opacity));
-                parsedMap["block" + o.layer].push(o);
+                if (o.layer) {
+                    parsedMap.block1.push(o);
+                } else {
+                    parsedMap.block0.push(o);
+                }
                 break;
             case "obstacle":
             case "slime":
             case "ice":
             case "lava":
-            case "text":
             case "box":
             case "turret":
             case "movingLava":
@@ -764,6 +769,43 @@ function initMap(i) {
             case "hatReward":
                 o.image = (renderSettings.textures.hats[o.reward] || renderSettings.textures.hats.none).texture;
                 parsedMap.hatReward.push(o);
+                break;
+            case "text":
+                let split = o.text.split("|");
+                if (split[0] === "SKAPCLIENT.IMAGE") {
+                    if (split[6] === "true" || split[6] === "1") {
+                        parsedMap.image1.push({
+                            image: loadImage(split[1]),
+                            pos: {
+                                x: isNaN(split[2]) ? 0 : parseInt(split[2]),
+                                y: isNaN(split[3]) ? 0 : parseInt(split[3])
+                            },
+                            size: {
+                                x: isNaN(split[4]) ? 0 : parseInt(split[4]),
+                                y: isNaN(split[5]) ? 0 : parseInt(split[5])
+                            },
+                            layer: 1
+                        });
+                    } else {
+                        parsedMap.image0.push({
+                            image: loadImage(split[1]),
+                            pos: {
+                                x: isNaN(split[2]) ? 0 : parseInt(split[2]),
+                                y: isNaN(split[3]) ? 0 : parseInt(split[3])
+                            },
+                            size: {
+                                x: isNaN(split[4]) ? 0 : parseInt(split[4]),
+                                y: isNaN(split[5]) ? 0 : parseInt(split[5])
+                            },
+                            layer: 0
+                        });
+                    }
+                    if (split[7] === "true" || split[7] === "1") {
+                        parsedMap.text.push(o);
+                    }
+                } else {
+                    parsedMap.text.push(o);
+                }
                 break;
         }
     }

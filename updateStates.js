@@ -142,7 +142,7 @@ function updateStates(m) {
         let p = m.players[id];
         if (p.states.includes("jetpack")) {
             for (let i = 0; i < 5; i++) {
-                let dir = Math.random() * -Math.PI;
+                let dir = Math.random() * -Math.PI + Math.PI / 2 * p.gravDir;
                 let s = Math.random() / 10 + 0.1;
                 particles.jetpack.push({
                     x: p.pos.x,
