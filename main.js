@@ -22,7 +22,7 @@ if (localStorage.getItem("banned") === null) {
         });
         login.addEventListener("click", () => {
             getToken(token => {
-                ws.send(`{"e":"login","m":{"username":${JSON.stringify(username.value)},"password":${SHA256(username.value + password.value)}},"t":${JSON.stringify(token)}}`);
+                ws.send(`{"e":"login","m":{"username":${JSON.stringify(username.value)},"password":${JSON.stringify(SHA256(username.value + password.value))}},"t":${JSON.stringify(token)}}`);
             });
         });
         changingRoomBtn.addEventListener("click", () => {
