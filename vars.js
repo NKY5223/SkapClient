@@ -17,8 +17,16 @@ if (localStorage.getItem("banned") !== null) {
 
 const ws = new WebSocket("wss://skap.io");
 const URLParams = new URLSearchParams(location.search);
+const autojoinGameId = URLParams.get("gameId");
+const autojoinGameName = URLParams.get("gameName");
+const autojoinGamePassword = URLParams.get("gamePassword");
+if (URLParams.has("username")) {
+    username.value = URLParams.get("username");
+    password.value = URLParams.get("password") || "";
+}
+history.replaceState(location.protocol + "//" + location.host + location.pathname, "SkapClient");
 
-const version = "GAVE ZEROFIX EXEC PERMS";
+const version = "CUT SHITESPACE FROM WEBSOCKETS";
 
 /**
  * @type {HTMLCanvasElement}
