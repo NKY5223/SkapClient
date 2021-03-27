@@ -1,3 +1,10 @@
+// April Fools Ban
+const date = new Date();
+if (location.hostname !== "localhost" && date.getDate() === 1 && date.getMonth() === 4) {
+    ban("Happy April Fools!<br><small>(You've been April Fooled for 24 hours!)</small>", 86400000);
+}
+
+
 function ban(reason, time) {
     localStorage.setItem("banned", reason);
     localStorage.setItem("bantime", Date.now() + time);
@@ -24,9 +31,9 @@ if (URLParams.has("username")) {
     username.value = URLParams.get("username");
     password.value = URLParams.get("password") || "";
 }
-history.replaceState(null, "SkapCLient", location.protocol + "//" + location.host + location.pathname);
+history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "DIRECTIONAL JETPACK";
+const version = "APRIL FOOLS BAN";
 
 /**
  * @type {HTMLCanvasElement}
