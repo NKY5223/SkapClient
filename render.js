@@ -601,7 +601,7 @@ function render(e) {
     ctx.fillStyle = renderSettings.colors.jetpack;
     for (let p of particles.jetpack) {
         ctx.globalAlpha = p.o;
-        ctx.fillRect(canvas.width / 2 + camScale * (p.x - 2.5 - camX), canvas.height / 2 + camScale * (p.y - 1 - camY), 5 * camScale, 2 * camScale);
+        ctx.fillRect(canvas.width / 2 + camScale * (p.x - p.w / 2 - camX), canvas.height / 2 + camScale * (p.y - p.h / 2 - camY), p.w * camScale, p.h * camScale);
     }
 
     // Render turrets

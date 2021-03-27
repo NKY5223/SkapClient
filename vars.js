@@ -24,9 +24,9 @@ if (URLParams.has("username")) {
     username.value = URLParams.get("username");
     password.value = URLParams.get("password") || "";
 }
-history.replaceState(location.protocol + "//" + location.host + location.pathname, "SkapClient");
+history.replaceState(null, "SkapCLient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "CUT SHITESPACE FROM WEBSOCKETS";
+const version = "DIRECTIONAL JETPACK";
 
 /**
  * @type {HTMLCanvasElement}

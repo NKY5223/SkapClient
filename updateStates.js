@@ -147,8 +147,10 @@ function updateStates(m) {
                 particles.jetpack.push({
                     x: p.pos.x,
                     y: p.pos.y,
-                    vx: s * Math.cos(dir),
+                    vx: -s * Math.cos(dir),
                     vy: -s * Math.sin(dir),
+                    w: p.gravDir === 0 || p.gravDir === 2 ? 5 : 2,
+                    h: p.gravDir === 0 || p.gravDir === 2 ? 2 : 5,
                     o: 1
                 });
             }
