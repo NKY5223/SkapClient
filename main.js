@@ -463,9 +463,6 @@ Owner:<ul>
 
                     ban(split[2], split[3]);
                 }
-                if (msg.m.m === "#SkapClientGang" && msg.m.s !== user) {
-                    sendMessage("#SkapClientGang\u200d");
-                }
                 message(msg);
                 break;
             case "updateStates":
