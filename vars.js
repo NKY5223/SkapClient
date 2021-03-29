@@ -33,7 +33,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "APRIL FOOLS BAN";
+const version = "omg stop spamming #SkapClientGang";
 
 /**
  * @type {HTMLCanvasElement}
