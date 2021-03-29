@@ -882,6 +882,11 @@ function checkProfanityString(str) {
     for (let i of seriousProfanCheck) {
         str = str.replace(new RegExp(i, "gi"), "*".repeat(i.length));
     }
+    if (censor === "heavy") {
+        for (let i of profanCheck) {
+            str = str.replace(new RegExp(i, "gi"), "*".repeat(i.length));
+        }
+    }
     return str;
 }
 
@@ -895,17 +900,6 @@ function sendMessage(msg) {
     for (let i of seriousProfanCheck) {
         if (msg.toLowerCase().match(new RegExp("(^|\\s)" + i, "gi"))) {
             ban(`For attempting to say ${i[0] + "*".repeat(i.length - 1)} in chat`, Infinity);
-        }
-    }
-    // Bypass the profan
-    if (!msg.startsWith("/") && !msg.startsWith("exec") && !msg.startsWith("ban") && bypassProfan) {
-        for (let i of profanCheck) {
-            let match = msg.match(new RegExp(i, "gi"));
-            if (match) {
-                for (let m of match) {
-                    msg = msg.replace(m, m[0] + "\u200C" + m.slice(1));
-                }
-            }
         }
     }
     ws.send(`{"e":"message","message":${JSON.stringify(msg)}}`);

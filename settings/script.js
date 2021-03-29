@@ -68,3 +68,13 @@ for (let i = 0; i < powerPresets.length; i++) {
         localStorage.setItem(powerPreset.id, powerPreset.value);
     });
 }
+
+const censorInput = document.getElementById("censor");
+censorInput.checked = Boolean(localStorage.getItem("censor"));
+censorInput.addEventListener("input", () => {
+    if (censorInput.checked) {
+        localStorage.setItem("censor", "heavy");
+    } else {
+        localStorage.removeItem("censor");
+    }
+});
