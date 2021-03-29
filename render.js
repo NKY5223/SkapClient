@@ -497,6 +497,7 @@ function render(e) {
                 break;
             case "path":
                 ctx.fillStyle = renderSettings.colors.blueFire;
+                ctx.globalAlpha = 1;
                 ctx.beginPath();
                 ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
                 ctx.fill();
@@ -504,6 +505,7 @@ function render(e) {
                 break;
             case "tail":
                 ctx.fillStyle = renderSettings.colors.tail;
+                ctx.globalAlpha = 1;
                 ctx.beginPath();
                 ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
                 ctx.fill();
