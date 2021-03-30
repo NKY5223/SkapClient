@@ -31,5 +31,6 @@ root
  ├─ ping.mp3 - Ping sound
  ├─ discord.png - Discord Logo
  ├─ github.png - Github Logo
+ ├─ README.md - This very file
  └─ ClientTest.json - A SkapMap used to test entities (made by haha0201)
 ```
