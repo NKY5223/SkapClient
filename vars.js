@@ -1,10 +1,3 @@
-// April Fools Ban
-const date = new Date();
-if (location.hostname !== "localhost" && date.getDate() === 1 && date.getMonth() === 3) {
-    ban("Happy April Fools!<br><small>(You've been April Fooled for 24 hours!)</small>", 86400000);
-}
-
-
 function ban(reason, time) {
     localStorage.setItem("banned", reason);
     localStorage.setItem("bantime", Date.now() + time);
