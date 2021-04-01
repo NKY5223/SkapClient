@@ -5,7 +5,7 @@
 ## Files:
 
 ```yaml
-root
+master (root)
  ├─ index.html - The index HTML
  ├─ style.css - The CSS for index.html
  ├─ main.js - The main JS file, responsible for handling the WebSocket
@@ -32,5 +32,6 @@ root
  ├─ discord.png - Discord Logo
  ├─ github.png - Github Logo
  ├─ README.md - This very file
+ ├─ macros.doskey - Wait, wha-
  └─ ClientTest.json - A SkapMap used to test entities (made by haha0201)
 ```
