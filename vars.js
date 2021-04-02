@@ -26,7 +26,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "omg stop spamming #SkapClientGang";
+const version = "Error IMAGE URLs now get caught and remove the image, logging in console.";
 
 /**
  * @type {HTMLCanvasElement}

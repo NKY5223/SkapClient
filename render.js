@@ -378,14 +378,19 @@ function render(e) {
         }
     }
     // Render images(0)
-    for (let obj of parsedMap.image0) {
-        ctx.drawImage(
-            obj.image,
-            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
-            Math.round(camScale * obj.size.x),
-            Math.round(camScale * obj.size.y)
-        );
+    for (let i in parsedMap.image0) {
+        let obj = parsedMap.image0[i];
+        try {
+            ctx.drawImage(
+                obj.image,
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        } catch (err) {
+            console.error(parsedMap.image0.splice(i, 1)[0], err);
+        }
     }
 
     // ENTITIES
@@ -722,14 +727,19 @@ function render(e) {
         }
     }
     // Render images(1)
-    for (let obj of parsedMap.image1) {
-        ctx.drawImage(
-            obj.image,
-            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
-            Math.round(camScale * obj.size.x),
-            Math.round(camScale * obj.size.y)
-        );
+    for (let i in parsedMap.image1) {
+        let obj = parsedMap.image1[i];
+        try {
+            ctx.drawImage(
+                obj.image,
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        } catch (err) {
+            console.error(parsedMap.image1.splice(i, 1)[0], err);
+        }
     }
     // Render grav zones
     ctx.setLineDash([Math.round(2 * camScale), Math.round(6 * camScale)]);
@@ -788,11 +798,13 @@ function render(e) {
     ctx.font = camScale * 5 + "px Russo One, Verdana, Arial, Helvetica, sans-serif";
     ctx.strokeStyle = "#000000";
     ctx.setLineDash([]);
-    for (let obj of parsedMap.text) {
-        ctx.strokeText(obj.text, canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
-        ctx.fillStyle = "#ffffff";
-        ctx.fillText(obj.text, canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
-        ctx.fillStyle = "#000000";
+    if (renderSettings.render.text) {
+        for (let obj of parsedMap.text) {
+            ctx.strokeText(obj.text, canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
+            ctx.fillStyle = "#ffffff";
+            ctx.fillText(obj.text, canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
+            ctx.fillStyle = "#000000";
+        }
     }
     // Render hitboxes
     ctx.setLineDash([]);
