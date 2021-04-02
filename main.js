@@ -412,6 +412,20 @@ Owner:<ul>
                                 ws.send(`{"e":"powerChange","m":0,"i":${powerpreset2[0]}}`);
                                 ws.send(`{"e":"powerChange","m":1,"i":${powerpreset2[1]}}`);
                                 break;
+                            case localStorage.getItem("powerkeybind3"):
+                                let powerpreset3 = localStorage.getItem("powerpreset3").split(",");
+                                power0.value = powerpreset3[0];
+                                power1.value = powerpreset3[1];
+                                ws.send(`{"e":"powerChange","m":0,"i":${powerpreset3[0]}}`);
+                                ws.send(`{"e":"powerChange","m":1,"i":${powerpreset3[1]}}`);
+                                break;
+                            case localStorage.getItem("powerkeybind4"):
+                                let powerpreset4 = localStorage.getItem("powerpreset4").split(",");
+                                power0.value = powerpreset4[0];
+                                power1.value = powerpreset4[1];
+                                ws.send(`{"e":"powerChange","m":0,"i":${powerpreset4[0]}}`);
+                                ws.send(`{"e":"powerChange","m":1,"i":${powerpreset4[1]}}`);
+                                break;
                             case "enter":
                             case "/":
                                 chatInput.focus();
