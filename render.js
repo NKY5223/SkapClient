@@ -617,7 +617,7 @@ function render(e) {
     }
     for (let p of particles.trail) {
         ctx.globalAlpha = p.o;
-        ctx.drawImage(renderSettings.textures.trail, canvas.width / 2 + camScale * (p.x - 1 - camX), canvas.height / 2 + camScale * (p.y - 1 - camY), 2 * camScale, 2 * camScale);
+        ctx.drawImage(renderSettings.textures.trail, canvas.width / 2 + camScale * (p.x - 2.5 - camX), canvas.height / 2 + camScale * (p.y - 2.5 - camY), 5 * camScale, 5 * camScale);
     }
 
     // Render turrets

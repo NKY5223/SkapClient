@@ -163,7 +163,7 @@ function updateStates(m) {
                 y: p.pos.y + (p.radius - 1) * Math.sin(dir),
                 vx: s * Math.cos(dir),
                 vy: s * Math.sin(dir),
-                o: 0.5
+                o: 0.25
             });
         }
     }
