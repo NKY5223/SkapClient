@@ -280,7 +280,8 @@ let renderSettings = {
             wolfie: loadImage("skins/wolfer.png"),
             wolfer: loadImage("skins/wolfer.png"),
             wolfy: loadImage("skins/wolfer.png")
-        }
+        },
+        trail: loadImage(`https://skap.io/textures/particles/${["apple", "blackHeart", "greyPaw", "heart", "pinkPaw", "sparkles", "whitePaw"][Math.floor(Math.random() * 7)]}.png`)
     }
 };
 
@@ -330,7 +331,8 @@ let particles = {
     explosion: [],
     ghost: [],
     refuel: [],
-    jetpack: []
+    jetpack: [],
+    trail: []
 };
 let mouse = { x: 0, y: 0 };
 let user = "";

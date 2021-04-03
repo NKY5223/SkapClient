@@ -119,6 +119,11 @@ function render(e) {
         p.y += p.vy;
         return (p.o -= 0.02) > 0;
     });
+    particles.trail = particles.trail.filter(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        return (p.o -= 0.02) > 0;
+    });
     // Camera
     if (freeCam) {
         camX += camSpeed / camScale * (keysDown.has(othercontrols[6]) - keysDown.has(othercontrols[4]));
@@ -609,6 +614,10 @@ function render(e) {
     for (let p of particles.jetpack) {
         ctx.globalAlpha = p.o;
         ctx.fillRect(canvas.width / 2 + camScale * (p.x - p.w / 2 - camX), canvas.height / 2 + camScale * (p.y - p.h / 2 - camY), p.w * camScale, p.h * camScale);
+    }
+    for (let p of particles.trail) {
+        ctx.globalAlpha = p.o;
+        ctx.drawImage(renderSettings.textures.trail, canvas.width / 2 + camScale * (p.x - 1 - camX), canvas.height / 2 + camScale * (p.y - 1 - camY), 2 * camScale, 2 * camScale);
     }
 
     // Render turrets

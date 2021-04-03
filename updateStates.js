@@ -155,5 +155,16 @@ function updateStates(m) {
                 });
             }
         }
+        if (p.vel.x > 0.1 || p.vel.y > 0.1 && Math.random() < 0.5) {
+            let dir = Math.random() * Math.PI * 2;
+            let s = Math.random() / 20 + 0.05;
+            particles.trail.push({
+                x: p.pos.x + (p.radius - 1) * Math.cos(dir),
+                y: p.pos.y + (p.radius - 1) * Math.sin(dir),
+                vx: s * Math.cos(dir),
+                vy: s * Math.sin(dir),
+                o: 0.5
+            });
+        }
     }
 }
