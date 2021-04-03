@@ -26,7 +26,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "m o r e   p r e s e t s";
+const version = "trail particles (opaque)";
 
 /**
  * @type {HTMLCanvasElement}
