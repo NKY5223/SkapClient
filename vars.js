@@ -26,7 +26,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "trail particles (opaque)";
+const version = "particles only spawn if window in focus";
 
 /**
  * @type {HTMLCanvasElement}

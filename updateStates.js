@@ -66,105 +66,107 @@ function updateStates(m) {
     // Set entities... (totally not render)
     data = m;
     // Particles
-    for (let p of m.particles) {
-        switch (p.type) {
-            case "dash":
-                particles.dash.push({
-                    x: p.x,
-                    y: p.y,
-                    vx: -Math.cos(p.dir),
-                    vy: -Math.sin(p.dir),
-                    r: 5,
-                    o: 1
-                });
-                break;
-            case "shrinking":
-                for (let i = 0; i < 20; i++) {
-                    let dir = Math.random() * (Math.PI + 1) - 0.5;
-                    let s = Math.random() / 4 + 0.5;
-                    particles.shrink.push({
-                        r: 2,
+    if (document.hasFocus()) {
+        for (let p of m.particles) {
+            switch (p.type) {
+                case "dash":
+                    particles.dash.push({
                         x: p.x,
                         y: p.y,
-                        vx: s * Math.cos(dir),
-                        vy: -s * Math.sin(dir)
+                        vx: -Math.cos(p.dir),
+                        vy: -Math.sin(p.dir),
+                        r: 5,
+                        o: 1
                     });
-                }
-                break;
-            case "bombExplosion":
-                for (let i = 0; i < 100; i++) {
-                    let rStart = p.region * Math.random() / 2;
+                    break;
+                case "shrinking":
+                    for (let i = 0; i < 20; i++) {
+                        let dir = Math.random() * (Math.PI + 1) - 0.5;
+                        let s = Math.random() / 4 + 0.5;
+                        particles.shrink.push({
+                            r: 2,
+                            x: p.x,
+                            y: p.y,
+                            vx: s * Math.cos(dir),
+                            vy: -s * Math.sin(dir)
+                        });
+                    }
+                    break;
+                case "bombExplosion":
+                    for (let i = 0; i < 100; i++) {
+                        let rStart = p.region * Math.random() / 2;
+                        let dir = 2 * Math.PI * Math.random();
+                        particles.bomb.push({
+                            o: 1,
+                            x: p.x + rStart * Math.cos(dir),
+                            y: p.y + rStart * Math.sin(dir),
+                            vx: p.region * Math.cos(dir) / 50,
+                            vy: p.region * Math.sin(dir) / 50
+                        });
+                    }
+                    break;
+                case "explosion":
+                    particles.explosion.push({
+                        x: p.x,
+                        y: p.y,
+                        r: 0,
+                        o: 1
+                    });
+                    break;
+                case "healing":
                     let dir = 2 * Math.PI * Math.random();
-                    particles.bomb.push({
-                        o: 1,
-                        x: p.x + rStart * Math.cos(dir),
-                        y: p.y + rStart * Math.sin(dir),
-                        vx: p.region * Math.cos(dir) / 50,
-                        vy: p.region * Math.sin(dir) / 50
-                    });
-                }
-                break;
-            case "explosion":
-                particles.explosion.push({
-                    x: p.x,
-                    y: p.y,
-                    r: 0,
-                    o: 1
-                });
-                break;
-            case "healing":
-                let dir = 2 * Math.PI * Math.random();
-                particles.ghost.push({
-                    x: p.x,
-                    y: p.y,
-                    vx: Math.cos(dir) / 5,
-                    vy: Math.sin(dir) / 5,
-                    r: 1.5,
-                    o: 1
-                });
-                break;
-            case "refuel":
-                for (let i = 0; i < 20; i++) {
-                    let dir = Math.random() * 2 - Math.PI / 2 - 1;
-                    let s = Math.random() / 5 + 0.3;
-                    particles.refuel.push({
+                    particles.ghost.push({
                         x: p.x,
                         y: p.y,
-                        vx: s * Math.cos(dir),
+                        vx: Math.cos(dir) / 5,
+                        vy: Math.sin(dir) / 5,
+                        r: 1.5,
+                        o: 1
+                    });
+                    break;
+                case "refuel":
+                    for (let i = 0; i < 20; i++) {
+                        let dir = Math.random() * 2 - Math.PI / 2 - 1;
+                        let s = Math.random() / 5 + 0.3;
+                        particles.refuel.push({
+                            x: p.x,
+                            y: p.y,
+                            vx: s * Math.cos(dir),
+                            vy: -s * Math.sin(dir),
+                            o: 1
+                        });
+                    }
+                    break;
+            }
+        }
+        for (let id in m.players) {
+            let p = m.players[id];
+            if (p.states.includes("jetpack")) {
+                for (let i = 0; i < 5; i++) {
+                    let dir = Math.random() * -Math.PI + Math.PI / 2 * p.gravDir;
+                    let s = Math.random() / 10 + 0.1;
+                    particles.jetpack.push({
+                        x: p.pos.x,
+                        y: p.pos.y,
+                        vx: -s * Math.cos(dir),
                         vy: -s * Math.sin(dir),
+                        w: p.gravDir === 0 || p.gravDir === 2 ? 5 : 2,
+                        h: p.gravDir === 0 || p.gravDir === 2 ? 2 : 5,
                         o: 1
                     });
                 }
-                break;
-        }
-    }
-    for (let id in m.players) {
-        let p = m.players[id];
-        if (p.states.includes("jetpack")) {
-            for (let i = 0; i < 5; i++) {
-                let dir = Math.random() * -Math.PI + Math.PI / 2 * p.gravDir;
-                let s = Math.random() / 10 + 0.1;
-                particles.jetpack.push({
-                    x: p.pos.x,
-                    y: p.pos.y,
-                    vx: -s * Math.cos(dir),
-                    vy: -s * Math.sin(dir),
-                    w: p.gravDir === 0 || p.gravDir === 2 ? 5 : 2,
-                    h: p.gravDir === 0 || p.gravDir === 2 ? 2 : 5,
-                    o: 1
+            }
+            if (Math.abs(p.vel.x) > 5 || Math.abs(p.vel.y) > 5 && Math.random() < 0.1) {
+                let dir = Math.random() * Math.PI * 2;
+                let s = Math.random() / 20 + 0.05;
+                particles.trail.push({
+                    x: p.pos.x + (p.radius - 1) * Math.cos(dir),
+                    y: p.pos.y + (p.radius - 1) * Math.sin(dir),
+                    vx: s * Math.cos(dir),
+                    vy: s * Math.sin(dir),
+                    o: 0.75
                 });
             }
-        }
-        if (p.vel.x > 0.1 || p.vel.y > 0.1 && Math.random() < 0.5) {
-            let dir = Math.random() * Math.PI * 2;
-            let s = Math.random() / 20 + 0.05;
-            particles.trail.push({
-                x: p.pos.x + (p.radius - 1) * Math.cos(dir),
-                y: p.pos.y + (p.radius - 1) * Math.sin(dir),
-                vx: s * Math.cos(dir),
-                vy: s * Math.sin(dir),
-                o: 0.75
-            });
         }
     }
 }

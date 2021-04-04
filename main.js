@@ -832,6 +832,7 @@ function initMap(i) {
     particles.ghost = [];
     particles.refuel = [];
     particles.jetpack = [];
+    particles.trail = [];
 }
 /**
  * 
