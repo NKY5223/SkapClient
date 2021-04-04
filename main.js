@@ -875,7 +875,9 @@ function message(msg, force = false) {
                         ? "wolfiemsg"
                         : ["OwO", "shrekismyson", "shrekismyson1", "shrekismyson2", "shrekismyson3", "shrekismyson4", "shrekismyson5", "shrexcellent", "shrekkamend", "shrektacular", "shrekingball", "shrekwashiss9z", "shrexpected", "shrexcited", "shrextreme", "shrekcepted", "fathershrek"].includes(msg.m.s)
                             ? "shrekmsg"
-                            : ""
+                            : msg.m.s === "HalOfManage"
+                                ? "halmanageMsg"
+                                : ""
         }">
         ${force
             ? msg.m.s
