@@ -384,6 +384,10 @@ const emojiList = emoji === "0" ? {}
             heart: {
                 char: "❤️",
                 regex: /:heart:/gi
+            },
+            eyes: {
+                char: "👀",
+                regex: /:eyes:/gi
             }
         }
         : emoji === "2"
@@ -444,6 +448,10 @@ const emojiList = emoji === "0" ? {}
                 heart2: {
                     char: "❤️",
                     regex: /<3/gi
+                },
+                eyes: {
+                    char: "👀",
+                    regex: /:eyes:/gi
                 }
             } : {};
 
