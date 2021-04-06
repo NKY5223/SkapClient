@@ -382,7 +382,7 @@ const emojiList = emoji === "0" ? {}
                 regex: /:wolf:/gi
             },
             heart: {
-                char: "♥",
+                char: "❤️",
                 regex: /:heart:/gi
             }
         }
@@ -429,11 +429,11 @@ const emojiList = emoji === "0" ? {}
                     regex: /:wolf:/gi
                 },
                 heart: {
-                    char: "♥",
+                    char: "❤️",
                     regex: /:heart:/gi
                 },
                 heart2: {
-                    char: "♥",
+                    char: "❤️",
                     regex: /<3/gi
                 }
             } : {};
