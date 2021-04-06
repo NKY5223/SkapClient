@@ -392,6 +392,10 @@ const emojiList = emoji === "0" ? {}
                     char: "™️",
                     regex: /:tm:/gi
                 },
+                evil_smile: {
+                    char: "😈",
+                    regex: />:\)/gi
+                },
                 smile: {
                     char: "😊",
                     regex: /:smile:/gi
@@ -407,6 +411,10 @@ const emojiList = emoji === "0" ? {}
                 rage2: {
                     char: "😡",
                     regex: />:\(/gi
+                },
+                rage3: {
+                    char: "😡",
+                    regex: />:\C/gi
                 },
                 // Have top position over cry
                 cry: {
