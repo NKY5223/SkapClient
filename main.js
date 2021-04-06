@@ -912,12 +912,16 @@ function checkProfanityString(str) {
  */
 function sendMessage(msg) {
     msg = String(msg);
-    msg = msg.replace(/:tm:/g, "™️");
     // Test for n-words and stuff
     for (let i of seriousProfanCheck) {
         if (msg.toLowerCase().match(new RegExp("(^|\\s)" + i, "gi"))) {
             ban(`For attempting to say ${i[0] + "*".repeat(i.length - 1)} in chat`, Infinity);
         }
+    }
+    // emojis
+    for (let i in emojiList) {
+        let emoji = emojiList[i];
+        msg = msg.replace(emoji.regex, emoji.char);
     }
     ws.send(`{"e":"message","message":${JSON.stringify(msg)}}`);
 }

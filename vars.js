@@ -26,7 +26,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "particles only spawn if window in focus";
+const version = "emojis? emoji(ai)?";
 
 /**
  * @type {HTMLCanvasElement}
@@ -351,6 +351,92 @@ const censor = localStorage.getItem("censor");
 
 const URLRegex = /(https?:\/\/[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+((\/[A-z0-9-_]+)*)?(\.[a-z]+)*\/?(\?[A-z0-9\._\-;]+(=[A-z0-9\._\-%]+)?(&[A-z0-9\._\-;]+(=[A-z0-9\._\-%]+)?)*)?(#[A-z0-9\._\-]+(=[A-z0-9\._\-]+)?(&[A-z0-9\._\-]+(=[A-z0-9\._\-]+)?)*)?)/g;
 const EmailRegex = /([A-z0-9_!#$%&'*+/=?`{|}~^.-]+@([A-z0-9-]+(\.[A-z0-9-]+)))/;
+
+let emoji = localStorage.getItem("emoji");
+/** @type {Object<string, {char: string, regex: RegExp}>} */
+const emojiList = emoji === "0" ? {}
+    : emoji === "1"
+        ? {
+            tm: {
+                char: "™️",
+                regex: /:tm:/gi
+            },
+            smile: {
+                char: "😊",
+                regex: /:smile:/gi
+            },
+            cry: {
+                char: "😢",
+                regex: /:cry:/gi
+            },
+            sob: {
+                char: "😭",
+                regex: /:sob:/gi
+            },
+            rage: {
+                char: "😡",
+                regex: /:rage:/gi
+            },
+            wolf: {
+                char: "🐺",
+                regex: /:wolf:/gi
+            },
+            heart: {
+                char: "♥",
+                regex: /:heart:/gi
+            }
+        }
+        : emoji === "2"
+            ? {
+                tm: {
+                    char: "™️",
+                    regex: /:tm:/gi
+                },
+                smile: {
+                    char: "😊",
+                    regex: /:smile:/gi
+                },
+                smile2: {
+                    char: "😊",
+                    regex: /:\)/gi
+                },
+                cry: {
+                    char: "😢",
+                    regex: /:cry:/gi
+                },
+                cry2: {
+                    char: "😢",
+                    regex: /:\(/gi
+                },
+                sob: {
+                    char: "😭",
+                    regex: /:sob:/gi
+                },
+                sob2: {
+                    char: "😭",
+                    regex: /;\(/gi
+                },
+                rage: {
+                    char: "😡",
+                    regex: /:rage:/gi
+                },
+                rage2: {
+                    char: "😡",
+                    regex: />:\(/gi
+                },
+                wolf: {
+                    char: "🐺",
+                    regex: /:wolf:/gi
+                },
+                heart: {
+                    char: "♥",
+                    regex: /:heart:/gi
+                },
+                heart2: {
+                    char: "♥",
+                    regex: /<3/gi
+                }
+            } : {};
 
 let id = "";
 let canSend = false;

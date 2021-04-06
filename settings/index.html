@@ -33,16 +33,7 @@
         Freecam Down: <input type="text" class="othercontrol" /><br>
         Freecam Right: <input type="text" class="othercontrol" /><br>
         Toggle Hitboxes: <input type="text" class="othercontrol" /><br>
-        <hr><br>
-        What text do i put in those textboxes?<br>
-        <code>This is actually <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/">e.key</a></code>
-        <input type="text" placeholder="Type in me..." id="keyInput" /><br>
-        Put this in! >>> <span id="keyP"></span>
-        <hr><br>
-        <label for="debug">Debug Mode (fps, pos, vel etc.):</label><input type="checkbox" id="debug">
-        <hr><br>
-        <label for="overlay">Overlay:</label><input type="checkbox" id="overlay">
-        <hr><br>
+        <br>
         <p>
             Power Presets help you switch powers.
             Power Presets are in the format of <code>power1,power2</code>, where <code>power1</code> and <code>power2</code> is the id of the power (can be found in <a href="../help">help</a>)
@@ -52,9 +43,23 @@
         <label for="powerkeybind2">Keybind:</label><input type="text" id="powerkeybind2" class="powerkeybind"> <label for="powerpreset2">Power Preset 3:</label><input type="text" id="powerpreset2" class="powerpreset"><br>
         <label for="powerkeybind3">Keybind:</label><input type="text" id="powerkeybind3" class="powerkeybind"> <label for="powerpreset3">Power Preset 4:</label><input type="text" id="powerpreset3" class="powerpreset"><br>
         <label for="powerkeybind4">Keybind:</label><input type="text" id="powerkeybind4" class="powerkeybind"> <label for="powerpreset4">Power Preset 5:</label><input type="text" id="powerpreset4" class="powerpreset">
-        <hr><br>
+        <br><br><hr><br>
+        What text do i put in those textboxes?<br>
+        <code>This is actually <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/">e.key</a></code>
+        <input type="text" placeholder="Type in me..." id="keyInput" /><br>
+        Put this in! >>> <span id="keyP"></span>
+        <br><br><hr><br>
+        <label for="debug">Debug Mode (fps, pos, vel etc.):</label><input type="checkbox" id="debug">
+        <br><br>
+        <label for="overlay">Overlay:</label><input type="checkbox" id="overlay">
+        <br><br>
+        <h3>Emoji</h3>
+        <input type="radio" name="emoji" id="emoji0" /><label for="emoji0">No emoji conversion</label><br>
+        <input type="radio" name="emoji" id="emoji1" /><label for="emoji1">:smile: to 😊</label><br>
+        <input type="radio" name="emoji" id="emoji2" /><label for="emoji2">:) to 😊</label>
+        <br><br>
         <label for="censor">Heavy Censoring (block f***?)</label><input type="checkbox" id="censor">
-        <hr><br>
+        <br><br><hr><br>
         <input type="text" placeholder="Unban Key" id="unbanInput" /> <button id="unbanBtn">Unban Me!</button>
         <br><br><br><br>
         <script src="script.js"></script>

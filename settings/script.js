@@ -78,3 +78,32 @@ censorInput.addEventListener("input", () => {
         localStorage.removeItem("censor");
     }
 });
+
+const emoji0 = document.getElementById("emoji0");
+const emoji1 = document.getElementById("emoji1");
+const emoji2 = document.getElementById("emoji2");
+switch (localStorage.getItem("emoji")) {
+    case "0":
+        emoji0.checked = true;
+        break;
+    case "1":
+        emoji1.checked = true;
+        break;
+    case "2":
+        emoji2.checked = true;
+        break;
+    default:
+        emoji0.checked = true;
+        localStorage.setItem("emoji", "0");
+        break;
+}
+
+emoji0.addEventListener("input", () => {
+    localStorage.setItem("emoji", "0");
+});
+emoji1.addEventListener("input", () => {
+    localStorage.setItem("emoji", "1");
+});
+emoji2.addEventListener("input", () => {
+    localStorage.setItem("emoji", "2");
+});
