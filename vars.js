@@ -400,6 +400,15 @@ const emojiList = emoji === "0" ? {}
                     char: "😊",
                     regex: /:\)/gi
                 },
+                rage: {
+                    char: "😡",
+                    regex: /:rage:/gi
+                },
+                rage2: {
+                    char: "😡",
+                    regex: />:\(/gi
+                },
+                // Have top position over cry
                 cry: {
                     char: "😢",
                     regex: /:cry:/gi
@@ -415,14 +424,6 @@ const emojiList = emoji === "0" ? {}
                 sob2: {
                     char: "😭",
                     regex: /;\(/gi
-                },
-                rage: {
-                    char: "😡",
-                    regex: /:rage:/gi
-                },
-                rage2: {
-                    char: "😡",
-                    regex: />:\(/gi
                 },
                 wolf: {
                     char: "🐺",
