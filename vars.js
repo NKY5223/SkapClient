@@ -336,7 +336,7 @@ let particles = {
 };
 let mouse = { x: 0, y: 0 };
 let user = "";
-const ping = document.getElementById("ping");
+const mention = document.getElementById("mention");
 
 let chatFocus = false;
 let blocked = localStorage.getItem("blocked") ? localStorage.getItem("blocked").split(" ") : [];
@@ -454,6 +454,8 @@ const emojiList = emoji === "0" ? {}
                     regex: /:eyes:/gi
                 }
             } : {};
+
+let pingTime = 0;
 
 let id = "";
 let canSend = false;

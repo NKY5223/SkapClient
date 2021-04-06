@@ -477,6 +477,16 @@ Owner:<ul>
 
                     ban(split[2], split[3]);
                 }
+                if (msg.m.s === user && msg.m.m.toLowerCase() === "ping" && pingTime) {
+                    message({
+                        m: {
+                            s: "[CLIENT]",
+                            r: 0,
+                            m: `Pong! Round-trip took ${Date.now() - pingTime}ms`
+                        }
+                    });
+                    pingTime = 0;
+                }
                 message(msg);
                 break;
             case "updateStates":
@@ -854,7 +864,7 @@ function message(msg, force = false) {
         }, true);
         return;
     }
-    if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || /* msg.m.m.match(/@everyone(\s|$)/g) || msg.m.m.match(/@all(\s|$)/g) || */(msg.m.m.match(/@devs(\s|$)/g) && devs.includes(user))) ping.play();
+    if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || /* msg.m.m.match(/@everyone(\s|$)/g) || msg.m.m.match(/@all(\s|$)/g) || */(msg.m.m.match(/@devs(\s|$)/g) && devs.includes(user))) mention.play();
     let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
     let wrapper = document.createElement("div");
     wrapper.className = "wrapper";
@@ -922,6 +932,21 @@ function sendMessage(msg) {
     for (let i in emojiList) {
         let emoji = emojiList[i];
         msg = msg.replace(emoji.regex, emoji.char);
+    }
+    // ping
+    if (msg.toLowerCase() === "ping") {
+        if (pingTime) {
+            message({
+                m: {
+                    s: "[CLIENT]",
+                    r: 0,
+                    m: "Already pinged, please just wait."
+                }
+            });
+            return;
+        } else {
+            pingTime = Date.now();
+        }
     }
     ws.send(`{"e":"message","message":${JSON.stringify(msg)}}`);
 }
