@@ -275,7 +275,7 @@ Owner:<ul>
     }
     ws.addEventListener("message", e => {
         let msg = JSON.parse(e.data);
-        if (viewWS && (!noUS || msg.e !== "updateStates")) wsDiv.innerHTML = e.data;
+        // if (viewWS && (!noUS || msg.e !== "updateStates")) wsDiv.innerHTML = e.data;
         switch (msg.e) {
             case "result":
                 if (!msg.m) {
@@ -864,6 +864,10 @@ function message(msg, force = false) {
         }, true);
         return;
     }
+    // Chat bubbles
+    if (!showChat && !blocked.includes(msg.m.s)) {
+        chatMsgs[msg.m.s] = { m: checkProfanityString(msg.m.m), t: 300 };
+    }
     if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || /* msg.m.m.match(/@everyone(\s|$)/g) || msg.m.m.match(/@all(\s|$)/g) || */(msg.m.m.match(/@devs(\s|$)/g) && devs.includes(user))) mention.play();
     let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
     let wrapper = document.createElement("div");
@@ -900,6 +904,7 @@ function message(msg, force = false) {
     wrapper.appendChild(p);
     chat.appendChild(wrapper);
     if (scroll) p.scrollIntoView();
+
     return p;
 }
 /**
@@ -964,15 +969,15 @@ ws.addEventListener("close", () => {
 });
 document.addEventListener("keydown", e => {
     if (!e.repeat && e.key?.toLowerCase() === "p") {
-        if (viewWS) {
-            viewWS = false;
-            customAlert("WS messages HIDDEN");
-            hide(wsDiv);
+        if (showChat) {
+            showChat = false;
+            customAlert("Chat in bubble mode");
+            hide(chat);
         } else {
-            viewWS = true;
-            customAlert("WS messages SHOWN<br><small>Note: Is spammy</small>");
-            show(wsDiv);
+            showChat = true;
+            customAlert("Chat in div mode");
+            show(chat);
+            chat.lastElementChild.scrollIntoView();
         }
-        localStorage.setItem("viewWS", viewWS ? "on" : "");
     }
 });

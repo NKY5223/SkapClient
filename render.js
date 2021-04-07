@@ -635,7 +635,6 @@ function render(e) {
         ctx.restore();
     }
     // Render players
-    ctx.font = camScale * 2 + "px Tahoma, Verdana, Segoe, sans-serif";
     for (let i in e.players) {
         let p = e.players[i];
         let died = p.states.includes("Died");
@@ -643,7 +642,7 @@ function render(e) {
         // Initiate hat
         let hat = renderSettings.textures.hats.none;
         if (RENDER_HAT) p.hat = RENDER_HAT;
-        if (renderSettings.textures.hats.hasOwnProperty(p.hat)) {
+        if (p.hat in renderSettings.textures.hats) {
             hat = renderSettings.textures.hats[p.hat];
         }
         // Skin?
@@ -655,7 +654,7 @@ function render(e) {
         ctx.rotate(p.gravDir / 2 * Math.PI);
         ctx.beginPath();
         // Body
-        if (renderSettings.textures.skins.hasOwnProperty(skin) && !died && !freeze) {
+        if (skin in renderSettings.textures.skins && !died && !freeze) {
             ctx.drawImage(renderSettings.textures.skins[skin], -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
         }
         if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
@@ -669,7 +668,7 @@ function render(e) {
                 : renderSettings.colors.playerDead
             : freeze
                 ? renderSettings.colors.playerFreeze
-                : renderSettings.textures.skins.hasOwnProperty(skin)
+                : skin in renderSettings.textures.skins
                     ? "#00000000"
                     : fromColArr(p.color);
         ctx.fill();
@@ -695,6 +694,7 @@ function render(e) {
             }
         }
         // Name
+        ctx.font = camScale * 2 + "px Tahoma, Verdana, Segoe, sans-serif";
         ctx.fillStyle = died
             ? freeze
                 ? renderSettings.colors.playerFreezeDead
@@ -720,6 +720,27 @@ function render(e) {
         ctx.strokeStyle = "#202020";
         ctx.lineWidth = camScale / 2;
         ctx.strokeRect(-camScale * 5, camScale * (p.radius + 1), camScale * 10, camScale * 2.5);
+
+        // Messages
+        ctx.font = camScale * 4 + "px Tahoma, Verdana, Segoe, sans-serif";
+        if (p.name in chatMsgs) {
+            let msg = chatMsgs[p.name];
+            if (msg.t--) {
+                let metrics = ctx.measureText(msg.m);
+                // console.log(metrics);
+                ctx.fillStyle = "#ffffff80";
+                ctx.fillRect(
+                    -metrics.actualBoundingBoxLeft - camScale,
+                    -metrics.fontBoundingBoxAscent - camScale / 2 + camScale * hat.textOffset * (p.radius + 3),
+                    metrics.width + 2 * camScale,
+                    metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent + camScale
+                );
+                ctx.fillStyle = "#000000";
+                ctx.fillText(msg.m, 0, camScale * hat.textOffset * (p.radius + 3));
+            } else {
+                delete chatMsgs[p.name];
+            }
+        }
         ctx.restore();
     }
     // Render blocks(1)

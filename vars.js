@@ -26,7 +26,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "ping";
+const version = "Speech bubbles";
 
 /**
  * @type {HTMLCanvasElement}
@@ -340,7 +340,7 @@ const mention = document.getElementById("mention");
 
 let chatFocus = false;
 let blocked = localStorage.getItem("blocked") ? localStorage.getItem("blocked").split(" ") : [];
-let viewWS = Boolean(localStorage.getItem("viewWS"));
+
 let debug = Boolean(localStorage.getItem("debug"));
 let noUS = false;
 const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "ZeroFix"];
@@ -348,6 +348,9 @@ const banned = [];
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");
 const censor = localStorage.getItem("censor");
+let showChat = true;
+/** @type {Object<string, {t: number, m: string}>} */
+let chatMsgs = {};
 
 const URLRegex = /(https?:\/\/[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+((\/[A-z0-9-_]+)*)?(\.[a-z]+)*\/?(\?[A-z0-9\._\-;]+(=[A-z0-9\._\-%]+)?(&[A-z0-9\._\-;]+(=[A-z0-9\._\-%]+)?)*)?(#[A-z0-9\._\-]+(=[A-z0-9\._\-]+)?(&[A-z0-9\._\-]+(=[A-z0-9\._\-]+)?)*)?)/g;
 const EmailRegex = /([A-z0-9_!#$%&'*+/=?`{|}~^.-]+@([A-z0-9-]+(\.[A-z0-9-]+)))/;
@@ -474,10 +477,6 @@ const maxVelP = document.getElementById("maxVel");
 const wsDiv = document.getElementById("ws");
 const alertDiv = document.getElementById("alert");
 
-if (viewWS) {
-    customAlert("WS messages SHOWN<br><small>(Note: Is spammy)</small>");
-    show(wsDiv);
-} else hide(wsDiv);
 
 const connectP = document.getElementById("connecting");
 // Login
@@ -527,6 +526,7 @@ const uploadMap = document.getElementById("uploadMap");
 // GameDiv
 const gameDiv = document.getElementById("gameDiv");
 const playerList = document.getElementById("playerList");
+const chatDiv = document.getElementById("chat");
 const chat = document.getElementById("chatContent");
 const chatInput = document.getElementById("chatInput");
 const fuelBar = document.getElementById("fuelBarInner");
