@@ -894,7 +894,9 @@ function message(msg, force = false) {
                                 ? "halmanageMsg"
                                 : msg.m.s === "Whiz"
                                     ? "whizMsg"
-                                    : ""
+                                    : msg.m.s === "Frog"
+                                        ? "frogMsg"
+                                        : ""
         }">
         ${force
             ? msg.m.s

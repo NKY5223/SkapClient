@@ -494,6 +494,9 @@ canvas {
     background-clip: text;
     color: transparent;
 }
+.frogMsg {
+    color: #008000;
+}
 @keyframes slide { 
     0%{ background-position: 0% 0; }
     100%{ background-position: 100% 0; }
