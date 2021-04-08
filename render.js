@@ -69,19 +69,21 @@
  */
 
 /**
- * @param {Object} e
- * @param {Object} e.infos
- * @param {string} e.infos.id
- * @param {number} e.infos.fuel
- * @param {number | null} e.infos.oneCooldown
- * @param {number | null} e.infos.twoCooldown
- * @param {number} e.infos.oneHeat
- * @param {number} e.infos.twoHeat
- * @param {Object<string, Player>} e.players id:Player
- * @param {[string, string, boolean][]} e.playerList
- * @param {SkapEntity[]} e.entities
+ * @param {SkapMap} map
+ * 
+ * @param {Object} state
+ * @param {Object} state.infos
+ * @param {string} state.infos.id
+ * @param {number} state.infos.fuel
+ * @param {number | null} state.infos.oneCooldown
+ * @param {number | null} state.infos.twoCooldown
+ * @param {number} state.infos.oneHeat
+ * @param {number} state.infos.twoHeat
+ * @param {Object<string, Player>} state.players id:Player
+ * @param {[string, string, boolean][]} state.playerList
+ * @param {SkapEntity[]} state.entities
  */
-function render(e) {
+function render(parsedMap, map, state) {
     // Particles
     particles.dash = particles.dash.filter(p => {
         p.x += p.vx;
@@ -144,13 +146,13 @@ function render(e) {
     ctx.fillRect(
         Math.round(canvas.width / 2 - camScale * camX),
         Math.round(canvas.height / 2 - camScale * camY),
-        Math.round(map.areaSize.x * camScale),
-        Math.round(map.areaSize.y * camScale)
+        Math.round(parsedMap.areaSize.x * camScale),
+        Math.round(parsedMap.areaSize.y * camScale)
     );
 
 
-    if (!e) {
-        e = {
+    if (!state) {
+        state = {
             infos: {
                 id: "TEMPORARY_ID",
                 fuel: 12,
@@ -399,10 +401,10 @@ function render(e) {
     }
 
     // ENTITIES
-    for (let obj of e.entities) {
+    for (let obj of state.entities) {
         switch (obj.type) {
             case "bomb":
-                ctx.globalAlpha = obj.opacity;
+                ctx.globalAlpha = obj.opacity || 1;
                 ctx.beginPath();
                 ctx.ellipse(
                     canvas.width / 2 + camScale * (obj.pos.x - camX),
@@ -422,7 +424,7 @@ function render(e) {
                 );
                 break;
             case "following":
-                ctx.globalAlpha = obj.opacity;
+                ctx.globalAlpha = obj.opacity || 1;
                 ctx.beginPath();
                 ctx.ellipse(
                     canvas.width / 2 + camScale * (obj.pos.x - camX),
@@ -442,7 +444,7 @@ function render(e) {
                 );
                 break;
             case "contractor":
-                ctx.globalAlpha = obj.opacity;
+                ctx.globalAlpha = obj.opacity || 1;
                 ctx.beginPath();
                 ctx.ellipse(
                     canvas.width / 2 + camScale * (obj.pos.x - camX),
@@ -479,14 +481,14 @@ function render(e) {
             case "gravityDown":
             case "gravityLeft":
             case "gravityRight":
-                ctx.globalAlpha = obj.opacity;
+                ctx.globalAlpha = obj.opacity || 1;
                 ctx.drawImage(renderSettings.textures.enemies[obj.type], canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
                 break;
             case "rotating":
                 ctx.save();
                 ctx.translate(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
                 ctx.rotate(obj.angle);
-                ctx.globalAlpha = obj.opacity;
+                ctx.globalAlpha = obj.opacity || 1;
                 ctx.drawImage(renderSettings.textures.enemies.rotating, -camScale * obj.radius, -camScale * obj.radius, camScale * obj.radius * 2, camScale * obj.radius * 2);
                 ctx.restore();
                 break;
@@ -542,7 +544,7 @@ function render(e) {
                 ctx.fill();
                 break;
             case "frostEntity":
-                ctx.globalAlpha = obj.opacity;
+                ctx.globalAlpha = obj.opacity || 1;
                 ctx.beginPath();
                 ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
                 ctx.fillStyle = renderSettings.colors.frost;
@@ -554,7 +556,7 @@ function render(e) {
                 for (let i = obj.states.length - 1, o = obj.states[i]; i >= 0; i--, o = obj.states[i]) {
                     ctx.drawImage(renderSettings.textures.enemies.snekBody, canvas.width / 2 + camScale * (o.x - obj.radius - camX), canvas.height / 2 + camScale * (o.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
                 }
-                ctx.globalAlpha = obj.opacity;
+                ctx.globalAlpha = obj.opacity || 1;
                 ctx.translate(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
                 ctx.rotate(obj.dir);
                 ctx.drawImage(renderSettings.textures.enemies.snekHead, -camScale * obj.radius, -camScale * obj.radius, camScale * obj.radius * 3, camScale * obj.radius * 2);
@@ -635,8 +637,8 @@ function render(e) {
         ctx.restore();
     }
     // Render players
-    for (let i in e.players) {
-        let p = e.players[i];
+    for (let i in state.players) {
+        let p = state.players[i];
         let died = p.states.includes("Died");
         let freeze = p.states.includes("Freeze");
         // Initiate hat
@@ -722,23 +724,25 @@ function render(e) {
         ctx.strokeRect(-camScale * 5, camScale * (p.radius + 1), camScale * 10, camScale * 2.5);
 
         // Messages
-        ctx.font = camScale * 4 + "px Tahoma, Verdana, Segoe, sans-serif";
-        if (p.name in chatMsgs) {
-            let msg = chatMsgs[p.name];
-            if (msg.t--) {
-                let metrics = ctx.measureText(msg.m);
-                // console.log(metrics);
-                ctx.fillStyle = "#ffffff80";
-                ctx.fillRect(
-                    -metrics.actualBoundingBoxLeft - camScale,
-                    -metrics.fontBoundingBoxAscent - camScale / 2 + camScale * hat.textOffset * (p.radius + 3),
-                    metrics.width + 2 * camScale,
-                    metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent + camScale
-                );
-                ctx.fillStyle = "#000000";
-                ctx.fillText(msg.m, 0, camScale * hat.textOffset * (p.radius + 3));
-            } else {
-                delete chatMsgs[p.name];
+        if (!showChat) {
+            ctx.font = camScale * 4 + "px Tahoma, Verdana, Segoe, sans-serif";
+            if (p.name in chatMsgs) {
+                let msg = chatMsgs[p.name];
+                if (msg.t--) {
+                    let metrics = ctx.measureText(msg.m);
+                    // console.log(metrics);
+                    ctx.fillStyle = "#ffffff80";
+                    ctx.fillRect(
+                        -metrics.actualBoundingBoxLeft - camScale,
+                        -metrics.fontBoundingBoxAscent - camScale / 2 + camScale * hat.textOffset * (p.radius + 3),
+                        metrics.width + 2 * camScale,
+                        metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent + camScale
+                    );
+                    ctx.fillStyle = "#000000";
+                    ctx.fillText(msg.m, 0, camScale * hat.textOffset * (p.radius + 3));
+                } else {
+                    delete chatMsgs[p.name];
+                }
             }
         }
         ctx.restore();

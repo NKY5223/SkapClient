@@ -440,7 +440,7 @@ canvas {
 .SYSMsg {
     background-image: repeating-linear-gradient(45deg, #ff0000, #ffff00, #ff0000);
     animation: slide 7s linear infinite;
-    background-size: 700% 100%;
+    background-size: 7000% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -451,7 +451,7 @@ canvas {
 .devMsg {
     background-image: repeating-linear-gradient(45deg, #80ff80, #00ff80, #8080ff, #00ff80, #80ff80);
     animation: slide 3s linear infinite;
-    background-size: 700% 100%;
+    background-size: 7000% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -459,7 +459,7 @@ canvas {
 .Sweatyfuckingbitchmsg {
     background-image: repeating-linear-gradient(45deg, #00000000, #0000ff, #00000000);
     animation: slide 1s linear infinite;
-    background-size: 700% 100%;
+    background-size: 7000% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -473,13 +473,26 @@ canvas {
 .shrekmsg {
     background-image: repeating-linear-gradient(45deg, #FA823F, #1C3C64, #FAFAFA, #FA823F);
     animation: slide 3s linear infinite;
-    background-size: 700% 100%;
+    background-size: 7000% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
 }
 .halmanageMsg {
-    color: #ff0000;
+    background-image: repeating-linear-gradient(45deg, #ffffff, #ff0000, #ffffff);
+    animation: slide 3s linear infinite;
+    background-size: 7000% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.whizMsg {
+    background-image: repeating-linear-gradient(45deg, #42f5c8, #fd0313, #42f5c8);
+    animation: slide 3s linear infinite;
+    background-size: 7000% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 @keyframes slide { 
     0%{ background-position: 0% 0; }

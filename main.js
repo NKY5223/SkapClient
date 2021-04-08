@@ -360,8 +360,8 @@ Owner:<ul>
                             FPSDisplay.innerHTML = calcFPS;
                         }
                         lastFrame = now;
-                        render(data);
-                        requestAnimationFrame(run);
+                        render(parsedMap, map, state);
+                        window.requestAnimationFrame(run);
                     })();
                     customAlert("Joined game");
                     // Handle game controls
@@ -664,6 +664,7 @@ function initMap(i) {
         (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[2] - 240) * i.backgroundColor[3]) + ")";
     parsedMap.background = fromColArr(i.areaColor);
+    parsedMap.areaSize = i.areaSize;
     parsedMap.obstacle = [];
     parsedMap.teleporter = [];
     parsedMap.lava = [];
@@ -891,7 +892,9 @@ function message(msg, force = false) {
                             ? "shrekmsg"
                             : msg.m.s === "HalOfManage"
                                 ? "halmanageMsg"
-                                : ""
+                                : msg.m.s === "Whiz"
+                                    ? "whizMsg"
+                                    : ""
         }">
         ${force
             ? msg.m.s

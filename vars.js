@@ -290,6 +290,7 @@ let RENDER_SKIN = null;
 
 let parsedMap = {
     background: "#ffffff",
+    areaSize: [0, 0],
     obstacle: [],
     teleporter: [],
     lava: [],
@@ -323,7 +324,7 @@ const controls = (localStorage.getItem("controls") || "w a s d shift   r").split
 const othercontrols = (localStorage.getItem("othercontrols") || "u i f arrowup arrowleft arrowdown arrowright o").split(" ");
 
 let map = null;
-let data = null;
+let state = null;
 let particles = {
     dash: [],
     shrink: [],

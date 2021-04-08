@@ -64,7 +64,7 @@ function updateStates(m) {
     maxVelP.innerHTML = maxVel.toFixed(3);
 
     // Set entities... (totally not render)
-    data = m;
+    state = m;
     // Particles
     if (document.hasFocus()) {
         for (let p of m.particles) {
@@ -156,7 +156,7 @@ function updateStates(m) {
                     });
                 }
             }
-            if (Math.abs(p.vel.x) > 5 || Math.abs(p.vel.y) > 5 && Math.random() < 0.1) {
+            if ((p.vel.x * p.vel.x + p.vel.y * p.vel.y) > 25 && Math.random() < 0.5) {
                 let dir = Math.random() * Math.PI * 2;
                 let s = Math.random() / 20 + 0.05;
                 particles.trail.push({
