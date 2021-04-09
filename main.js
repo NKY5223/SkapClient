@@ -896,7 +896,9 @@ function message(msg, force = false) {
                                     ? "whizMsg"
                                     : msg.m.s === "Frog"
                                         ? "frogMsg"
-                                        : ""
+                                        : msg.m.s === "Imaduck"
+                                            ? "imaduckMsg"
+                                            : ""
         }">
         ${force
             ? msg.m.s
