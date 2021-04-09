@@ -496,6 +496,9 @@ canvas {
 .imaduckMsg {
     color: #ff000080;
 }
+.drakeMsg {
+    color: #0000ff;
+}
 
 @keyframes slide { 
     0%{ background-position: 0% 0; }
@@ -512,22 +515,22 @@ canvas {
 }
 @keyframes sweaty {
     0% {
-        background: #ff0000;
+        color: #ff0000;
     }
     33.32% {
-        background: #ff0000;
+        color: #ff0000;
     }
     33.33% {
-        background: #00ffff;
+        color: #00ffff;
     }
     66.66% {
-        background: #00ffff;
+        color: #00ffff;
     }
     66.67% {
-        background: #00ff00;
+        color: #00ff00;
     }
     100% {
-        background: #00ff00;
+        color: #00ff00;
     }
 }
 
