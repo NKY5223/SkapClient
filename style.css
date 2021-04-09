@@ -457,11 +457,7 @@ canvas {
     color: transparent;
 }
 .Sweatyfuckingbitchmsg {
-    background-image: repeating-linear-gradient(45deg, #00000000, #0000ff, #00000000);
-    animation: slide 1s linear infinite;
-    background-size: 7000% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
+    animation: sweaty 0.1s linear infinite;
     color: transparent;
 }
 .msg2121 {
@@ -509,6 +505,26 @@ canvas {
     66.6667%{ color: #0000ff; }
     73.3333%{ color: #ff00ff; }
     100%{ color: #ff0000; }
+}
+@keyframes sweaty {
+    0% {
+        background: #ff0000;
+    }
+    33.32% {
+        background: #ff0000;
+    }
+    33.33% {
+        background: #00ffff;
+    }
+    66.66% {
+        background: #00ffff;
+    }
+    66.67% {
+        background: #00ff00;
+    }
+    100% {
+        background: #00ff00;
+    }
 }
 
 #fuelBarWrap {
