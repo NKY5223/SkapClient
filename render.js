@@ -26,6 +26,7 @@
  * @property {SkapObject[]} linksOn
  * @property {SkapObject[]} linksOff
  * 
+ * 
  * @typedef SkapEntity
  * @property {"bomb" | "bouncer" | "spike" | "normal" | "megaBouncer" | "taker" | "wavy" | "freezer" | "snek" | "immune" | "monster" | "stutter" | "contractor" | "expanding" | "turretBullet" | "enemyBullet" | "shield" | "healingGhost" | "meteorBullet" | "path"} type
  * bombs/bouncers/normal/spike
@@ -43,6 +44,7 @@
  * @property {number} dir
  * @property {{ x: number, y: number, radius: number, time: number }[]} states
  * 
+ * 
  * @typedef Player
  * @property {Object} pos
  * @property {number} pos.x
@@ -57,8 +59,8 @@
  * @property {string} name
  * @property {[number, number, number]} color
  * @property {string} hat
- */
-/**
+ *
+ * 
  * @typedef SkapMap
  * @property {Object} areaSize
  * @property {number} areaSize.x
@@ -66,24 +68,51 @@
  * @property {[number, number, number]} areaColor
  * @property {[number, number, number, number]} backgroundColor
  * @property {SkapObject[]} objects
+ * 
+ * @typedef {Object<string, SkapObject[]>} ParsedMap
+ * 
+ * @typedef State
+ * @property {{id: string, fuel: number, oneCooldown: number | null, twoCooldown: number | null, oneHeat: number, twoHeat: number}} infos
+ * @property {Object<string, Player>} players id:Player
+ * @property {[string, string, boolean][]} playerList
+ * @property {SkapEntity[]} entities
+ * 
+ * @typedef Hat
+ * @property {[number, number]} offset
+ * @property {[number, number]} size
+ * @property {number} textOffset
+ * @property {HTMLImageElement} texture
+ * 
+ * @typedef RenderOptions
+ * @property {Object<string, boolean>} render
+ * @property {Object<string, string>} colors
+ * @property {Object} textures
+ * @property {Object<string, HTMLImageElement | HTMLImageElement[]>} textures.enemies
+ * @property {Object<string, Hat>} textures.hats
+ * @property {HTMLImageElement[]} textures.powers
+ * @property {Object<string, HTMLImageElement>} textures.skins
+ * @property {HTMLImageElement} textures.trail
+ * 
+ * @typedef Particle
  */
 
 /**
+ * @param {CanvasRenderingContext2D} ctx
+ * 
+ * @param {ParsedMap} parsedMap
+ * 
  * @param {SkapMap} map
  * 
- * @param {Object} state
- * @param {Object} state.infos
- * @param {string} state.infos.id
- * @param {number} state.infos.fuel
- * @param {number | null} state.infos.oneCooldown
- * @param {number | null} state.infos.twoCooldown
- * @param {number} state.infos.oneHeat
- * @param {number} state.infos.twoHeat
- * @param {Object<string, Player>} state.players id:Player
- * @param {[string, string, boolean][]} state.playerList
- * @param {SkapEntity[]} state.entities
+ * @param {State} state
+ * 
+ * @param {Object<string, Particle[]>} particles
+ * 
+ * @param {RenderOptions} options
+ * 
+ * @param {number} camX
+ * @param {number} camY
  */
-function render(parsedMap, map, state) {
+function render(ctx, parsedMap, map, state, particles, options, camX, camY) {
     // Particles
     particles.dash = particles.dash.filter(p => {
         p.x += p.vx;
@@ -139,7 +168,7 @@ function render(parsedMap, map, state) {
     ctx.lineCap = "round";
 
 
-    ctx.fillStyle = renderSettings.colors.obstacle;
+    ctx.fillStyle = options.colors.obstacle;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.fillStyle = parsedMap.background;
@@ -178,9 +207,9 @@ function render(parsedMap, map, state) {
         ]
     });
 
-    if (renderSettings.render.obstacle) {
+    if (options.render.obstacle) {
         // Render obstacles
-        ctx.fillStyle = renderSettings.colors.obstacle;
+        ctx.fillStyle = options.colors.obstacle;
         for (let obj of parsedMap.obstacle) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -191,7 +220,7 @@ function render(parsedMap, map, state) {
         }
     }
     // Render the ****ing teleporters (they suck)
-    if (renderSettings.render.teleporter) {
+    if (options.render.teleporter) {
         for (let obj of parsedMap.teleporter) {
             let gradient;
             switch (obj.dir) {
@@ -222,7 +251,7 @@ function render(parsedMap, map, state) {
             }
             if (gradient) {
                 gradient.addColorStop(0, parsedMap.background);
-                gradient.addColorStop(1, renderSettings.colors.obstacle);
+                gradient.addColorStop(1, options.colors.obstacle);
             } else gradient = parsedMap.background;
             ctx.fillStyle = gradient;
             ctx.fillRect(
@@ -233,8 +262,8 @@ function render(parsedMap, map, state) {
             );
         }
     }
-    ctx.fillStyle = renderSettings.colors.lava;
-    if (renderSettings.render.lava) {
+    ctx.fillStyle = options.colors.lava;
+    if (options.render.lava) {
         // Render lava
         for (let obj of parsedMap.lava) {
             ctx.fillRect(
@@ -245,7 +274,7 @@ function render(parsedMap, map, state) {
             );
         }
     }
-    if (renderSettings.render.movLava) {
+    if (options.render.movLava) {
         // Render movLava
         for (let obj of parsedMap.movingLava) {
             ctx.fillRect(
@@ -256,7 +285,7 @@ function render(parsedMap, map, state) {
             );
         }
     }
-    if (renderSettings.render.rotLava) {
+    if (options.render.rotLava) {
         // Render rotLava
         ctx.globalAlpha = 1;
         for (let obj of parsedMap.rotatingLava) {
@@ -270,9 +299,9 @@ function render(parsedMap, map, state) {
             ctx.restore();
         }
     }
-    if (renderSettings.render.ice) {
+    if (options.render.ice) {
         // Render ice
-        ctx.fillStyle = renderSettings.colors.ice;
+        ctx.fillStyle = options.colors.ice;
         for (let obj of parsedMap.ice) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -282,9 +311,9 @@ function render(parsedMap, map, state) {
             );
         }
     }
-    if (renderSettings.render.slime) {
+    if (options.render.slime) {
         // Render slime
-        ctx.fillStyle = renderSettings.colors.slime;
+        ctx.fillStyle = options.colors.slime;
         for (let obj of parsedMap.slime) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -314,7 +343,7 @@ function render(parsedMap, map, state) {
             Math.round(canvas.width / 2 + camScale * (obj.points[3][0] - camX)),
             Math.round(canvas.height / 2 + camScale * (obj.points[3][1] - camY))
         );
-        ctx.fillStyle = obj.pressed ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
+        ctx.fillStyle = obj.pressed ? options.colors.buttonPressed : options.colors.button;
         ctx.fill();
     }
     // Render switches?
@@ -336,14 +365,14 @@ function render(parsedMap, map, state) {
             Math.round(canvas.width / 2 + camScale * (obj.points[3][0] - camX)),
             Math.round(canvas.height / 2 + camScale * (obj.points[3][1] - camY))
         );
-        ctx.fillStyle = obj.switch ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
+        ctx.fillStyle = obj.switch ? options.colors.buttonPressed : options.colors.button;
         ctx.fill();
     }
     // Renders
-    ctx.fillStyle = renderSettings.colors.doorFill;
+    ctx.fillStyle = options.colors.doorFill;
     ctx.lineWidth = camScale;
     for (let obj of parsedMap.door) {
-        ctx.strokeStyle = obj.opened ? renderSettings.colors.doorOpenedOutline : renderSettings.colors.doorClosedOutline;
+        ctx.strokeStyle = obj.opened ? options.colors.doorOpenedOutline : options.colors.doorClosedOutline;
         ctx.strokeRect(
             Math.round(canvas.width / 2 + camScale * (obj.pos.x + 0.5 - camX)),
             Math.round(canvas.height / 2 + camScale * (obj.pos.y + 0.5 - camY)),
@@ -358,14 +387,14 @@ function render(parsedMap, map, state) {
         );
         for (let b of obj.linksOn) {
             ctx.beginPath();
-            ctx.strokeStyle = b.pressed || b.switch ? renderSettings.colors.doorLineOn : renderSettings.colors.doorLineOff;
+            ctx.strokeStyle = b.pressed || b.switch ? options.colors.doorLineOn : options.colors.doorLineOff;
             ctx.moveTo(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
             ctx.lineTo(canvas.width / 2 + camScale * (b.pos.x + b.size.x / 2 - camX), canvas.height / 2 + camScale * (b.pos.y + b.size.y / 2 - camY));
             ctx.stroke();
         }
         for (let b of obj.linksOff) {
             ctx.beginPath();
-            ctx.strokeStyle = b.pressed || b.switch ? renderSettings.colors.doorLineOff : renderSettings.colors.doorLineOn;
+            ctx.strokeStyle = b.pressed || b.switch ? options.colors.doorLineOff : options.colors.doorLineOn;
             ctx.moveTo(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
             ctx.lineTo(canvas.width / 2 + camScale * (b.pos.x + b.size.x / 2 - camX), canvas.height / 2 + camScale * (b.pos.y + b.size.y / 2 - camY));
             ctx.stroke();
@@ -373,7 +402,7 @@ function render(parsedMap, map, state) {
     }
     // Render blocks(0)
     ctx.globalAlpha = 1;
-    if (renderSettings.render.block0) {
+    if (options.render.block0) {
         for (let obj of parsedMap.block0) {
             ctx.fillStyle = obj.color;
             ctx.fillRect(
@@ -413,10 +442,10 @@ function render(parsedMap, map, state) {
                     camScale * (obj.region + obj.radius),
                     0, 0, 7
                 );
-                ctx.fillStyle = obj.exploding ? renderSettings.colors.mineExpRegion : renderSettings.colors.mineRegion;
+                ctx.fillStyle = obj.exploding ? options.colors.mineExpRegion : options.colors.mineRegion;
                 ctx.fill();
                 ctx.drawImage(
-                    renderSettings.textures.enemies.bomb[obj.phase & 1],
+                    options.textures.enemies.bomb[obj.phase & 1],
                     canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX),
                     canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY),
                     camScale * obj.radius * 2,
@@ -433,10 +462,10 @@ function render(parsedMap, map, state) {
                     camScale * (obj.region + obj.radius),
                     0, 0, 7
                 );
-                ctx.fillStyle = renderSettings.colors.followingRegion;
+                ctx.fillStyle = options.colors.followingRegion;
                 ctx.fill();
                 ctx.drawImage(
-                    renderSettings.textures.enemies.following,
+                    options.textures.enemies.following,
                     canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX),
                     canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY),
                     camScale * obj.radius * 2,
@@ -453,10 +482,10 @@ function render(parsedMap, map, state) {
                     camScale * (obj.region + obj.radius),
                     0, 0, 7
                 );
-                ctx.fillStyle = obj.triggered ? renderSettings.colors.contracTriggerRegion : renderSettings.colors.contracRegion;
+                ctx.fillStyle = obj.triggered ? options.colors.contracTriggerRegion : options.colors.contracRegion;
                 ctx.fill();
                 ctx.drawImage(
-                    renderSettings.textures.enemies.contractor[obj.triggered & 1],
+                    options.textures.enemies.contractor[obj.triggered & 1],
                     canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX),
                     canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY),
                     camScale * obj.radius * 2,
@@ -482,33 +511,33 @@ function render(parsedMap, map, state) {
             case "gravityLeft":
             case "gravityRight":
                 ctx.globalAlpha = obj.opacity || 1;
-                ctx.drawImage(renderSettings.textures.enemies[obj.type], canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
+                ctx.drawImage(options.textures.enemies[obj.type], canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
                 break;
             case "rotating":
                 ctx.save();
                 ctx.translate(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
                 ctx.rotate(obj.angle);
                 ctx.globalAlpha = obj.opacity || 1;
-                ctx.drawImage(renderSettings.textures.enemies.rotating, -camScale * obj.radius, -camScale * obj.radius, camScale * obj.radius * 2, camScale * obj.radius * 2);
+                ctx.drawImage(options.textures.enemies.rotating, -camScale * obj.radius, -camScale * obj.radius, camScale * obj.radius * 2, camScale * obj.radius * 2);
                 ctx.restore();
                 break;
             case "turretBullet":
             case "enemyBullet":
                 ctx.globalAlpha = 1;
-                ctx.fillStyle = renderSettings.colors.lava;
+                ctx.fillStyle = options.colors.lava;
                 ctx.beginPath();
                 ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
                 ctx.fill();
                 break;
             case "meteorBullet":
                 ctx.globalAlpha = 1;
-                ctx.fillStyle = renderSettings.colors.meteor;
+                ctx.fillStyle = options.colors.meteor;
                 ctx.beginPath();
                 ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
                 ctx.fill();
                 break;
             case "path":
-                ctx.fillStyle = renderSettings.colors.blueFire;
+                ctx.fillStyle = options.colors.blueFire;
                 ctx.globalAlpha = 1;
                 ctx.beginPath();
                 ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
@@ -516,7 +545,7 @@ function render(parsedMap, map, state) {
                 ctx.closePath();
                 break;
             case "tail":
-                ctx.fillStyle = renderSettings.colors.tail;
+                ctx.fillStyle = options.colors.tail;
                 ctx.globalAlpha = 1;
                 ctx.beginPath();
                 ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
@@ -525,7 +554,7 @@ function render(parsedMap, map, state) {
                 break;
             case "shield":
                 ctx.lineWidth = camScale * obj.size.y * 2;
-                ctx.strokeStyle = renderSettings.colors.shield;
+                ctx.strokeStyle = options.colors.shield;
                 ctx.globalAlpha = 1;
                 ctx.save();
                 ctx.translate(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
@@ -540,86 +569,86 @@ function render(parsedMap, map, state) {
                 ctx.globalAlpha = 1;
                 ctx.beginPath();
                 ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
-                ctx.fillStyle = renderSettings.colors.ghost;
+                ctx.fillStyle = options.colors.ghost;
                 ctx.fill();
                 break;
             case "frostEntity":
                 ctx.globalAlpha = obj.opacity || 1;
                 ctx.beginPath();
                 ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
-                ctx.fillStyle = renderSettings.colors.frost;
+                ctx.fillStyle = options.colors.frost;
                 ctx.fill();
                 break;
             case "snek":
                 ctx.save();
                 ctx.globalAlpha = 1;
                 for (let i = obj.states.length - 1, o = obj.states[i]; i >= 0; i--, o = obj.states[i]) {
-                    ctx.drawImage(renderSettings.textures.enemies.snekBody, canvas.width / 2 + camScale * (o.x - obj.radius - camX), canvas.height / 2 + camScale * (o.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
+                    ctx.drawImage(options.textures.enemies.snekBody, canvas.width / 2 + camScale * (o.x - obj.radius - camX), canvas.height / 2 + camScale * (o.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
                 }
                 ctx.globalAlpha = obj.opacity || 1;
                 ctx.translate(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
                 ctx.rotate(obj.dir);
-                ctx.drawImage(renderSettings.textures.enemies.snekHead, -camScale * obj.radius, -camScale * obj.radius, camScale * obj.radius * 3, camScale * obj.radius * 2);
+                ctx.drawImage(options.textures.enemies.snekHead, -camScale * obj.radius, -camScale * obj.radius, camScale * obj.radius * 3, camScale * obj.radius * 2);
                 ctx.restore();
                 break;
             default:
                 ctx.globalAlpha = obj.opacity || 1;
-                ctx.drawImage(renderSettings.textures.enemies.none, canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
+                ctx.drawImage(options.textures.enemies.none, canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
                 break;
         }
     }
 
     // Particles
-    ctx.fillStyle = renderSettings.colors.dash;
+    ctx.fillStyle = options.colors.dash;
     for (let p of particles.dash) {
         ctx.beginPath();
         ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * p.r, camScale * p.r, 0, 0, 7);
         ctx.globalAlpha = p.o;
         ctx.fill();
     }
-    ctx.fillStyle = renderSettings.colors.shrink;
+    ctx.fillStyle = options.colors.shrink;
     ctx.globalAlpha = 1;
     for (let p of particles.shrink) {
         ctx.beginPath();
         ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * p.r, camScale * p.r, 0, 0, 7);
         ctx.fill();
     }
-    ctx.fillStyle = renderSettings.colors.bombParticle;
+    ctx.fillStyle = options.colors.bombParticle;
     for (let p of particles.bomb) {
         ctx.beginPath();
         ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * 2, camScale * 2, 0, 0, 7);
         ctx.globalAlpha = p.o;
         ctx.fill();
     }
-    ctx.fillStyle = renderSettings.colors.explosion;
+    ctx.fillStyle = options.colors.explosion;
     for (let p of particles.explosion) {
         ctx.beginPath();
         ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * p.r, camScale * p.r, 0, 0, 7);
         ctx.globalAlpha = p.o;
         ctx.fill();
     }
-    ctx.fillStyle = renderSettings.colors.ghostParticles;
+    ctx.fillStyle = options.colors.ghostParticles;
     for (let p of particles.ghost) {
         ctx.beginPath();
         ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * p.r, camScale * p.r, 0, 0, 7);
         ctx.globalAlpha = p.o;
         ctx.fill();
     }
-    ctx.fillStyle = renderSettings.colors.refuel;
+    ctx.fillStyle = options.colors.refuel;
     for (let p of particles.refuel) {
         ctx.beginPath();
         ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale, camScale, 0, 0, 7);
         ctx.globalAlpha = p.o;
         ctx.fill();
     }
-    ctx.fillStyle = renderSettings.colors.jetpack;
+    ctx.fillStyle = options.colors.jetpack;
     for (let p of particles.jetpack) {
         ctx.globalAlpha = p.o;
         ctx.fillRect(canvas.width / 2 + camScale * (p.x - p.w / 2 - camX), canvas.height / 2 + camScale * (p.y - p.h / 2 - camY), p.w * camScale, p.h * camScale);
     }
     for (let p of particles.trail) {
         ctx.globalAlpha = p.o;
-        ctx.drawImage(renderSettings.textures.trail, canvas.width / 2 + camScale * (p.x - 2.5 - camX), canvas.height / 2 + camScale * (p.y - 2.5 - camY), 5 * camScale, 5 * camScale);
+        ctx.drawImage(options.textures.trail, canvas.width / 2 + camScale * (p.x - 2.5 - camX), canvas.height / 2 + camScale * (p.y - 2.5 - camY), 5 * camScale, 5 * camScale);
     }
 
     // Render turrets
@@ -628,9 +657,9 @@ function render(parsedMap, map, state) {
         ctx.save();
         ctx.translate(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
         ctx.rotate(obj.dir);
-        ctx.fillStyle = renderSettings.colors.turretCannon;
+        ctx.fillStyle = options.colors.turretCannon;
         ctx.fillRect(0, -camScale * 2, camScale * 5, camScale * 4);
-        ctx.fillStyle = renderSettings.colors.turretBody;
+        ctx.fillStyle = options.colors.turretBody;
         ctx.beginPath();
         ctx.ellipse(0, 0, camScale * obj.size.x / 2, camScale * obj.size.y / 2, 0, 0, 7);
         ctx.fill();
@@ -642,10 +671,10 @@ function render(parsedMap, map, state) {
         let died = p.states.includes("Died");
         let freeze = p.states.includes("Freeze");
         // Initiate hat
-        let hat = renderSettings.textures.hats.none;
+        let hat = options.textures.hats.none;
         if (RENDER_HAT) p.hat = RENDER_HAT;
-        if (p.hat in renderSettings.textures.hats) {
-            hat = renderSettings.textures.hats[p.hat];
+        if (p.hat in options.textures.hats) {
+            hat = options.textures.hats[p.hat];
         }
         // Skin?
         let skin = p.name;
@@ -656,8 +685,8 @@ function render(parsedMap, map, state) {
         ctx.rotate(p.gravDir / 2 * Math.PI);
         ctx.beginPath();
         // Body
-        if (skin in renderSettings.textures.skins && !died && !freeze) {
-            ctx.drawImage(renderSettings.textures.skins[skin], -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
+        if (skin in options.textures.skins && !died && !freeze) {
+            ctx.drawImage(options.textures.skins[skin], -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
         }
         if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
             ctx.ellipse(p.radius * -0.105 * camScale, p.radius * 0.4 * camScale, p.radius * 0.557 * camScale, p.radius * 0.55 * camScale, 0, 0, 7);
@@ -666,11 +695,11 @@ function render(parsedMap, map, state) {
         }
         ctx.fillStyle = died
             ? freeze
-                ? renderSettings.colors.playerFreezeDead
-                : renderSettings.colors.playerDead
+                ? options.colors.playerFreezeDead
+                : options.colors.playerDead
             : freeze
-                ? renderSettings.colors.playerFreeze
-                : skin in renderSettings.textures.skins
+                ? options.colors.playerFreeze
+                : skin in options.textures.skins
                     ? "#00000000"
                     : fromColArr(p.color);
         ctx.fill();
@@ -699,10 +728,10 @@ function render(parsedMap, map, state) {
         ctx.font = camScale * 2 + "px Tahoma, Verdana, Segoe, sans-serif";
         ctx.fillStyle = died
             ? freeze
-                ? renderSettings.colors.playerFreezeDead
-                : renderSettings.colors.playerDead
+                ? options.colors.playerFreezeDead
+                : options.colors.playerDead
             : freeze
-                ? renderSettings.colors.playerFreeze
+                ? options.colors.playerFreeze
                 : "#202020";
         if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
             ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius / 2);
@@ -713,10 +742,10 @@ function render(parsedMap, map, state) {
         // fuelBar™️
         ctx.fillStyle = died
             ? freeze
-                ? renderSettings.colors.playerFreezeDead
-                : renderSettings.colors.playerDead
+                ? options.colors.playerFreezeDead
+                : options.colors.playerDead
             : freeze
-                ? renderSettings.colors.playerFreeze
+                ? options.colors.playerFreeze
                 : "#ffff40";
         ctx.fillRect(-camScale * 5, camScale * (p.radius + 1), camScale * p.fuel, camScale * 2.5);
         ctx.strokeStyle = "#202020";
@@ -749,7 +778,7 @@ function render(parsedMap, map, state) {
     }
     // Render blocks(1)
     ctx.globalAlpha = 1;
-    if (renderSettings.render.block1) {
+    if (options.render.block1) {
         for (let obj of parsedMap.block1) {
             ctx.fillStyle = obj.color;
             ctx.fillRect(
@@ -781,8 +810,8 @@ function render(parsedMap, map, state) {
     ctx.lineWidth = Math.round(camScale);
     ctx.lineCap = "round";
     for (let obj of parsedMap.gravityZone) {
-        ctx.strokeStyle = renderSettings.colors.gravOutline[obj.dir];
-        ctx.fillStyle = renderSettings.colors.gravFill[obj.dir];
+        ctx.strokeStyle = options.colors.gravOutline[obj.dir];
+        ctx.fillStyle = options.colors.gravFill[obj.dir];
         ctx.strokeRect(
             Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
             Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -798,7 +827,7 @@ function render(parsedMap, map, state) {
     }
     // Render boxes (build power)
     for (let obj of parsedMap.box) {
-        ctx.fillStyle = renderSettings.colors.box;
+        ctx.fillStyle = options.colors.box;
         ctx.fillRect(
             Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
             Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -808,7 +837,7 @@ function render(parsedMap, map, state) {
     }
     // Render rewards
     for (let obj of parsedMap.reward) {
-        ctx.fillStyle = renderSettings.colors.box;
+        ctx.fillStyle = options.colors.box;
         ctx.drawImage(
             obj.image,
             Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -819,7 +848,7 @@ function render(parsedMap, map, state) {
     }
     // Render hat rewards
     for (let obj of parsedMap.hatReward) {
-        ctx.fillStyle = renderSettings.colors.box;
+        ctx.fillStyle = options.colors.box;
         ctx.drawImage(
             obj.image,
             Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -832,7 +861,7 @@ function render(parsedMap, map, state) {
     ctx.font = camScale * 5 + "px Russo One, Verdana, Arial, Helvetica, sans-serif";
     ctx.strokeStyle = "#000000";
     ctx.setLineDash([]);
-    if (renderSettings.render.text) {
+    if (options.render.text) {
         for (let obj of parsedMap.text) {
             ctx.strokeText(obj.text, canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
             ctx.fillStyle = "#ffffff";
@@ -842,9 +871,9 @@ function render(parsedMap, map, state) {
     }
     // Render hitboxes
     ctx.setLineDash([]);
-    if (renderSettings.render.hitbox) {
+    if (options.render.hitbox) {
         ctx.lineWidth = 2;
-        ctx.strokeStyle = renderSettings.colors.hitbox;
+        ctx.strokeStyle = options.colors.hitbox;
         for (let o of map.objects)
             ctx.strokeRect(
                 Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
@@ -854,9 +883,9 @@ function render(parsedMap, map, state) {
             );
     }
     // Render teleporter hitboxes (for hidden ones)
-    if (renderSettings.render.teleporterHitbox) {
+    if (options.render.teleporterHitbox) {
         ctx.lineWidth = 2;
-        ctx.strokeStyle = renderSettings.colors.teleporterHitbox;
+        ctx.strokeStyle = options.colors.teleporterHitbox;
         for (let o of parsedMap.teleporter)
             ctx.strokeRect(
                 Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),

@@ -34,7 +34,7 @@ const version = "yes";
 const canvas = document.getElementById("render");
 const ctx = canvas.getContext("2d");
 
-let renderSettings = {
+const renderSettings = {
     render: {
         obstacle: true,
         lava: true,
@@ -146,115 +146,115 @@ let renderSettings = {
                 offset: [0, 0],
                 textOffset: -1.3,
                 size: [0, 0],
-                texture: loadImage('https://skap.io/textures/hats/none.png')
+                texture: loadImage("https://skap.io/textures/hats/none.png")
             },
             catEars: {
                 offset: [-1.09, -2.0],
                 textOffset: -1.6,
                 size: [2.2, 2.2],
-                texture: loadImage('https://skap.io/textures/hats/catEars.png')
+                texture: loadImage("https://skap.io/textures/hats/catEars.png")
             },
             tophat: {
                 offset: [-1.3, -2.4],
                 textOffset: -2.4,
                 size: [2.6, 2.6],
-                texture: loadImage('https://skap.io/textures/hats/topHat.png')
+                texture: loadImage("https://skap.io/textures/hats/topHat.png")
             },
             guest: {
                 offset: [0, 0],
                 textOffset: -1.3,
                 size: [0, 0],
-                texture: loadImage('https://skap.io/textures/hats/none.png')
+                texture: loadImage("https://skap.io/textures/hats/none.png")
             },
             santa: {
                 offset: [-1.3, -2.4],
                 textOffset: -1.9,
                 size: [3.2, 3.2],
-                texture: loadImage('https://skap.io/textures/hats/santa.png')
+                texture: loadImage("https://skap.io/textures/hats/santa.png")
             },
             militaryHat: {
                 offset: [-1.55, -2],
                 textOffset: -1.9,
                 size: [3, 3],
-                texture: loadImage('https://skap.io/textures/hats/militaryHat.png')
+                texture: loadImage("https://skap.io/textures/hats/militaryHat.png")
             },
             nookyHat: {
                 offset: [-1.2, -2.8],
                 textOffset: -1.6,
                 size: [2.6, 2.6],
-                texture: loadImage('https://skap.io/textures/hats/nookyHat.png')
+                texture: loadImage("https://skap.io/textures/hats/nookyHat.png")
             },
             ravelHat: {
                 offset: [-1.2, -2.8],
                 textOffset: -3,
                 size: [2.6, 2.6],
-                texture: loadImage('https://skap.io/textures/hats/eggplant.png')
+                texture: loadImage("https://skap.io/textures/hats/eggplant.png")
             },
             wolf: {
                 offset: [-1.5, -2.0],
                 textOffset: -2.2,
                 size: [3, 3],
-                texture: loadImage('https://skap.io/textures/hats/wolf.png')
+                texture: loadImage("https://skap.io/textures/hats/wolf.png")
             },
             trumpHat: {
                 offset: [-1.53, -2.1],
                 textOffset: -1.7,
                 size: [3.2, 3.2],
-                texture: loadImage('https://skap.io/textures/hats/trumpHat1.png')
+                texture: loadImage("https://skap.io/textures/hats/trumpHat1.png")
             },
             bunnyEars: {
                 offset: [-1.4, -3],
                 textOffset: -2.2,
                 size: [3, 3],
-                texture: loadImage('https://skap.io/textures/hats/bunnyEars.png')
+                texture: loadImage("https://skap.io/textures/hats/bunnyEars.png")
             },
             crown: {
                 offset: [-1.55, -2.65],
                 textOffset: -2.2,
                 size: [3.2, 3.2],
-                texture: loadImage('https://skap.io/textures/hats/crown.png')
+                texture: loadImage("https://skap.io/textures/hats/crown.png")
             },
             kite: {
                 offset: [-0.8, -0.8],
                 textOffset: -1.3,
                 size: [1.6, 1.6],
-                texture: loadImage('https://skap.io/textures/hats/kite.png')
+                texture: loadImage("https://skap.io/textures/hats/kite.png")
             },
             sakura: {
                 offset: [-1.05, -1.4],
                 textOffset: -1.3,
                 size: [2.0, 2.0],
-                texture: loadImage('https://skap.io/textures/hats/sakura.png')
+                texture: loadImage("https://skap.io/textures/hats/sakura.png")
             },
             cowboy: {
                 offset: [-1.6, -2.4],
                 textOffset: -2,
                 size: [3.2, 3.2],
-                texture: loadImage('https://skap.io/textures/hats/cowboy.png')
+                texture: loadImage("https://skap.io/textures/hats/cowboy.png")
             },
             party: {
                 offset: [-1.36, -2.1],
                 textOffset: -2.4,
                 size: [2.65, 2.65],
-                texture: loadImage('https://skap.io/textures/hats/party.png')
+                texture: loadImage("https://skap.io/textures/hats/party.png")
             },
             bimbo: {
                 offset: [-1.2, -1.8],
                 textOffset: -1.5,
                 size: [2.4, 2.4],
-                texture: loadImage('https://skap.io/textures/hats/bimbo.png')
+                texture: loadImage("https://skap.io/textures/hats/bimbo.png")
             },
             uwu: {
                 offset: [-2.8, -3.5],
                 textOffset: -2.4,
                 size: [5.6, 5.6],
-                texture: loadImage('https://skap.io/textures/hats/wowo.png')
+                texture: loadImage("https://skap.io/textures/hats/wowo.png")
             },
             flowerHat: {
                 offset: [-1.55, -2.4],
                 textOffset: -2.1,
                 size: [3.2, 3.2],
-                texture: loadImage('https://skap.io/textures/hats/flowerHat.png')
+                texture: loadImage("https://skap.io/textures/hats/flowerHat.png")
             }
         },
         powers: [
@@ -354,7 +354,7 @@ let showChat = true;
 let chatMsgs = {};
 
 const URLRegex = /(https?:\/\/[a-z0-9][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+((\/[A-z0-9-_]+)*)?(\.[a-z]+)*\/?(\?[A-z0-9\._\-;]+(=[A-z0-9\._\-%]+)?(&[A-z0-9\._\-;]+(=[A-z0-9\._\-%]+)?)*)?(#[A-z0-9\._\-]+(=[A-z0-9\._\-]+)?(&[A-z0-9\._\-]+(=[A-z0-9\._\-]+)?)*)?)/g;
-const EmailRegex = /([A-z0-9_!#$%&'*+/=?`{|}~^.-]+@([A-z0-9-]+(\.[A-z0-9-]+)))/;
+const EmailRegex = /([A-z0-9_!#$%&"*+/=?`{|}~^.-]+@([A-z0-9-]+(\.[A-z0-9-]+)))/;
 
 let emoji = localStorage.getItem("emoji");
 /** @type {Object<string, {char: string, regex: RegExp}>} */

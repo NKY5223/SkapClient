@@ -360,7 +360,7 @@ Owner:<ul>
                             FPSDisplay.innerHTML = calcFPS;
                         }
                         lastFrame = now;
-                        render(parsedMap, map, state);
+                        render(ctx, parsedMap, map, state, particles, renderSettings, camX, camY);
                         window.requestAnimationFrame(run);
                     })();
                     customAlert("Joined game");
