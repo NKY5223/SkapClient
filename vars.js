@@ -290,7 +290,7 @@ let RENDER_SKIN = null;
 
 let parsedMap = {
     background: "#ffffff",
-    areaSize: [0, 0],
+    areaSize: {x: 100, y: 100},
     obstacle: [],
     teleporter: [],
     lava: [],

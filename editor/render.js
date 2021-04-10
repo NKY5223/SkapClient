@@ -1,3 +1,4 @@
+let time = 0;
 /**
  * @typedef SkapObject
  * @property {string} id
@@ -108,12 +109,15 @@
  * @param {number} camX
  * @param {number} camY
  */
- function render() {
+function render() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.lineCap = "round";
+
+    camX += camSpeed / camScale * (keysDown.has(othercontrols[6]) - keysDown.has(othercontrols[4]) + keysDown.has(controls[3]) - keysDown.has(controls[1]));
+    camY += camSpeed / camScale * (keysDown.has(othercontrols[5]) - keysDown.has(othercontrols[3]) + keysDown.has(controls[2]) - keysDown.has(controls[0]));
 
 
     ctx.fillStyle = renderSettings.colors.obstacle;
@@ -127,17 +131,7 @@
         Math.round(parsedMap.areaSize.y * camScale)
     );
 
-    let mX = (mouse.x - canvas.width / 2) / camScale + camX;
-    let mY = (mouse.y - canvas.height / 2) / camScale + camY;
-    aimXSpan.innerHTML = mX.toFixed(3);
-    aimYSpan.innerHTML = mY.toFixed(3);
-    send({
-        e: "aim",
-        m: [
-            mX,
-            mY
-        ]
-    });
+
 
     if (renderSettings.render.obstacle) {
         // Render obstacles

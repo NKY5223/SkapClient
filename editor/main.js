@@ -1,18 +1,20 @@
-/**
- * @type {HTMLCanvasElement}
- */
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+// Zooming
+document.addEventListener("keydown", e => {
+    if (!e.ctrlKey) switch (e.key?.toLowerCase()) {
+        case othercontrols[0]:
+            camScale /= 1.5;
+            break;
+        case othercontrols[1]:
+            camScale *= 1.5;
+            break;
+    }
+});
 
-
-
+// Start rendering
 (function run() {
     render();
     window.requestAnimationFrame(run);
 })();
-
-
-
 
 
 /**
