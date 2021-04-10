@@ -83,7 +83,7 @@
  * @property {number} textOffset
  * @property {HTMLImageElement} texture
  * 
- * @typedef RenderOptions
+ * @typedef RenderrenderSettings
  * @property {Object<string, boolean>} render
  * @property {Object<string, string>} colors
  * @property {Object} textures
@@ -103,64 +103,12 @@
  * 
  * @param {SkapMap} map
  * 
- * @param {State} state
- * 
- * @param {Object<string, Particle[]>} particles
- * 
  * @param {RenderOptions} renderSettings
  * 
  * @param {number} camX
  * @param {number} camY
  */
-function render() {
-    // Particles
-    particles.dash = particles.dash.filter(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        p.r += 0.1;
-        return (p.o -= 0.1) > 0;
-    });
-    particles.shrink = particles.shrink.filter(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        return (p.r -= 0.1) > 0.2;
-    });
-    particles.bomb = particles.bomb.filter(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        return (p.o -= 0.1) > 0;
-    });
-    particles.explosion = particles.explosion.filter(p => {
-        p.r += 5;
-        return (p.o -= 0.05) > 0;
-    });
-    particles.ghost = particles.ghost.filter(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        p.r -= 0.05;
-        return (p.o -= 0.05) > 0;
-    });
-    particles.refuel = particles.refuel.filter(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        return (p.o -= 0.05) > 0;
-    });
-    particles.jetpack = particles.jetpack.filter(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        return (p.o -= 0.02) > 0;
-    });
-    particles.trail = particles.trail.filter(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        return (p.o -= 0.02) > 0;
-    });
-    // Camera
-    if (freeCam) {
-        camX += camSpeed / camScale * (keysDown.has(othercontrols[6]) - keysDown.has(othercontrols[4]));
-        camY += camSpeed / camScale * (keysDown.has(othercontrols[5]) - keysDown.has(othercontrols[3]));
-    }
-
+ function render() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     ctx.textAlign = "center";
@@ -179,22 +127,6 @@ function render() {
         Math.round(parsedMap.areaSize.y * camScale)
     );
 
-
-    if (!state) {
-        state = {
-            infos: {
-                id: "TEMPORARY_ID",
-                fuel: 12,
-                oneCooldown: null,
-                twoCooldown: null,
-                oneHeat: 0,
-                twoHeat: 0
-            },
-            players: {},
-            playerList: ["Sorry, but the data has not yet loaded.", "", true],
-            entities: []
-        }
-    }
     let mX = (mouse.x - canvas.width / 2) / camScale + camX;
     let mY = (mouse.y - canvas.height / 2) / camScale + camY;
     aimXSpan.innerHTML = mX.toFixed(3);
@@ -429,228 +361,6 @@ function render() {
         }
     }
 
-    // ENTITIES
-    for (let obj of state.entities) {
-        switch (obj.type) {
-            case "bomb":
-                ctx.globalAlpha = obj.opacity || 1;
-                ctx.beginPath();
-                ctx.ellipse(
-                    canvas.width / 2 + camScale * (obj.pos.x - camX),
-                    canvas.height / 2 + camScale * (obj.pos.y - camY),
-                    camScale * (obj.region + obj.radius),
-                    camScale * (obj.region + obj.radius),
-                    0, 0, 7
-                );
-                ctx.fillStyle = obj.exploding ? renderSettings.colors.mineExpRegion : renderSettings.colors.mineRegion;
-                ctx.fill();
-                ctx.drawImage(
-                    renderSettings.textures.enemies.bomb[obj.phase & 1],
-                    canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX),
-                    canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY),
-                    camScale * obj.radius * 2,
-                    camScale * obj.radius * 2
-                );
-                break;
-            case "following":
-                ctx.globalAlpha = obj.opacity || 1;
-                ctx.beginPath();
-                ctx.ellipse(
-                    canvas.width / 2 + camScale * (obj.pos.x - camX),
-                    canvas.height / 2 + camScale * (obj.pos.y - camY),
-                    camScale * (obj.region + obj.radius),
-                    camScale * (obj.region + obj.radius),
-                    0, 0, 7
-                );
-                ctx.fillStyle = renderSettings.colors.followingRegion;
-                ctx.fill();
-                ctx.drawImage(
-                    renderSettings.textures.enemies.following,
-                    canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX),
-                    canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY),
-                    camScale * obj.radius * 2,
-                    camScale * obj.radius * 2
-                );
-                break;
-            case "contractor":
-                ctx.globalAlpha = obj.opacity || 1;
-                ctx.beginPath();
-                ctx.ellipse(
-                    canvas.width / 2 + camScale * (obj.pos.x - camX),
-                    canvas.height / 2 + camScale * (obj.pos.y - camY),
-                    camScale * (obj.region + obj.radius),
-                    camScale * (obj.region + obj.radius),
-                    0, 0, 7
-                );
-                ctx.fillStyle = obj.triggered ? renderSettings.colors.contracTriggerRegion : renderSettings.colors.contracRegion;
-                ctx.fill();
-                ctx.drawImage(
-                    renderSettings.textures.enemies.contractor[obj.triggered & 1],
-                    canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX),
-                    canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY),
-                    camScale * obj.radius * 2,
-                    camScale * obj.radius * 2
-                );
-                break;
-            case "bouncer":
-            case "normal":
-            case "reverse":
-            case "spike":
-            case "megaBouncer":
-            case "freezer":
-            case "taker":
-            case "immune":
-            case "monster":
-            case "stutter":
-            case "expanding":
-            case "wavy":
-            case "shooter":
-            case "expander":
-            case "gravityUp":
-            case "gravityDown":
-            case "gravityLeft":
-            case "gravityRight":
-                ctx.globalAlpha = obj.opacity || 1;
-                ctx.drawImage(renderSettings.textures.enemies[obj.type], canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
-                break;
-            case "rotating":
-                ctx.save();
-                ctx.translate(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
-                ctx.rotate(obj.angle);
-                ctx.globalAlpha = obj.opacity || 1;
-                ctx.drawImage(renderSettings.textures.enemies.rotating, -camScale * obj.radius, -camScale * obj.radius, camScale * obj.radius * 2, camScale * obj.radius * 2);
-                ctx.restore();
-                break;
-            case "turretBullet":
-            case "enemyBullet":
-                ctx.globalAlpha = 1;
-                ctx.fillStyle = renderSettings.colors.lava;
-                ctx.beginPath();
-                ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
-                ctx.fill();
-                break;
-            case "meteorBullet":
-                ctx.globalAlpha = 1;
-                ctx.fillStyle = renderSettings.colors.meteor;
-                ctx.beginPath();
-                ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
-                ctx.fill();
-                break;
-            case "path":
-                ctx.fillStyle = renderSettings.colors.blueFire;
-                ctx.globalAlpha = 1;
-                ctx.beginPath();
-                ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
-                ctx.fill();
-                ctx.closePath();
-                break;
-            case "tail":
-                ctx.fillStyle = renderSettings.colors.tail;
-                ctx.globalAlpha = 1;
-                ctx.beginPath();
-                ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
-                ctx.fill();
-                ctx.closePath();
-                break;
-            case "shield":
-                ctx.lineWidth = camScale * obj.size.y * 2;
-                ctx.strokeStyle = renderSettings.colors.shield;
-                ctx.globalAlpha = 1;
-                ctx.save();
-                ctx.translate(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
-                ctx.rotate(obj.dir);
-                ctx.beginPath();
-                ctx.moveTo(-camScale * obj.size.x, 0);
-                ctx.lineTo(camScale * obj.size.x, 0);
-                ctx.stroke();
-                ctx.restore();
-                break;
-            case "healingGhost":
-                ctx.globalAlpha = 1;
-                ctx.beginPath();
-                ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
-                ctx.fillStyle = renderSettings.colors.ghost;
-                ctx.fill();
-                break;
-            case "frostEntity":
-                ctx.globalAlpha = obj.opacity || 1;
-                ctx.beginPath();
-                ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
-                ctx.fillStyle = renderSettings.colors.frost;
-                ctx.fill();
-                break;
-            case "snek":
-                ctx.save();
-                ctx.globalAlpha = 1;
-                for (let i = obj.states.length - 1, o = obj.states[i]; i >= 0; i--, o = obj.states[i]) {
-                    ctx.drawImage(renderSettings.textures.enemies.snekBody, canvas.width / 2 + camScale * (o.x - obj.radius - camX), canvas.height / 2 + camScale * (o.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
-                }
-                ctx.globalAlpha = obj.opacity || 1;
-                ctx.translate(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
-                ctx.rotate(obj.dir);
-                ctx.drawImage(renderSettings.textures.enemies.snekHead, -camScale * obj.radius, -camScale * obj.radius, camScale * obj.radius * 3, camScale * obj.radius * 2);
-                ctx.restore();
-                break;
-            default:
-                ctx.globalAlpha = obj.opacity || 1;
-                ctx.drawImage(renderSettings.textures.enemies.none, canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
-                break;
-        }
-    }
-
-    // Particles
-    ctx.fillStyle = renderSettings.colors.dash;
-    for (let p of particles.dash) {
-        ctx.beginPath();
-        ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * p.r, camScale * p.r, 0, 0, 7);
-        ctx.globalAlpha = p.o;
-        ctx.fill();
-    }
-    ctx.fillStyle = renderSettings.colors.shrink;
-    ctx.globalAlpha = 1;
-    for (let p of particles.shrink) {
-        ctx.beginPath();
-        ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * p.r, camScale * p.r, 0, 0, 7);
-        ctx.fill();
-    }
-    ctx.fillStyle = renderSettings.colors.bombParticle;
-    for (let p of particles.bomb) {
-        ctx.beginPath();
-        ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * 2, camScale * 2, 0, 0, 7);
-        ctx.globalAlpha = p.o;
-        ctx.fill();
-    }
-    ctx.fillStyle = renderSettings.colors.explosion;
-    for (let p of particles.explosion) {
-        ctx.beginPath();
-        ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * p.r, camScale * p.r, 0, 0, 7);
-        ctx.globalAlpha = p.o;
-        ctx.fill();
-    }
-    ctx.fillStyle = renderSettings.colors.ghostParticles;
-    for (let p of particles.ghost) {
-        ctx.beginPath();
-        ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale * p.r, camScale * p.r, 0, 0, 7);
-        ctx.globalAlpha = p.o;
-        ctx.fill();
-    }
-    ctx.fillStyle = renderSettings.colors.refuel;
-    for (let p of particles.refuel) {
-        ctx.beginPath();
-        ctx.ellipse(canvas.width / 2 + camScale * (p.x - camX), canvas.height / 2 + camScale * (p.y - camY), camScale, camScale, 0, 0, 7);
-        ctx.globalAlpha = p.o;
-        ctx.fill();
-    }
-    ctx.fillStyle = renderSettings.colors.jetpack;
-    for (let p of particles.jetpack) {
-        ctx.globalAlpha = p.o;
-        ctx.fillRect(canvas.width / 2 + camScale * (p.x - p.w / 2 - camX), canvas.height / 2 + camScale * (p.y - p.h / 2 - camY), p.w * camScale, p.h * camScale);
-    }
-    for (let p of particles.trail) {
-        ctx.globalAlpha = p.o;
-        ctx.drawImage(renderSettings.textures.trail, canvas.width / 2 + camScale * (p.x - 2.5 - camX), canvas.height / 2 + camScale * (p.y - 2.5 - camY), 5 * camScale, 5 * camScale);
-    }
-
     // Render turrets
     ctx.globalAlpha = 1;
     for (let obj of parsedMap.turret) {
@@ -663,117 +373,6 @@ function render() {
         ctx.beginPath();
         ctx.ellipse(0, 0, camScale * obj.size.x / 2, camScale * obj.size.y / 2, 0, 0, 7);
         ctx.fill();
-        ctx.restore();
-    }
-    // Render players
-    for (let i in state.players) {
-        let p = state.players[i];
-        let died = p.states.includes("Died");
-        let freeze = p.states.includes("Freeze");
-        // Initiate hat
-        let hat = renderSettings.textures.hats.none;
-        if (RENDER_HAT) p.hat = RENDER_HAT;
-        if (p.hat in renderSettings.textures.hats) {
-            hat = renderSettings.textures.hats[p.hat];
-        }
-        // Skin?
-        let skin = p.name;
-        if (RENDER_SKIN) skin = RENDER_SKIN;
-
-        ctx.save();
-        ctx.translate(canvas.width / 2 + camScale * (p.pos.x - camX), canvas.height / 2 + camScale * (p.pos.y - camY));
-        ctx.rotate(p.gravDir / 2 * Math.PI);
-        ctx.beginPath();
-        // Body
-        if (skin in renderSettings.textures.skins && !died && !freeze) {
-            ctx.drawImage(renderSettings.textures.skins[skin], -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
-        }
-        if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
-            ctx.ellipse(p.radius * -0.105 * camScale, p.radius * 0.4 * camScale, p.radius * 0.557 * camScale, p.radius * 0.55 * camScale, 0, 0, 7);
-        } else {
-            ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
-        }
-        ctx.fillStyle = died
-            ? freeze
-                ? renderSettings.colors.playerFreezeDead
-                : renderSettings.colors.playerDead
-            : freeze
-                ? renderSettings.colors.playerFreeze
-                : skin in renderSettings.textures.skins
-                    ? "#00000000"
-                    : fromColArr(p.color);
-        ctx.fill();
-
-        // Hat
-        if (hat) {
-            if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
-                ctx.drawImage(
-                    hat.texture,
-                    camScale * hat.offset[0] * p.radius * 0.55,
-                    camScale * hat.offset[1] * p.radius * 0.55,
-                    camScale * hat.size[0] * p.radius * 0.5,
-                    camScale * hat.size[1] * p.radius * 0.5
-                );
-            } else {
-                ctx.drawImage(
-                    hat.texture,
-                    camScale * hat.offset[0] * p.radius,
-                    camScale * hat.offset[1] * p.radius,
-                    camScale * hat.size[0] * p.radius,
-                    camScale * hat.size[1] * p.radius
-                );
-            }
-        }
-        // Name
-        ctx.font = camScale * 2 + "px Tahoma, Verdana, Segoe, sans-serif";
-        ctx.fillStyle = died
-            ? freeze
-                ? renderSettings.colors.playerFreezeDead
-                : renderSettings.colors.playerDead
-            : freeze
-                ? renderSettings.colors.playerFreeze
-                : "#202020";
-        if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
-            ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius / 2);
-        } else {
-            ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius);
-        }
-
-        // fuelBar™️
-        ctx.fillStyle = died
-            ? freeze
-                ? renderSettings.colors.playerFreezeDead
-                : renderSettings.colors.playerDead
-            : freeze
-                ? renderSettings.colors.playerFreeze
-                : "#ffff40";
-        ctx.fillRect(-camScale * 5, camScale * (p.radius + 1), camScale * p.fuel, camScale * 2.5);
-        ctx.strokeStyle = "#202020";
-        ctx.lineWidth = camScale / 2;
-        ctx.strokeRect(-camScale * 5, camScale * (p.radius + 1), camScale * 10, camScale * 2.5);
-
-        // Messages
-        if (!showChat) {
-            ctx.font = camScale * 4 + "px Tahoma, Verdana, Segoe, sans-serif";
-            if (p.name in chatMsgs) {
-                let msg = chatMsgs[p.name];
-                if (msg.t--) {
-                    let metrics = ctx.measureText(msg.m);
-                    // console.log(metrics);
-                    ctx.fillStyle = "#ffffff80";
-                    ctx.fillRect(
-                        -metrics.actualBoundingBoxLeft - camScale,
-                        -metrics.fontBoundingBoxAscent - camScale / 2 + camScale * hat.textOffset * (p.radius + 3),
-                        metrics.width + 2 * camScale,
-                        metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent + camScale
-                    );
-                    ctx.fillStyle = "#000000";
-                    ctx.fillText(msg.m, 0, camScale * hat.textOffset * (p.radius + 3));
-                } else {
-                    delete chatMsgs[p.name];
-                }
-            }
-        }
         ctx.restore();
     }
     // Render blocks(1)
@@ -818,16 +417,6 @@ function render() {
             Math.round(camScale * obj.size.x),
             Math.round(camScale * obj.size.y)
         );
-        ctx.fillRect(
-            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
-            Math.round(camScale * obj.size.x),
-            Math.round(camScale * obj.size.y)
-        );
-    }
-    // Render boxes (build power)
-    for (let obj of parsedMap.box) {
-        ctx.fillStyle = renderSettings.colors.box;
         ctx.fillRect(
             Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
             Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
