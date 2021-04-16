@@ -26,7 +26,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "yes";
+const version = "removed lotsa names";
 
 /**
  * @type {HTMLCanvasElement}
