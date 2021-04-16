@@ -9,6 +9,20 @@ document.addEventListener("keydown", e => {
             break;
     }
 });
+canvas.addEventListener("click", e => {
+    selectedObject = null;
+    for (let i = parsedMap.obstacle.length - 1; i >= 0; i--) {
+        const obstacle = parsedMap.obstacle[i];
+        const [point0, point1] = points(obstacle);
+
+        console.log(point0, point1, e, pointInRect({ x: e.offsetX, y: e.offsetY }, point0, point1));
+
+        if (pointInRect({ x: e.offsetX, y: e.offsetY }, point0, point1)) {
+            selectedObject = obstacle;
+            break;
+        }
+    }
+});
 
 // Start rendering
 (function run() {
@@ -32,4 +46,28 @@ function download(obj = { error: "Object not supplied" }, exportName = "map") {
     document.body.appendChild(a); // required for firefox
     a.click();
     a.remove();
+}
+/**
+ * @param {SkapObject} obj
+ * @returns {[VectorLike, VectorLike]}
+ */
+function points(obj) {
+    return [
+        {
+            x: Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+            y: Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY))
+        },
+        {
+            x: Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x - camX)),
+            y: Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.size.y - camY))
+        }
+    ];
+}
+/**
+ * @param {VectorLike} point 
+ * @param {VectorLike} point0 
+ * @param {VectorLike} point1 
+ */
+function pointInRect(point, point0, point1) {
+    return point.x > point0.x && point.x < point1.x && point.y > point0.y && point.y < point1.y;
 }

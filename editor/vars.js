@@ -30,6 +30,7 @@ const renderSettings = {
         box: "#00000060",
         hitbox: "#ffff00c0",
         teleporterHitbox: "#0000ffc0",
+        selected: "#ff0000",
         gravOutline: [
             "#ffff00",
             "#ff0000",
@@ -248,10 +249,11 @@ const renderSettings = {
     }
 };
 
+/** @type {ParsedMap} */
 const parsedMap = {
     background: "#e0e0e0",
-    areaSize: {x: 100, y: 100},
-    obstacle: [{pos: {x: 0, y: 0}, size: {x: 10, y: 10}}],
+    areaSize: { x: 100, y: 100 },
+    obstacle: [],
     teleporter: [],
     lava: [],
     rotatingLava: [],
@@ -272,12 +274,32 @@ const parsedMap = {
     image0: [],
     image1: []
 };
+parsedMap.obstacle.push({
+    pos: {
+        x: 0,
+        y: 0
+    },
+    size: {
+        x: 10,
+        y: 10
+    }
+});
+parsedMap.obstacle.push({
+    pos: {
+        x: 100,
+        y: 0
+    },
+    size: {
+        x: 10,
+        y: 10
+    }
+});
 
 let camScale = 5;
 const camSpeed = 10;
 let camX = 0;
 let camY = 0;
-
+let selectedObject = null;
 
 
 /**
@@ -292,3 +314,8 @@ function loadImage(src) {
     }
     return image;
 }
+/**
+ * @typedef VectorLike
+ * @property {number} x
+ * @property {number} y
+ */

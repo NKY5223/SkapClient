@@ -84,7 +84,7 @@ let time = 0;
  * @property {number} textOffset
  * @property {HTMLImageElement} texture
  * 
- * @typedef RenderrenderSettings
+ * @typedef RenderOptions
  * @property {Object<string, boolean>} render
  * @property {Object<string, string>} colors
  * @property {Object} textures
@@ -454,28 +454,26 @@ function render() {
     }
     // Render hitboxes
     ctx.setLineDash([]);
-    if (renderSettings.render.hitbox) {
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = renderSettings.colors.hitbox;
-        for (let o of map.objects)
-            ctx.strokeRect(
-                Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
-                Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
-                Math.round(camScale * o.size.x),
-                Math.round(camScale * o.size.y)
-            );
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = renderSettings.colors.hitbox;
+    for (let o of allObjects()) {
+        ctx.strokeRect(
+            Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
+            Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
+            Math.round(camScale * o.size.x),
+            Math.round(camScale * o.size.y)
+        );
     }
-    // Render teleporter hitboxes (for hidden ones)
-    if (renderSettings.render.teleporterHitbox) {
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = renderSettings.colors.teleporterHitbox;
-        for (let o of parsedMap.teleporter)
-            ctx.strokeRect(
-                Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
-                Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
-                Math.round(camScale * o.size.x),
-                Math.round(camScale * o.size.y)
-            );
+    // Render selected hitbox
+    if (selectedObject) {
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = renderSettings.colors.selected;
+        ctx.strokeRect(
+            Math.round(canvas.width / 2 + camScale * (selectedObject.pos.x - camX)),
+            Math.round(canvas.height / 2 + camScale * (selectedObject.pos.y - camY)),
+            Math.round(camScale * selectedObject.size.x),
+            Math.round(camScale * selectedObject.size.y)
+        );
     }
 }
 /**
@@ -483,4 +481,8 @@ function render() {
  */
 function fromColArr(arr) {
     return `rgba(${arr.join(", ")})`;
+}
+function allObjects() {
+    let accumulator = [];
+    return accumulator;
 }

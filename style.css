@@ -456,8 +456,9 @@ canvas {
     background-clip: text;
     color: transparent;
 }
+/*
 .Sweatyfuckingbitchmsg {
-    /* animation: sweaty 0.1s linear infinite; */
+    /* animation: sweaty 0.1s linear infinite; * /
     color: #0000ffc0;
 }
 .msg2121 {
@@ -494,11 +495,12 @@ canvas {
     color: #008000;
 }
 .imaduckMsg {
-    color: #ff000080;
+    color: #ffff00;
 }
 .drakeMsg {
     color: #0000ff;
 }
+*/
 
 @keyframes slide { 
     0%{ background-position: 0% 0; }
