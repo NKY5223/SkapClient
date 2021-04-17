@@ -725,18 +725,20 @@ function render() {
             }
         }
         // Name
-        ctx.font = camScale * 2 + "px Tahoma, Verdana, Segoe, sans-serif";
-        ctx.fillStyle = died
-            ? freeze
-                ? renderSettings.colors.playerFreezeDead
-                : renderSettings.colors.playerDead
-            : freeze
-                ? renderSettings.colors.playerFreeze
-                : "#202020";
-        if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
-            ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius / 2);
-        } else {
-            ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius);
+        if (renderSettings.render.names) {
+            ctx.font = camScale * 2 + "px Tahoma, Verdana, Segoe, sans-serif";
+            ctx.fillStyle = died
+                ? freeze
+                    ? renderSettings.colors.playerFreezeDead
+                    : renderSettings.colors.playerDead
+                : freeze
+                    ? renderSettings.colors.playerFreeze
+                    : "#202020";
+            if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
+                ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius / 2);
+            } else {
+                ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius);
+            }
         }
 
         // fuelBar™️

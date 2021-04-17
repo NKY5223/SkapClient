@@ -310,8 +310,8 @@ currentMap.objects.obstacle.push({
 });
 currentMap.objects.lava.push({
     pos: {
-        x: 100,
-        y: 0
+        x: 5,
+        y: 5
     },
     size: {
         x: 10,

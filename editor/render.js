@@ -294,7 +294,7 @@ function render() {
         ctx.fillStyle = obj.switch ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
         ctx.fill();
     }
-    // Renders
+    // Render doors
     ctx.fillStyle = renderSettings.colors.doorFill;
     ctx.lineWidth = camScale;
     for (let obj of currentMap.objects.door) {

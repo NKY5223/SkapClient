@@ -20,6 +20,8 @@ const URLParams = new URLSearchParams(location.search);
 const autojoinGameId = URLParams.get("gameId");
 const autojoinGameName = URLParams.get("gameName");
 const autojoinGamePassword = URLParams.get("gamePassword");
+const username = document.getElementById("username");
+const password = document.getElementById("password");
 if (URLParams.has("username")) {
     username.value = URLParams.get("username");
     password.value = URLParams.get("password") || "";
@@ -48,7 +50,8 @@ const renderSettings = {
         block1: true,
         hitbox: false,
         teleporterHitbox: false,
-        invert: Math.random() < 0.05
+        invert: Math.random() < 0.05,
+        names: true
     },
     colors: {
         obstacle: "#ffffff", // Is variable (shit) (no moar shit)
@@ -275,6 +278,7 @@ const renderSettings = {
         ],
         skins: {
             NKY: loadImage("skins/NKY.png"),
+            NKY5223: loadImage("skins/NKY.png"),
             haha0201: loadImage("skins/kinda_pro.png"),
             ZeroTix: loadImage("skins/zerotixpro.png"),
             Sonicexe: loadImage("skins/beggar.png"),
@@ -483,8 +487,6 @@ const alertDiv = document.getElementById("alert");
 
 const connectP = document.getElementById("connecting");
 // Login
-const username = document.getElementById("username");
-const password = document.getElementById("password");
 const guest = document.getElementById("guest");
 const login = document.getElementById("login");
 const register = document.getElementById("register");

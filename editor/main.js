@@ -11,13 +11,16 @@ document.addEventListener("keydown", e => {
 });
 canvas.addEventListener("click", e => {
     selectedObject = null;
-    for (let i = currentMap.objects.obstacle.length - 1; i >= 0; i--) {
-        const obstacle = currentMap.objects.obstacle[i];
-        const [point0, point1] = points(obstacle);
+    outer:
+    for (let type of ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "door", "switch", "button", "slime", "ice", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"]) {
+        for (let i = currentMap.objects[type].length - 1; i >= 0; i--) {
+            const obstacle = currentMap.objects[type][i];
+            const [point0, point1] = points(obstacle);
 
-        if (pointInRect({ x: e.offsetX, y: e.offsetY }, point0, point1)) {
-            selectedObject = obstacle;
-            break;
+            if (pointInRect({ x: e.offsetX, y: e.offsetY }, point0, point1)) {
+                selectedObject = obstacle;
+                break outer;
+            }
         }
     }
 });
