@@ -28,7 +28,7 @@ const renderSettings = {
         slime: "#00c000",
         ice: "#00ffff",
         box: "#00000060",
-        hitbox: "#ffff00c0",
+        hitbox: "#ffff00",
         teleporterHitbox: "#0000ffc0",
         selected: "#ff0000",
         gravOutline: [
@@ -249,15 +249,75 @@ const renderSettings = {
     }
 };
 
+
 const map = {
-    
+    settings: {
+        name: null,
+        creator: null,
+        spawnPos: [0, 0],
+        spawnArea: "Home",
+        version: null,
+        skapclient_version: 0
+    },
+    maps: [
+        {
+            name: "Home",
+            size: [100, 100],
+            background: "#e0e0e0",
+            objects: {
+                obstacle: [],
+                teleporter: [],
+                lava: [],
+                rotatingLava: [],
+                movingLava: [],
+                ice: [],
+                slime: [],
+                button: [],
+                switch: [],
+                door: [],
+                block0: [],
+                text: [],
+                turret: [],
+                block1: [],
+                gravityZone: [],
+                reward: [],
+                hatReward: [],
+                box: [],
+                image0: [],
+                image1: []
+            }
+        }
+    ]
 };
 
 let camScale = 5;
 const camSpeed = 10;
-let camX = 0;
-let camY = 0;
+let camX = 50;
+let camY = 50;
 let selectedObject = null;
+let currentMap = map.maps[0];
+
+
+currentMap.objects.obstacle.push({
+    pos: {
+        x: 0,
+        y: 0
+    },
+    size: {
+        x: 10,
+        y: 10
+    }
+});
+currentMap.objects.lava.push({
+    pos: {
+        x: 100,
+        y: 0
+    },
+    size: {
+        x: 10,
+        y: 10
+    }
+});
 
 
 /**

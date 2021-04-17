@@ -894,6 +894,12 @@ function render() {
                 Math.round(camScale * o.size.y)
             );
     }
+
+    if (renderSettings.render.invert) {
+        ctx.globalCompositeOperation = "difference";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 }
 /**
  * @param {number[]} arr 

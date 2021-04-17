@@ -11,11 +11,9 @@ document.addEventListener("keydown", e => {
 });
 canvas.addEventListener("click", e => {
     selectedObject = null;
-    for (let i = parsedMap.obstacle.length - 1; i >= 0; i--) {
-        const obstacle = parsedMap.obstacle[i];
+    for (let i = currentMap.objects.obstacle.length - 1; i >= 0; i--) {
+        const obstacle = currentMap.objects.obstacle[i];
         const [point0, point1] = points(obstacle);
-
-        console.log(point0, point1, e, pointInRect({ x: e.offsetX, y: e.offsetY }, point0, point1));
 
         if (pointInRect({ x: e.offsetX, y: e.offsetY }, point0, point1)) {
             selectedObject = obstacle;

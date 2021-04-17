@@ -26,7 +26,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "removed lotsa names";
+const version = "inverted canvas";
 
 /**
  * @type {HTMLCanvasElement}
@@ -47,7 +47,8 @@ const renderSettings = {
         teleporter: true,
         block1: true,
         hitbox: false,
-        teleporterHitbox: false
+        teleporterHitbox: false,
+        invert: Math.random() < 0.05
     },
     colors: {
         obstacle: "#ffffff", // Is variable (shit) (no moar shit)
