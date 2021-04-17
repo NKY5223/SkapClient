@@ -279,7 +279,8 @@ const renderSettings = {
             Sonicexe: loadImage("skins/beggar.png"),
             wolfie: loadImage("skins/wolfer.png"),
             wolfer: loadImage("skins/wolfer.png"),
-            wolfy: loadImage("skins/wolfer.png")
+            wolfy: loadImage("skins/wolfer.png"),
+            Frog: loadImage("skins/Frog.png")
         },
         trail: loadImage(`https://skap.io/textures/particles/${["apple", "blackHeart", "greyPaw", "heart", "pinkPaw", "sparkles", "whitePaw"][Math.floor(Math.random() * 7)]}.png`)
     }

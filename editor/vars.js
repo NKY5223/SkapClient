@@ -249,51 +249,9 @@ const renderSettings = {
     }
 };
 
-/** @type {ParsedMap} */
-const parsedMap = {
-    background: "#e0e0e0",
-    areaSize: { x: 100, y: 100 },
-    obstacle: [],
-    teleporter: [],
-    lava: [],
-    rotatingLava: [],
-    movingLava: [],
-    ice: [],
-    slime: [],
-    button: [],
-    switch: [],
-    door: [],
-    block0: [],
-    text: [],
-    turret: [],
-    block1: [],
-    gravityZone: [],
-    reward: [],
-    hatReward: [],
-    box: [],
-    image0: [],
-    image1: []
+const map = {
+    
 };
-parsedMap.obstacle.push({
-    pos: {
-        x: 0,
-        y: 0
-    },
-    size: {
-        x: 10,
-        y: 10
-    }
-});
-parsedMap.obstacle.push({
-    pos: {
-        x: 100,
-        y: 0
-    },
-    size: {
-        x: 10,
-        y: 10
-    }
-});
 
 let camScale = 5;
 const camSpeed = 10;
