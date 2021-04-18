@@ -1,5 +1,5 @@
 // Zooming
-document.addEventListener("wheel", e => {
+canvas.addEventListener("wheel", e => {
     let m = 0.85 ** (e.deltaY / 125);
     let x = (e.offsetX - canvas.width / 2) / camScale + camX;
     let y = (e.offsetY - canvas.height / 2) / camScale + camY;
@@ -7,7 +7,7 @@ document.addEventListener("wheel", e => {
     camY = (m * y - y + camY) / m;
     camScale *= m;
 });
-canvas.addEventListener("click", e => {
+canvas.addEventListener("mousedown", e => {
     for (let type of ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "door", "switch", "button", "slime", "ice", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"]) {
         for (let i = currentMap.objects[type].length - 1; i >= 0; i--) {
             const obj = currentMap.objects[type][i];
@@ -24,9 +24,12 @@ canvas.addEventListener("click", e => {
     if (selectedObject) hide(selectedObject.element);
     selectedObject = null;
 });
+canvas.addEventListener("contextmenu", e => {
+    e.preventDefault();
+});
 
 {
-    map.maps.push(createArea("Home", 100, 100));
+    map.maps.push(createArea("Home", "#000a57", 100, 100));
     currentMap = map.maps[0];
     menu.appendChild(currentMap.element);
 

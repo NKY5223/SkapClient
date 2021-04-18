@@ -20,7 +20,6 @@ function createLI(_class = "", id = "") {
  */
 function createFolder(title, lis) {
     const folder = createLI("folder");
-    let div = document.createElement("div");
     let ul = document.createElement("ul");
     ul.classList.add("indent");
 
@@ -30,12 +29,11 @@ function createFolder(title, lis) {
         ul.classList.toggle("closed");
     });
 
-    div.appendChild(titleLI);
+    folder.appendChild(titleLI);
     for (let li of lis) {
         ul.appendChild(li);
     }
-    div.appendChild(ul);
-    folder.appendChild(div);
+    folder.appendChild(ul);
     return folder;
 }
 /**
@@ -47,6 +45,28 @@ function createProperty(name, input, type = "text") {
     const li = createLI("property " + type);
     li.appendChild(createSpan(name, "label"));
     input.type = type;
-    li.appendChild(input);
+    if (type === "color") {
+        const label = document.createElement("label");
+        const text = document.createTextNode(input.value);
+        text.nodeValue = input.value;
+        label.appendChild(text);
+        input.id = generateId();
+        label.htmlFor = input.id;
+        label.appendChild(input);
+        label.style.background = input.value;
+        li.style.borderLeftColor = input.value;
+        input.addEventListener("input", () => {
+            text.nodeValue = input.value;
+            label.style.background = input.value;
+            li.style.borderLeftColor = input.value;
+        });
+        li.appendChild(label);
+    } else {
+        li.appendChild(input);
+    }
     return li;
+}
+let currentId = 0;
+function generateId() {
+    return "generated" + currentId++;
 }

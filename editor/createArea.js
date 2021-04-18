@@ -1,6 +1,7 @@
-function createArea(name, w, h) {
+function createArea(name, color, w, h) {
     const area = {
         name,
+        color,
         size: [w, h],
         objects: {
             obstacle: [],
@@ -32,6 +33,15 @@ function createArea(name, w, h) {
         area.name = Number(nameInput.value);
     });
 
+    const colorInput = document.createElement("input");
+    colorInput.value = color;
+    colorInput.addEventListener("input", () => {
+        area.color = "rgb(" +
+        (240 + (parseInt(colorInput.value.slice(1, 3), 16) - 240) * 0.8) + ", " +
+        (240 + (parseInt(colorInput.value.slice(3, 5), 16) - 240) * 0.8) + ", " +
+        (240 + (parseInt(colorInput.value.slice(5, 7), 16) - 240) * 0.8) + ")";
+    });
+
     const wInput = document.createElement("input");
     wInput.value = w;
     wInput.addEventListener("input", () => {
@@ -46,6 +56,7 @@ function createArea(name, w, h) {
 
     area.element = createFolder("Area Properties", [
         createProperty("name", nameInput, "text"),
+        createProperty("color", colorInput, "color"),
         createFolder("Size", [
             createProperty("width", wInput, "number"),
             createProperty("height", hInput, "number")

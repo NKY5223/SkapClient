@@ -120,10 +120,10 @@ function render() {
     camY += camSpeed / camScale * (keysDown.has(othercontrols[5]) - keysDown.has(othercontrols[3]) + keysDown.has(controls[2]) - keysDown.has(controls[0]));
 
 
-    ctx.fillStyle = renderSettings.colors.obstacle;
+    ctx.fillStyle = currentMap?.color;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = currentMap?.background || "#e0e0e0";
+    ctx.fillStyle = currentMap?.background || "#e6e6e6";
     ctx.fillRect(
         Math.round(canvas.width / 2 - camScale * camX),
         Math.round(canvas.height / 2 - camScale * camY),
@@ -135,7 +135,7 @@ function render() {
     if (!currentMap) return;
     if (renderSettings.render.obstacle) {
         // Render obstacles
-        ctx.fillStyle = renderSettings.colors.obstacle;
+        ctx.fillStyle = currentMap?.color;
         for (let obj of currentMap.objects.obstacle) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -177,7 +177,7 @@ function render() {
             }
             if (gradient) {
                 gradient.addColorStop(0, currentMap.background);
-                gradient.addColorStop(1, renderSettings.colors.obstacle);
+                gradient.addColorStop(1, currentMap?.color);
             } else gradient = currentMap.background;
             ctx.fillStyle = gradient;
             ctx.fillRect(
