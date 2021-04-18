@@ -1,24 +1,22 @@
 // Zooming
-document.addEventListener("keydown", e => {
-    if (!e.ctrlKey) switch (e.key?.toLowerCase()) {
-        case othercontrols[0]:
-            camScale /= 1.5;
-            break;
-        case othercontrols[1]:
-            camScale *= 1.5;
-            break;
-    }
+document.addEventListener("wheel", e => {
+    let m = 0.85 ** (e.deltaY / 125);
+    let x = (e.offsetX - canvas.width / 2) / camScale + camX;
+    let y = (e.offsetY - canvas.height / 2) / camScale + camY;
+    camX = (m * x - x + camX) / m;
+    camY = (m * y - y + camY) / m;
+    camScale *= m;
 });
 canvas.addEventListener("click", e => {
     selectedObject = null;
     outer:
     for (let type of ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "door", "switch", "button", "slime", "ice", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"]) {
         for (let i = currentMap.objects[type].length - 1; i >= 0; i--) {
-            const obstacle = currentMap.objects[type][i];
-            const [point0, point1] = points(obstacle);
+            const obj = currentMap.objects[type][i];
+            const [point0, point1] = points(obj);
 
             if (pointInRect({ x: e.offsetX, y: e.offsetY }, point0, point1)) {
-                selectedObject = obstacle;
+                selectedObject = obj;
                 break outer;
             }
         }
@@ -30,6 +28,16 @@ canvas.addEventListener("click", e => {
     render();
     window.requestAnimationFrame(run);
 })();
+
+{
+    let obstacle = createObstacle(0, 0, 10, 10);
+    currentMap.objects.obstacle.push(obstacle);
+    menu.appendChild(obstacle.element);
+
+    let lava = createLava(5, 5, 10, 10);
+    currentMap.objects.lava.push(lava);
+    menu.appendChild(lava.element);
+}
 
 
 /**

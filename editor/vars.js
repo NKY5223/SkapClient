@@ -297,28 +297,7 @@ let camY = 50;
 let selectedObject = null;
 let currentMap = map.maps[0];
 
-
-currentMap.objects.obstacle.push({
-    pos: {
-        x: 0,
-        y: 0
-    },
-    size: {
-        x: 10,
-        y: 10
-    }
-});
-currentMap.objects.lava.push({
-    pos: {
-        x: 5,
-        y: 5
-    },
-    size: {
-        x: 10,
-        y: 10
-    }
-});
-
+const menu = document.getElementById("menu");
 
 /**
  * LOAD IMAGE
