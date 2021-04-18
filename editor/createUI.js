@@ -20,7 +20,9 @@ function createLI(_class = "", id = "") {
  */
 function createFolder(title, lis) {
     const folder = createLI("folder");
+    let div = document.createElement("div");
     let ul = document.createElement("ul");
+    ul.classList.add("indent");
 
     let titleLI = createLI("title");
     titleLI.innerHTML = title;
@@ -28,11 +30,12 @@ function createFolder(title, lis) {
         ul.classList.toggle("closed");
     });
 
-    ul.appendChild(titleLI);
+    div.appendChild(titleLI);
     for (let li of lis) {
         ul.appendChild(li);
     }
-    folder.appendChild(ul);
+    div.appendChild(ul);
+    folder.appendChild(div);
     return folder;
 }
 /**

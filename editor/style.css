@@ -22,19 +22,20 @@ input[type=number] {
 
 #menu {
     position: absolute;
-    right: 20px;
+    right: 15px;
     top: 0px;
-    width: 270px;
+    width: 250px;
     margin: 0;
     padding: 0;
     user-select: none;
 }
-#menu ul {
+ul {
     list-style: none;
     margin: 0;
-    padding-left: 5px;
+    padding-left: 0;
+    overflow: visible;
 }
-#menu li {
+li {
     overflow: auto;
 }
 #menu input {
@@ -57,18 +58,20 @@ input[type=number] {
 
 
 .folder {
-    margin-left: 4px;
     list-style: none;
 }
 .title {
-    margin-left: -4px;
-    padding-left: 16px;
+    /* margin-left: -4px; */
+    padding: 0 4px 0 16px;
     background: #000000 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;
     font: 11px "Lucida Grande", sans-serif;
     line-height: 27px;
     height: 27px;
     cursor: pointer;
     border-bottom: 1px solid #303030;
+}
+.indent {
+    margin-left: 4px;
 }
 .closed > .title {
     background-image: url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==);
