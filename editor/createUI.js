@@ -35,6 +35,11 @@ function createFolder(title, lis) {
     folder.appendChild(ul);
     return folder;
 }
+/**
+ * @param {string} name 
+ * @param {HTMLInputElement} input 
+ * @param {string} type 
+ */
 function createProperty(name, input, type = "text") {
     const li = createLI("property " + type);
     li.appendChild(createSpan(name, "label"));

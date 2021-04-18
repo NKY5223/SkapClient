@@ -1,5 +1,6 @@
 :root {
     --number: #2fa1d6;
+    --text: #1ed36f;
 }
 body {
     background: #000000;
@@ -95,6 +96,15 @@ input[type=number] {
 .property.number input {
     color: var(--number);
 }
+.property.text {
+    border-left: 3px solid var(--text);
+}
+.property.text input {
+    color: var(--text);
+}
 .property input:focus {
     color: #ffffff;
+}
+.hidden {
+    display: none;
 }

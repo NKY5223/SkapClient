@@ -123,16 +123,16 @@ function render() {
     ctx.fillStyle = renderSettings.colors.obstacle;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = currentMap.background;
+    ctx.fillStyle = currentMap?.background || "#e0e0e0";
     ctx.fillRect(
         Math.round(canvas.width / 2 - camScale * camX),
         Math.round(canvas.height / 2 - camScale * camY),
-        Math.round(currentMap.size[0] * camScale),
-        Math.round(currentMap.size[0] * camScale),
+        Math.round(currentMap?.size[0] * camScale),
+        Math.round(currentMap?.size[1] * camScale),
     );
 
 
-
+    if (!currentMap) return;
     if (renderSettings.render.obstacle) {
         // Render obstacles
         ctx.fillStyle = renderSettings.colors.obstacle;

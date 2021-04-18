@@ -23,13 +23,11 @@ canvas.addEventListener("click", e => {
     }
 });
 
-// Start rendering
-(function run() {
-    render();
-    window.requestAnimationFrame(run);
-})();
-
 {
+    map.maps.push(createArea("Home", 100, 100));
+    currentMap = map.maps[0];
+    menu.appendChild(currentMap.element);
+
     let obstacle = createObstacle(0, 0, 10, 10);
     currentMap.objects.obstacle.push(obstacle);
     menu.appendChild(obstacle.element);
@@ -39,6 +37,11 @@ canvas.addEventListener("click", e => {
     menu.appendChild(lava.element);
 }
 
+// Start rendering
+(function run() {
+    render();
+    window.requestAnimationFrame(run);
+})();
 
 /**
  * @param {string} obj
@@ -79,4 +82,16 @@ function points(obj) {
  */
 function pointInRect(point, point0, point1) {
     return point.x > point0.x && point.x < point1.x && point.y > point0.y && point.y < point1.y;
+}
+/**
+ * @param {Element} element 
+ */
+function hide(element) {
+    element.classList.add("hidden");
+}
+/**
+ * @param {Element} element 
+ */
+function show(element) {
+    element.classList.remove("hidden");
 }

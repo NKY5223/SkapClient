@@ -23,7 +23,7 @@ const renderSettings = {
         teleporterHitbox: false
     },
     colors: {
-        obstacle: "#002080", // Is variable (shit) (no moar shit)
+        obstacle: "rgb(48, 56, 117.6)", // Is variable (shit) (no moar shit)
         lava: "#d01000",
         slime: "#00c000",
         ice: "#00ffff",
@@ -260,33 +260,33 @@ const map = {
         skapclient_version: 0
     },
     maps: [
-        {
-            name: "Home",
-            size: [100, 100],
-            background: "#e0e0e0",
-            objects: {
-                obstacle: [],
-                teleporter: [],
-                lava: [],
-                rotatingLava: [],
-                movingLava: [],
-                ice: [],
-                slime: [],
-                button: [],
-                switch: [],
-                door: [],
-                block0: [],
-                text: [],
-                turret: [],
-                block1: [],
-                gravityZone: [],
-                reward: [],
-                hatReward: [],
-                box: [],
-                image0: [],
-                image1: []
-            }
-        }
+        // {
+        //     name: "Home",
+        //     size: [100, 100],
+        //     background: "#e0e0e0",
+        //     objects: {
+        //         obstacle: [],
+        //         teleporter: [],
+        //         lava: [],
+        //         rotatingLava: [],
+        //         movingLava: [],
+        //         ice: [],
+        //         slime: [],
+        //         button: [],
+        //         switch: [],
+        //         door: [],
+        //         block0: [],
+        //         text: [],
+        //         turret: [],
+        //         block1: [],
+        //         gravityZone: [],
+        //         reward: [],
+        //         hatReward: [],
+        //         box: [],
+        //         image0: [],
+        //         image1: []
+        //     }
+        // }
     ]
 };
 
@@ -295,7 +295,7 @@ const camSpeed = 10;
 let camX = 50;
 let camY = 50;
 let selectedObject = null;
-let currentMap = map.maps[0];
+let currentMap = null;
 
 const menu = document.getElementById("menu");
 
