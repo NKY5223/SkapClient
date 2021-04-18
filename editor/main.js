@@ -29,7 +29,7 @@ canvas.addEventListener("contextmenu", e => {
 });
 
 {
-    map.maps.push(createArea("Home", "#000a57", 100, 100));
+    map.maps.push(createArea("Home", "#000a57", 0.8, "#e6e6e6", 100, 100));
     currentMap = map.maps[0];
     menu.appendChild(currentMap.element);
 

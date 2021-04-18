@@ -375,6 +375,10 @@ const emojiList = emoji === "0" ? {}
                 char: "😊",
                 regex: /:smile:/gi
             },
+            laugh: {
+                char: "😊",
+                regex: /:laugh:/gi
+            },
             cry: {
                 char: "😢",
                 regex: /:cry:/gi
@@ -417,6 +421,14 @@ const emojiList = emoji === "0" ? {}
                 smile2: {
                     char: "😊",
                     regex: /:\)/gi
+                },
+                laugh: {
+                    char: "😊",
+                    regex: /:laugh:/gi
+                },
+                laugh2: {
+                    char: "😊",
+                    regex: /:D/gi
                 },
                 rage: {
                     char: "😡",

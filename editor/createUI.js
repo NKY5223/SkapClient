@@ -55,10 +55,16 @@ function createProperty(name, input, type = "text") {
         label.appendChild(input);
         label.style.background = input.value;
         li.style.borderLeftColor = input.value;
+        let luma = 0.2126 * parseInt(input.value.slice(1, 3), 16) + 0.7152 * parseInt(input.value.slice(3, 5), 16) + 0.0722 * parseInt(input.value.slice(5, 7), 16);
+        if (luma > 128) li.classList.add("light");
         input.addEventListener("input", () => {
             text.nodeValue = input.value;
             label.style.background = input.value;
             li.style.borderLeftColor = input.value;
+
+            let luma = 0.2126 * parseInt(input.value.slice(1, 3), 16) + 0.7152 * parseInt(input.value.slice(3, 5), 16) + 0.0722 * parseInt(input.value.slice(5, 7), 16);
+            if (luma > 128) li.classList.add("light");
+            else li.classList.remove("light");
         });
         li.appendChild(label);
     } else {

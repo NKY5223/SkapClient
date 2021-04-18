@@ -123,7 +123,7 @@ function render() {
     ctx.fillStyle = currentMap?.color;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = currentMap?.background || "#e6e6e6";
+    ctx.fillStyle = currentMap?.background;
     ctx.fillRect(
         Math.round(canvas.width / 2 - camScale * camX),
         Math.round(canvas.height / 2 - camScale * camY),
