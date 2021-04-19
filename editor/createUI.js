@@ -26,7 +26,7 @@ function createFolder(title, lis) {
     let titleLI = createLI("title");
     titleLI.innerHTML = title;
     titleLI.addEventListener("click", () => {
-        ul.classList.toggle("closed");
+        folder.classList.toggle("closed");
     });
 
     folder.appendChild(titleLI);

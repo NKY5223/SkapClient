@@ -2,6 +2,7 @@
  * @typedef Lava
  * @property {VectorLike} pos
  * @property {VectorLike} size
+ * @property {HTMLInputElement[]} inputs
  * 
  * @param {number} x 
  * @param {number} y 
@@ -26,28 +27,28 @@
     xInput.value = x;
     xInput.type = "number";
     xInput.addEventListener("input", () => {
-        lava.pos.x = Number(xInput.value);
+        lava.pos.x = Number(xInput.value = Math.max(xInput.value, 0));
     });
 
     const yInput = document.createElement("input");
     yInput.value = y;
     yInput.type = "number";
     yInput.addEventListener("input", () => {
-        lava.pos.y = Number(yInput.value);
+        lava.pos.y = Number(yInput.value = Math.max(yInput.value, 0));
     });
 
     const wInput = document.createElement("input");
     wInput.value = w;
     wInput.type = "number";
     wInput.addEventListener("input", () => {
-        lava.size.x = Number(wInput.value);
+        lava.size.x = Number(wInput.value = Math.max(wInput.value, 0));
     });
 
     const hInput = document.createElement("input");
     hInput.value = h;
     hInput.type = "number";
     hInput.addEventListener("input", () => {
-        lava.size.y = Number(hInput.value);
+        lava.size.y = Number(hInput.value = Math.max(hInput.value, 0));
     });
 
 
@@ -61,6 +62,12 @@
             createProperty("height", hInput, "number")
         ])
     ]);
+    lava.inputs = {
+        x: xInput,
+        y: yInput,
+        w: wInput,
+        h: hInput
+    };
 
     return lava;
 }

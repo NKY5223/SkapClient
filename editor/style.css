@@ -72,7 +72,7 @@ li {
 .indent {
     margin-left: 4px;
 }
-.closed > .title {
+.closed .title {
     background-image: url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==);
 }
 .label {
@@ -89,8 +89,9 @@ li {
     border-bottom: 1px solid #303030;
     background: #202020;
 }
-.closed .property, .closed .folder {
+.closed > .indent {
     display: none;
+    transform: rotateX(90deg);
 }
 .property.number {
     border-left: 3px solid var(--number);
@@ -125,13 +126,17 @@ li {
     font: bold 13px "Lucida Grande", sans-serif;
     line-height: 17px;
     text-align: center;
-    cursor: pointer;
+    position: relative;
 }
 .property.color input {
     opacity: 0;
     position: absolute;
     cursor: pointer;
     left: 0;
+    padding: 0;
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100%;
 }
 .property.color.light label {
     color: #000000;

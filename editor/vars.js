@@ -297,6 +297,13 @@ let camY = 50;
 let selectedObject = null;
 let currentMap = null;
 
+const selectBuffer = 5;
+/**
+ * @type {null | "u" | "ur" | "r" | "dr" | "d" | "dl" | "l" | "ul"}
+ */
+let selectMode = null;
+let lockCursor = false;
+
 const menu = document.getElementById("menu");
 
 /**
