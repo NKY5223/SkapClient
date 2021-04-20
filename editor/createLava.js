@@ -2,7 +2,8 @@
  * @typedef Lava
  * @property {VectorLike} pos
  * @property {VectorLike} size
- * @property {HTMLInputElement[]} inputs
+ * @property {{x: HTMLInputElement, y: HTMLInputElement, w: HTMLInputElement, h: HTMLInputElement}} inputs
+ * @property {HTMLLIElement} element
  * 
  * @param {number} x 
  * @param {number} y 

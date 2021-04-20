@@ -1,5 +1,17 @@
 /**
  * @typedef {[number, number, number]} ColorArr
+ * @typedef Area
+ * @property {string} name
+ * @property {string} color
+ * @property {ColorArr} colorArr
+ * @property {string} background
+ * @property {ColorArr} backgroundArr
+ * @property {number} opacity
+ * @property {[number, number]} size
+ * @property {Object} objects
+ * @property {Obstacle[]} objects.obstacle
+ * @property {Lava[]} objects.lava
+ * @property {Slime[]} objects.slime
  * 
  * @param {string} name 
  * @param {ColorArr} color 
@@ -64,17 +76,22 @@ function createArea(name, color, opacity, background, w, h) {
             (240 + (r - 240) * opacityInput.value) + ", " +
             (240 + (g - 240) * opacityInput.value) + ", " +
             (240 + (b - 240) * opacityInput.value) + ")";
+        document.documentElement.style.setProperty("--obstacle", `rgba(${r}, ${g}, ${b}, ${area.opacity}`);
     });
 
     opacityInput.value = opacity;
     opacityInput.step = 0.05;
     opacityInput.addEventListener("input", () => {
         opacityInput.value = Math.max(Math.min(opacityInput.value, 1), 0);
+        let r = parseInt(colorInput.value.slice(1, 3), 16);
+        let g = parseInt(colorInput.value.slice(3, 5), 16);
+        let b = parseInt(colorInput.value.slice(5, 7), 16);
         area.opacity = opacityInput.value;
         area.color = "rgb(" +
-            (240 + (parseInt(colorInput.value.slice(1, 3), 16) - 240) * opacityInput.value) + ", " +
-            (240 + (parseInt(colorInput.value.slice(3, 5), 16) - 240) * opacityInput.value) + ", " +
-            (240 + (parseInt(colorInput.value.slice(5, 7), 16) - 240) * opacityInput.value) + ")";
+            (240 + (r - 240) * opacityInput.value) + ", " +
+            (240 + (g - 240) * opacityInput.value) + ", " +
+            (240 + (b - 240) * opacityInput.value) + ")";
+        document.documentElement.style.setProperty("--obstacle", `rgba(${r}, ${g}, ${b}, ${area.opacity}`);
     });
 
     const backgroundInput = document.createElement("input");

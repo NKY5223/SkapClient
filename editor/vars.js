@@ -249,7 +249,14 @@ const renderSettings = {
     }
 };
 
-
+/**
+ * @typedef SkapMap
+ * @property {{name: string | null, creator: string | null, spawnPos: [number, number], spawnArea: string, version: number | null, skapclient_version: number | null}} settings
+ * @property {Area[]} areas
+**/
+/**
+ * @type {SkapMap}
+ */
 const map = {
     settings: {
         name: null,
@@ -257,37 +264,9 @@ const map = {
         spawnPos: [0, 0],
         spawnArea: "Home",
         version: null,
-        skapclient_version: 0
+        skapclient_version: null
     },
-    maps: [
-        // {
-        //     name: "Home",
-        //     size: [100, 100],
-        //     background: "#e0e0e0",
-        //     objects: {
-        //         obstacle: [],
-        //         teleporter: [],
-        //         lava: [],
-        //         rotatingLava: [],
-        //         movingLava: [],
-        //         ice: [],
-        //         slime: [],
-        //         button: [],
-        //         switch: [],
-        //         door: [],
-        //         block0: [],
-        //         text: [],
-        //         turret: [],
-        //         block1: [],
-        //         gravityZone: [],
-        //         reward: [],
-        //         hatReward: [],
-        //         box: [],
-        //         image0: [],
-        //         image1: []
-        //     }
-        // }
-    ]
+    areas: []
 };
 
 let camScale = 5;
@@ -295,16 +274,19 @@ const camSpeed = 10;
 let camX = 50;
 let camY = 50;
 let selectedObject = null;
-let currentMap = null;
+/** @type {Area} */
+let currentArea = null;
 
 const selectBuffer = 5;
-/**
- * @type {null | "u" | "ur" | "r" | "dr" | "d" | "dl" | "l" | "ul"}
- */
+/** @type {null | "u" | "ur" | "r" | "dr" | "d" | "dl" | "l" | "ul"} */
 let selectMode = null;
 let lockCursor = false;
 
 const menu = document.getElementById("menu");
+const togglemenu = document.getElementById("togglemenu");
+
+const downloadBtn = document.getElementById("download");
+const obstacleBtn = document.getElementById("createObstacle");
 
 /**
  * LOAD IMAGE

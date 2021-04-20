@@ -100,7 +100,7 @@ let time = 0;
 /**
  * @param {CanvasRenderingContext2D} ctx
  * 
- * @param {ParsedMap} currentMap.objects
+ * @param {ParsedMap} currentArea.objects
  * 
  * @param {SkapMap} map
  * 
@@ -120,23 +120,23 @@ function render() {
     camY += camSpeed / camScale * (keysDown.has(othercontrols[5]) - keysDown.has(othercontrols[3]) + keysDown.has(controls[2]) - keysDown.has(controls[0]));
 
 
-    ctx.fillStyle = currentMap?.color;
+    ctx.fillStyle = currentArea?.color;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = currentMap?.background;
+    ctx.fillStyle = currentArea?.background;
     ctx.fillRect(
         Math.round(canvas.width / 2 - camScale * camX),
         Math.round(canvas.height / 2 - camScale * camY),
-        Math.round(currentMap?.size[0] * camScale),
-        Math.round(currentMap?.size[1] * camScale),
+        Math.round(currentArea?.size[0] * camScale),
+        Math.round(currentArea?.size[1] * camScale),
     );
 
 
-    if (!currentMap) return;
+    if (!currentArea) return;
     if (renderSettings.render.obstacle) {
         // Render obstacles
-        ctx.fillStyle = currentMap?.color;
-        for (let obj of currentMap.objects.obstacle) {
+        ctx.fillStyle = currentArea?.color;
+        for (let obj of currentArea.objects.obstacle) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -147,7 +147,7 @@ function render() {
     }
     // Render the ****ing teleporters (they suck)
     if (renderSettings.render.teleporter) {
-        for (let obj of currentMap.objects.teleporter) {
+        for (let obj of currentArea.objects.teleporter) {
             let gradient;
             switch (obj.dir) {
                 case "0":
@@ -176,9 +176,9 @@ function render() {
                     break;
             }
             if (gradient) {
-                gradient.addColorStop(0, currentMap.background);
-                gradient.addColorStop(1, currentMap?.color);
-            } else gradient = currentMap.background;
+                gradient.addColorStop(0, currentArea.background);
+                gradient.addColorStop(1, currentArea?.color);
+            } else gradient = currentArea.background;
             ctx.fillStyle = gradient;
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -191,7 +191,7 @@ function render() {
     ctx.fillStyle = renderSettings.colors.lava;
     if (renderSettings.render.lava) {
         // Render lava
-        for (let obj of currentMap.objects.lava) {
+        for (let obj of currentArea.objects.lava) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -202,7 +202,7 @@ function render() {
     }
     if (renderSettings.render.movLava) {
         // Render movLava
-        for (let obj of currentMap.objects.movingLava) {
+        for (let obj of currentArea.objects.movingLava) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -214,7 +214,7 @@ function render() {
     if (renderSettings.render.rotLava) {
         // Render rotLava
         ctx.globalAlpha = 1;
-        for (let obj of currentMap.objects.rotatingLava) {
+        for (let obj of currentArea.objects.rotatingLava) {
             ctx.save();
             ctx.translate(
                 Math.round(canvas.width / 2 + camScale * (obj.center.x - camX)),
@@ -228,7 +228,7 @@ function render() {
     if (renderSettings.render.ice) {
         // Render ice
         ctx.fillStyle = renderSettings.colors.ice;
-        for (let obj of currentMap.objects.ice) {
+        for (let obj of currentArea.objects.ice) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -240,7 +240,7 @@ function render() {
     if (renderSettings.render.slime) {
         // Render slime
         ctx.fillStyle = renderSettings.colors.slime;
-        for (let obj of currentMap.objects.slime) {
+        for (let obj of currentArea.objects.slime) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -251,7 +251,7 @@ function render() {
     }
     // Render buttons
     ctx.setLineDash([]);
-    for (let obj of currentMap.objects.button) {
+    for (let obj of currentArea.objects.button) {
         ctx.beginPath();
         ctx.moveTo(
             Math.round(canvas.width / 2 + camScale * (obj.points[0][0] - camX)),
@@ -273,7 +273,7 @@ function render() {
         ctx.fill();
     }
     // Render switches?
-    for (let obj of currentMap.objects.switch) {
+    for (let obj of currentArea.objects.switch) {
         ctx.beginPath();
         ctx.moveTo(
             Math.round(canvas.width / 2 + camScale * (obj.points[0][0] - camX)),
@@ -297,7 +297,7 @@ function render() {
     // Render doors
     ctx.fillStyle = renderSettings.colors.doorFill;
     ctx.lineWidth = camScale;
-    for (let obj of currentMap.objects.door) {
+    for (let obj of currentArea.objects.door) {
         ctx.strokeStyle = obj.opened ? renderSettings.colors.doorOpenedOutline : renderSettings.colors.doorClosedOutline;
         ctx.strokeRect(
             Math.round(canvas.width / 2 + camScale * (obj.pos.x + 0.5 - camX)),
@@ -329,7 +329,7 @@ function render() {
     // Render blocks(0)
     ctx.globalAlpha = 1;
     if (renderSettings.render.block0) {
-        for (let obj of currentMap.objects.block0) {
+        for (let obj of currentArea.objects.block0) {
             ctx.fillStyle = obj.color;
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -340,8 +340,8 @@ function render() {
         }
     }
     // Render images(0)
-    for (let i in currentMap.objects.image0) {
-        let obj = currentMap.objects.image0[i];
+    for (let i in currentArea.objects.image0) {
+        let obj = currentArea.objects.image0[i];
         try {
             ctx.drawImage(
                 obj.image,
@@ -351,13 +351,13 @@ function render() {
                 Math.round(camScale * obj.size.y)
             );
         } catch (err) {
-            console.error(currentMap.objects.image0.splice(i, 1)[0], err);
+            console.error(currentArea.objects.image0.splice(i, 1)[0], err);
         }
     }
 
     // Render turrets
     ctx.globalAlpha = 1;
-    for (let obj of currentMap.objects.turret) {
+    for (let obj of currentArea.objects.turret) {
         ctx.save();
         ctx.translate(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
         ctx.rotate(obj.dir);
@@ -372,7 +372,7 @@ function render() {
     // Render blocks(1)
     ctx.globalAlpha = 1;
     if (renderSettings.render.block1) {
-        for (let obj of currentMap.objects.block1) {
+        for (let obj of currentArea.objects.block1) {
             ctx.fillStyle = obj.color;
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -383,8 +383,8 @@ function render() {
         }
     }
     // Render images(1)
-    for (let i in currentMap.objects.image1) {
-        let obj = currentMap.objects.image1[i];
+    for (let i in currentArea.objects.image1) {
+        let obj = currentArea.objects.image1[i];
         try {
             ctx.drawImage(
                 obj.image,
@@ -394,7 +394,7 @@ function render() {
                 Math.round(camScale * obj.size.y)
             );
         } catch (err) {
-            console.error(currentMap.objects.image1.splice(i, 1)[0], err);
+            console.error(currentArea.objects.image1.splice(i, 1)[0], err);
         }
     }
     // Render grav zones
@@ -402,7 +402,7 @@ function render() {
     ctx.lineDashOffset = Math.round((time += 0.5) * camScale);
     ctx.lineWidth = Math.round(camScale);
     ctx.lineCap = "round";
-    for (let obj of currentMap.objects.gravityZone) {
+    for (let obj of currentArea.objects.gravityZone) {
         ctx.strokeStyle = renderSettings.colors.gravOutline[obj.dir];
         ctx.fillStyle = renderSettings.colors.gravFill[obj.dir];
         ctx.strokeRect(
@@ -419,7 +419,7 @@ function render() {
         );
     }
     // Render rewards
-    for (let obj of currentMap.objects.reward) {
+    for (let obj of currentArea.objects.reward) {
         ctx.fillStyle = renderSettings.colors.box;
         ctx.drawImage(
             obj.image,
@@ -430,7 +430,7 @@ function render() {
         );
     }
     // Render hat rewards
-    for (let obj of currentMap.objects.hatReward) {
+    for (let obj of currentArea.objects.hatReward) {
         ctx.fillStyle = renderSettings.colors.box;
         ctx.drawImage(
             obj.image,
@@ -445,7 +445,7 @@ function render() {
     ctx.strokeStyle = "#000000";
     ctx.setLineDash([]);
     if (renderSettings.render.text) {
-        for (let obj of currentMap.objects.text) {
+        for (let obj of currentArea.objects.text) {
             ctx.strokeText(obj.text, canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
             ctx.fillStyle = "#ffffff";
             ctx.fillText(obj.text, canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
@@ -456,8 +456,8 @@ function render() {
     ctx.setLineDash([]);
     ctx.lineWidth = 3;
     ctx.strokeStyle = renderSettings.colors.hitbox;
-    for (let type in currentMap.objects) {
-        for (let o of currentMap.objects[type]) {
+    for (let type in currentArea.objects) {
+        for (let o of currentArea.objects[type]) {
             ctx.strokeRect(
                 Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),

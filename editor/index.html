@@ -5,24 +5,44 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="style.css" />
         <title>SkapClient Map Editor</title>
+        <link rel="icon" href="skap.ico" />
         <!-- Discord Embed -->
         <meta content="SkapClient Editor (WIP)" property="og:title">
         <meta content="haha yes this is so fucking hard aaaaaaaaaaaaaaaaaa" property="og:description">
         <meta content="https://www.youtube.com/watch?v=dQw4w9WgXcQ" property="og:url">
-        <meta content="https://nky5223.github.io/SkapClient/skap.ico" property="og:image">
+        <meta content="skap.ico" property="og:image">
         <meta content="#2080ff" name="theme-color">
     </head>
     <body>
         <canvas id="canvas">How are you even playing skap??</canvas>
-        <ul id="menu"></ul>
-
+        <ul id="menu">
+            <button id="togglemenu">Close Menu</button>
+        </ul>
+        <div id="tl">
+            <button id="download" title="Export Map">
+                <svg width="25" height="25">
+                    <!-- Taken from IcoFont -->
+                    <path 
+                        d="M482.6 719.4c9.599999999999966 9.399999999999977 25.19999999999999 9.399999999999977 34.89999999999998 0l294.20000000000005-285.79999999999995c9.599999999999909-9.400000000000034 9.599999999999909-24.5 0-33.900000000000034l-58.5-56.80000000000001c-9.600000000000023-9.399999999999977-25.200000000000045-9.399999999999977-34.90000000000009 0l-139.19999999999993 135.20000000000005v-364.1c0-13.200000000000003-11-24-24.700000000000045-24h-98.59999999999997c-13.600000000000023 0-24.69999999999999 10.700000000000003-24.69999999999999 24v374.1l-149.40000000000003-145.20000000000005c-9.599999999999966-9.399999999999977-25.19999999999999-9.399999999999977-34.89999999999998 0l-58.5 56.80000000000001c-9.600000000000023 9.400000000000034-9.600000000000023 24.5 0 33.900000000000034l294.3 285.79999999999995z m333.4-137.79999999999995v206.5h-632.1v-206.5h-121.39999999999998v267.29999999999995c0 33.60000000000002 27.099999999999994 60.700000000000045 60.8 60.700000000000045h753.3000000000001c33.60000000000002 0 60.799999999999955-27.100000000000023 60.799999999999955-60.700000000000045v-267.29999999999995h-121.39999999999998z" 
+                        transform="scale(0.025)"
+                    />
+                </svg>
+            </button>
+            <!-- Spacer -->
+            <div style="height:10px;"></div>
+            <button id="createObstacle" title="Create Obstacle"></button>
+        </div>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/msgpack-lite/0.1.26/msgpack.min.js" integrity="sha512-harMiusNxs02ryf3eqc3iQalz2RSd0z38vzOyuFwvQyW046h2m+/47WiDmPW9soh/p71WQMRSkhSynEww3/bOA==" crossorigin="anonymous"></script>
         <script src="../keysDown.js"></script>
         <script src="vars.js"></script>
         <script src="render.js"></script>
         <script src="createUI.js"></script>
         <script src="createObstacle.js"></script>
         <script src="createLava.js"></script>
+        <script src="createSlime.js"></script>
         <script src="createArea.js"></script>
+        <script src="toJSON.js"></script>
         <script src="main.js"></script>
     </body>
 </html>

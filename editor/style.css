@@ -1,6 +1,7 @@
 :root {
     --number: #2fa1d6;
     --text: #1ed36f;
+    --obstacle: rgba(0, 10, 87, 0.8);
 }
 body {
     background: #000000;
@@ -9,6 +10,78 @@ body {
     margin: 0;
     overflow: hidden;
 }
+
+#tl {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    display: flex;
+    flex-direction: column;
+}
+#download {
+    position: relative;
+    background: #00a000;
+    border: none;
+    border-radius: 2px;
+    padding: 5px;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    overflow: hidden;
+}
+#download svg {
+    position: relative;
+    z-index: 1;
+    transition: 0.4s;
+}
+#download path {
+    transition: 0.4s;
+}
+#download:hover path {
+    fill: #ffffff;
+}
+#download::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #00c000;
+    transition: transform 0.4s;
+    transform: translateY(100%);
+    z-index: 0;
+}
+#download:hover::after {
+    transform: translateY(0%);
+}
+
+#createObstacle {
+    position: relative;
+    padding: 5px;
+    width: 35px;
+    height: 35px;
+    background: url("https://skap.io/textures/images/background11.png") no-repeat 5px 5px;
+    background-color: #ffffff;
+    background-size: 25px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+}
+#createObstacle::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 25px;
+    height: 25px;
+    background: var(--obstacle);
+}
+
+
+
+
 
 /* Input styling */
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
@@ -28,6 +101,23 @@ input[type=number] {
     margin: 0;
     padding: 0;
     user-select: none;
+}
+#menu.hidden {
+    transform: translateY(-100%);
+    display: block;
+}
+#togglemenu {
+    display: block;
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    font: 11px "Lucida Grande", sans-serif;
+    line-height: 20px;
+    background: #000000;
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    cursor: pointer;
 }
 ul {
     list-style: none;

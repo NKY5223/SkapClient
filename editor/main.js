@@ -9,8 +9,8 @@ canvas.addEventListener("wheel", e => {
 });
 canvas.addEventListener("mousedown", e => {
     for (let type of ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "door", "switch", "button", "slime", "ice", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"]) {
-        for (let i = currentMap.objects[type].length - 1; i >= 0; i--) {
-            const obj = currentMap.objects[type][i];
+        for (let i = currentArea.objects[type].length - 1; i >= 0; i--) {
+            const obj = currentArea.objects[type][i];
             const [{ x: x0, y: y0 }, { x: x1, y: y1 }] = points(obj);
             const mouse = { x: e.offsetX, y: e.offsetY };
 
@@ -183,12 +183,10 @@ canvas.addEventListener("mousedown", e => {
                 }
                 lockCursor = true;
                 canvas.addEventListener("mousemove", resize);
-                canvas.addEventListener("mouseup", () => {
+                document.addEventListener("mouseup", () => {
                     lockCursor = false;
-                    console.log("mouseup");
                     canvas.removeEventListener("mousemove", resize);
                 });
-                console.log(selectMode);
                 return;
             }
         }
@@ -199,8 +197,8 @@ canvas.addEventListener("mousedown", e => {
 canvas.addEventListener("mousemove", e => {
     if (lockCursor) return;
     for (let type of ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "door", "switch", "button", "slime", "ice", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"]) {
-        for (let i = currentMap.objects[type].length - 1; i >= 0; i--) {
-            const obj = currentMap.objects[type][i];
+        for (let i = currentArea.objects[type].length - 1; i >= 0; i--) {
+            const obj = currentArea.objects[type][i];
             const [{ x: x0, y: y0 }, { x: x1, y: y1 }] = points(obj);
             const mouse = point(e);
 
@@ -271,22 +269,73 @@ canvas.addEventListener("mousemove", e => {
 canvas.addEventListener("contextmenu", e => {
     e.preventDefault();
 });
+togglemenu.addEventListener("click", () => {
+    if (menu.classList.contains("hidden")) {
+        menu.classList.remove("hidden");
+        togglemenu.innerHTML = "Close Menu";
+    } else {
+        menu.classList.add("hidden");
+        togglemenu.innerHTML = "Open Menu";
+    }
+});
+downloadBtn.addEventListener("click", () => {
+    if (!map.settings.name) map.settings.name = prompt("Map name?");
+    if (map.settings.name === null) return;
+    if (!map.settings.creator) map.settings.creator = prompt("Map creator's username in skap?");
+    if (map.settings.creator === null) return;
+    download(map.settings.name || "map");
+});
+obstacleBtn.addEventListener("click", () => {
+    lockCursor = true;
+    canvas.style.cursor = "crosshair";
+
+    function mousedown(e) {
+        canvas.style.cursor = "nwse-resize";
+        
+        let posX = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
+        let posY = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
+        let obstacle = createObstacle(posX, posY, 0, 0);
+        currentArea.objects.obstacle.push(obstacle);
+        menu.appendChild(obstacle.element);
+        selectedObject = obstacle;
+
+        function mousemove(e) {
+            let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
+            let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
+            obstacle.size.x = Math.max(x - posX, 0);
+            obstacle.size.y = Math.max(y - posY, 0);
+        }
+
+        canvas.addEventListener("mousemove", mousemove);
+        canvas.addEventListener("mouseup", () => {
+            canvas.removeEventListener("mousedown", mousedown);
+            canvas.removeEventListener("mousemove", mousemove);
+            lockCursor = false;
+        });
+    }
+    canvas.addEventListener("mousedown", mousedown);
+});
+
+
+
 
 {
-    map.maps.push(createArea("Home", [0, 10, 87], 0.8, [230, 230, 230], 100, 100));
-    currentMap = map.maps[0];
-    menu.appendChild(currentMap.element);
+    map.areas.push(createArea("Home", [0, 10, 87], 0.8, [230, 230, 230], 100, 100));
+    currentArea = map.areas[0];
+    menu.appendChild(currentArea.element);
 
     let obstacle = createObstacle(0, 0, 10, 10);
-    currentMap.objects.obstacle.push(obstacle);
+    currentArea.objects.obstacle.push(obstacle);
     menu.appendChild(obstacle.element);
     hide(obstacle.element);
 
     let lava = createLava(5, 5, 10, 10);
-    currentMap.objects.lava.push(lava);
+    currentArea.objects.lava.push(lava);
     menu.appendChild(lava.element);
     hide(lava.element);
 }
+
+
 
 // Start rendering
 (function run() {
@@ -294,22 +343,14 @@ canvas.addEventListener("contextmenu", e => {
     window.requestAnimationFrame(run);
 })();
 
-/**
- * @param {string} obj
- * @param {string} exportName 
- */
-function download(obj = { error: "Object not supplied" }, exportName = "map") {
-    // Copied from stackoverflow
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(obj);
 
-    const a = document.createElement('a');
-    a.setAttribute("href", dataStr);
-    a.setAttribute("download", exportName + ".json");
 
-    document.body.appendChild(a); // required for firefox
-    a.click();
-    a.remove();
-}
+
+
+
+
+
+
 /**
  * @param {SkapObject} obj
  * @returns {[VectorLike, VectorLike]}
