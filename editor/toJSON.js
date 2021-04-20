@@ -40,6 +40,9 @@ function areaToJSON(area) {
     for (let slime of area.objects.slime) {
         objects.push(slimeToJSON(slime));
     }
+    for (let ice of area.objects.ice) {
+        objects.push(iceToJSON(ice));
+    }
     return `{"name":${JSON.stringify(area.name)},"size":[${area.size[0]},${area.size[1]}],"objects":[${objects.join()}],"backgroundColor":[${area.colorArr.join()},${area.opacity}],"areaColor":[${area.backgroundArr.join()}]}`;
 }
 
@@ -60,4 +63,10 @@ function lavaToJSON(lava) {
  */
 function slimeToJSON(slime) {
     return `{"type":"slime","position":[${slime.pos.x},${slime.pos.y}],"size":[${slime.size.x},${slime.size.y}]}`;
+}
+/**
+ * @param {Ice} ice 
+ */
+function iceToJSON(ice) {
+    return `{"type":"ice","position":[${ice.pos.x},${ice.pos.y}],"size":[${ice.size.x},${ice.size.y}]}`;
 }

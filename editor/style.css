@@ -106,18 +106,10 @@ body {
 }
 
 #createObstacle {
-    position: relative;
-    box-sizing: content-box;
-    width: 25px;
-    height: 25px;
-    padding: 0;
     background: url("https://skap.io/textures/images/background11.png");
-    background-size: 25px;
-    border: 5px solid #ffffff;
     border-radius: 2px 2px 0 0;
-    cursor: pointer;
 }
-#createObstacle::after {
+#createObstacle::before {
     content: "";
     position: absolute;
     top: 0;
@@ -127,42 +119,41 @@ body {
     background: var(--obstacle);
 }
 #createLava {
-    position: relative;
-    box-sizing: content-box;
-    width: 25px;
-    height: 25px;
-    padding: 0;
     background: var(--lava);
-    border: 5px solid #ffffff;
-    cursor: pointer;
 }
 #createSlime {
-    position: relative;
-    box-sizing: content-box;
-    width: 25px;
-    height: 25px;
-    padding: 0;
     background: var(--slime);
-    border: 5px solid #ffffff;
-    cursor: pointer;
 }
 #createIce {
-    position: relative;
-    box-sizing: content-box;
-    width: 25px;
-    height: 25px;
-    padding: 0;
     background: var(--ice);
-    border: 5px solid #ffffff;
     border-radius: 0 0 2px 2px;
-    cursor: pointer;
 }
 .create {
     transition: transform 0.4s;
+    overflow: hidden;
+    position: relative;
+    box-sizing: content-box;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    border: 5px solid #ffffff;
+    cursor: pointer;
 }
-.create:hover {
-    border-color: #e0e0e0 !important;
+.create:not([disabled]):hover {
+    border-color: #c0c0c0 !important;
     transform: translateX(10px);
+}
+.create[disabled] {
+    cursor: unset;
+}
+.create[disabled]::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 35px;
+    height: 35px;
+    background: #ffffffe0;
 }
 
 
