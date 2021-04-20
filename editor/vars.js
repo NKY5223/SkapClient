@@ -19,7 +19,7 @@ const renderSettings = {
         text: true,
         teleporter: true,
         block1: true,
-        hitbox: false,
+        hitbox: true,
         teleporterHitbox: false
     },
     colors: {
@@ -286,7 +286,12 @@ const menu = document.getElementById("menu");
 const togglemenu = document.getElementById("togglemenu");
 
 const downloadBtn = document.getElementById("download");
+const importInput = document.getElementById("import");
+
 const obstacleBtn = document.getElementById("createObstacle");
+const lavaBtn = document.getElementById("createLava");
+const slimeBtn = document.getElementById("createSlime");
+const iceBtn = document.getElementById("createIce");
 
 /**
  * LOAD IMAGE

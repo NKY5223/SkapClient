@@ -23,14 +23,27 @@
                 <svg width="25" height="25">
                     <!-- Taken from IcoFont -->
                     <path 
-                        d="M482.6 719.4c9.599999999999966 9.399999999999977 25.19999999999999 9.399999999999977 34.89999999999998 0l294.20000000000005-285.79999999999995c9.599999999999909-9.400000000000034 9.599999999999909-24.5 0-33.900000000000034l-58.5-56.80000000000001c-9.600000000000023-9.399999999999977-25.200000000000045-9.399999999999977-34.90000000000009 0l-139.19999999999993 135.20000000000005v-364.1c0-13.200000000000003-11-24-24.700000000000045-24h-98.59999999999997c-13.600000000000023 0-24.69999999999999 10.700000000000003-24.69999999999999 24v374.1l-149.40000000000003-145.20000000000005c-9.599999999999966-9.399999999999977-25.19999999999999-9.399999999999977-34.89999999999998 0l-58.5 56.80000000000001c-9.600000000000023 9.400000000000034-9.600000000000023 24.5 0 33.900000000000034l294.3 285.79999999999995z m333.4-137.79999999999995v206.5h-632.1v-206.5h-121.39999999999998v267.29999999999995c0 33.60000000000002 27.099999999999994 60.700000000000045 60.8 60.700000000000045h753.3000000000001c33.60000000000002 0 60.799999999999955-27.100000000000023 60.799999999999955-60.700000000000045v-267.29999999999995h-121.39999999999998z" 
+                        d="M482.6 719.4c9.6 9.4 25.2 9.4 34.9 0l294.2-285.8c9.6-9.4 9.6-24.5 0-33.9l-58.5-56.8c-9.6-9.4-25.2-9.4-34.9 0l-139.2 135.2v-364.1c0-13.2-11-24-24.7-24h-98.6c-13.6 0-24.7 10.7-24.7 24v374.1l-149.4-145.2c-9.6-9.4-25.2-9.4-34.9 0l-58.5 56.8c-9.6 9.4-9.6 24.5 0 33.9l294.3 285.8z m333.4-137.8v206.5h-632.1v-206.5h-121.4v267.3c0 33.6 27.1 60.7 60.8 60.7h753.3c33.6 0 60.8-27.1 60.8-60.7v-267.3h-121.4z" 
                         transform="scale(0.025)"
                     />
                 </svg>
             </button>
+            <label id="importLabel" for="import" title="Import Map">
+                <svg width="25" height="25">
+                    <!-- Taken from IcoFont -->
+                    <path 
+                        d="M482.6 97.1c9.6-9.4 25.2-9.4 34.9 0l294.2 285.8c9.6 9.4 9.6 24.5 0 33.9l-58.5 56.8c-9.6 9.4-25.2 9.4-34.9 0l-139.2-135.3v364.1c0 13.2-11 24-24.7 24h-98.6c-13.6 0-24.7-10.7-24.7-24v-374l-149.4 145.2c-9.6 9.4-25.2 9.4-34.9 0l-58.5-56.8c-9.6-9.4-9.6-24.5 0-33.9l294.3-285.8z m333.4 484.5v206.5h-632.1v-206.5h-121.4v267.3c0 33.6 27.1 60.7 60.8 60.7h753.3c33.6 0 60.85-27.1 60.85-60.7v-267.3h-121.4z"
+                        transform="scale(0.025)"
+                    />
+                </svg>
+                <input type="file" id="import" accept=".json" />
+            </label>
             <!-- Spacer -->
             <div style="height:10px;"></div>
-            <button id="createObstacle" title="Create Obstacle"></button>
+            <button id="createObstacle" class="create" title="Create Obstacle"></button>
+            <button id="createLava" class="create" title="Create Lava"></button>
+            <button id="createSlime" class="create" title="Create Slime"></button>
+            <button id="createIce" class="create" title="Create Ice"></button>
         </div>
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/msgpack-lite/0.1.26/msgpack.min.js" integrity="sha512-harMiusNxs02ryf3eqc3iQalz2RSd0z38vzOyuFwvQyW046h2m+/47WiDmPW9soh/p71WQMRSkhSynEww3/bOA==" crossorigin="anonymous"></script>
@@ -41,6 +54,7 @@
         <script src="createObstacle.js"></script>
         <script src="createLava.js"></script>
         <script src="createSlime.js"></script>
+        <script src="createIce.js"></script>
         <script src="createArea.js"></script>
         <script src="toJSON.js"></script>
         <script src="main.js"></script>

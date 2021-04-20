@@ -454,16 +454,18 @@ function render() {
     }
     // Render hitboxes
     ctx.setLineDash([]);
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = renderSettings.colors.hitbox;
-    for (let type in currentArea.objects) {
-        for (let o of currentArea.objects[type]) {
-            ctx.strokeRect(
-                Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
-                Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
-                Math.round(camScale * o.size.x),
-                Math.round(camScale * o.size.y)
-            );
+    if (renderSettings.render.hitbox) {
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = renderSettings.colors.hitbox;
+        for (let type in currentArea.objects) {
+            for (let o of currentArea.objects[type]) {
+                ctx.strokeRect(
+                    Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
+                    Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
+                    Math.round(camScale * o.size.x),
+                    Math.round(camScale * o.size.y)
+                );
+            }
         }
     }
     // Render selected hitbox

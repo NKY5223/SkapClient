@@ -269,6 +269,10 @@ canvas.addEventListener("mousemove", e => {
 canvas.addEventListener("contextmenu", e => {
     e.preventDefault();
 });
+document.addEventListener("keydown", e => {
+    if (e.target instanceof HTMLInputElement) return;
+    if (e.key.toLowerCase() === othercontrols[7]) renderSettings.render.hitbox = !renderSettings.render.hitbox;
+});
 togglemenu.addEventListener("click", () => {
     if (menu.classList.contains("hidden")) {
         menu.classList.remove("hidden");
@@ -304,6 +308,104 @@ obstacleBtn.addEventListener("click", () => {
             let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
             obstacle.size.x = Math.max(x - posX, 0);
             obstacle.size.y = Math.max(y - posY, 0);
+            obstacle.inputs.w.value = obstacle.size.x;
+            obstacle.inputs.h.value = obstacle.size.y;
+        }
+
+        canvas.addEventListener("mousemove", mousemove);
+        canvas.addEventListener("mouseup", () => {
+            canvas.removeEventListener("mousedown", mousedown);
+            canvas.removeEventListener("mousemove", mousemove);
+            lockCursor = false;
+        });
+    }
+    canvas.addEventListener("mousedown", mousedown);
+});
+lavaBtn.addEventListener("click", () => {
+    lockCursor = true;
+    canvas.style.cursor = "crosshair";
+
+    function mousedown(e) {
+        canvas.style.cursor = "nwse-resize";
+        
+        let posX = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
+        let posY = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
+        let lava = createLava(posX, posY, 0, 0);
+        currentArea.objects.lava.push(lava);
+        menu.appendChild(lava.element);
+        selectedObject = lava;
+
+        function mousemove(e) {
+            let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
+            let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
+            lava.size.x = Math.max(x - posX, 0);
+            lava.size.y = Math.max(y - posY, 0);
+            lava.inputs.w.value = lava.size.x;
+            lava.inputs.h.value = lava.size.y;
+        }
+
+        canvas.addEventListener("mousemove", mousemove);
+        canvas.addEventListener("mouseup", () => {
+            canvas.removeEventListener("mousedown", mousedown);
+            canvas.removeEventListener("mousemove", mousemove);
+            lockCursor = false;
+        });
+    }
+    canvas.addEventListener("mousedown", mousedown);
+});
+slimeBtn.addEventListener("click", () => {
+    lockCursor = true;
+    canvas.style.cursor = "crosshair";
+
+    function mousedown(e) {
+        canvas.style.cursor = "nwse-resize";
+        
+        let posX = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
+        let posY = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
+        let slime = createSlime(posX, posY, 0, 0);
+        currentArea.objects.slime.push(slime);
+        menu.appendChild(slime.element);
+        selectedObject = slime;
+
+        function mousemove(e) {
+            let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
+            let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
+            slime.size.x = Math.max(x - posX, 0);
+            slime.size.y = Math.max(y - posY, 0);
+            slime.inputs.w.value = slime.size.x;
+            slime.inputs.h.value = slime.size.y;
+        }
+
+        canvas.addEventListener("mousemove", mousemove);
+        canvas.addEventListener("mouseup", () => {
+            canvas.removeEventListener("mousedown", mousedown);
+            canvas.removeEventListener("mousemove", mousemove);
+            lockCursor = false;
+        });
+    }
+    canvas.addEventListener("mousedown", mousedown);
+});
+iceBtn.addEventListener("click", () => {
+    lockCursor = true;
+    canvas.style.cursor = "crosshair";
+
+    function mousedown(e) {
+        canvas.style.cursor = "nwse-resize";
+        
+        let posX = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
+        let posY = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
+        let ice = createIce(posX, posY, 0, 0);
+        currentArea.objects.ice.push(ice);
+        menu.appendChild(ice.element);
+        selectedObject = ice;
+
+        function mousemove(e) {
+            let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
+            let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
+            ice.size.x = Math.max(x - posX, 0);
+            ice.size.y = Math.max(y - posY, 0);
+            ice.inputs.w.value = ice.size.x;
+            ice.inputs.h.value = ice.size.y;
         }
 
         canvas.addEventListener("mousemove", mousemove);
@@ -318,21 +420,10 @@ obstacleBtn.addEventListener("click", () => {
 
 
 
-
 {
     map.areas.push(createArea("Home", [0, 10, 87], 0.8, [230, 230, 230], 100, 100));
     currentArea = map.areas[0];
     menu.appendChild(currentArea.element);
-
-    let obstacle = createObstacle(0, 0, 10, 10);
-    currentArea.objects.obstacle.push(obstacle);
-    menu.appendChild(obstacle.element);
-    hide(obstacle.element);
-
-    let lava = createLava(5, 5, 10, 10);
-    currentArea.objects.lava.push(lava);
-    menu.appendChild(lava.element);
-    hide(lava.element);
 }
 
 
