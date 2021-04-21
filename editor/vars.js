@@ -293,6 +293,14 @@ const lavaBtn = document.getElementById("createLava");
 const slimeBtn = document.getElementById("createSlime");
 const iceBtn = document.getElementById("createIce");
 
+const contextmenu = document.getElementById("contextmenu");
+const contextBtns = {
+    obstacle: document.getElementById("createObstacleFromContext"),
+    lava: document.getElementById("createLavaFromContext"),
+    slime: document.getElementById("createSlimeFromContext"),
+    ice: document.getElementById("createIceFromContext"),
+}
+
 /**
  * LOAD IMAGE
  * @param {string} src 

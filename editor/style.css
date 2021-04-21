@@ -57,7 +57,6 @@ body {
     background: #00c000;
     transition: transform 0.4s;
     transform: translateY(-100%);
-    z-index: 0;
 }
 #download:hover::before {
     transform: translateY(0%);
@@ -96,7 +95,6 @@ body {
     background: #00c000;
     transition: transform 0.4s;
     transform: translateY(100%);
-    z-index: 0;
 }
 #importLabel:hover::before {
     transform: translateY(0%);
@@ -155,6 +153,43 @@ body {
     height: 35px;
     background: #ffffffe0;
 }
+
+#contextmenu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    border-radius: 2px;
+    overflow: hidden;
+}
+#contextmenu button {
+    background: #202020;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    padding: 5px;
+    width: 200px;
+}
+#contextmenu button:hover {
+    background: #303030;
+}
+#contextmenu.hidden {
+    display: none;
+}
+@media (prefers-color-scheme: light) {
+    #contextmenu button {
+        background: #e0e0e0;
+        color: #202020;
+    }
+    #contextmenu button:hover {
+        background: #c0c0c0;
+    }
+}
+
+
 
 
 

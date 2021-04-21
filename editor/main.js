@@ -1,5 +1,6 @@
 // Zooming
 canvas.addEventListener("wheel", e => {
+    if (e.ctrlKey) return;
     let m = 0.85 ** (e.deltaY / 125);
     let x = (e.offsetX - canvas.width / 2) / camScale + camX;
     let y = (e.offsetY - canvas.height / 2) / camScale + camY;
@@ -267,7 +268,16 @@ canvas.addEventListener("mousemove", e => {
     canvas.style.cursor = "initial";
 });
 canvas.addEventListener("contextmenu", e => {
+    if (e.target === contextmenu) return;
     e.preventDefault();
+    show(contextmenu);
+    contextmenu.style.left = e.x + 1 + "px";
+    contextmenu.style.top = e.y + 1 + "px";
+});
+document.addEventListener("mousedown", e => {
+    if (e.target === contextmenu || e.target.parentNode === contextmenu && e.button === 2) return;
+    if (e.target === canvas && e.button === 2) return;
+    hide(contextmenu);
 });
 document.addEventListener("keydown", e => {
     if (e.target instanceof HTMLInputElement) return;

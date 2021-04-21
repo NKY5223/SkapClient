@@ -23,6 +23,14 @@ master (root)
  ├─ help - /help
  │   ├─ index.html - index.html
  │   └─ style.css - Styling
+ ├─ editor - hard
+ │   ├─ index.html - Index
+ │   ├─ style.css - Styling
+ │   ├─ main.js - Main Script
+ │   ├─ render.js - Modified Render
+ │   ├─ vars.js - Vars
+ │   ├─ toJSON.js - Styling
+ │   └─ create_____.js - "modular" shit
  │
  │
  ├─ sha256.js - sha256() function
