@@ -282,6 +282,7 @@ const selectBuffer = 5;
 let selectMode = null;
 let lockCursor = false;
 
+const menu = document.getElementById("menu");
 const areamenu = document.getElementById("areamenu");
 const objectmenu = document.getElementById("objectmenu");
 const togglemenu = document.getElementById("togglemenu");
@@ -301,8 +302,10 @@ const contextBtns = {
     slime: document.getElementById("createSlimeFromContext"),
     ice: document.getElementById("createIceFromContext"),
     area: document.getElementById("createArea")
-}
+};
 
+const togglebottommenu = document.getElementById("togglebottommenu");
+const bottommenu = document.getElementById("bottommenu");
 const areaList = document.getElementById("areaList");
 
 /**

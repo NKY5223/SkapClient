@@ -283,14 +283,11 @@ document.addEventListener("keydown", e => {
     if (e.target instanceof HTMLInputElement) return;
     if (e.key.toLowerCase() === othercontrols[7]) renderSettings.render.hitbox = !renderSettings.render.hitbox;
 });
-togglemenu.addEventListener("click", () => {
-    if (menu.classList.contains("hidden")) {
-        menu.classList.remove("hidden");
-        togglemenu.innerHTML = "Close Menu";
-    } else {
-        menu.classList.add("hidden");
-        togglemenu.innerHTML = "Open Menu";
-    }
+togglemenu.addEventListener("click", () => {  
+    menu.classList.toggle("hidden");
+});
+togglebottommenu.addEventListener("click", () => {
+    bottommenu.classList.toggle("hidden");
 });
 downloadBtn.addEventListener("click", () => {
     if (!map.settings.name) map.settings.name = prompt("Map name?");
