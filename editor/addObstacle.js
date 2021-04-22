@@ -18,13 +18,18 @@ function addObstacle() {
             canvas.removeEventListener("mousedown", mousedown);
             return;
         }
+        obstacleBtn.disabled = false;
+        lavaBtn.disabled = false;
+        slimeBtn.disabled = false;
+        iceBtn.disabled = false;
         canvas.style.cursor = "nwse-resize";
 
         let posX = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
         let posY = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
         let obstacle = createObstacle(posX, posY, 0, 0);
         currentArea.objects.obstacle.push(obstacle);
-        menu.appendChild(obstacle.element);
+        objectmenu.appendChild(obstacle.element);
+        if (selectedObject) hide(selectedObject.element);
         selectedObject = obstacle;
 
         function mousemove(e) {

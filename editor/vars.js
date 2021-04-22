@@ -282,7 +282,8 @@ const selectBuffer = 5;
 let selectMode = null;
 let lockCursor = false;
 
-const menu = document.getElementById("menu");
+const areamenu = document.getElementById("areamenu");
+const objectmenu = document.getElementById("objectmenu");
 const togglemenu = document.getElementById("togglemenu");
 
 const downloadBtn = document.getElementById("download");
@@ -299,7 +300,10 @@ const contextBtns = {
     lava: document.getElementById("createLavaFromContext"),
     slime: document.getElementById("createSlimeFromContext"),
     ice: document.getElementById("createIceFromContext"),
+    area: document.getElementById("createArea")
 }
+
+const areaList = document.getElementById("areaList");
 
 /**
  * LOAD IMAGE
@@ -312,6 +316,12 @@ function loadImage(src) {
         console.log("ERROR AT", image.src);
     }
     return image;
+}
+/**
+ * @param {string} str 
+ */
+function htmlspecialchars(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 /**
  * @typedef VectorLike

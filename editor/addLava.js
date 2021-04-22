@@ -9,6 +9,12 @@ function addLava() {
 
     function mousedown(e) {
         if (e.button === 2) {
+            lockCursor = false;
+            canvas.style.cursor = "initial";
+            obstacleBtn.disabled = false;
+            lavaBtn.disabled = false;
+            slimeBtn.disabled = false;
+            iceBtn.disabled = false;
             canvas.removeEventListener("mousedown", mousedown);
             return;
         }
@@ -22,7 +28,8 @@ function addLava() {
         let posY = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
         let lava = createLava(posX, posY, 0, 0);
         currentArea.objects.lava.push(lava);
-        menu.appendChild(lava.element);
+        objectmenu.appendChild(lava.element);
+        if (selectedObject) hide(selectedObject.element);
         selectedObject = lava;
 
         function mousemove(e) {
@@ -36,13 +43,14 @@ function addLava() {
 
         canvas.addEventListener("mousemove", mousemove);
         canvas.addEventListener("mouseup", () => {
+            lockCursor = false;
+            obstacleBtn.disabled = false;
+            lavaBtn.disabled = false;
+            slimeBtn.disabled = false;
+            iceBtn.disabled = false;
             canvas.removeEventListener("mousedown", mousedown);
             canvas.removeEventListener("mousemove", mousemove);
-            lockCursor = false;
         });
     }
-    disabled = false;
-    lavaBtn.disabled = false;
-    slimeBtn.disabled = false;
-    iceBtn.disabled = false; canvas.addEventListener("mousedown", mousedown);
+    canvas.addEventListener("mousedown", mousedown);
 }

@@ -274,7 +274,7 @@ canvas.addEventListener("contextmenu", e => {
     contextmenu.style.left = e.x + 1 + "px";
     contextmenu.style.top = e.y + 1 + "px";
 });
-document.addEventListener("mousedown", e => {
+document.addEventListener("click", e => {
     if (e.target === contextmenu || e.target.parentNode === contextmenu && e.button === 2) return;
     if (e.target === canvas && e.button === 2) return;
     hide(contextmenu);
@@ -304,13 +304,13 @@ lavaBtn.addEventListener("click", addLava);
 slimeBtn.addEventListener("click", addSlime);
 iceBtn.addEventListener("click", addIce);
 
+contextBtns.obstacle.addEventListener("click", addObstacle);
+contextBtns.lava.addEventListener("click", addLava);
+contextBtns.slime.addEventListener("click", addSlime);
+contextBtns.ice.addEventListener("click", addIce);
+contextBtns.area.addEventListener("click", () => { addArea() });
 
-
-{
-    map.areas.push(createArea("Home", [0, 10, 87], 0.8, [230, 230, 230], 100, 100));
-    currentArea = map.areas[0];
-    menu.appendChild(currentArea.element);
-}
+addArea("Home");
 
 
 

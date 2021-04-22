@@ -258,24 +258,52 @@ li {
 }
 
 
+#bottommenu {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: #202020;
+    width: 100%;
+    height: 100px;
+    padding: 5px;
+}
+#areaList button {
+    background: #303030;
+    border: none;
+    cursor: pointer;
+    color: #ffffff;
+}
+#areaList button:hover {
+    background: #404040;
+}
+
+
 .folder {
     list-style: none;
 }
 .title {
     /* margin-left: -4px; */
     padding: 0 4px 0 16px;
-    background: #000000 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;
+    background: #000000;
     font: 11px "Lucida Grande", sans-serif;
     line-height: 27px;
     height: 27px;
     cursor: pointer;
     border-bottom: 1px solid #303030;
 }
+.title::before {
+    content: "◢";
+    position: absolute;
+    display: block;
+    transform-origin: center;
+    transform: translate(-13px, 0) rotate(-45deg) scale(0.5);
+    transition: 0.4s;
+}
+.closed > .title::before {
+    transform: translate(-13px, 0) rotate(45deg) scale(0.5);
+}
 .indent {
     margin-left: 4px;
-}
-.closed .title {
-    background-image: url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==);
 }
 .label {
     width: 40%;
@@ -306,9 +334,6 @@ li {
 }
 .property.text input {
     color: var(--text);
-}
-.property input:focus {
-    color: #ffffff;
 }
 .property input {
     color: #ffffff;
@@ -345,4 +370,35 @@ li {
 }
 .hidden {
     display: none;
+}
+@media (prefers-color-scheme: light) {
+    :root {
+        --text: hsl(147, 75%, 40%);
+    }
+    #menu input {
+        background: #e0e0e0;
+    }
+    #menu input:hover {
+        background: #d0d0d0;
+    }
+    #menu input:focus {
+        background: #c0c0c0;
+        color: #000000;
+    }
+    .title {
+        background: #c0c0c0;
+        color: #000000;
+        border-bottom-color: #c0c0c0;
+    }
+    .property {
+        border-bottom-color: #c0c0c0;
+        background: #d0d0d0;
+    }
+    .label {
+        color: #000000;
+    }
+    #togglemenu {
+        background: #c0c0c0;
+        color: #000000;
+    }
 }

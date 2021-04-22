@@ -12,6 +12,8 @@
  * @property {Obstacle[]} objects.obstacle
  * @property {Lava[]} objects.lava
  * @property {Slime[]} objects.slime
+ * @property {HTMLLIElement} element
+ * @property {{w: HTMLInputElement, h: HTMLInputElement, name: HTMLInputElement}} inputs
  * 
  * @param {string} name 
  * @param {ColorArr} color 
@@ -19,6 +21,7 @@
  * @param {ColorArr} background 
  * @param {number} w 
  * @param {number} h 
+ * @returns {Area}
  */
 function createArea(name, color, opacity, background, w, h) {
     const area = {
@@ -59,7 +62,7 @@ function createArea(name, color, opacity, background, w, h) {
     const nameInput = document.createElement("input");
     nameInput.value = name;
     nameInput.addEventListener("input", () => {
-        area.name = Number(nameInput.value);
+        area.name = nameInput.value;
     });
 
     const colorInput = document.createElement("input");
@@ -122,6 +125,11 @@ function createArea(name, color, opacity, background, w, h) {
             createProperty("height", hInput, "number")
         ])
     ]);
+    area.inputs = {
+        name: nameInput,
+        w: wInput,
+        h: hInput
+    }
     return area;
 }
 function fillZeros(str = "0", digits = 2, filler = "0") {
