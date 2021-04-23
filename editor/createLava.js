@@ -11,7 +11,7 @@
  * @param {number} h 
  * @returns {Lava}
  */
- function createLava(x, y, w, h) {
+ function createLava(x = 0, y = 0, w = 10, h = 10) {
     const lava = {
         pos: {
             x,
@@ -20,7 +20,8 @@
         size: {
             x: w,
             y: h
-        }
+        },
+        type: "lava"
     }
 
     // Create inputs/labels

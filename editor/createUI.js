@@ -48,6 +48,7 @@ function createProperty(name, input, type = "text") {
     if (type === "color") {
         const label = document.createElement("label");
         const text = document.createTextNode(input.value);
+
         text.nodeValue = input.value;
         label.appendChild(text);
         input.id = generateId();
@@ -55,6 +56,7 @@ function createProperty(name, input, type = "text") {
         label.appendChild(input);
         label.style.background = input.value;
         li.style.borderLeftColor = input.value;
+
         let luma = 0.2126 * parseInt(input.value.slice(1, 3), 16) + 0.7152 * parseInt(input.value.slice(3, 5), 16) + 0.0722 * parseInt(input.value.slice(5, 7), 16);
         if (luma > 128) li.classList.add("light");
         input.addEventListener("input", () => {
@@ -66,8 +68,22 @@ function createProperty(name, input, type = "text") {
             if (luma > 128) li.classList.add("light");
             else li.classList.remove("light");
         });
+
         li.appendChild(label);
-    } else {
+    } else if (type === "switch") {
+        const label = document.createElement("label");
+        const switchSpan = document.createElement("span");
+
+        input.type = "checkbox";
+        input.id = generateId();
+        label.htmlFor = input.id;
+        label.classList.add("switchLabel")
+        switchSpan.classList.add("switchSpan");
+        label.appendChild(input);
+        label.appendChild(switchSpan);
+        li.appendChild(label);
+    }
+    else {
         li.appendChild(input);
     }
     return li;

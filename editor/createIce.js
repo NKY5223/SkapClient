@@ -11,7 +11,7 @@
  * @param {number} h 
  * @returns {Ice}
  */
- function createIce(x, y, w, h) {
+ function createIce(x = 0, y = 0, w = 10, h = 10) {
     const ice = {
         pos: {
             x,
@@ -20,7 +20,8 @@
         size: {
             x: w,
             y: h
-        }
+        },
+        type: "ice"
     }
 
     // Create inputs/labels

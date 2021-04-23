@@ -1,6 +1,7 @@
 :root {
     --number: #2fa1d6;
     --text: #1ed36f;
+    --boolean: #ad55c5;
 
     --obstacle: rgba(0, 10, 87, 0.8);
     --lava: #d01000;
@@ -163,6 +164,7 @@ body {
     flex-direction: column;
     border-radius: 2px;
     overflow: hidden;
+    background: #202020;
 }
 #contextmenu button {
     background: #202020;
@@ -179,6 +181,14 @@ body {
 #contextmenu.hidden {
     display: none;
 }
+#objectActions {
+    border-bottom: 1px solid #404040;
+    display: flex;
+    flex-direction: column;
+}
+#objectActions.hidden {
+    display: none;
+}
 @media (prefers-color-scheme: light) {
     #contextmenu button {
         background: #e0e0e0;
@@ -188,6 +198,63 @@ body {
         background: #c0c0c0;
     }
 }
+
+
+
+
+
+
+#bottommenu {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: #202020;
+    width: 100%;
+    height: 100px;
+    transition: 0.4s;
+}
+#bottommenu.hidden {
+    display: initial;
+    transform: translateY(100%);
+}
+#bottommenulabel {
+    padding: 10px;
+    box-sizing: border-box;
+    background: #303030;
+    position: absolute;
+    bottom: 100%;
+    width: 100%;
+}
+#togglebottommenu {
+    background: transparent;
+    float: right;
+    cursor: pointer;
+    border: none;
+    color: #ff0000;
+    transform: scale(2, -1);
+    transition: transform 0.4s, color 0.4s;
+}
+.hidden #togglebottommenu {
+    color: #00ff00;
+    transform: scale(2, 1);
+}
+#areaList {
+    padding: 5px;
+}
+#areaList button {
+    background: #303030;
+    border: none;
+    cursor: pointer;
+    color: #ffffff;
+}
+#areaList button:hover {
+    background: #404040;
+}
+#areaList button:focus {
+    outline: none;
+}
+
+
 
 
 
@@ -262,59 +329,6 @@ li {
     outline: none;
     background: #505050;
 }
-
-
-#bottommenu {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    background: #202020;
-    width: 100%;
-    height: 100px;
-    transition: 0.4s;
-}
-#bottommenu.hidden {
-    display: initial;
-    transform: translateY(100%);
-}
-#bottommenulabel {
-    padding: 10px;
-    box-sizing: border-box;
-    background: #303030;
-    position: absolute;
-    bottom: 100%;
-    width: 100%;
-}
-#togglebottommenu {
-    background: transparent;
-    float: right;
-    cursor: pointer;
-    border: none;
-    color: #ff0000;
-    transform: scale(2, 1);
-    transition: transform 0.4s, color 0.4s;
-}
-.hidden #togglebottommenu {
-    color: #00ff00;
-    transform: scale(2, -1);
-}
-#areaList {
-    padding: 5px;
-}
-#areaList button {
-    background: #303030;
-    border: none;
-    cursor: pointer;
-    color: #ffffff;
-}
-#areaList button:hover {
-    background: #404040;
-}
-#areaList button:focus {
-    outline: none;
-}
-
-
 .folder {
     list-style: none;
 }
@@ -334,7 +348,6 @@ li {
     display: block;
     transform-origin: center;
     transform: translate(-13px, 0) rotate(-45deg) scale(0.5);
-    transition: 0.4s;
 }
 .closed > .title::before {
     transform: translate(-13px, 0) rotate(45deg) scale(0.5);
@@ -372,9 +385,6 @@ li {
 .property.text input {
     color: var(--text);
 }
-.property input {
-    color: #ffffff;
-}
 .property.color {
     border-left: 3px solid #ffffff;
 }
@@ -405,6 +415,56 @@ li {
 .property.color.light label {
     color: #000000;
 }
+.property.switch {
+    border-left: 3px solid var(--boolean);
+}
+.property.switch input {
+    color: var(--boolean);
+}
+.property input {
+    color: #ffffff;
+}
+.property input:focus {
+    color: #ffffff !important;
+}
+
+.switchLabel {
+    float: right;
+    cursor: pointer;
+    margin-right: calc(30% - 17.5px);
+    margin-top: 4px;
+}
+.switchLabel input {
+    display: none;
+}
+.switchSpan {
+    width: 35px;
+    height: 20px;
+    display: block;
+    position: relative;
+    background: #808080;
+    border-radius: 12.5px;
+    transition: .4s;
+}
+.switchSpan::after {
+    content: "";
+    display: block;
+    position: relative;
+    width: 15px;
+    height: 15px;
+    top: 2.5px;
+    left: 2.5px;
+    background: #ffffff;
+    transition: .4s;
+    border-radius: 50%;
+}
+input:checked+.switchSpan {
+    background: var(--boolean);
+}
+input:checked+.switchSpan::after {
+    left: calc(100% - 15px - 2.5px);
+}
+
 .hidden {
     display: none;
 }

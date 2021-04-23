@@ -11,7 +11,7 @@
  * @param {number} h 
  * @returns {Obstacle}
  */
- function createObstacle(x, y, w, h) {
+ function createObstacle(x = 0, y = 0, w = 10, h = 10) {
     const obstacle = {
         pos: {
             x,
@@ -20,7 +20,8 @@
         size: {
             x: w,
             y: h
-        }
+        },
+        type: "obstacle"
     }
 
     // Create inputs/labels

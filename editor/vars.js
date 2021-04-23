@@ -301,7 +301,11 @@ const contextBtns = {
     lava: document.getElementById("createLavaFromContext"),
     slime: document.getElementById("createSlimeFromContext"),
     ice: document.getElementById("createIceFromContext"),
-    area: document.getElementById("createArea")
+    block: document.getElementById("createBlock"),
+    area: document.getElementById("createArea"),
+
+    objectActions: document.getElementById("objectActions"),
+    delete: document.getElementById("deleteObject")
 };
 
 const togglebottommenu = document.getElementById("togglebottommenu");
@@ -325,6 +329,32 @@ function loadImage(src) {
  */
 function htmlspecialchars(str) {
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+/**
+ * @param {string} hex
+ */
+function hexToArr(hex) {
+    return [
+        parseInt(hex.slice(1, 3), 16),
+        parseInt(hex.slice(3, 5), 16),
+        parseInt(hex.slice(5, 7), 16)
+    ];
+}
+/**
+ * @param {number[]} arr 
+ */
+function arrtoRGBA(arr) {
+    return `rgba(${arr.join()})`;
+}
+/**
+ * @param {[number, number, number]} color 
+ * @param {number} opacity
+ */
+function blend240([r, g, b], opacity) {
+    return "rgb(" +
+        (240 + (r - 240) * opacity) + "," +
+        (240 + (g - 240) * opacity) + "," +
+        (240 + (b - 240) * opacity) + ")";
 }
 /**
  * @typedef VectorLike

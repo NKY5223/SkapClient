@@ -327,10 +327,10 @@ function render() {
         }
     }
     // Render blocks(0)
-    ctx.globalAlpha = 1;
     if (renderSettings.render.block0) {
         for (let obj of currentArea.objects.block0) {
             ctx.fillStyle = obj.color;
+            ctx.globalAlpha = obj.opacity;
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -339,6 +339,7 @@ function render() {
             );
         }
     }
+    ctx.globalAlpha = 1;
     // Render images(0)
     for (let i in currentArea.objects.image0) {
         let obj = currentArea.objects.image0[i];
@@ -370,10 +371,10 @@ function render() {
         ctx.restore();
     }
     // Render blocks(1)
-    ctx.globalAlpha = 1;
     if (renderSettings.render.block1) {
         for (let obj of currentArea.objects.block1) {
             ctx.fillStyle = obj.color;
+            ctx.globalAlpha = obj.opacity;
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -382,6 +383,7 @@ function render() {
             );
         }
     }
+    ctx.globalAlpha = 1;
     // Render images(1)
     for (let i in currentArea.objects.image1) {
         let obj = currentArea.objects.image1[i];
@@ -454,8 +456,8 @@ function render() {
     }
     // Render hitboxes
     ctx.setLineDash([]);
+    ctx.lineWidth = 3;
     if (renderSettings.render.hitbox) {
-        ctx.lineWidth = 3;
         ctx.strokeStyle = renderSettings.colors.hitbox;
         for (let type in currentArea.objects) {
             for (let o of currentArea.objects[type]) {
@@ -478,10 +480,4 @@ function render() {
             Math.round(camScale * selectedObject.size.y)
         );
     }
-}
-/**
- * @param {number[]} arr 
- */
-function fromColArr(arr) {
-    return `rgba(${arr.join(", ")})`;
 }

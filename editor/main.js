@@ -9,6 +9,8 @@ canvas.addEventListener("wheel", e => {
     camScale *= m;
 });
 canvas.addEventListener("mousedown", e => {
+    if (e.button === 1) e.preventDefault();
+    if (e.button !== 0) return;
     for (let type of ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "door", "switch", "button", "slime", "ice", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"]) {
         for (let i = currentArea.objects[type].length - 1; i >= 0; i--) {
             const obj = currentArea.objects[type][i];
@@ -270,9 +272,14 @@ canvas.addEventListener("mousemove", e => {
 canvas.addEventListener("contextmenu", e => {
     if (e.target === contextmenu) return;
     e.preventDefault();
-    show(contextmenu);
+
     contextmenu.style.left = e.x + 1 + "px";
     contextmenu.style.top = e.y + 1 + "px";
+
+    if (selectedObject) show(contextBtns.objectActions);
+    else hide(contextBtns.objectActions);
+
+    show(contextmenu);
 });
 document.addEventListener("click", e => {
     if (e.target === contextmenu || e.target.parentNode === contextmenu && e.button === 2) return;
@@ -283,7 +290,7 @@ document.addEventListener("keydown", e => {
     if (e.target instanceof HTMLInputElement) return;
     if (e.key.toLowerCase() === othercontrols[7]) renderSettings.render.hitbox = !renderSettings.render.hitbox;
 });
-togglemenu.addEventListener("click", () => {  
+togglemenu.addEventListener("click", () => {
     menu.classList.toggle("hidden");
 });
 togglebottommenu.addEventListener("click", () => {
@@ -305,7 +312,18 @@ contextBtns.obstacle.addEventListener("click", addObstacle);
 contextBtns.lava.addEventListener("click", addLava);
 contextBtns.slime.addEventListener("click", addSlime);
 contextBtns.ice.addEventListener("click", addIce);
-contextBtns.area.addEventListener("click", () => { addArea() });
+contextBtns.block.addEventListener("click", addBlock);
+contextBtns.area.addEventListener("click", () => addArea());
+
+contextBtns.delete.addEventListener("click", () => {
+    if (selectedObject && confirm("Are you sure you want to delete this object?")) {
+        let arr = currentArea.objects[selectedObject.type];
+        if (arr.includes(selectedObject)) {
+            arr.splice(arr.indexOf(selectedObject));
+            selectedObject = null;
+        }
+    }
+});
 
 addArea("Home");
 

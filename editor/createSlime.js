@@ -11,7 +11,7 @@
  * @param {number} h 
  * @returns {Slime}
  */
- function createSlime(x, y, w, h) {
+ function createSlime(x = 0, y = 0, w = 10, h = 10) {
     const slime = {
         pos: {
             x,
@@ -20,7 +20,8 @@
         size: {
             x: w,
             y: h
-        }
+        },
+        type: "slime"
     }
 
     // Create inputs/labels
