@@ -150,25 +150,25 @@ function render() {
         for (let obj of currentArea.objects.teleporter) {
             let gradient;
             switch (obj.dir) {
-                case "0":
+                case 0:
                     gradient = ctx.createLinearGradient(
                         0, Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
                         0, Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.size.y - camY))
                     );
                     break;
-                case "1":
+                case 1:
                     gradient = ctx.createLinearGradient(
                         Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x - camX)), 0,
                         Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)), 0
                     );
                     break;
-                case "2":
+                case 2:
                     gradient = ctx.createLinearGradient(
                         0, Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.size.y - camY)),
                         0, Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY))
                     );
                     break;
-                case "3":
+                case 3:
                     gradient = ctx.createLinearGradient(
                         Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)), 0,
                         Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x - camX)), 0

@@ -302,6 +302,7 @@ const contextBtns = {
     slime: document.getElementById("createSlimeFromContext"),
     ice: document.getElementById("createIceFromContext"),
     block: document.getElementById("createBlock"),
+    teleporter: document.getElementById("createTeleporter"),
     area: document.getElementById("createArea"),
 
     objectActions: document.getElementById("objectActions"),

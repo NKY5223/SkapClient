@@ -13,7 +13,7 @@
  * @returns {Teleporter}
  */
  function createTeleporter(x = 0, y = 0, w = 10, h = 20) {
-    const obstacle = {
+    const teleporter = {
         pos: {
             x,
             y
@@ -31,32 +31,32 @@
     xInput.value = x;
     xInput.type = "number";
     xInput.addEventListener("input", () => {
-        obstacle.pos.x = Number(xInput.value = Math.max(xInput.value, 0));
+        teleporter.pos.x = Number(xInput.value = Math.max(xInput.value, 0));
     });
 
     const yInput = document.createElement("input");
     yInput.value = y;
     yInput.type = "number";
     yInput.addEventListener("input", () => {
-        obstacle.pos.y = Number(yInput.value = Math.max(yInput.value, 0));
+        teleporter.pos.y = Number(yInput.value = Math.max(yInput.value, 0));
     });
 
     const wInput = document.createElement("input");
     wInput.value = w;
     wInput.type = "number";
     wInput.addEventListener("input", () => {
-        obstacle.size.x = Number(wInput.value = Math.max(wInput.value, 0));
+        teleporter.size.x = Number(wInput.value = Math.max(wInput.value, 0));
     });
 
     const hInput = document.createElement("input");
     hInput.value = h;
     hInput.type = "number";
     hInput.addEventListener("input", () => {
-        obstacle.size.y = Number(hInput.value = Math.max(hInput.value, 0));
+        teleporter.size.y = Number(hInput.value = Math.max(hInput.value, 0));
     });
 
 
-    obstacle.element = createFolder("Teleporter Properties", [
+    teleporter.element = createFolder("Teleporter Properties", [
         createFolder("Position", [
             createProperty("x", xInput, "number"),
             createProperty("y", yInput, "number")
@@ -65,14 +65,16 @@
             createProperty("width", wInput, "number"),
             createProperty("height", hInput, "number")
         ]),
-        createProperty("direction", null, "direction", console.log)
+        createProperty("direction", null, "direction", dir => {
+            teleporter.dir = (dir + 2) % 4;
+        })
     ]);
-    obstacle.inputs = {
+    teleporter.inputs = {
         x: xInput,
         y: yInput,
         w: wInput,
         h: hInput
     };
 
-    return obstacle;
+    return teleporter;
 }

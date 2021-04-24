@@ -320,6 +320,7 @@ contextBtns.lava.addEventListener("click", addLava);
 contextBtns.slime.addEventListener("click", addSlime);
 contextBtns.ice.addEventListener("click", addIce);
 contextBtns.block.addEventListener("click", addBlock);
+contextBtns.teleporter.addEventListener("click", addTeleporter);
 contextBtns.area.addEventListener("click", () => addArea());
 
 contextBtns.delete.addEventListener("click", () => {
@@ -332,10 +333,12 @@ contextBtns.delete.addEventListener("click", () => {
     }
 });
 
+
+
+
+
+
 addArea("Home");
-
-
-
 // Start rendering
 (function run() {
     render();
