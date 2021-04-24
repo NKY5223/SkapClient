@@ -40,14 +40,15 @@ function createFolder(title, lis) {
  * @param {string} name 
  * @param {HTMLInputElement} input 
  * @param {string} type 
+ * @param {function(0 | 1 | 2 | 3)} onselect
  */
-function createProperty(name, input, type = "text") {
+function createProperty(name, input, type = "text", onselect = () => { }) {
     const li = createLI("property " + type);
     li.appendChild(createSpan(name, "label"));
-    input.type = type;
     if (type === "color") {
         const label = document.createElement("label");
         const text = document.createTextNode(input.value);
+        input.type = type;
 
         text.nodeValue = input.value;
         label.appendChild(text);
@@ -82,9 +83,58 @@ function createProperty(name, input, type = "text") {
         label.appendChild(input);
         label.appendChild(switchSpan);
         li.appendChild(label);
-    }
-    else {
+    } else if (type === "direction") {
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("directionWrapper");
+        const up = document.createElement("button");
+        up.classList.add("directionUp");
+        const left = document.createElement("button");
+        left.classList.add("directionLeft");
+        const down = document.createElement("button");
+        down.classList.add("directionDown");
+        const right = document.createElement("button");
+        right.classList.add("directionRight");
+
+        up.classList.add("active");
+        let active = up;
+
+        up.addEventListener("click", () => {
+            if (active === up) return;
+            active.classList.remove("active");
+            up.classList.add("active");
+            active = up;
+            onselect(2);
+        });
+        right.addEventListener("click", () => {
+            if (active === right) return;
+            active.classList.remove("active");
+            right.classList.add("active");
+            active = right;
+            onselect(3);
+        });
+        down.addEventListener("click", () => {
+            if (active === down) return;
+            active.classList.remove("active");
+            down.classList.add("active");
+            active = down;
+            onselect(0);
+        });
+        left.addEventListener("click", () => {
+            if (active === left) return;
+            active.classList.remove("active");
+            left.classList.add("active");
+            active = left;
+            onselect(1);
+        });
+
+        wrapper.appendChild(up);
+        wrapper.appendChild(left);
+        wrapper.appendChild(down);
+        wrapper.appendChild(right);
+        li.appendChild(wrapper);
+    } else {
         li.appendChild(input);
+        input.type = type;
     }
     return li;
 }

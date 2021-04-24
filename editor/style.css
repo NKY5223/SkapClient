@@ -2,6 +2,7 @@
     --number: #2fa1d6;
     --text: #1ed36f;
     --boolean: #ad55c5;
+    --direction: #bb3e2d;
 
     --obstacle: rgba(0, 10, 87, 0.8);
     --lava: #d01000;
@@ -18,7 +19,7 @@ body {
 
 #tl {
     position: absolute;
-    top: 5px;
+    top: 5px;   
     left: 5px;
     padding: 5px;
     display: flex;
@@ -382,9 +383,13 @@ li {
 .property.text {
     border-left: 3px solid var(--text);
 }
+.property.direction {
+    border-left: 3px solid var(--direction);
+}
 .property.text input {
     color: var(--text);
 }
+
 .property.color {
     border-left: 3px solid #ffffff;
 }
@@ -463,6 +468,83 @@ input:checked+.switchSpan {
 }
 input:checked+.switchSpan::after {
     left: calc(100% - 15px - 2.5px);
+}
+
+.property.direction span {
+    line-height: 50px;
+}
+.directionWrapper {
+    float: right;
+    position: relative;
+    width: 45px;
+    height: 45px;
+    margin-top: 2.5px;
+    margin-right: calc(30% - 22.5px);
+}
+.directionWrapper button {
+    width: 0;
+    height: 0;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    position: absolute;
+}
+.directionWrapper button:focus {
+    outline: none;
+}
+.directionUp {
+    left: 15px;
+    border-top: none;
+    border-left: 7.5px solid transparent;
+    border-right: 7.5px solid transparent;
+    border-bottom: 12px solid #ffffff;
+}
+.directionUp:hover {
+    border-bottom-color: #c0c0c0;
+}
+.directionUp.active {
+    border-bottom-color: var(--direction);
+}
+.directionRight {
+    right: 0;
+    top: 15px;
+    border-right: none;
+    border-top: 7.5px solid transparent;
+    border-bottom: 7.5px solid transparent;
+    border-left: 12px solid #ffffff;
+}
+.directionRight:hover {
+    border-left-color: #c0c0c0;
+}
+.directionRight.active {
+    border-left-color: var(--direction);
+}
+.directionDown {
+    left: 15px;
+    bottom: 0;
+    border-bottom: none;
+    border-left: 7.5px solid transparent;
+    border-right: 7.5px solid transparent;
+    border-top: 12px solid #ffffff;
+}
+.directionDown:hover {
+    border-top-color: #c0c0c0;
+}
+.directionDown.active {
+    border-top-color: var(--direction);
+}
+.directionLeft {
+    top: 15px;
+    border-left: none;
+    border-top: 7.5px solid transparent;
+    border-bottom: 7.5px solid transparent;
+    border-right: 12px solid #ffffff;
+}
+.directionLeft:hover {
+    border-right-color: #c0c0c0;
+}
+.directionLeft.active {
+    border-right-color: var(--direction);
 }
 
 .hidden {
