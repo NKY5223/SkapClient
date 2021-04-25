@@ -235,6 +235,9 @@ body {
     transform: scale(2, -1);
     transition: transform 0.4s, color 0.4s;
 }
+#togglebottommenu:focus {
+    outline: none;
+}
 .hidden #togglebottommenu {
     color: #00ff00;
     transform: scale(2, 1);
@@ -383,7 +386,7 @@ li {
 .property.text {
     border-left: 3px solid var(--text);
 }
-.property.direction {
+.property.cardinal {
     border-left: 3px solid var(--direction);
 }
 .property.text input {
@@ -470,10 +473,10 @@ input:checked+.switchSpan::after {
     left: calc(100% - 15px - 2.5px);
 }
 
-.property.direction span {
+.property.cardinal span {
     line-height: 50px;
 }
-.directionWrapper {
+.cardinalWrapper {
     float: right;
     position: relative;
     width: 45px;
@@ -481,7 +484,7 @@ input:checked+.switchSpan::after {
     margin-top: 2.5px;
     margin-right: calc(30% - 22.5px);
 }
-.directionWrapper button {
+.cardinalWrapper button {
     width: 0;
     height: 0;
     padding: 0;
@@ -489,23 +492,23 @@ input:checked+.switchSpan::after {
     background: transparent;
     position: absolute;
 }
-.directionWrapper button:focus {
+.cardinalWrapper button:focus {
     outline: none;
 }
-.directionUp {
+.cardinalUp {
     left: 15px;
     border-top: none;
     border-left: 7.5px solid transparent;
     border-right: 7.5px solid transparent;
     border-bottom: 12px solid #ffffff;
 }
-.directionUp:hover {
+.cardinalUp:hover {
     border-bottom-color: #c0c0c0;
 }
-.directionUp.active {
+.cardinalUp.active {
     border-bottom-color: var(--direction);
 }
-.directionRight {
+.cardinalRight {
     right: 0;
     top: 15px;
     border-right: none;
@@ -513,13 +516,13 @@ input:checked+.switchSpan::after {
     border-bottom: 7.5px solid transparent;
     border-left: 12px solid #ffffff;
 }
-.directionRight:hover {
+.cardinalRight:hover {
     border-left-color: #c0c0c0;
 }
-.directionRight.active {
+.cardinalRight.active {
     border-left-color: var(--direction);
 }
-.directionDown {
+.cardinalDown {
     left: 15px;
     bottom: 0;
     border-bottom: none;
@@ -527,23 +530,23 @@ input:checked+.switchSpan::after {
     border-right: 7.5px solid transparent;
     border-top: 12px solid #ffffff;
 }
-.directionDown:hover {
+.cardinalDown:hover {
     border-top-color: #c0c0c0;
 }
-.directionDown.active {
+.cardinalDown.active {
     border-top-color: var(--direction);
 }
-.directionLeft {
+.cardinalLeft {
     top: 15px;
     border-left: none;
     border-top: 7.5px solid transparent;
     border-bottom: 7.5px solid transparent;
     border-right: 12px solid #ffffff;
 }
-.directionLeft:hover {
+.cardinalLeft:hover {
     border-right-color: #c0c0c0;
 }
-.directionLeft.active {
+.cardinalLeft.active {
     border-right-color: var(--direction);
 }
 

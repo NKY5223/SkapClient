@@ -9,6 +9,7 @@ canvas.addEventListener("wheel", e => {
     camScale *= m;
 });
 canvas.addEventListener("mousedown", e => {
+    console.log(e.detail);
     if (e.button === 1) e.preventDefault();
     if (e.button !== 0) return;
     let target = targetedObject(e);
@@ -113,7 +114,7 @@ canvas.addEventListener("mousedown", e => {
                         target.pos.x = x;
                         target.size.x = posX - x + sizeX;
                     } else {
-                        target.pos.x = posX;
+                        target.pos.x = posX + sizeX;
                         target.size.x = 0;
                     }
                     if (posY - y < 0) {
@@ -134,7 +135,7 @@ canvas.addEventListener("mousedown", e => {
                         target.pos.x = x;
                         target.size.x = posX - x + sizeX;
                     } else {
-                        target.pos.x = posX;
+                        target.pos.x = posX + sizeX;
                         target.size.x = 0;
                     }
                     target.inputs.x.value = target.pos.x;
@@ -149,7 +150,7 @@ canvas.addEventListener("mousedown", e => {
                         target.pos.x = x;
                         target.size.x = posX - x + sizeX;
                     } else {
-                        target.pos.x = posX;
+                        target.pos.x = posX + sizeX;
                         target.size.x = 0;
                     }
                     if (posY - y + sizeY > 0) {
@@ -189,6 +190,23 @@ canvas.addEventListener("mousedown", e => {
         if (selectedObject) hide(selectedObject.element);
         selectedObject = null;
     }
+
+    if (e.detail > 1 && selectedObject && selectedObject.type === "teleporter" && selectedObject.targetArea !== currentArea.name) {
+        for (let area of map.areas) {
+            if (selectedObject.targetArea === area.name) {
+                hide(currentArea.element);
+                currentArea = area;
+                if (selectedObject) hide(selectedObject.element);
+                selectedObject = null;
+
+                show(area.element);
+                return;
+            }
+        }
+        if (confirm(`Did not find area ${selectedObject.targetArea}, would you like to create it?`)) {
+            addArea(selectedObject.targetArea);
+        }
+    }
 });
 
 /** @param {MouseEvent} e */
@@ -219,7 +237,10 @@ canvas.addEventListener("mousemove", e => {
             const right = pointInRect(mouse, { x: x1 - selectBuffer, y: y0 - selectBuffer }, { x: x1 + selectBuffer, y: y1 + selectBuffer });
             const middle = pointInRect(mouse, { x: x0, y: y0 }, { x: x1, y: y1 });
 
-            if (up) {
+            if (middle) {
+                canvas.style.cursor = "grab";
+                selectMode = "m";
+            } else if (up) {
                 if (left) {
                     canvas.style.cursor = "nwse-resize";
                     selectMode = "ul";
@@ -263,9 +284,6 @@ canvas.addEventListener("mousemove", e => {
                     canvas.style.cursor = "ew-resize";
                     selectMode = "r";
                 }
-            } else if (middle) {
-                canvas.style.cursor = "grab";
-                selectMode = "m";
             } else {
                 canvas.style.cursor = "initial";
                 selectMode = null;
@@ -328,6 +346,7 @@ contextBtns.delete.addEventListener("click", () => {
         let arr = currentArea.objects[selectedObject.type];
         if (arr.includes(selectedObject)) {
             arr.splice(arr.indexOf(selectedObject));
+            selectedObject.element.remove();
             selectedObject = null;
         }
     }

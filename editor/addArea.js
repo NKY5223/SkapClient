@@ -2,6 +2,8 @@ function addArea(name = "New Area") {
     const area = createArea(name, [0, 10, 87], 0.8, [230, 230, 230], 100, 100);
     if (currentArea) hide(currentArea.element);
     currentArea = area;
+    if (selectedObject) hide(selectedObject.element);
+    selectedObject = null;
     map.areas.push(area);
     areamenu.appendChild(area.element);
 

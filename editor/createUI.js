@@ -48,7 +48,7 @@ function createProperty(name, input, type = "text", onselect = () => { }) {
     if (type === "color") {
         const label = document.createElement("label");
         const text = document.createTextNode(input.value);
-        input.type = type;
+        input.type = "color";
 
         text.nodeValue = input.value;
         label.appendChild(text);
@@ -83,17 +83,17 @@ function createProperty(name, input, type = "text", onselect = () => { }) {
         label.appendChild(input);
         label.appendChild(switchSpan);
         li.appendChild(label);
-    } else if (type === "direction") {
+    } else if (type === "cardinal") {
         const wrapper = document.createElement("div");
-        wrapper.classList.add("directionWrapper");
+        wrapper.classList.add("cardinalWrapper");
         const up = document.createElement("button");
-        up.classList.add("directionUp");
+        up.classList.add("cardinalUp");
         const left = document.createElement("button");
-        left.classList.add("directionLeft");
+        left.classList.add("cardinalLeft");
         const down = document.createElement("button");
-        down.classList.add("directionDown");
+        down.classList.add("cardinalDown");
         const right = document.createElement("button");
-        right.classList.add("directionRight");
+        right.classList.add("cardinalRight");
 
         up.classList.add("active");
         let active = up;

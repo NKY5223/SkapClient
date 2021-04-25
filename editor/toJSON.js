@@ -43,6 +43,15 @@ function areaToJSON(area) {
     for (let ice of area.objects.ice) {
         objects.push(iceToJSON(ice));
     }
+    for (let block of area.objects.block0) {
+        objects.push(blockToJSON(block, 0));
+    }
+    for (let block of area.objects.block1) {
+        objects.push(blockToJSON(block, 1));
+    }
+    for (let teleporter of area.objects.teleporter) {
+        objects.push(teleporterToJSON(teleporter));
+    }
     return `{"name":${JSON.stringify(area.name)},"size":[${area.size[0]},${area.size[1]}],"objects":[${objects.join()}],"backgroundColor":[${area.colorArr.join()},${area.opacity}],"areaColor":[${area.backgroundArr.join()}]}`;
 }
 
@@ -69,4 +78,17 @@ function slimeToJSON(slime) {
  */
 function iceToJSON(ice) {
     return `{"type":"ice","position":[${ice.pos.x},${ice.pos.y}],"size":[${ice.size.x},${ice.size.y}]}`;
+}
+/**
+ * @param {Block} block 
+ * @param {0 | 1} layer 
+ */
+function blockToJSON(block, layer) {
+    return `{"type":"block","position":[${block.pos.x},${block.pos.y}],"size":[${block.size.x},${block.size.y}],"color":[${block.colorArr.join()}],"opacity":${block.opacity},"collide":${block.collide},"layer":${layer}}`;
+}
+/**
+ * @param {Teleporter} teleporter 
+ */
+function teleporterToJSON(teleporter) {
+    return `{"type":"teleporter","position":[${teleporter.pos.x},${teleporter.pos.y}],"size":[${teleporter.size.x},${teleporter.size.y}],"dir":${teleporter.dir},"id":${teleporter.id},"targetArea":${JSON.stringify(teleporter.targetArea)},"targetId":${teleporter.targetId}}`;
 }

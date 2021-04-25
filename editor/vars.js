@@ -273,6 +273,7 @@ let camScale = 5;
 const camSpeed = 10;
 let camX = 50;
 let camY = 50;
+/** @type {SkapObject} */
 let selectedObject = null;
 /** @type {Area} */
 let currentArea = null;
@@ -346,6 +347,15 @@ function hexToArr(hex) {
  */
 function arrtoRGBA(arr) {
     return `rgba(${arr.join()})`;
+}
+function fillZeros(str = "0", digits = 2, filler = "0") {
+    return filler.repeat(digits - str.length) + str;
+}
+/**
+ * @param {number[]} arr 
+ */
+function arrtoHex(arr) {
+    return `#${fillZeros(arr[0].toString(16))}${fillZeros(arr[1].toString(16))}${fillZeros(arr[2].toString(16))}`;
 }
 /**
  * @param {[number, number, number]} color 

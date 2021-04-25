@@ -1,5 +1,13 @@
 /**
  * @typedef {[number, number, number]} ColorArr
+ * 
+ * @typedef SkapObject
+ * @property {VectorLike} pos
+ * @property {VectorLike} size
+ * @property {Object<string, HTMLInputElement>} inputs
+ * @property {string} type
+ * @property {HTMLLIElement} element
+ * 
  * @typedef Area
  * @property {string} name
  * @property {string} color
@@ -14,6 +22,7 @@
  * @property {Slime[]} objects.slime
  * @property {Block[]} objects.block0
  * @property {Block[]} objects.block1
+ * @property {Teleporter[]} objects.teleporter
  * @property {HTMLLIElement} element
  * @property {{w: HTMLInputElement, h: HTMLInputElement, name: HTMLInputElement}} inputs
  * 
@@ -70,7 +79,7 @@ function createArea(name = "New Area", color = [0, 10, 87], opacity = 0.8, backg
     const colorInput = document.createElement("input");
     const opacityInput = document.createElement("input");
 
-    colorInput.value = "#" + fillZeros(color[0].toString(16)) + fillZeros(color[1].toString(16)) + fillZeros(color[2].toString(16));
+    colorInput.value = arrtoHex(color);
     colorInput.addEventListener("input", () => {
         area.colorArr = hexToArr(colorInput.value);
         area.color = blend240(area.colorArr, opacity);
@@ -89,7 +98,7 @@ function createArea(name = "New Area", color = [0, 10, 87], opacity = 0.8, backg
     });
 
     const backgroundInput = document.createElement("input");
-    backgroundInput.value = arrtoRGBA(background);
+    backgroundInput.value = arrtoHex(background);
     backgroundInput.addEventListener("input", () => {
         area.background = backgroundInput.value;
     });
@@ -122,7 +131,4 @@ function createArea(name = "New Area", color = [0, 10, 87], opacity = 0.8, backg
         h: hInput
     }
     return area;
-}
-function fillZeros(str = "0", digits = 2, filler = "0") {
-    return filler.repeat(digits - str.length) + str;
 }

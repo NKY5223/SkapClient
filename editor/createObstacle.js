@@ -27,30 +27,26 @@
     // Create inputs/labels
     const xInput = document.createElement("input");
     xInput.value = x;
-    xInput.type = "number";
     xInput.addEventListener("input", () => {
-        obstacle.pos.x = Number(xInput.value = Math.max(xInput.value, 0));
+        obstacle.pos.x = xInput.value = Math.max(xInput.value, 0);
     });
 
     const yInput = document.createElement("input");
     yInput.value = y;
-    yInput.type = "number";
     yInput.addEventListener("input", () => {
-        obstacle.pos.y = Number(yInput.value = Math.max(yInput.value, 0));
+        obstacle.pos.y = yInput.value = Math.max(yInput.value, 0);
     });
 
     const wInput = document.createElement("input");
     wInput.value = w;
-    wInput.type = "number";
     wInput.addEventListener("input", () => {
-        obstacle.size.x = Number(wInput.value = Math.max(wInput.value, 0));
+        obstacle.size.x = wInput.value = Math.max(wInput.value, 0);
     });
 
     const hInput = document.createElement("input");
     hInput.value = h;
-    hInput.type = "number";
     hInput.addEventListener("input", () => {
-        obstacle.size.y = Number(hInput.value = Math.max(hInput.value, 0));
+        obstacle.size.y = hInput.value = Math.max(hInput.value, 0);
     });
 
 
