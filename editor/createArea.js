@@ -38,12 +38,9 @@
 function createArea(name = "New Area", color = [0, 10, 87], opacity = 0.8, background = [230, 230, 230], w = 100, h = 100) {
     const area = {
         name,
-        color: "rgb(" +
-            (240 + (color[0] - 240) * opacity) + ", " +
-            (240 + (color[1] - 240) * opacity) + ", " +
-            (240 + (color[2] - 240) * opacity) + ")",
+        color: blend240(color, opacity),
         colorArr: color,
-        background: `rgb(${background[0]}, ${background[1]}, ${background[2]})`,
+        background: arrtoRGBA(background),
         backgroundArr: background,
         opacity,
         size: [w, h],
@@ -102,6 +99,7 @@ function createArea(name = "New Area", color = [0, 10, 87], opacity = 0.8, backg
     backgroundInput.value = arrtoHex(background);
     backgroundInput.addEventListener("input", () => {
         area.background = backgroundInput.value;
+        area.backgroundArr = hexToArr(backgroundInput.value);
     });
 
     const wInput = document.createElement("input");

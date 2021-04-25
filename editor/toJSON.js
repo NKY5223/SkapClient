@@ -23,7 +23,7 @@ function mapToJSON(map) {
     for (let area of map.areas) {
         areas.push(areaToJSON(area));
     }
-    return `{"settings":{"name":${JSON.stringify(map.settings.name)},"creator":${JSON.stringify(map.settings.creator)},"spwanPos":[${map.settings.spawnPos.join()}],"spawnArea":${JSON.stringify(map.settings.spawnArea)},"version":${map.settings.version},"skapclient_version":${map.settings.skapclient_version}},"maps":[${areas.join()}]}`;
+    return `{"settings":{"name":${JSON.stringify(map.settings.name)},"creator":${JSON.stringify(map.settings.creator)},"spawnPosition":[${map.settings.spawnPos.join()}],"spawnArea":${JSON.stringify(map.settings.spawnArea)},"version":${map.settings.version},"skapclient_version":${map.settings.skapclient_version}},"maps":[${areas.join()}]}`;
 }
 
 /**
@@ -52,7 +52,7 @@ function areaToJSON(area) {
     for (let teleporter of area.objects.teleporter) {
         objects.push(teleporterToJSON(teleporter));
     }
-    return `{"name":${JSON.stringify(area.name)},"size":[${area.size[0]},${area.size[1]}],"objects":[${objects.join()}],"backgroundColor":[${area.colorArr.join()},${area.opacity}],"areaColor":[${area.backgroundArr.join()}]}`;
+    return `{"name":${JSON.stringify(area.name)},"size":[${area.size[0]},${area.size[1]}],"backgroundColor":[${area.colorArr.join()},${area.opacity}],"areaColor":[${area.backgroundArr.join()}],"objects":[${objects.join()}]}`;
 }
 
 /**

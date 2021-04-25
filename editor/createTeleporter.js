@@ -66,13 +66,13 @@ function createTeleporter(x = 0, y = 0, w = 10, h = 20) {
     const idInput = document.createElement("input");
     idInput.value = 0;
     idInput.addEventListener("input", () => {
-        teleporter.id = Math.max(idInput.value, 0);
+        teleporter.id = idInput.value = Math.max(idInput.value, 0);
     });
 
     const targetIdInput = document.createElement("input");
     targetIdInput.value = 0;
     targetIdInput.addEventListener("input", () => {
-        teleporter.targetId = Math.max(targetIdInput.value, 0);
+        teleporter.targetId = targetIdInput.value = Math.max(targetIdInput.value, 0);
     });
 
 

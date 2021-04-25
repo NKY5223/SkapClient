@@ -506,7 +506,7 @@ input:checked+.switchSpan::after {
     border-bottom-color: #c0c0c0;
 }
 .cardinalUp.active {
-    border-bottom-color: var(--direction);
+    border-bottom-color: var(--direction) !important;
 }
 .cardinalRight {
     right: 0;
@@ -520,7 +520,7 @@ input:checked+.switchSpan::after {
     border-left-color: #c0c0c0;
 }
 .cardinalRight.active {
-    border-left-color: var(--direction);
+    border-left-color: var(--direction) !important;
 }
 .cardinalDown {
     left: 15px;
@@ -534,7 +534,7 @@ input:checked+.switchSpan::after {
     border-top-color: #c0c0c0;
 }
 .cardinalDown.active {
-    border-top-color: var(--direction);
+    border-top-color: var(--direction) !important;
 }
 .cardinalLeft {
     top: 15px;
@@ -547,7 +547,7 @@ input:checked+.switchSpan::after {
     border-right-color: #c0c0c0;
 }
 .cardinalLeft.active {
-    border-right-color: var(--direction);
+    border-right-color: var(--direction) !important;
 }
 
 .hidden {
@@ -582,5 +582,29 @@ input:checked+.switchSpan::after {
     #togglemenu {
         background: #c0c0c0;
         color: #000000;
+    }
+    .cardinalUp {
+        border-bottom-color: #c0c0c0;
+    }
+    .cardinalUp:hover {
+        border-bottom-color: #a0a0a0;
+    }
+    .cardinalRight {
+        border-left-color: #c0c0c0;
+    }
+    .cardinalRight:hover {
+        border-left-color: #a0a0a0;
+    }
+    .cardinalDown {
+        border-top-color: #c0c0c0;
+    }
+    .cardinalDown:hover {
+        border-top-color: #a0a0a0;
+    }
+    .cardinalLeft {
+        border-right-color: #c0c0c0;
+    }
+    .cardinalLeft:hover {
+        border-right-color: #a0a0a0;
     }
 }

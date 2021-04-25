@@ -261,7 +261,7 @@ const map = {
     settings: {
         name: null,
         creator: null,
-        spawnPos: [0, 0],
+        spawnPos: [50, 50],
         spawnArea: "Home",
         version: null,
         skapclient_version: null
