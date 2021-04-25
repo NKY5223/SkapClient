@@ -7,9 +7,9 @@ function addArea(name = "New Area") {
     map.areas.push(area);
     areamenu.appendChild(area.element);
 
-    const button = document.createElement("button");
-    button.innerHTML = htmlspecialchars(area.name);
-    button.addEventListener("click", () => {
+    area.button = document.createElement("button");
+    area.button.innerHTML = htmlspecialchars(area.name);
+    area.button.addEventListener("click", () => {
         if (currentArea) hide(currentArea.element);
         currentArea = area;
         if (selectedObject) hide(selectedObject.element);
@@ -19,8 +19,8 @@ function addArea(name = "New Area") {
         show(currentArea.element);
     });
     area.inputs.name.addEventListener("input", () => {
-        button.innerHTML = htmlspecialchars(area.name);
+        area.button.innerHTML = htmlspecialchars(area.name);
     });
 
-    areaList.appendChild(button);
+    areaList.appendChild(area.button);
 }

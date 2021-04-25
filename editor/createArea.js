@@ -24,6 +24,7 @@
  * @property {Block[]} objects.block1
  * @property {Teleporter[]} objects.teleporter
  * @property {HTMLLIElement} element
+ * @property {HTMLButtonElement} button
  * @property {{w: HTMLInputElement, h: HTMLInputElement, name: HTMLInputElement}} inputs
  * 
  * @param {string} name 

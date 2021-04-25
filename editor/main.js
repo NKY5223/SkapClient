@@ -9,7 +9,6 @@ canvas.addEventListener("wheel", e => {
     camScale *= m;
 });
 canvas.addEventListener("mousedown", e => {
-    console.log(e.detail);
     if (e.button === 1) e.preventDefault();
     if (e.button !== 0) return;
     let target = targetedObject(e);
@@ -303,6 +302,8 @@ canvas.addEventListener("contextmenu", e => {
 
     if (selectedObject) show(contextBtns.objectActions);
     else hide(contextBtns.objectActions);
+    if (map.areas.length === 1) hide(contextBtns.deleteArea);
+    else show(contextBtns.deleteArea);
 
     show(contextmenu);
 });
@@ -341,13 +342,25 @@ contextBtns.block.addEventListener("click", addBlock);
 contextBtns.teleporter.addEventListener("click", addTeleporter);
 contextBtns.area.addEventListener("click", () => addArea());
 
-contextBtns.delete.addEventListener("click", () => {
-    if (selectedObject && confirm("Are you sure you want to delete this object?")) {
+contextBtns.deleteObject.addEventListener("click", () => {
+    if (selectedObject) {
         let arr = currentArea.objects[selectedObject.type];
         if (arr.includes(selectedObject)) {
-            arr.splice(arr.indexOf(selectedObject));
+            arr.splice(arr.indexOf(selectedObject), 1);
             selectedObject.element.remove();
             selectedObject = null;
+        }
+    }
+});
+contextBtns.deleteArea.addEventListener("click", () => {
+    if (currentArea && map.areas.length !== 1 && confirm("Are you sure you want to delete this area?")) {
+        let arr = map.areas;
+        if (arr.includes(currentArea)) {
+            arr.splice(arr.indexOf(currentArea), 1);
+            currentArea.element.remove();
+            currentArea.button.remove();
+            currentArea = arr[0];
+            show(currentArea.element);
         }
     }
 });

@@ -305,9 +305,10 @@ const contextBtns = {
     block: document.getElementById("createBlock"),
     teleporter: document.getElementById("createTeleporter"),
     area: document.getElementById("createArea"),
+    deleteArea: document.getElementById("deleteArea"),
 
     objectActions: document.getElementById("objectActions"),
-    delete: document.getElementById("deleteObject")
+    deleteObject: document.getElementById("deleteObject")
 };
 
 const togglebottommenu = document.getElementById("togglebottommenu");
