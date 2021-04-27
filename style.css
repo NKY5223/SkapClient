@@ -12,6 +12,11 @@ body {
     background: #404040;
     color: #ffffff;
 }
+
+body.scroll {
+    overflow: auto;
+}
+
 ::-webkit-scrollbar {
     width: 7px;
 }

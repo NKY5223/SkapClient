@@ -40,9 +40,9 @@ function createFolder(title, lis) {
  * @param {string} name 
  * @param {HTMLInputElement} input 
  * @param {string} type 
- * @param {function(0 | 1 | 2 | 3)} onselect
+ * @param {{cardinal?: {event: function(0 | 1 | 2 | 3): void}, select?: {type: "text" | "number", options: [string, *][], event: function(*)}}} options
  */
-function createProperty(name, input, type = "text", onselect = () => { }) {
+function createProperty(name, input, type = "text", options = {}) {
     const li = createLI("property " + type);
     li.appendChild(createSpan(name, "label"));
     if (type === "color") {
@@ -58,15 +58,13 @@ function createProperty(name, input, type = "text", onselect = () => { }) {
         label.style.background = input.value;
         li.style.borderLeftColor = input.value;
 
-        let luma = 0.2126 * parseInt(input.value.slice(1, 3), 16) + 0.7152 * parseInt(input.value.slice(3, 5), 16) + 0.0722 * parseInt(input.value.slice(5, 7), 16);
-        if (luma > 128) li.classList.add("light");
+        if (luma(hexToArr(input.value)) > 128) li.classList.add("light");
         input.addEventListener("input", () => {
             text.nodeValue = input.value;
             label.style.background = input.value;
             li.style.borderLeftColor = input.value;
 
-            let luma = 0.2126 * parseInt(input.value.slice(1, 3), 16) + 0.7152 * parseInt(input.value.slice(3, 5), 16) + 0.0722 * parseInt(input.value.slice(5, 7), 16);
-            if (luma > 128) li.classList.add("light");
+            if (luma(hexToArr(input.value)) > 128) li.classList.add("light");
             else li.classList.remove("light");
         });
 
@@ -103,28 +101,28 @@ function createProperty(name, input, type = "text", onselect = () => { }) {
             active.classList.remove("active");
             up.classList.add("active");
             active = up;
-            onselect(2);
+            options.cardinal.event(2);
         });
         right.addEventListener("click", () => {
             if (active === right) return;
             active.classList.remove("active");
             right.classList.add("active");
             active = right;
-            onselect(3);
+            options.cardinal.event(3);
         });
         down.addEventListener("click", () => {
             if (active === down) return;
             active.classList.remove("active");
             down.classList.add("active");
             active = down;
-            onselect(0);
+            options.cardinal.event(0);
         });
         left.addEventListener("click", () => {
             if (active === left) return;
             active.classList.remove("active");
             left.classList.add("active");
             active = left;
-            onselect(1);
+            options.cardinal.event(1);
         });
 
         wrapper.appendChild(up);
@@ -132,6 +130,24 @@ function createProperty(name, input, type = "text", onselect = () => { }) {
         wrapper.appendChild(down);
         wrapper.appendChild(right);
         li.appendChild(wrapper);
+    } else if (type === "select") {
+        const select = document.createElement("div");
+        select.classList.add("customSelect");
+        const selected = document.createElement("p");
+        const optionList = document.createElement("ul");
+        li.classList.add(options.select.type);
+        for (let option of options.select.options) {
+            const el = createLI("customOption");
+            el.innerHTML = option[0];
+            el.addEventListener("click", () => {
+                selected.innerHTML = option[1];
+                options.select.event(option[1]);
+            });
+            optionList.appendChild(el);
+        }
+        select.appendChild(selected);
+        select.appendChild(optionList);
+        li.appendChild(select);
     } else {
         li.appendChild(input);
         input.type = type;

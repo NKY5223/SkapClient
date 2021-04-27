@@ -369,6 +369,12 @@ function blend240([r, g, b], opacity) {
         (240 + (b - 240) * opacity) + ")";
 }
 /**
+ * @param {ColorArr} arr
+ */
+function luma(arr) {
+    return 0.2126 * arr[0] + 0.7152 * arr[1] + 0.0722 * arr[2];
+}
+/**
  * @typedef VectorLike
  * @property {number} x
  * @property {number} y
