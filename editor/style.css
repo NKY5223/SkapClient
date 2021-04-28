@@ -323,7 +323,7 @@ li {
     border: none;
     float: right;
     width: 60%;
-    margin-top: 4px;
+    margin-top: 4.5px;
     box-sizing: border-box;
 }
 #menu input:hover {
@@ -372,6 +372,7 @@ li {
     padding: 0 5px 0 4px;
     border-bottom: 1px solid #303030;
     background: #202020;
+    height: 27.67px;
 }
 .closed > .indent {
     display: none;
@@ -400,7 +401,7 @@ li {
     box-sizing: border-box;
     display: block;
     float: right;
-    margin-top: 4px;
+    margin-top: 4.5px;
     width: 60%;
     height: calc(100% - 8px);
     overflow: hidden;
@@ -440,7 +441,7 @@ li {
     float: right;
     cursor: pointer;
     margin-right: calc(30% - 17.5px);
-    margin-top: 4px;
+    margin-top: 4.5px;
 }
 .switchLabel input {
     display: none;
@@ -548,6 +549,25 @@ input:checked+.switchSpan::after {
 }
 .cardinalLeft.active {
     border-right-color: var(--direction) !important;
+}
+
+.property.select select {
+    margin-top: 5.5px;
+    float: right;
+    width: 60%;
+    background: #303030;
+    color: #ffffff;
+    cursor: pointer;
+    border: #505050;
+}
+.property.select select:focus {
+    outline: none;
+}
+.property.select.number select {
+    color: var(--number);
+}
+.property.select.text select {
+    color: var(--text);
 }
 
 .hidden {

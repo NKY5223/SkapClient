@@ -131,24 +131,25 @@ function createProperty(name, input, type = "text", options = {}) {
         wrapper.appendChild(right);
         li.appendChild(wrapper);
     } else if (type === "select") {
-        const select = document.createElement("div");
-        select.classList.add("customSelect");
-        const selected = document.createElement("p");
-        const optionList = document.createElement("ul");
-        li.classList.add(options.select.type);
-        for (let option of options.select.options) {
-            const el = createLI("customOption");
-            el.innerHTML = option[0];
-            el.addEventListener("click", () => {
-                selected.innerHTML = option[1];
-                options.select.event(option[1]);
-            });
-            optionList.appendChild(el);
+        const select = document.createElement("select");
+        
+        for (let i in options.select.options) {
+            const option = document.createElement("option");
+
+            option.innerHTML = options.select.options[i][0];
+            option.value = i;
+            select.appendChild(option);
         }
-        select.appendChild(selected);
-        select.appendChild(optionList);
+
+        select.addEventListener("change", () => {
+            options.select.event(options.select.options[select.value][1]);
+        });
+        li.classList.add(options.select.type);
         li.appendChild(select);
     } else {
+        if (type === "text") {
+            input.spellcheck = false;
+        }
         li.appendChild(input);
         input.type = type;
     }

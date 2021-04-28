@@ -461,6 +461,16 @@ function render() {
         ctx.strokeStyle = renderSettings.colors.hitbox;
         for (let type in currentArea.objects) {
             for (let o of currentArea.objects[type]) {
+                if (type === "text") {
+                    ctx.beginPath();
+                    ctx.ellipse(
+                        Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
+                        Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
+                        5 * camScale, 5 * camScale, 0, 0, 7
+                    );
+                    ctx.stroke();
+                    continue;
+                }
                 ctx.strokeRect(
                     Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
                     Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
@@ -473,6 +483,16 @@ function render() {
     // Render selected hitbox
     if (selectedObject) {
         ctx.strokeStyle = renderSettings.colors.selected;
+        if (selectedObject.type === "text") {
+            ctx.beginPath();
+            ctx.ellipse(
+                Math.round(canvas.width / 2 + camScale * (selectedObject.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (selectedObject.pos.y - camY)),
+                5 * camScale, 5 * camScale, 0, 0, 7
+            );
+            ctx.stroke();
+            return;
+        }
         ctx.strokeRect(
             Math.round(canvas.width / 2 + camScale * (selectedObject.pos.x - camX)),
             Math.round(canvas.height / 2 + camScale * (selectedObject.pos.y - camY)),

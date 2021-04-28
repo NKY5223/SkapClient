@@ -215,6 +215,12 @@ function targetedObject(e) {
             const obj = currentArea.objects[type][i];
             const [{ x: x0, y: y0 }, { x: x1, y: y1 }] = points(obj);
             const mouse = { x: e.offsetX, y: e.offsetY };
+            if (type === "text") {
+                if (pointInCircle(mouse, { x: x0, y: y0 }, 5 * camScale + selectBuffer)) {
+                    return obj;
+                }
+                continue;
+            }
             if (pointInRect(mouse, { x: x0 - selectBuffer, y: y0 - selectBuffer }, { x: x1 + selectBuffer, y: y1 + selectBuffer })) return obj;
         }
     }
@@ -228,6 +234,15 @@ canvas.addEventListener("mousemove", e => {
             const obj = currentArea.objects[type][i];
             const [{ x: x0, y: y0 }, { x: x1, y: y1 }] = points(obj);
             const mouse = point(e);
+
+            if (type === "text") {
+                if (pointInCircle(mouse, { x: x0, y: y0 }, 5 * camScale + selectBuffer)) {
+                    canvas.style.cursor = "pointer";
+                    selectMode = "m";
+                    return;
+                }
+                continue;
+            }
 
             const outer = pointInRect(mouse, { x: x0 - selectBuffer, y: y0 - selectBuffer }, { x: x1 + selectBuffer, y: y1 + selectBuffer });
             const up = pointInRect(mouse, { x: x0 - selectBuffer, y: y0 - selectBuffer }, { x: x1 + selectBuffer, y: y0 + selectBuffer });
@@ -340,6 +355,7 @@ contextBtns.slime.addEventListener("click", addSlime);
 contextBtns.ice.addEventListener("click", addIce);
 contextBtns.block.addEventListener("click", addBlock);
 contextBtns.teleporter.addEventListener("click", addTeleporter);
+contextBtns.text.addEventListener("click", addText);
 contextBtns.area.addEventListener("click", () => addArea());
 
 contextBtns.deleteObject.addEventListener("click", () => {
@@ -376,6 +392,7 @@ addArea("Home");
     render();
     window.requestAnimationFrame(run);
 })();
+// objectmenu.appendChild(createProperty("test", null, "select", { select: { type: "text", event: console.log, options: [["1", "1"], ["2", 4]] } }));
 
 
 
@@ -416,6 +433,14 @@ function point(e) {
  */
 function pointInRect(point, point0, point1) {
     return point.x > point0.x && point.x < point1.x && point.y > point0.y && point.y < point1.y;
+}
+/**
+ * @param {VectorLike} point 
+ * @param {VectorLike} pos 
+ * @param {number} r 
+ */
+function pointInCircle(point, pos, r) {
+    return (point.x - pos.x) * (point.x - pos.x) + (point.y - pos.y) * (point.y - pos.y) <= r * r;
 }
 /**
  * @param {Element} element 

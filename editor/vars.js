@@ -304,6 +304,8 @@ const contextBtns = {
     ice: document.getElementById("createIceFromContext"),
     block: document.getElementById("createBlock"),
     teleporter: document.getElementById("createTeleporter"),
+    text: document.getElementById("createText"),
+
     area: document.getElementById("createArea"),
     deleteArea: document.getElementById("deleteArea"),
 
