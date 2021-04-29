@@ -92,3 +92,15 @@ function blockToJSON(block, layer) {
 function teleporterToJSON(teleporter) {
     return `{"type":"teleporter","position":[${teleporter.pos.x},${teleporter.pos.y}],"size":[${teleporter.size.x},${teleporter.size.y}],"dir":${teleporter.dir},"id":${teleporter.id},"targetArea":${JSON.stringify(teleporter.targetArea)},"targetId":${teleporter.targetId}}`;
 }
+/**
+ * @param {SkapText} text 
+ */
+function textToJSON(text) {
+    return `{"type":"text","position":[${text.pos.x},${text.pos.y}],"text":${JSON.stringify(text.text)}}`;
+}
+/**
+ * @param {Spawner} spawner 
+ */
+function spawnerToJSON(spawner) {
+    return `{"type":"spawner","position":[${spawner.pos.x},${spawner.pos.y}],"size":[${spawner.size.x},${spawner.size.y}],"entityType":${JSON.stringify(spawner.enemyType)},"number":${spawner.number},"speed":${spawner.speed},"radius":${spawner.radius}}`;
+}

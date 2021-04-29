@@ -210,7 +210,7 @@ canvas.addEventListener("mousedown", e => {
 
 /** @param {MouseEvent} e */
 function targetedObject(e) {
-    for (let type of ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "door", "switch", "button", "slime", "ice", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"]) {
+    for (let type of types) {
         for (let i = currentArea.objects[type].length - 1; i >= 0; i--) {
             const obj = currentArea.objects[type][i];
             const [{ x: x0, y: y0 }, { x: x1, y: y1 }] = points(obj);
@@ -229,7 +229,7 @@ function targetedObject(e) {
 
 canvas.addEventListener("mousemove", e => {
     if (lockCursor) return;
-    for (let type of ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "door", "switch", "button", "slime", "ice", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"]) {
+    for (let type of types) {
         for (let i = currentArea.objects[type].length - 1; i >= 0; i--) {
             const obj = currentArea.objects[type][i];
             const [{ x: x0, y: y0 }, { x: x1, y: y1 }] = points(obj);
@@ -356,6 +356,7 @@ contextBtns.ice.addEventListener("click", addIce);
 contextBtns.block.addEventListener("click", addBlock);
 contextBtns.teleporter.addEventListener("click", addTeleporter);
 contextBtns.text.addEventListener("click", addText);
+contextBtns.spawner.addEventListener("click", addSpawner);
 contextBtns.area.addEventListener("click", () => addArea());
 
 contextBtns.deleteObject.addEventListener("click", () => {

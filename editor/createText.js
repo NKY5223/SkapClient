@@ -1,14 +1,15 @@
 /**
- * @typedef Text
+ * @typedef SkapText
  * @property {VectorLike} pos
  * @property {{x: 5, y: 5}} size
+ * @property {string} text
  * @property {{x: HTMLInputElement, y: HTMLInputElement, text: HTMLInputElement}} inputs
  * @property {HTMLLIElement} element
  * 
  * @param {number} x 
  * @param {number} y 
  * @param {string} content 
- * @returns {Text}
+ * @returns {SkapText}
  */
 function createText(x = 0, y = 0, content = "Text") {
     const text = {
@@ -44,7 +45,7 @@ function createText(x = 0, y = 0, content = "Text") {
     });
 
 
-    text.element = createFolder("Obstacle Properties", [
+    text.element = createFolder("Text Properties", [
         createFolder("Position", [
             createProperty("x", xInput, "number"),
             createProperty("y", yInput, "number")

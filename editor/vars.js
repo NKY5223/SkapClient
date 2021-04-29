@@ -7,6 +7,7 @@ const ctx = canvas.getContext("2d");
 const controls = (localStorage.getItem("controls") || "w a s d shift   r").split(" ");
 const othercontrols = (localStorage.getItem("othercontrols") || "u i f arrowup arrowleft arrowdown arrowright o").split(" ");
 
+const types = ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "spawner", "door", "switch", "button", "slime", "ice", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"];
 const renderSettings = {
     render: {
         obstacle: true,
@@ -15,6 +16,7 @@ const renderSettings = {
         rotLava: true,
         slime: true,
         ice: true,
+        spawner: true,
         block0: true,
         text: true,
         teleporter: true,
@@ -54,6 +56,8 @@ const renderSettings = {
 
         turretBody: "#404040",
         turretCannon: "#303030",
+
+        spawner: "#00004040",
 
         mineRegion: "#00000010",
         mineExpRegion: "#d0100010",
@@ -305,6 +309,7 @@ const contextBtns = {
     block: document.getElementById("createBlock"),
     teleporter: document.getElementById("createTeleporter"),
     text: document.getElementById("createText"),
+    spawner: document.getElementById("createSpawner"),
 
     area: document.getElementById("createArea"),
     deleteArea: document.getElementById("deleteArea"),

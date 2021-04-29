@@ -23,6 +23,8 @@
  * @property {Block[]} objects.block0
  * @property {Block[]} objects.block1
  * @property {Teleporter[]} objects.teleporter
+ * @property {SkapText[]} objects.text
+ * @property {Spawner[]} objects.spawner
  * @property {HTMLLIElement} element
  * @property {HTMLButtonElement} button
  * @property {{w: HTMLInputElement, h: HTMLInputElement, name: HTMLInputElement}} inputs
@@ -64,7 +66,8 @@ function createArea(name = "New Area", color = [0, 10, 87], opacity = 0.8, backg
             hatReward: [],
             box: [],
             image0: [],
-            image1: []
+            image1: [],
+            spawner: []
         }
     };
 

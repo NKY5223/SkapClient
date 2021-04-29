@@ -17,6 +17,19 @@ body {
     overflow: hidden;
 }
 
+::-webkit-scrollbar {
+    width: 7px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #606060;
+}
+.hidden {
+    display: none;
+}
+
 #tl {
     position: absolute;
     top: 5px;   
@@ -560,6 +573,12 @@ input:checked+.switchSpan::after {
     cursor: pointer;
     border: #505050;
 }
+.property.select select:hover {
+    background: #404040;
+}
+.property.select option {
+    background: #303030;
+}
 .property.select select:focus {
     outline: none;
 }
@@ -570,9 +589,6 @@ input:checked+.switchSpan::after {
     color: var(--text);
 }
 
-.hidden {
-    display: none;
-}
 @media (prefers-color-scheme: light) {
     :root {
         --text: hsl(147, 75%, 40%);
