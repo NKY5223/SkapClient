@@ -169,6 +169,13 @@ body {
     background: #ffffffe0;
 }
 
+#tip {
+    position: absolute;
+    top: 0;
+    left: 60px;
+    user-select: none;
+}
+
 #contextmenu {
     position: absolute;
     top: 0;
@@ -385,7 +392,6 @@ li {
     padding: 0 5px 0 4px;
     border-bottom: 1px solid #303030;
     background: #202020;
-    height: 27.67px;
 }
 .closed > .indent {
     display: none;

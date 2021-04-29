@@ -317,6 +317,7 @@ canvas.addEventListener("contextmenu", e => {
 
     if (selectedObject) show(contextBtns.objectActions);
     else hide(contextBtns.objectActions);
+    if (selectedObject) contextBtns.deleteObject.innerHTML = `Delete Selected Object<br>(${capitalise(selectedObject.type)})`;
     if (map.areas.length === 1) hide(contextBtns.deleteArea);
     else show(contextBtns.deleteArea);
 
@@ -454,4 +455,9 @@ function hide(element) {
  */
 function show(element) {
     element.classList.remove("hidden");
+}
+function capitalise(str = "") {
+    str = String(str);
+    if (str.length <= 1) return str;
+    return str[0].toUpperCase() + str.slice(1);
 }

@@ -273,6 +273,12 @@ const map = {
     areas: []
 };
 
+{
+    const tips = ["Scroll on numbers to increment"];
+    const i = Math.floor(Math.random() * tips.length);
+    document.getElementById("tip").innerHTML = `Tip ${i + 1}: ${tips[i]}`;
+}
+
 let camScale = 5;
 const camSpeed = 10;
 let camX = 50;

@@ -52,6 +52,12 @@ function areaToJSON(area) {
     for (let teleporter of area.objects.teleporter) {
         objects.push(teleporterToJSON(teleporter));
     }
+    for (let text of area.objects.text) {
+        objects.push(textToJSON(text));
+    }
+    for (let spawner of area.objects.spawner) {
+        objects.push(spawnerToJSON(spawner));
+    }
     return `{"name":${JSON.stringify(area.name)},"size":[${area.size[0]},${area.size[1]}],"backgroundColor":[${area.colorArr.join()},${area.opacity}],"areaColor":[${area.backgroundArr.join()}],"objects":[${objects.join()}]}`;
 }
 
