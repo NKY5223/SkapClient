@@ -24,7 +24,7 @@
         },
         dir: 2,
         type: "gravityZone"
-    }
+    };
 
     // Create inputs/labels
     const xInput = document.createElement("input");

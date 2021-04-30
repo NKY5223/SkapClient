@@ -297,8 +297,11 @@ const menu = document.getElementById("menu");
 const areamenu = document.getElementById("areamenu");
 const objectmenu = document.getElementById("objectmenu");
 const togglemenu = document.getElementById("togglemenu");
+const resizemenu = document.getElementById("resizemenu");
+let resizing = false;
 
 const downloadBtn = document.getElementById("download");
+/** @type {HTMLInputElement} */
 const importInput = document.getElementById("import");
 
 const obstacleBtn = document.getElementById("createObstacle");

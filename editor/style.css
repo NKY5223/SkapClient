@@ -171,9 +171,11 @@ body {
 
 #tip {
     position: absolute;
-    top: 0;
+    top: -5px;
     left: 60px;
     user-select: none;
+    background: #00000080;
+    padding: 5px 10px;
 }
 
 #contextmenu {
@@ -255,6 +257,14 @@ body {
     transform: scale(2, -1);
     transition: transform 0.4s, color 0.4s;
 }
+#resizemenu {
+    cursor: ew-resize;
+    position: absolute;
+    left: -2.5px;
+    top: 0;
+    width: 5px;
+    height: 100%;
+}
 #togglebottommenu:focus {
     outline: none;
 }
@@ -304,7 +314,7 @@ input[type=number] {
     margin: 0;
     padding: 0;
     user-select: none;
-    transition: 0.4s;
+    transition: transform 0.4s;
 }
 #menu.hidden {
     transform: translateY(-100%);

@@ -23,7 +23,7 @@ function createText(x = 0, y = 0, content = "Text") {
         },
         text: content,
         type: "text"
-    }
+    };
 
     // Create inputs/labels
     const xInput = document.createElement("input");

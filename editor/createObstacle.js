@@ -22,7 +22,7 @@
             y: h
         },
         type: "obstacle"
-    }
+    };
 
     // Create inputs/labels
     const xInput = document.createElement("input");

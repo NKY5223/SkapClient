@@ -40,7 +40,7 @@ function createFolder(title, lis) {
  * @param {string} name 
  * @param {HTMLInputElement} input 
  * @param {string} type 
- * @param {{cardinal?: {event: function(0 | 1 | 2 | 3): void}, select?: {type: "text" | "number", options: [string, *][], event: function(*)}}} options
+ * @param {{cardinal?: {event: function(0 | 1 | 2 | 3): void, value: 0 | 1 | 2 | 3}, select?: {type: "text" | "number", options: [string, *][], event: function(*)}}} options
  */
 function createProperty(name, input, type = "text", options = {}) {
     const li = createLI("property " + type);
@@ -93,8 +93,8 @@ function createProperty(name, input, type = "text", options = {}) {
         const right = document.createElement("button");
         right.classList.add("cardinalRight");
 
-        up.classList.add("active");
-        let active = up;
+        let active = [up, right, down, left][options.cardinal.value];
+        active.classList.add("active");
 
         up.addEventListener("click", () => {
             if (active === up) return;

@@ -22,7 +22,7 @@
             y: h
         },
         type: "lava"
-    }
+    };
 
     // Create inputs/labels
     const xInput = document.createElement("input");

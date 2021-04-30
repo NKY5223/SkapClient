@@ -13,9 +13,10 @@
  * @param {number} y 
  * @param {number} w 
  * @param {number} h 
+ * @param {0 | 1 | 2 | 3} dir
  * @returns {Teleporter}
  */
-function createTeleporter(x = 0, y = 0, w = 10, h = 20) {
+function createTeleporter(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0, targetArea = "Home", targetId = 0) {
     const teleporter = {
         pos: {
             x,
@@ -26,11 +27,11 @@ function createTeleporter(x = 0, y = 0, w = 10, h = 20) {
             y: h
         },
         id: 0,
-        targetArea: "Home",
-        targetId: 0,
-        dir: 0,
+        targetArea,
+        targetId,
+        dir,
         type: "teleporter"
-    }
+    };
 
     // Create inputs/labels
     const xInput = document.createElement("input");
@@ -58,19 +59,19 @@ function createTeleporter(x = 0, y = 0, w = 10, h = 20) {
     });
 
     const targetAreaInput = document.createElement("input");
-    targetAreaInput.value = "Home";
+    targetAreaInput.value = targetArea;
     targetAreaInput.addEventListener("input", () => {
         teleporter.targetArea = targetAreaInput.value;
     });
 
     const idInput = document.createElement("input");
-    idInput.value = 0;
+    idInput.value = id;
     idInput.addEventListener("input", () => {
         teleporter.id = idInput.value = Math.max(idInput.value, 0);
     });
 
     const targetIdInput = document.createElement("input");
-    targetIdInput.value = 0;
+    targetIdInput.value = targetId;
     targetIdInput.addEventListener("input", () => {
         teleporter.targetId = targetIdInput.value = Math.max(targetIdInput.value, 0);
     });
@@ -87,8 +88,10 @@ function createTeleporter(x = 0, y = 0, w = 10, h = 20) {
         ]),
         createProperty("direction", null, "cardinal", {
             cardinal: {
+                value: dir,
                 event: dir => {
                     teleporter.dir = (dir + 2) % 4;
+                    console.log(dir, teleporter.dir);
                 }
             }
         }),

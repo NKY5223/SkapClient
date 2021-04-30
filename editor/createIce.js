@@ -22,7 +22,7 @@
             y: h
         },
         type: "ice"
-    }
+    };
 
     // Create inputs/labels
     const xInput = document.createElement("input");

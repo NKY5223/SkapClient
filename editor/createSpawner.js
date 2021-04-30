@@ -30,7 +30,7 @@ function createSpawner(x = 0, y = 0, w = 10, h = 10) {
         speed: 10,
         radius: 5,
         type: "spawner"
-    }
+    };
 
     // Create inputs/labels
     const xInput = document.createElement("input");
