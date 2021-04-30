@@ -126,6 +126,14 @@ button {
     margin-right: 5px;
     text-decoration: none;
 }
+#editorLink {
+    box-sizing: border-box;
+    padding: 5px 10px;
+    border: 1px solid #717171;
+    border-radius: 2px;
+    color: #000000;
+    background: #efefef;
+}
 
 #changelog {
     padding: 5px;

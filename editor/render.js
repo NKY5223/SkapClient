@@ -203,7 +203,7 @@ function render() {
             if (tex instanceof Array) tex = tex[0];
             if (["snek", "daddySnek", "babySnek"].includes(obj.enemyType)) tex = renderSettings.textures.enemies.snekHead;
 
-            let size = Math.min(obj.size.x, Math.min(obj.size.y, obj.radius));
+            let size = Math.min(obj.size.x, Math.min(obj.size.y, 2 * obj.radius));
 
             ctx.drawImage(
                 tex,

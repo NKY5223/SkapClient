@@ -258,28 +258,6 @@ canvas.addEventListener("mousemove", e => {
             if (middle) {
                 canvas.style.cursor = "grab";
                 selectMode = "m";
-            } else if (up) {
-                if (left) {
-                    canvas.style.cursor = "nwse-resize";
-                    selectMode = "ul";
-                } else if (right) {
-                    canvas.style.cursor = "nesw-resize";
-                    selectMode = "ur";
-                } else {
-                    canvas.style.cursor = "ns-resize";
-                    selectMode = "u";
-                }
-            } else if (left) {
-                if (up) {
-                    canvas.style.cursor = "nwse-resize";
-                    selectMode = "ul";
-                } else if (down) {
-                    canvas.style.cursor = "nesw-resize";
-                    selectMode = "dl";
-                } else {
-                    canvas.style.cursor = "ew-resize";
-                    selectMode = "l";
-                }
             } else if (down) {
                 if (left) {
                     canvas.style.cursor = "nesw-resize";
@@ -301,6 +279,28 @@ canvas.addEventListener("mousemove", e => {
                 } else {
                     canvas.style.cursor = "ew-resize";
                     selectMode = "r";
+                }
+            } else if (up) {
+                if (left) {
+                    canvas.style.cursor = "nwse-resize";
+                    selectMode = "ul";
+                } else if (right) {
+                    canvas.style.cursor = "nesw-resize";
+                    selectMode = "ur";
+                } else {
+                    canvas.style.cursor = "ns-resize";
+                    selectMode = "u";
+                }
+            } else if (left) {
+                if (up) {
+                    canvas.style.cursor = "nwse-resize";
+                    selectMode = "ul";
+                } else if (down) {
+                    canvas.style.cursor = "nesw-resize";
+                    selectMode = "dl";
+                } else {
+                    canvas.style.cursor = "ew-resize";
+                    selectMode = "l";
                 }
             } else {
                 canvas.style.cursor = "initial";
