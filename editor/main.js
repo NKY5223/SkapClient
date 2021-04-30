@@ -345,6 +345,12 @@ downloadBtn.addEventListener("click", () => {
     if (map.settings.creator === null) return;
     download(map.settings.name || "map");
 });
+
+window.addEventListener("beforeunload", e => {
+    e.preventDefault();
+    return e.returnValue = "Have you saved your map?";
+});
+
 obstacleBtn.addEventListener("click", addObstacle);
 lavaBtn.addEventListener("click", addLava);
 slimeBtn.addEventListener("click", addSlime);
@@ -358,6 +364,7 @@ contextBtns.block.addEventListener("click", addBlock);
 contextBtns.teleporter.addEventListener("click", addTeleporter);
 contextBtns.text.addEventListener("click", addText);
 contextBtns.spawner.addEventListener("click", addSpawner);
+contextBtns.gravZone.addEventListener("click", addGravZone);
 contextBtns.area.addEventListener("click", () => addArea());
 
 contextBtns.deleteObject.addEventListener("click", () => {

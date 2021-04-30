@@ -316,6 +316,7 @@ const contextBtns = {
     teleporter: document.getElementById("createTeleporter"),
     text: document.getElementById("createText"),
     spawner: document.getElementById("createSpawner"),
+    gravZone: document.getElementById("createGravZone"),
 
     area: document.getElementById("createArea"),
     deleteArea: document.getElementById("deleteArea"),
