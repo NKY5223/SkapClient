@@ -13,9 +13,10 @@
  * @param {number} y 
  * @param {number} w 
  * @param {number} h 
+ * @param {string} enemyType
  * @returns {Spawner}
  */
-function createSpawner(x = 0, y = 0, w = 10, h = 10) {
+function createSpawner(x = 0, y = 0, w = 10, h = 10, enemyType = "normal", number = 10, speed = 10, radius = 5) {
     const spawner = {
         pos: {
             x,
@@ -25,10 +26,10 @@ function createSpawner(x = 0, y = 0, w = 10, h = 10) {
             x: w,
             y: h
         },
-        enemyType: "normal",
-        number: 10,
-        speed: 10,
-        radius: 5,
+        enemyType,
+        number,
+        speed,
+        radius,
         type: "spawner"
     };
 
@@ -58,19 +59,19 @@ function createSpawner(x = 0, y = 0, w = 10, h = 10) {
     });
 
     const numberInput = document.createElement("input");
-    numberInput.value = 10;
+    numberInput.value = number;
     numberInput.addEventListener("input", () => {
         spawner.number = numberInput.value = Math.floor(Math.min(Math.max(numberInput.value, 0), 200));
     });
 
     const speedInput = document.createElement("input");
-    speedInput.value = 10;
+    speedInput.value = speed;
     speedInput.addEventListener("input", () => {
         spawner.speed = speedInput.value = Math.max(speedInput.value, 0);
     });
 
     const radiusInput = document.createElement("input");
-    radiusInput.value = 5;
+    radiusInput.value = radius;
     radiusInput.addEventListener("input", () => {
         spawner.radius = radiusInput.value = Math.max(radiusInput.value, 0);
     });
@@ -89,6 +90,7 @@ function createSpawner(x = 0, y = 0, w = 10, h = 10) {
             createProperty("type", null, "select", {
                 select: {
                     type: "text",
+                    value: enemyType,
                     options: [
                         ["Normal", "normal"],
                         ["Reverse", "reverse"],

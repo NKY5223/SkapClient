@@ -188,6 +188,32 @@ function render() {
             );
         }
     }
+    // Render spawner
+    ctx.fillStyle = renderSettings.colors.spawner;
+    if (renderSettings.render.spawner) {
+        for (let obj of currentArea.objects.spawner) {
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+
+            let tex = renderSettings.textures.enemies[obj.enemyType];
+            if (tex instanceof Array) tex = tex[0];
+            if (["snek", "daddySnek", "babySnek"].includes(obj.enemyType)) tex = renderSettings.textures.enemies.snekHead;
+
+            let size = Math.min(obj.size.x, Math.min(obj.size.y, obj.radius));
+
+            ctx.drawImage(
+                tex,
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX - size / 2)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY - size / 2)),
+                Math.round(camScale * (["snek", "daddySnek", "babySnek"].includes(obj.enemyType) ? 1.5 * size : size)),
+                Math.round(camScale * size)
+            )
+        }
+    }
     ctx.fillStyle = renderSettings.colors.lava;
     if (renderSettings.render.lava) {
         // Render lava
@@ -326,35 +352,9 @@ function render() {
             ctx.stroke();
         }
     }
-    // Render spawner
-    ctx.fillStyle = renderSettings.colors.spawner;
-    if (renderSettings.render.spawner) {
-        for (let obj of currentArea.objects.spawner) {
-            ctx.fillRect(
-                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
-                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
-                Math.round(camScale * obj.size.x),
-                Math.round(camScale * obj.size.y)
-            );
-
-            let tex = renderSettings.textures.enemies[obj.enemyType];
-            if (tex instanceof Array) tex = tex[0];
-            if (["snek", "daddySnek", "babySnek"].includes(obj.enemyType)) tex = renderSettings.textures.enemies.snekHead;
-
-            let size = Math.min(obj.size.x, Math.min(obj.size.y, obj.radius));
-
-            ctx.drawImage(
-                tex,
-                Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX - size / 2)),
-                Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY - size / 2)),
-                Math.round(camScale * (["snek", "daddySnek", "babySnek"].includes(obj.enemyType) ? 1.5 * size : size)),
-                Math.round(camScale * size)
-            )
-        }
-    }
     // Render blocks(0)
     if (renderSettings.render.block0) {
-        for (let obj of currentArea.objects.block0) {
+        for (let obj of currentArea.objects.block.filter(o => !o.layer)) {
             ctx.fillStyle = obj.color;
             ctx.globalAlpha = obj.opacity;
             ctx.fillRect(
@@ -398,7 +398,7 @@ function render() {
     }
     // Render blocks(1)
     if (renderSettings.render.block1) {
-        for (let obj of currentArea.objects.block1) {
+        for (let obj of currentArea.objects.block.filter(o => o.layer)) {
             ctx.fillStyle = obj.color;
             ctx.globalAlpha = obj.opacity;
             ctx.fillRect(

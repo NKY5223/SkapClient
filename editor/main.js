@@ -211,8 +211,10 @@ canvas.addEventListener("mousedown", e => {
 /** @param {MouseEvent} e */
 function targetedObject(e) {
     for (let type of types) {
-        for (let i = currentArea.objects[type].length - 1; i >= 0; i--) {
-            const obj = currentArea.objects[type][i];
+        let objects = getObjects(type);
+
+        for (let i = objects.length - 1; i >= 0; i--) {
+            const obj = objects[i];
             const [{ x: x0, y: y0 }, { x: x1, y: y1 }] = points(obj);
             const mouse = { x: e.offsetX, y: e.offsetY };
             if (type === "text") {
@@ -230,8 +232,10 @@ function targetedObject(e) {
 canvas.addEventListener("mousemove", e => {
     if (lockCursor) return;
     for (let type of types) {
-        for (let i = currentArea.objects[type].length - 1; i >= 0; i--) {
-            const obj = currentArea.objects[type][i];
+        let arr = getObjects(type);
+
+        for (let i = arr.length - 1; i >= 0; i--) {
+            const obj = arr[i];
             const [{ x: x0, y: y0 }, { x: x1, y: y1 }] = points(obj);
             const mouse = point(e);
 
@@ -468,11 +472,24 @@ function loadFile(str) {
                         break;
                     }
                     case "text": {
-                        const text = createText(object.position[0], object.position[1], object.text);
-                        parsedArea.objects.text.push(text);
+                        /** @type {string[]} */
+                        let split = object.text.split("|");
+                        if (split[0] === "SKAPCLIENT.IMAGE") {
+                        } else {
+                            const text = createText(object.position[0], object.position[1], object.text);
+                            parsedArea.objects.text.push(text);
 
-                        objectmenu.appendChild(text.element);
-                        hide(text.element);
+                            objectmenu.appendChild(text.element);
+                            hide(text.element);
+                        }
+                        break;
+                    }
+                    case "spawner": {
+                        const spawner = createSpawner(object.position[0], object.position[1], object.size[0], object.size[1], object.entityType, object.number, object.speed, object.radius);
+                        parsedArea.objects.spawner.push(spawner);
+
+                        objectmenu.appendChild(spawner.element);
+                        hide(spawner.element);
                         break;
                     }
                 }

@@ -6,6 +6,7 @@
  * @property {string} color
  * @property {number} opacity
  * @property {boolean} collide
+ * @property {boolean} layer
  * @property {{x: HTMLInputElement, y: HTMLInputElement, w: HTMLInputElement, h: HTMLInputElement, color: HTMLInputElement, opacity: HTMLInputElement, collide: HTMLInputElement}} inputs
  * @property {HTMLLIElement} element
  * 
@@ -17,7 +18,7 @@
  * @param {number} opacity
  * @returns {Block}
  */
- function createBlock(x = 0, y = 0, w = 10, h = 10, color = [0, 0, 0], opacity = 1) {
+ function createBlock(x = 0, y = 0, w = 10, h = 10, color = [0, 0, 0], opacity = 1, collide, layer = 0) {
     const block = {
         pos: {
             x,
@@ -30,8 +31,9 @@
         colorArr: color,
         color: arrtoRGBA(color),
         opacity,
-        collide: false,
-        type: "block0"
+        collide,
+        layer,
+        type: "block"
     };
 
     // Create inputs/labels
@@ -77,11 +79,16 @@
     });
 
     const collideInput = document.createElement("input");
+    collideInput.checked = collide;
     collideInput.addEventListener("input", () => {
         block.collide = collideInput.checked;
     });
 
     const layerInput = document.createElement("input");
+    collideInput.checked = layer;
+    layerInput.addEventListener("input", () => {
+        block.layer = layerInput.checked;
+    });
 
 
     block.element = createFolder("Block Properties", [

@@ -43,11 +43,8 @@ function areaToJSON(area) {
     for (let ice of area.objects.ice) {
         objects.push(iceToJSON(ice));
     }
-    for (let block of area.objects.block0) {
-        objects.push(blockToJSON(block, 0));
-    }
-    for (let block of area.objects.block1) {
-        objects.push(blockToJSON(block, 1));
+    for (let block of area.objects.block) {
+        objects.push(blockToJSON(block));
     }
     for (let teleporter of area.objects.teleporter) {
         objects.push(teleporterToJSON(teleporter));
@@ -57,6 +54,9 @@ function areaToJSON(area) {
     }
     for (let spawner of area.objects.spawner) {
         objects.push(spawnerToJSON(spawner));
+    }
+    for (let gravZone of area.objects.gravZone) {
+        objects.push(gravZoneToJSON(gravZone));
     }
     return `{"name":${JSON.stringify(area.name)},"size":[${area.size[0]},${area.size[1]}],"backgroundColor":[${area.colorArr.join()},${area.opacity}],"areaColor":[${area.backgroundArr.join()}],"objects":[${objects.join()}]}`;
 }
@@ -87,10 +87,9 @@ function iceToJSON(ice) {
 }
 /**
  * @param {Block} block 
- * @param {0 | 1} layer 
  */
-function blockToJSON(block, layer) {
-    return `{"type":"block","position":[${block.pos.x},${block.pos.y}],"size":[${block.size.x},${block.size.y}],"color":[${block.colorArr.join()}],"opacity":${block.opacity},"collide":${block.collide},"layer":${layer}}`;
+function blockToJSON(block) {
+    return `{"type":"block","position":[${block.pos.x},${block.pos.y}],"size":[${block.size.x},${block.size.y}],"color":[${block.colorArr.join()}],"opacity":${block.opacity},"collide":${block.collide},"layer":${block.layer ? 1 : 0}}`;
 }
 /**
  * @param {Teleporter} teleporter 
@@ -109,4 +108,10 @@ function textToJSON(text) {
  */
 function spawnerToJSON(spawner) {
     return `{"type":"spawner","position":[${spawner.pos.x},${spawner.pos.y}],"size":[${spawner.size.x},${spawner.size.y}],"entityType":${JSON.stringify(spawner.enemyType)},"number":${spawner.number},"speed":${spawner.speed},"radius":${spawner.radius}}`;
+}
+/**
+ * @param {GravZone} gravZone 
+ */
+function gravZoneToJSON(gravZone) {
+    return `{"type":"gravZone","position":[${gravZone.pos.x},${gravZone.pos.y}],"size":[${gravZone.size.x},${gravZone.size.y}],"dir":${gravZone.dir}}`;
 }

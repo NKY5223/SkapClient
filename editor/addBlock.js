@@ -27,19 +27,10 @@ function addBlock() {
         let posX = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
         let posY = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
         let block = createBlock(posX, posY, 0, 0);
-        currentArea.objects.block0.push(block);
+        currentArea.objects.block.push(block);
         objectmenu.appendChild(block.element);
         if (selectedObject) hide(selectedObject.element);
         selectedObject = block;
-
-        block.inputs.layer.addEventListener("input", () => {
-            const from = block.inputs.layer.checked ? currentArea.objects.block0 : currentArea.objects.block1;
-            const to = block.inputs.layer.checked ? currentArea.objects.block1 : currentArea.objects.block0;
-            if (from.includes(block)) {
-                to.push(from.splice(from.indexOf(block), 1)[0]);
-            }
-            block.type = "block" + block.inputs.layer.checked ? "1" : "0";
-        });
 
         function mousemove(e) {
             let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);

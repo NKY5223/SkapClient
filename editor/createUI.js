@@ -40,7 +40,7 @@ function createFolder(title, lis) {
  * @param {string} name 
  * @param {HTMLInputElement} input 
  * @param {string} type 
- * @param {{cardinal?: {event: function(0 | 1 | 2 | 3): void, value: 0 | 1 | 2 | 3}, select?: {type: "text" | "number", options: [string, *][], event: function(*)}}} options
+ * @param {{cardinal?: {event: function(0 | 1 | 2 | 3): void, value: 0 | 1 | 2 | 3}, select?: {type: "text" | "number", value: *, options: [string, *][], event: function(*)}}} options
  */
 function createProperty(name, input, type = "text", options = {}) {
     const li = createLI("property " + type);
@@ -78,6 +78,7 @@ function createProperty(name, input, type = "text", options = {}) {
         label.htmlFor = input.id;
         label.classList.add("switchLabel")
         switchSpan.classList.add("switchSpan");
+
         label.appendChild(input);
         label.appendChild(switchSpan);
         li.appendChild(label);
@@ -93,7 +94,7 @@ function createProperty(name, input, type = "text", options = {}) {
         const right = document.createElement("button");
         right.classList.add("cardinalRight");
 
-        let active = [up, right, down, left][options.cardinal.value];
+        let active = [up, right, down, left][(Number(options.cardinal.value ?? 0) % 4 + 4) % 4];
         active.classList.add("active");
 
         up.addEventListener("click", () => {
@@ -139,6 +140,8 @@ function createProperty(name, input, type = "text", options = {}) {
             option.innerHTML = options.select.options[i][0];
             option.value = i;
             select.appendChild(option);
+
+            if (options.select.options[i][1] === options.select.value ?? 0) select.value = i;
         }
 
         select.addEventListener("change", () => {

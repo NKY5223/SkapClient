@@ -8,6 +8,18 @@ const controls = (localStorage.getItem("controls") || "w a s d shift   r").split
 const othercontrols = (localStorage.getItem("othercontrols") || "u i f arrowup arrowleft arrowdown arrowright o").split(" ");
 
 const types = ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "spawner", "door", "switch", "button", "slime", "ice", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"];
+function getObjects(type = "obstacle") {
+    if (type === "block0") {
+        return currentArea.objects.block.filter(o => !o.layer);
+    }
+    if (type === "block1") {
+        return currentArea.objects.block.filter(o => o.layer);
+    }
+    if (type in currentArea.objects) {
+        return currentArea.objects[type];
+    }
+    return [];
+}
 const renderSettings = {
     render: {
         obstacle: true,

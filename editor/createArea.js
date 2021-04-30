@@ -20,8 +20,7 @@
  * @property {Obstacle[]} objects.obstacle
  * @property {Lava[]} objects.lava
  * @property {Slime[]} objects.slime
- * @property {Block[]} objects.block0
- * @property {Block[]} objects.block1
+ * @property {Block[]} objects.block
  * @property {Teleporter[]} objects.teleporter
  * @property {SkapText[]} objects.text
  * @property {Spawner[]} objects.spawner
@@ -57,10 +56,9 @@ function createArea(name = "New Area", color = [0, 10, 87], opacity = 0.8, backg
             button: [],
             switch: [],
             door: [],
-            block0: [],
+            block: [],
             text: [],
             turret: [],
-            block1: [],
             gravityZone: [],
             reward: [],
             hatReward: [],
