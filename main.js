@@ -329,7 +329,8 @@ Owner:<ul>
     }
     ws.addEventListener("message", e => {
         let msg = msgpack.decode(new Uint8Array(e.data));
-        // if (viewWS && (!noUS || msg.e !== "updateStates")) wsDiv.innerHTML = e.data;
+        if (viewWS && (!noUS || msg.e !== "updateStates")) wsDiv.innerHTML = JSON.stringify(msg);
+        
         switch (msg.e) {
             case "result":
                 if (!msg.m) {

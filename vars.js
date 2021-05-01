@@ -143,6 +143,7 @@ const renderSettings = {
             gravityDown: loadImage("enemies/gravityDown.svg"),
             gravityLeft: loadImage("enemies/gravityLeft.svg"),
             gravityRight: loadImage("enemies/gravityRight.svg"),
+            harmless: loadImage("enemies/harmless.svg"),
 
             none: loadImage("enemies/none.svg")
         },
@@ -351,6 +352,7 @@ const mention = document.getElementById("mention");
 let chatFocus = false;
 let blocked = localStorage.getItem("blocked") ? localStorage.getItem("blocked").split(" ") : [];
 
+let viewWS = false;
 let debug = Boolean(localStorage.getItem("debug"));
 let noUS = false;
 const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "ZeroFix", "RayhanADev"];
