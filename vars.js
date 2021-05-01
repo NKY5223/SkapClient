@@ -16,6 +16,7 @@ if (localStorage.getItem("banned") !== null) {
 }
 
 const ws = new WebSocket("wss://skap.io");
+ws.binaryType = "arraybuffer";
 const URLParams = new URLSearchParams(location.search);
 const autojoinGameId = URLParams.get("gameId");
 const autojoinGameName = URLParams.get("gameName");
@@ -621,14 +622,6 @@ function customAlert(s, t = 1) {
     }, 10)
 }
 /**
- * ws.send
- * @param {Object} obj Object
- * @param {string} obj.e The event
- */
-function send(obj) {
-    if (canSend) ws.send(JSON.stringify(obj));
-}
-/**
  * Hide Element
  * @param {Element} el Element
  */
@@ -690,4 +683,20 @@ function getToken(func, onerr = console.error) {
             action: "submit"
         }).then(func).catch(onerr);
     });
+}
+/**
+ * @param {Object} obj 
+ */
+function send(obj) {
+    if (canSend) ws.send(msgpack.encode(obj));
+}
+/**
+ * @param {string} hex
+ */
+function hexToArr(hex) {
+    return [
+        parseInt(hex.slice(1, 3), 16),
+        parseInt(hex.slice(3, 5), 16),
+        parseInt(hex.slice(5, 7), 16)
+    ];
 }

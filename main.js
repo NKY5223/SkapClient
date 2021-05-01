@@ -9,7 +9,11 @@ if (localStorage.getItem("banned") === null) {
         if (!URLParams.has("username")) {
             let sessionCookie = document.cookie.split(";").filter(cookie => cookie.startsWith("session="));
             if (sessionCookie.length) {
-                ws.send(`{"e":"session","cookie":"${sessionCookie[0].slice(8)}"}`);
+                // `{"e":"session","cookie":"${sessionCookie[0].slice(8)}"}`
+                send({
+                    e: "session",
+                    cookie: sessionCookie[0].slice(8)
+                });
             }
         }
         hide(connectP);
@@ -22,11 +26,20 @@ if (localStorage.getItem("banned") === null) {
         });
         login.addEventListener("click", () => {
             getToken(token => {
-                ws.send(`{"e":"login","m":{"username":${JSON.stringify(username.value)},"password":${JSON.stringify(SHA256(username.value + password.value))}},"t":${JSON.stringify(token)}}`);
+                send({
+                    e: "login",
+                    m: {
+                        username: username.value,
+                        password: SHA256(username.value + password.value)
+                    },
+                    t: token
+                });
             });
         });
         changingRoomBtn.addEventListener("click", () => {
-            ws.send(`{"e":"getStyle"}`);
+            send({
+                e: "getStyle"
+            })
             hide(logoutDiv);
             show(changingRoom);
         });
@@ -35,40 +48,70 @@ if (localStorage.getItem("banned") === null) {
             show(logoutDiv);
         });
         playerColor.addEventListener("input", () => {
-            ws.send(`{"e":"colorChange","c":[${parseInt(playerColor.value.slice(1, 3), 16)},${parseInt(playerColor.value.slice(3, 5), 16)},${parseInt(playerColor.value.slice(5, 7), 16)}]}`);
+            send({
+                e: "colorChange",
+                c: hexToArr(playerColor.value)
+            });
         });
         logout.addEventListener("click", () => {
-            ws.send(`{"e":"logout"}`);
+            send({
+                e: "logout"
+            });
         });
         guest.addEventListener("click", () => {
             getToken(token => {
-                ws.send(`{"e":"guest","t":${JSON.stringify(token)}}`);
+                send({
+                    e: "guest",
+                    t: token
+                });
             });
         });
         register.addEventListener("click", () => {
             getToken(token => {
-                ws.send(`{"e":"register","m":{"username":${JSON.stringify(username.value)},"password":${SHA256(username.value + password.value)}},"t":${JSON.stringify(token)}}`);
+                send({
+                    e: "regiser",
+                    m: {
+                        username: username.value,
+                        password: SHA256(username.value + password.value)
+                    }
+                });
             });
         });
         play.addEventListener("click", () => {
-            ws.send(`{"e":"games"}`);
+            send({
+                e: "games"
+            });
         });
         backtoLogin.addEventListener("click", () => {
             hide(gamesDiv);
             show(loginDiv);
         });
         refresh.addEventListener("click", () => {
-            ws.send(`{"e":"games"}`);
+            send({
+                e: "games"
+            });
         });
         power0.addEventListener("input", () => {
-            ws.send(`{"e":"powerChange","m":0,"i":${power0.value = clamp(0, power0.value, 11)}}`);
+            send({
+                e: "powerChange",
+                m: 0,
+                i: power0.value = clamp(0, power0.value, 11)
+            });
         });
         power1.addEventListener("input", () => {
-            ws.send(`{"e":"powerChange","m":1,"i":${power1.value = clamp(0, power1.value, 11)}}`);
+            send({
+                e: "powerChange",
+                m: 1,
+                i: power1.value = clamp(0, power1.value, 11)
+            });
         });
         for (let el of poweroptions) {
             el.addEventListener("click", () => {
-                ws.send(`{"e":"powerChange","m":${parseInt(el.dataset.slot, 10)},"i":${parseInt(el.dataset.power, 10)}}`);
+                send({
+                    e: "powerChange",
+                    m: parseInt(el.dataset.slot, 10),
+                    i: parseInt(el.dataset.power, 10)
+                });
 
                 if (el.dataset.slot === "0") power0.value = el.dataset.power;
                 else power1.value = el.dataset.power;
@@ -248,7 +291,15 @@ Owner:<ul>
                         r: powerRestrict.checked,
                         u: uploadMap.checked
                     };
-                    ws.send(`{"e":"createGame","j":${e},"s":${JSON.stringify(settings)}}`);
+                    try {
+                        send({
+                            e: "createGame",
+                            s: settings,
+                            j: JSON.parse(e)
+                        });
+                    } catch (err) {
+                        customAlert("Something went wrong");
+                    }
                 });
             } else {
                 let settings = {
@@ -259,7 +310,10 @@ Owner:<ul>
                     r: powerRestrict.checked,
                     u: uploadMap.checked
                 };
-                ws.send(`{"e":"createGame","s":${JSON.stringify(settings)}}`);
+                send({
+                    e: "createGame",
+                    s: settings
+                });
             }
         });
     });
@@ -274,7 +328,7 @@ Owner:<ul>
         });
     }
     ws.addEventListener("message", e => {
-        let msg = JSON.parse(e.data);
+        let msg = msgpack.decode(new Uint8Array(e.data));
         // if (viewWS && (!noUS || msg.e !== "updateStates")) wsDiv.innerHTML = e.data;
         switch (msg.e) {
             case "result":
@@ -311,9 +365,16 @@ Owner:<ul>
                     div.innerHTML = `<h2>${g.name}<br>${g.players} players</h2><h5>${g.id}</h5><p>${String(g.mapName).safe()} by ${String(g.creator).safe()}</p>`;
                     div.addEventListener("click", () => {
                         if (g.private) {
-                            ws.send(`{"e":"join","g":${JSON.stringify(g.id)},"p":${JSON.stringify(prompt("Password?"))}}`);
+                            send({
+                                e: "join",
+                                g: g.id,
+                                p: prompt("Password?")
+                            });
                         } else {
-                            ws.send(`{"e":"join","g":${JSON.stringify(g.id)}}`);
+                            send({
+                                e: "join",
+                                g: g.id
+                            });
                         }
                         id = g.id;
                     });
@@ -323,17 +384,31 @@ Owner:<ul>
                     if (autojoinGameId === g.id) {
                         customAlert("Joining room from URL...");
                         if (g.private) {
-                            ws.send(`{"e":"join","g":${JSON.stringify(g.id)},"p":${JSON.stringify(autojoinGamePassword ? autojoinGamePassword : prompt("Password?"))}}`);
+                            send({
+                                e: "join",
+                                g: g.id,
+                                p: autojoinGamePassword ? autojoinGamePassword : prompt("Password?")
+                            });
                         } else {
-                            ws.send(`{"e":"join","g":${JSON.stringify(g.id)}}`);
+                            send({
+                                e: "join",
+                                g: g.id
+                            });
                         }
                     }
                     if (autojoinGameName === g.name) {
                         customAlert("Joining room from URL...");
                         if (g.private) {
-                            ws.send(`{"e":"join","g":${JSON.stringify(g.id)},"p":${JSON.stringify(autojoinGamePassword ? autojoinGamePassword : prompt("Password?"))}}`);
+                            send({
+                                e: "join",
+                                g: g.id,
+                                p: autojoinGamePassword ? autojoinGamePassword : prompt("Password?")
+                            });
                         } else {
-                            ws.send(`{"e":"join","g":${JSON.stringify(g.id)}}`);
+                            send({
+                                e: "join",
+                                g: g.id
+                            });
                         }
                     }
                 });
@@ -397,36 +472,81 @@ Owner:<ul>
                                 let powerpreset0 = localStorage.getItem("powerpreset0").split(",");
                                 power0.value = powerpreset0[0];
                                 power1.value = powerpreset0[1];
-                                ws.send(`{"e":"powerChange","m":0,"i":${powerpreset0[0]}}`);
-                                ws.send(`{"e":"powerChange","m":1,"i":${powerpreset0[1]}}`);
+
+                                send({
+                                    e: "powerChange",
+                                    m: 0,
+                                    i: powerpreset0[0]
+                                });
+                                send({
+                                    e: "powerChange",
+                                    m: 1,
+                                    i: powerpreset0[1]
+                                });
                                 break;
                             case localStorage.getItem("powerkeybind1"):
                                 let powerpreset1 = localStorage.getItem("powerpreset1").split(",");
                                 power0.value = powerpreset1[0];
                                 power1.value = powerpreset1[1];
-                                ws.send(`{"e":"powerChange","m":0,"i":${powerpreset1[0]}}`);
-                                ws.send(`{"e":"powerChange","m":1,"i":${powerpreset1[1]}}`);
+
+                                send({
+                                    e: "powerChange",
+                                    m: 0,
+                                    i: powerpreset1[0]
+                                });
+                                send({
+                                    e: "powerChange",
+                                    m: 1,
+                                    i: powerpreset1[1]
+                                });
                                 break;
                             case localStorage.getItem("powerkeybind2"):
                                 let powerpreset2 = localStorage.getItem("powerpreset2").split(",");
                                 power0.value = powerpreset2[0];
                                 power1.value = powerpreset2[1];
-                                ws.send(`{"e":"powerChange","m":0,"i":${powerpreset2[0]}}`);
-                                ws.send(`{"e":"powerChange","m":1,"i":${powerpreset2[1]}}`);
+
+                                send({
+                                    e: "powerChange",
+                                    m: 0,
+                                    i: powerpreset2[0]
+                                });
+                                send({
+                                    e: "powerChange",
+                                    m: 1,
+                                    i: powerpreset2[1]
+                                });
                                 break;
                             case localStorage.getItem("powerkeybind3"):
                                 let powerpreset3 = localStorage.getItem("powerpreset3").split(",");
                                 power0.value = powerpreset3[0];
                                 power1.value = powerpreset3[1];
-                                ws.send(`{"e":"powerChange","m":0,"i":${powerpreset3[0]}}`);
-                                ws.send(`{"e":"powerChange","m":1,"i":${powerpreset3[1]}}`);
+                                
+                                send({
+                                    e: "powerChange",
+                                    m: 0,
+                                    i: powerpreset3[0]
+                                });
+                                send({
+                                    e: "powerChange",
+                                    m: 1,
+                                    i: powerpreset3[1]
+                                });
                                 break;
                             case localStorage.getItem("powerkeybind4"):
                                 let powerpreset4 = localStorage.getItem("powerpreset4").split(",");
                                 power0.value = powerpreset4[0];
                                 power1.value = powerpreset4[1];
-                                ws.send(`{"e":"powerChange","m":0,"i":${powerpreset4[0]}}`);
-                                ws.send(`{"e":"powerChange","m":1,"i":${powerpreset4[1]}}`);
+                                
+                                send({
+                                    e: "powerChange",
+                                    m: 0,
+                                    i: powerpreset4[0]
+                                });
+                                send({
+                                    e: "powerChange",
+                                    m: 1,
+                                    i: powerpreset4[1]
+                                });
                                 break;
                             case "enter":
                             case "/":
@@ -643,7 +763,10 @@ Owner:<ul>
                     let img = document.createElement("img");
                     img.src = `https://skap.io/textures/hats/${h}.png`;
                     img.addEventListener("click", () => {
-                        ws.send(`{"e":"hatChange","c":"${h}"}`);
+                        send({
+                            e: "hatChange",
+                            c: h
+                        });
                     });
 
                     div.appendChild(img);
@@ -965,10 +1088,19 @@ function sendMessage(msg) {
             pingTime = Date.now();
         }
     }
-    ws.send(`{"e":"message","message":${JSON.stringify(msg)}}`);
+    send({
+        e: "message",
+        message: msg
+    });
 }
 function keys(key, value) {
-    ws.send(`{"e":"input","input":{"keys":${key},"value":${value}}}`);
+    send({
+        e: "input",
+        input: {
+            keys: key,
+            value
+        }
+    })
 
     if (value) overlays[key].classList.add("overlayactive");
     else overlays[key].classList.remove("overlayactive");
