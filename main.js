@@ -280,6 +280,12 @@ Owner:<ul>
         gameName.addEventListener("keydown", e => {
             e.stopPropagation();
         });
+        document.getElementById("logo").addEventListener("mousedown", e => {
+            if (e.detail >= 20) {
+                renderSettings.render.invert = true;
+                customAlert("invert mode turned ON");
+            }
+        });
         createGameBtn.addEventListener("click", () => {
             if (gameFile.files.length) {
                 gameFile.files[0].text().then(e => {
@@ -330,7 +336,7 @@ Owner:<ul>
     ws.addEventListener("message", e => {
         let msg = msgpack.decode(new Uint8Array(e.data));
         if (viewWS && (!noUS || msg.e !== "updateStates")) wsDiv.innerHTML = JSON.stringify(msg);
-        
+
         switch (msg.e) {
             case "result":
                 if (!msg.m) {
@@ -477,12 +483,12 @@ Owner:<ul>
                                 send({
                                     e: "powerChange",
                                     m: 0,
-                                    i: powerpreset0[0]
+                                    i: Number(powerpreset0[0])
                                 });
                                 send({
                                     e: "powerChange",
                                     m: 1,
-                                    i: powerpreset0[1]
+                                    i: Number(powerpreset0[1])
                                 });
                                 break;
                             case localStorage.getItem("powerkeybind1"):
@@ -493,12 +499,12 @@ Owner:<ul>
                                 send({
                                     e: "powerChange",
                                     m: 0,
-                                    i: powerpreset1[0]
+                                    i: Number(powerpreset1[0])
                                 });
                                 send({
                                     e: "powerChange",
                                     m: 1,
-                                    i: powerpreset1[1]
+                                    i: Number(powerpreset1[1])
                                 });
                                 break;
                             case localStorage.getItem("powerkeybind2"):
@@ -509,44 +515,44 @@ Owner:<ul>
                                 send({
                                     e: "powerChange",
                                     m: 0,
-                                    i: powerpreset2[0]
+                                    i: Number(powerpreset2[0])
                                 });
                                 send({
                                     e: "powerChange",
                                     m: 1,
-                                    i: powerpreset2[1]
+                                    i: Number(powerpreset2[1])
                                 });
                                 break;
                             case localStorage.getItem("powerkeybind3"):
                                 let powerpreset3 = localStorage.getItem("powerpreset3").split(",");
                                 power0.value = powerpreset3[0];
                                 power1.value = powerpreset3[1];
-                                
+
                                 send({
                                     e: "powerChange",
                                     m: 0,
-                                    i: powerpreset3[0]
+                                    i: Number(powerpreset3[0])
                                 });
                                 send({
                                     e: "powerChange",
                                     m: 1,
-                                    i: powerpreset3[1]
+                                    i: Number(powerpreset3[1])
                                 });
                                 break;
                             case localStorage.getItem("powerkeybind4"):
                                 let powerpreset4 = localStorage.getItem("powerpreset4").split(",");
                                 power0.value = powerpreset4[0];
                                 power1.value = powerpreset4[1];
-                                
+
                                 send({
                                     e: "powerChange",
                                     m: 0,
-                                    i: powerpreset4[0]
+                                    i: Number(powerpreset4[0])
                                 });
                                 send({
                                     e: "powerChange",
                                     m: 1,
-                                    i: powerpreset4[1]
+                                    i: Number(powerpreset4[1])
                                 });
                                 break;
                             case "enter":
@@ -561,12 +567,19 @@ Owner:<ul>
                         }
                     });
                     canvas.addEventListener("mousedown", e => {
-                        if (e.button === 0) keys(5, true);
-                        else if (e.button === 2) keys(6, true);
+                        if (e.button === 0) keys(6, true);
+                        else if (e.button === 1) keys(8, true);
+                        else if (e.button === 2) keys(7, true);
                     });
                     canvas.addEventListener("mouseup", e => {
-                        if (e.button === 0) keys(5, false);
-                        else if (e.button === 2) keys(6, false);
+                        if (e.button === 0) keys(6, false);
+                        else if (e.button === 1) keys(8, false);
+                        else if (e.button === 2) keys(7, false);
+                    });
+                    document.addEventListener("mousedown", e => {
+                        if (e.button === 1) {
+                            e.preventDefault();
+                        }
                     });
                     canvas.addEventListener("contextmenu", e => { e.preventDefault(); });
                     document.addEventListener("mousemove", e => {
@@ -630,8 +643,29 @@ Owner:<ul>
                                     break;
                                 }
                             }
+                        } else if (o.type === "movingObstacle") {
+                            for (let u of parsedMap.movingObstacle) {
+                                if (o.id === u.id) {
+                                    u.pos = o.pos;
+                                    break;
+                                }
+                            }
                         } else if (o.type === "movingLava") {
                             for (let u of parsedMap.movingLava) {
+                                if (o.id === u.id) {
+                                    u.pos = o.pos;
+                                    break;
+                                }
+                            }
+                        } else if (o.type === "movingIce") {
+                            for (let u of parsedMap.movingIce) {
+                                if (o.id === u.id) {
+                                    u.pos = o.pos;
+                                    break;
+                                }
+                            }
+                        } else if (o.type === "movingSlime") {
+                            for (let u of parsedMap.movingSlime) {
                                 if (o.id === u.id) {
                                     u.pos = o.pos;
                                     break;
@@ -793,6 +827,7 @@ function initMap(i) {
     parsedMap.background = fromColArr(i.areaColor);
     parsedMap.areaSize = i.areaSize;
     parsedMap.obstacle = [];
+    parsedMap.movingObstacle = [];
     parsedMap.teleporter = [];
     parsedMap.lava = [];
     parsedMap.rotatingLava = [];
@@ -828,7 +863,14 @@ function initMap(i) {
             case "lava":
             case "box":
             case "turret":
+            case "movingObstacle":
+            case "circularObstacle":
             case "movingLava":
+            case "circularLava":
+            case "movingIce":
+            case "circularIce":
+            case "movingSlime":
+            case "circularSlime":
             case "gravityZone":
                 parsedMap[o.type].push(o);
                 break;
@@ -1103,8 +1145,15 @@ function keys(key, value) {
         }
     })
 
-    if (value) overlays[key].classList.add("overlayactive");
-    else overlays[key].classList.remove("overlayactive");
+    if (value) overlays[key]?.classList?.add("overlayactive");
+    else overlays[key]?.classList?.remove("overlayactive");
+}
+function changePower(slot, power) {
+    send({
+        e: "powerChange",
+        m: slot,
+        i: power
+    });
 }
 ws.addEventListener("close", () => {
     canSend = false;

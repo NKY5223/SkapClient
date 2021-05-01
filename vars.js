@@ -41,8 +41,6 @@ const renderSettings = {
     render: {
         obstacle: true,
         lava: true,
-        movLava: true,
-        rotLava: true,
         slime: true,
         ice: true,
         block0: true,
@@ -51,7 +49,7 @@ const renderSettings = {
         block1: true,
         hitbox: false,
         teleporterHitbox: false,
-        invert: Math.random() < 0.05,
+        invert: false,
         names: true
     },
     colors: {
@@ -144,6 +142,8 @@ const renderSettings = {
             gravityLeft: loadImage("enemies/gravityLeft.svg"),
             gravityRight: loadImage("enemies/gravityRight.svg"),
             harmless: loadImage("enemies/harmless.svg"),
+            accelerator: loadImage("enemies/accelerator.svg"),
+            decelerator: loadImage("enemies/decelerator.svg"),
 
             none: loadImage("enemies/none.svg")
         },
@@ -298,16 +298,23 @@ const renderSettings = {
 let RENDER_HAT = null;
 let RENDER_SKIN = null;
 
-let parsedMap = {
+const parsedMap = {
     background: "#ffffff",
     areaSize: {x: 100, y: 100},
     obstacle: [],
+    movingObstacle: [],
+    circularObstacle: [],
     teleporter: [],
     lava: [],
     rotatingLava: [],
     movingLava: [],
+    circularLava: [],
     ice: [],
+    movingIce: [],
+    circularIce: [],
     slime: [],
+    movingSlime: [],
+    circularSlime: [],
     button: [],
     switch: [],
     door: [],
@@ -330,7 +337,28 @@ let freeCam = false;
 
 let time = 0;
 
-const controls = (localStorage.getItem("controls") || "w a s d shift   r").split(" ");
+const controls = [
+    localStorage.getItem("up") ?? "w",
+    localStorage.getItem("left") ?? "a",
+    localStorage.getItem("down") ?? "s",
+    localStorage.getItem("right") ?? "d",
+    localStorage.getItem("shift") ?? "shift",
+    localStorage.getItem("sprint") ?? " ",
+    localStorage.getItem("power0") ?? "",
+    localStorage.getItem("power1") ?? "",
+    localStorage.getItem("combo") ?? "",
+    localStorage.getItem("respawn") ?? "r"
+];
+const othercontrols = [
+    localStorage.getItem("zoomOut") ?? "u",
+    localStorage.getItem("zoomIn") ?? "i",
+    localStorage.getItem("freeCam") ?? "f",
+    localStorage.getItem("freeCamUp") ?? "arrowup",
+    localStorage.getItem("freeCamLeft") ?? "arrowleft",
+    localStorage.getItem("freeCamDown") ?? "arrowdown",
+    localStorage.getItem("freeCamRight") ?? "arrowright",
+    localStorage.getItem("hitbox") ?? "o"
+];
 const othercontrols = (localStorage.getItem("othercontrols") || "u i f arrowup arrowleft arrowdown arrowright o").split(" ");
 
 let map = null;
@@ -588,8 +616,10 @@ const overlays = [
     document.getElementById("overlayDown"),
     document.getElementById("overlayRight"),
     document.getElementById("overlayShift"),
+    document.getElementById("overlaySprint"),
     document.getElementById("overlayPower0"),
     document.getElementById("overlayPower1"),
+    document.getElementById("overlayCombo"),
     document.getElementById("overlayRespawn")
 ];
 

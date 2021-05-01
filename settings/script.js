@@ -1,20 +1,44 @@
-const controls = (localStorage.getItem("controls") || "w a s d shift   r").split(" ");
-const othercontrols = (localStorage.getItem("othercontrols") || "u i f arrowup arrowleft arrowdown arrowright o").split(" ");
+const controls = [
+    localStorage.getItem("up") ?? "w",
+    localStorage.getItem("left") ?? "a",
+    localStorage.getItem("down") ?? "s",
+    localStorage.getItem("right") ?? "d",
+    localStorage.getItem("shift") ?? "shift",
+    localStorage.getItem("sprint") ?? " ",
+    localStorage.getItem("power0") ?? "",
+    localStorage.getItem("power1") ?? "",
+    localStorage.getItem("combo") ?? "",
+    localStorage.getItem("respawn") ?? "r"
+];
+const othercontrols = [
+    localStorage.getItem("zoomOut") ?? "u",
+    localStorage.getItem("zoomIn") ?? "i",
+    localStorage.getItem("freeCam") ?? "f",
+    localStorage.getItem("freeCamUp") ?? "arrowup",
+    localStorage.getItem("freeCamLeft") ?? "arrowleft",
+    localStorage.getItem("freeCamDown") ?? "arrowdown",
+    localStorage.getItem("freeCamRight") ?? "arrowright",
+    localStorage.getItem("hitbox") ?? "o"
+];
 const controlInputs = document.getElementsByClassName("control");
 const othercontrolInputs = document.getElementsByClassName("othercontrol");
 
 for (let i in controls) {
-    controlInputs.item(i).value = controls[i];
-    controlInputs.item(i).addEventListener("input", () => {
-        controls[i] = controlInputs.item(i).value.toLowerCase();
-        localStorage.setItem("controls", controls.join(" "));
+    const input = controlInputs.item(i);
+    input.value = controls[i];
+
+    input.addEventListener("input", () => {
+        controls[i] = input.value.toLowerCase();
+        localStorage.setItem(["up", "left", "down", "right", "shift", "sprint", "power0", "power1", "combo", "respawn"][i], input.value);
     });
 }
 for (let i in othercontrols) {
-    othercontrolInputs.item(i).value = othercontrols[i];
-    othercontrolInputs.item(i).addEventListener("input", () => {
-        othercontrols[i] = othercontrolInputs.item(i).value.toLowerCase();
-        localStorage.setItem("othercontrols", othercontrols.join(" "));
+    const input = othercontrolInputs.item(i);
+    input.value = controls[i];
+    
+    input.addEventListener("input", () => {
+        controls[i] = input.value.toLowerCase();
+        localStorage.setItem(["zoomOut", "zoomIn", "freeCam", "freeCamUp", "freeCamLeft", "freeCamDown", "freeCamRight", "hitbox"][i], input.value);
     });
 }
 

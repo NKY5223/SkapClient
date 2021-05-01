@@ -29,8 +29,8 @@ function updateStates(m) {
         camY = player.pos.y;
     }
 
-    power0CD.style.height = m.infos.oneCooldown * 100 + "%";
-    power1CD.style.height = m.infos.twoCooldown * 100 + "%";
+    power0CD.style.height = (isNaN(m.infos.oneCooldown) ? 0 : m.infos.oneCooldown) * 100 + "%";
+    power1CD.style.height = (isNaN(m.infos.twoCooldown) ? 0 : m.infos.twoCooldown) * 100 + "%";
     power0Heat.style.height = m.infos.oneHeat * 100 + "%";
     power1Heat.style.height = m.infos.twoHeat * 100 + "%";
 

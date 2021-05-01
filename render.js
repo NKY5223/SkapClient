@@ -218,6 +218,27 @@ function render() {
                 Math.round(camScale * obj.size.y)
             );
         }
+        // Render movObstacle
+        for (let obj of parsedMap.movingObstacle) {
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
+        // Render cirObstacle
+        for (let obj of parsedMap.circularObstacle) {
+            ctx.beginPath();
+            ctx.ellipse(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.radius - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.radius - camY)),
+                Math.round(camScale * obj.radius),
+                Math.round(camScale * obj.radius),
+                0, 0, 7
+            );
+            ctx.fill();
+        }
     }
     // Render the ****ing teleporters (they suck)
     if (renderSettings.render.teleporter) {
@@ -273,19 +294,6 @@ function render() {
                 Math.round(camScale * obj.size.y)
             );
         }
-    }
-    if (renderSettings.render.movLava) {
-        // Render movLava
-        for (let obj of parsedMap.movingLava) {
-            ctx.fillRect(
-                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
-                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
-                Math.round(camScale * obj.size.x),
-                Math.round(camScale * obj.size.y)
-            );
-        }
-    }
-    if (renderSettings.render.rotLava) {
         // Render rotLava
         ctx.globalAlpha = 1;
         for (let obj of parsedMap.rotatingLava) {
@@ -297,6 +305,27 @@ function render() {
             ctx.rotate(obj.angle);
             ctx.fillRect(-camScale * obj.size.x / 2, -camScale * obj.size.y / 2, camScale * obj.size.x, camScale * obj.size.y);
             ctx.restore();
+        }
+        // Render movLava
+        for (let obj of parsedMap.movingLava) {
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
+        // Render cirLava
+        for (let obj of parsedMap.circularLava) {
+            ctx.beginPath();
+            ctx.ellipse(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.radius - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.radius - camY)),
+                Math.round(camScale * obj.radius),
+                Math.round(camScale * obj.radius),
+                0, 0, 7
+            );
+            ctx.fill();
         }
     }
     if (renderSettings.render.ice) {
@@ -310,6 +339,27 @@ function render() {
                 Math.round(camScale * obj.size.y)
             );
         }
+        // Render movIce
+        for (let obj of parsedMap.movingIce) {
+            ctx.beginPath();
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
+        // Render cirIce
+        for (let obj of parsedMap.circularIce) {
+            ctx.ellipse(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.radius - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.radius - camY)),
+                Math.round(camScale * obj.radius),
+                Math.round(camScale * obj.radius),
+                0, 0, 7
+            );
+            ctx.fill();
+        }
     }
     if (renderSettings.render.slime) {
         // Render slime
@@ -321,6 +371,27 @@ function render() {
                 Math.round(camScale * obj.size.x),
                 Math.round(camScale * obj.size.y)
             );
+        }
+        // Render movSlime
+        for (let obj of parsedMap.movingSlime) {
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
+        // Render cirSlime
+        for (let obj of parsedMap.circularSlime) {
+            ctx.beginPath();
+            ctx.ellipse(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.radius - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.radius - camY)),
+                Math.round(camScale * obj.radius),
+                Math.round(camScale * obj.radius),
+                0, 0, 7
+            );
+            ctx.fill();
         }
     }
     // Render buttons
@@ -511,6 +582,8 @@ function render() {
             case "gravityLeft":
             case "gravityRight":
             case "harmless":
+            case "accelerator":
+            case "decelerator":
                 ctx.globalAlpha = obj.opacity || 1;
                 ctx.drawImage(renderSettings.textures.enemies[obj.type], canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
                 break;
@@ -591,6 +664,13 @@ function render() {
                 ctx.rotate(obj.dir);
                 ctx.drawImage(renderSettings.textures.enemies.snekHead, -camScale * obj.radius, -camScale * obj.radius, camScale * obj.radius * 3, camScale * obj.radius * 2);
                 ctx.restore();
+                break;
+            case "restZone":
+                ctx.globalAlpha = 0.5;
+                ctx.beginPath();
+                ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
+                ctx.fillStyle = renderSettings.colors.refuel;
+                ctx.fill();
                 break;
             default:
                 ctx.globalAlpha = obj.opacity || 1;
