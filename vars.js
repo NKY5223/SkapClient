@@ -359,7 +359,6 @@ const othercontrols = [
     localStorage.getItem("freeCamRight") ?? "arrowright",
     localStorage.getItem("hitbox") ?? "o"
 ];
-const othercontrols = (localStorage.getItem("othercontrols") || "u i f arrowup arrowleft arrowdown arrowright o").split(" ");
 
 let map = null;
 let state = null;
