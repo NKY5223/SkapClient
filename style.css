@@ -18,8 +18,9 @@ body.scroll {
 }
 
 #video {
+    position: absolute;
     z-index: 100;
-    transition: opacity 100s;
+    transition: opacity 10000s;
 }
 
 ::-webkit-scrollbar {
