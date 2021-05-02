@@ -34,8 +34,8 @@ for (let i in controls) {
 }
 for (let i in othercontrols) {
     const input = othercontrolInputs.item(i);
-    input.value = controls[i];
-    
+    input.value = othercontrols[i];
+
     input.addEventListener("input", () => {
         controls[i] = input.value.toLowerCase();
         localStorage.setItem(["zoomOut", "zoomIn", "freeCam", "freeCamUp", "freeCamLeft", "freeCamDown", "freeCamRight", "hitbox"][i], input.value);

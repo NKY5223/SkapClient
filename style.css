@@ -18,38 +18,8 @@ body.scroll {
 }
 
 #video {
-    width: 50%;
-    height: 50%;
-    position: absolute;
     z-index: 100;
-    animation: video 1s linear 5s infinite;
     transition: opacity 100s;
-}
-@keyframes video {
-    0% {
-        left: 0;
-        top: 0;
-    }
-    25% {
-        left: 50%;
-        top: 100px;
-    }
-    45% {
-        left: 80%;
-        top: -60%;
-    }
-    70% {
-        left: 25%;
-        top: 60%;
-    }
-    80% {
-        left: -100%;
-        top: 100%;
-    }
-    100% {
-        left: 0;
-        top: 0;
-    }
 }
 
 ::-webkit-scrollbar {
