@@ -40,7 +40,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "inverted canvas";
+const version = "zerotix video last pass";
 
 /**
  * @type {HTMLCanvasElement}
