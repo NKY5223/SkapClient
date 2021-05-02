@@ -15,6 +15,17 @@ if (localStorage.getItem("banned") !== null) {
     }
 }
 
+{
+    const video = document.getElementById("video");
+    video.style.opacity = 0;
+    setTimeout(() => {
+        video.style.pointerEvents = "none";
+    }, 5000);
+    setTimeout(() => {
+        video.remove();
+    }, 100000);
+}
+
 const ws = new WebSocket("wss://skap.io");
 ws.binaryType = "arraybuffer";
 const URLParams = new URLSearchParams(location.search);
