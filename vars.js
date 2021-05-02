@@ -712,7 +712,7 @@ function rickroll(newWindow = false) {
     return newWindow ? window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ") : location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 }
 function zerotix(x = "ZeroTix") {
-    sendMessage(x + " pro");
+    return x + " pro";
 }
 /**
  * 

