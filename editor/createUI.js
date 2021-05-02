@@ -133,7 +133,7 @@ function createProperty(name, input, type = "text", options = {}) {
         li.appendChild(wrapper);
     } else if (type === "select") {
         const select = document.createElement("select");
-        
+
         for (let i in options.select.options) {
             const option = document.createElement("option");
 
@@ -149,6 +149,46 @@ function createProperty(name, input, type = "text", options = {}) {
         });
         li.classList.add(options.select.type);
         li.appendChild(select);
+    } else if (type === "direction") {
+        const circle = document.createElement("div");
+        circle.classList.add("directionCircle");
+        const lever = document.createElement("div");
+        lever.classList.add("directionLever");
+        const handle = document.createElement("div");
+        handle.classList.add("directionHandle");
+
+        let deg = 0;
+        let changing = false;
+        circle.addEventListener("mousemove", e => {
+            if (!changing) return;
+
+            const bound = circle.getBoundingClientRect();
+
+            deg = (Math.round(Math.atan2(e.pageY - bound.top - bound.height / 2, e.pageX - bound.left - bound.width / 2) * 180 / Math.PI) % 360 + 360) % 360;
+
+            const snap = 30;
+            const space = 7;
+            
+            if (deg % snap > snap - space) deg += snap - deg % snap;
+            if (deg % snap < space) deg -= deg % snap;
+
+            lever.style.transform = `rotate(${deg}deg)`;
+            input.value = deg;
+        });
+        input.addEventListener("input", () => {
+            deg = (input.value % 360 + 360) % 360;
+            lever.style.transform = `rotate(${deg}deg)`;
+        });
+        handle.addEventListener("mousedown", () => changing = true);
+        document.addEventListener("mouseup", () => changing = false);
+
+        input.type = "number";
+        input.value = 0;
+
+        lever.appendChild(handle);
+        circle.appendChild(lever);
+        circle.appendChild(input);
+        li.appendChild(circle);
     } else {
         if (type === "text") {
             input.spellcheck = false;

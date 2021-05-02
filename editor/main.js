@@ -556,9 +556,10 @@ addArea("Home");
     render();
     window.requestAnimationFrame(run);
 })();
-// objectmenu.appendChild(createProperty("test", null, "select", { select: { type: "text", event: console.log, options: [["1", "1"], ["2", 4]] } }));
-
-
+{
+    const input = document.createElement("input");
+    objectmenu.appendChild(createProperty("test", input, "direction", { direction: { event: console.log } }));
+}
 
 
 
