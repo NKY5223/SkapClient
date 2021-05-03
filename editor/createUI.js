@@ -165,7 +165,7 @@ function createProperty(name, input, type = "text", options = {}) {
         lever.style.transform = `rotate(${deg}deg)`;
 
         let changing = false;
-        circle.addEventListener("mousemove", e => {
+        document.addEventListener("mousemove", e => {
             if (!changing) return;
 
             const bound = circle.getBoundingClientRect();
@@ -177,13 +177,17 @@ function createProperty(name, input, type = "text", options = {}) {
 
             if (deg % snap > snap - space) deg += snap - deg % snap;
             if (deg % snap < space) deg -= deg % snap;
+            input.value = deg = (deg % 360 + 360) % 360;
 
             lever.style.transform = `rotate(${deg}deg)`;
-            input.value = deg;
+            options.event(deg);
         });
         input.addEventListener("input", () => {
-            deg = (input.value % 360 + 360) % 360;
+            input.value = Math.round(input.value * 10) / 10;
+            input.value = deg = ((10 * input.value % 3600 + 3600) % 3600) / 10;
+
             lever.style.transform = `rotate(${deg}deg)`;
+            options.event(deg);
         });
         handle.addEventListener("mousedown", () => changing = true);
         document.addEventListener("mouseup", () => changing = false);

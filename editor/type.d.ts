@@ -1,30 +1,37 @@
 type VectorLike = {
-    x: number,
-    y: number
+    x: number;
+    y: number;
 }
-type ColorArr = [number, number, number]
+type ColorArr = [number, number, number];
 
 type SkapObject = {
-    pos: VectorLike,
-    size: VectorLike,
-    type: string
+    pos: VectorLike;
+    size: VectorLike;
+    type: string;
+    inputs: {
+        [name: string]: HTMLInputElement
+    };
+    element: HTMLLIElement;
 }
 type Obstacle = SkapObject & {
-    type: "obstacle"
+    type: "obstacle";
 }
 type Lava = SkapObject & {
-    type: "lava"
+    type: "lava";
 }
 type Slime = SkapObject & {
-    type: "slime"
+    type: "slime";
 }
 type Ice = SkapObject & {
-    type: "ice"
+    type: "ice";
 }
 type Block = SkapObject & {
-    color: ColorArr;
-    layer: 0 | 1,
-    type: "block"
+    colorArr: ColorArr;
+    color: string;
+    opacity: number;
+    collide: boolean;
+    layer: boolean;
+    type: "block";
 }
 declare function createObstacle(x?: number, y?: number, w?: number, h?: number): Obstacle
 declare function createLava(x?: number, y?: number, w?: number, h?: number): Lava

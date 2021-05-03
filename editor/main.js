@@ -556,7 +556,7 @@ addArea("Home");
 })();
 {
     const input = document.createElement("input");
-    objectmenu.appendChild(createProperty("test", input, "direction", { direction: { event: console.log } }));
+    objectmenu.appendChild(createProperty("test", input, "direction", { event: console.log }));
 }
 
 
