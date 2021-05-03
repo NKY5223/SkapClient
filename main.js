@@ -465,40 +465,30 @@ Owner:<ul>
                                 break;
                             case localStorage.getItem("powerkeybind0"):
                                 let powerpreset0 = localStorage.getItem("powerpreset0").split(",");
-                                power0.value = powerpreset0[0];
-                                power1.value = powerpreset0[1];
 
                                 changePower(0, powerpreset0[0]);
                                 changePower(1, powerpreset0[1]);
                                 break;
                             case localStorage.getItem("powerkeybind1"):
                                 let powerpreset1 = localStorage.getItem("powerpreset1").split(",");
-                                power0.value = powerpreset1[0];
-                                power1.value = powerpreset1[1];
 
                                 changePower(0, powerpreset1[0]);
                                 changePower(1, powerpreset1[1]);
                                 break;
                             case localStorage.getItem("powerkeybind2"):
                                 let powerpreset2 = localStorage.getItem("powerpreset2").split(",");
-                                power0.value = powerpreset2[0];
-                                power1.value = powerpreset2[1];
 
                                 changePower(0, powerpreset2[0]);
                                 changePower(1, powerpreset2[1]);
                                 break;
                             case localStorage.getItem("powerkeybind3"):
                                 let powerpreset3 = localStorage.getItem("powerpreset3").split(",");
-                                power0.value = powerpreset3[0];
-                                power1.value = powerpreset3[1];
 
                                 changePower(0, powerpreset3[0]);
                                 changePower(1, powerpreset3[1]);
                                 break;
                             case localStorage.getItem("powerkeybind4"):
                                 let powerpreset4 = localStorage.getItem("powerpreset4").split(",");
-                                power0.value = powerpreset4[0];
-                                power1.value = powerpreset4[1];
 
                                 changePower(0, powerpreset4[0]);
                                 changePower(1, powerpreset4[1]);
@@ -1102,7 +1092,10 @@ function keys(key, value) {
     else overlays[key]?.classList?.remove("overlayactive");
 }
 function changePower(slot, power) {
-    if (state.players[state.infos.id].states.includes("Died")) return;
+    if (state.players[state.infos.id].states.includes("Died")) {
+        console.log("dead");
+        return;
+    }
     if (slot) {
         if (power == power0.value) {
             power0.value = power1.value;
