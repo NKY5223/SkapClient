@@ -1092,10 +1092,7 @@ function keys(key, value) {
     else overlays[key]?.classList?.remove("overlayactive");
 }
 function changePower(slot, power) {
-    if (state.players[state.infos.id].states.includes("Died")) {
-        console.log("dead");
-        return;
-    }
+    if (state.players[state.infos.id].states.includes("Died")) return;
     if (slot) {
         if (power == power0.value) {
             power0.value = power1.value;
@@ -1104,6 +1101,8 @@ function changePower(slot, power) {
                 m: 0,
                 i: Number(power0.value)
             });
+        } else {
+            power1.value = power;
         }
     } else {
         if (power == power1.value) {
@@ -1113,6 +1112,8 @@ function changePower(slot, power) {
                 m: 1,
                 i: Number(power1.value)
             });
+        } else {
+            power0.value = power;
         }
     }
     send({
