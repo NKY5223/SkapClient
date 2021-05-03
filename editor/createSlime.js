@@ -1,17 +1,4 @@
-/**
- * @typedef Slime
- * @property {VectorLike} pos
- * @property {VectorLike} size
- * @property {{x: HTMLInputElement, y: HTMLInputElement, w: HTMLInputElement, h: HTMLInputElement}} inputs
- * @property {HTMLLIElement} element
- * 
- * @param {number} x 
- * @param {number} y 
- * @param {number} w 
- * @param {number} h 
- * @returns {Slime}
- */
- function createSlime(x = 0, y = 0, w = 10, h = 10) {
+function createSlime(x = 0, y = 0, w = 10, h = 10) {
     const slime = {
         pos: {
             x,

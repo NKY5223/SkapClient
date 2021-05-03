@@ -554,6 +554,8 @@ addArea("Home");
     render();
     window.requestAnimationFrame(run);
 })();
+
+
 {
     const input = document.createElement("input");
     objectmenu.appendChild(createProperty("test", input, "direction", { event: console.log }));

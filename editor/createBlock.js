@@ -1,24 +1,4 @@
-/**
- * @typedef Block
- * @property {VectorLike} pos
- * @property {VectorLike} size
- * @property {ColorArr} colorArr
- * @property {string} color
- * @property {number} opacity
- * @property {boolean} collide
- * @property {boolean} layer
- * @property {{x: HTMLInputElement, y: HTMLInputElement, w: HTMLInputElement, h: HTMLInputElement, color: HTMLInputElement, opacity: HTMLInputElement, collide: HTMLInputElement}} inputs
- * @property {HTMLLIElement} element
- * 
- * @param {number} x 
- * @param {number} y 
- * @param {number} w 
- * @param {number} h
- * @param {ColorArr} color 
- * @param {number} opacity
- * @returns {Block}
- */
- function createBlock(x = 0, y = 0, w = 10, h = 10, color = [0, 0, 0], opacity = 1, collide, layer = 0) {
+function createBlock(x = 0, y = 0, w = 10, h = 10, color = [0, 0, 0], opacity = 1, collide, layer = 0) {
     const block = {
         pos: {
             x,

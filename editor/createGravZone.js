@@ -1,18 +1,3 @@
-/**
- * @typedef GravZone
- * @property {VectorLike} pos
- * @property {VectorLike} size
- * @property {Direction} dir
- * @property {{x: HTMLInputElement, y: HTMLInputElement, w: HTMLInputElement, h: HTMLInputElement}} inputs
- * @property {HTMLLIElement} element
- * 
- * @param {number} x 
- * @param {number} y 
- * @param {number} w 
- * @param {number} h 
- * @param {0 | 1 | 2 | 3} dir
- * @returns {GravZone}
- */
 function createGravZone(x = 0, y = 0, w = 10, h = 20, dir = 2) {
     const gravZone = {
         pos: {

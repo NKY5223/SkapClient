@@ -1,17 +1,4 @@
-/**
- * @typedef Obstacle
- * @property {VectorLike} pos
- * @property {VectorLike} size
- * @property {{x: HTMLInputElement, y: HTMLInputElement, w: HTMLInputElement, h: HTMLInputElement}} inputs
- * @property {HTMLLIElement} element
- * 
- * @param {number} x 
- * @param {number} y 
- * @param {number} w 
- * @param {number} h 
- * @returns {Obstacle}
- */
- function createObstacle(x = 0, y = 0, w = 10, h = 10) {
+function createObstacle(x = 0, y = 0, w = 10, h = 10) {
     const obstacle = {
         pos: {
             x,

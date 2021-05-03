@@ -1,21 +1,3 @@
-/**
- * @typedef Spawner
- * @property {VectorLike} pos
- * @property {VectorLike} size
- * @property {string} enemyType
- * @property {number} number
- * @property {number} speed
- * @property {number} radius
- * @property {{x: HTMLInputElement, y: HTMLInputElement, w: HTMLInputElement, h: HTMLInputElement}} inputs
- * @property {HTMLLIElement} element
- * 
- * @param {number} x 
- * @param {number} y 
- * @param {number} w 
- * @param {number} h 
- * @param {string} enemyType
- * @returns {Spawner}
- */
 function createSpawner(x = 0, y = 0, w = 10, h = 10, enemyType = "normal", number = 10, speed = 10, radius = 5) {
     const spawner = {
         pos: {

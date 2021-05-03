@@ -1,21 +1,3 @@
-/**
- * @typedef Teleporter
- * @property {VectorLike} pos
- * @property {VectorLike} size
- * @property {Direction} dir
- * @property {number} id
- * @property {string} targetArea
- * @property {number} targetId
- * @property {{x: HTMLInputElement, y: HTMLInputElement, w: HTMLInputElement, h: HTMLInputElement}} inputs
- * @property {HTMLLIElement} element
- * 
- * @param {number} x 
- * @param {number} y 
- * @param {number} w 
- * @param {number} h 
- * @param {0 | 1 | 2 | 3} dir
- * @returns {Teleporter}
- */
 function createTeleporter(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0, targetArea = "Home", targetId = 0) {
     const teleporter = {
         pos: {
