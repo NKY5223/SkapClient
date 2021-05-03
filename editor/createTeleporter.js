@@ -87,12 +87,10 @@ function createTeleporter(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0, targetA
             createProperty("height", hInput, "number")
         ]),
         createProperty("direction", null, "cardinal", {
-            cardinal: {
-                value: dir,
-                event: dir => {
-                    teleporter.dir = (dir + 2) % 4;
-                    console.log(dir, teleporter.dir);
-                }
+            value: dir,
+            event: dir => {
+                teleporter.dir = (dir + 2) % 4;
+                console.log(dir, teleporter.dir);
             }
         }),
         createProperty("targetArea", targetAreaInput, "text"),

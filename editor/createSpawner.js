@@ -88,37 +88,35 @@ function createSpawner(x = 0, y = 0, w = 10, h = 10, enemyType = "normal", numbe
         ]),
         createFolder("Enemy Properties", [
             createProperty("type", null, "select", {
-                select: {
-                    type: "text",
-                    value: enemyType,
-                    options: [
-                        ["Normal", "normal"],
-                        ["Reverse", "reverse"],
-                        ["Spike", "spike"],
-                        ["Bouncer", "bouncer"],
-                        ["Rotating", "rotating"],
-                        ["Following", "following"],
-                        ["Bomb", "bomb"],
-                        ["Monster", "monster"],
-                        ["Taker", "taker"],
-                        ["Contractor", "contractor"],
-                        ["Immune", "immune"],
-                        ["Expander", "expander"],
-                        ["Wavy", "wavy"],
-                        ["Snek", "snek"],
-                        ["Daddy Snek", "daddySnek"],
-                        ["Baby Snek", "babySnek"],
-                        ["Stutter", "stutter"],
-                        ["Shooter", "shooter"],
-                        ["Freezer", "freezer"],
-                        ["Mega Bouncer", "megaBouncer"],
-                        ["Gravity (Left)", "gravityLeft"],
-                        ["Gravity (Up)", "gravityUp"],
-                        ["Gravity (Right)", "gravityRight"]
-                    ],
-                    event: e => {
-                        spawner.enemyType = e;
-                    }
+                value: enemyType,
+                selectType: "text",
+                selectOptions: [
+                    ["Normal", "normal"],
+                    ["Reverse", "reverse"],
+                    ["Spike", "spike"],
+                    ["Bouncer", "bouncer"],
+                    ["Rotating", "rotating"],
+                    ["Following", "following"],
+                    ["Bomb", "bomb"],
+                    ["Monster", "monster"],
+                    ["Taker", "taker"],
+                    ["Contractor", "contractor"],
+                    ["Immune", "immune"],
+                    ["Expander", "expander"],
+                    ["Wavy", "wavy"],
+                    ["Snek", "snek"],
+                    ["Daddy Snek", "daddySnek"],
+                    ["Baby Snek", "babySnek"],
+                    ["Stutter", "stutter"],
+                    ["Shooter", "shooter"],
+                    ["Freezer", "freezer"],
+                    ["Mega Bouncer", "megaBouncer"],
+                    ["Gravity (Left)", "gravityLeft"],
+                    ["Gravity (Up)", "gravityUp"],
+                    ["Gravity (Right)", "gravityRight"]
+                ],
+                event: e => {
+                    spawner.enemyType = e;
                 }
             }),
             createProperty("count", numberInput, "number"),

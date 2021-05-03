@@ -40,11 +40,12 @@ function createFolder(title, lis) {
  * @param {string} name 
  * @param {HTMLInputElement} input 
  * @param {string} type 
- * @param {{cardinal?: {event: function(0 | 1 | 2 | 3): void, value: 0 | 1 | 2 | 3}, select?: {type: "text" | "number", value: *, options: [string, *][], event: function(*)}}} options
+ * @param {{value: *, event: function(*), selectType?: "text" | "number", selectOptions: [string, *][]}} options
  */
 function createProperty(name, input, type = "text", options = {}) {
     const li = createLI("property " + type);
     li.appendChild(createSpan(name, "label"));
+    if ("value" in options && input) input.value = options.value;
     if (type === "color") {
         const label = document.createElement("label");
         const text = document.createTextNode(input.value);
@@ -57,6 +58,7 @@ function createProperty(name, input, type = "text", options = {}) {
         label.appendChild(input);
         label.style.background = input.value;
         li.style.borderLeftColor = input.value;
+
 
         if (luma(hexToArr(input.value)) > 128) li.classList.add("light");
         input.addEventListener("input", () => {
@@ -79,6 +81,8 @@ function createProperty(name, input, type = "text", options = {}) {
         label.classList.add("switchLabel")
         switchSpan.classList.add("switchSpan");
 
+        input.checked = options.value;
+
         label.appendChild(input);
         label.appendChild(switchSpan);
         li.appendChild(label);
@@ -94,7 +98,7 @@ function createProperty(name, input, type = "text", options = {}) {
         const right = document.createElement("button");
         right.classList.add("cardinalRight");
 
-        let active = [up, right, down, left][(Number(options.cardinal.value ?? 0) % 4 + 4) % 4];
+        let active = [up, right, down, left][(Number(options.value ?? 0) % 4 + 4) % 4];
         active.classList.add("active");
 
         up.addEventListener("click", () => {
@@ -102,28 +106,28 @@ function createProperty(name, input, type = "text", options = {}) {
             active.classList.remove("active");
             up.classList.add("active");
             active = up;
-            options.cardinal.event(2);
+            options.event(2);
         });
         right.addEventListener("click", () => {
             if (active === right) return;
             active.classList.remove("active");
             right.classList.add("active");
             active = right;
-            options.cardinal.event(3);
+            options.event(3);
         });
         down.addEventListener("click", () => {
             if (active === down) return;
             active.classList.remove("active");
             down.classList.add("active");
             active = down;
-            options.cardinal.event(0);
+            options.event(0);
         });
         left.addEventListener("click", () => {
             if (active === left) return;
             active.classList.remove("active");
             left.classList.add("active");
             active = left;
-            options.cardinal.event(1);
+            options.event(1);
         });
 
         wrapper.appendChild(up);
@@ -134,20 +138,20 @@ function createProperty(name, input, type = "text", options = {}) {
     } else if (type === "select") {
         const select = document.createElement("select");
 
-        for (let i in options.select.options) {
+        for (let i in options.selectOptions) {
             const option = document.createElement("option");
 
-            option.innerHTML = options.select.options[i][0];
+            option.innerHTML = options.selectOptions[i][0];
             option.value = i;
             select.appendChild(option);
 
-            if (options.select.options[i][1] === options.select.value ?? 0) select.value = i;
+            if (options.selectOptions[i][1] === options.value ?? 0) select.value = i;
         }
 
         select.addEventListener("change", () => {
-            options.select.event(options.select.options[select.value][1]);
+            options.event(options.selectOptions[select.value][1]);
         });
-        li.classList.add(options.select.type);
+        li.classList.add(options.selectType ?? "text");
         li.appendChild(select);
     } else if (type === "direction") {
         const circle = document.createElement("div");
@@ -157,7 +161,9 @@ function createProperty(name, input, type = "text", options = {}) {
         const handle = document.createElement("div");
         handle.classList.add("directionHandle");
 
-        let deg = 0;
+        let deg = options.value ?? 0;
+        lever.style.transform = `rotate(${deg}deg)`;
+
         let changing = false;
         circle.addEventListener("mousemove", e => {
             if (!changing) return;
@@ -168,7 +174,7 @@ function createProperty(name, input, type = "text", options = {}) {
 
             const snap = 30;
             const space = 7;
-            
+
             if (deg % snap > snap - space) deg += snap - deg % snap;
             if (deg % snap < space) deg -= deg % snap;
 

@@ -10,9 +10,10 @@
  * @param {number} y 
  * @param {number} w 
  * @param {number} h 
+ * @param {0 | 1 | 2 | 3} dir
  * @returns {GravZone}
  */
- function createGravZone(x = 0, y = 0, w = 10, h = 20) {
+function createGravZone(x = 0, y = 0, w = 10, h = 20, dir = 2) {
     const gravZone = {
         pos: {
             x,
@@ -22,7 +23,7 @@
             x: w,
             y: h
         },
-        dir: 2,
+        dir,
         type: "gravityZone"
     };
 
@@ -62,11 +63,10 @@
             createProperty("height", hInput, "number")
         ]),
         createProperty("direction", null, "cardinal", {
-            cardinal: {
-                event: dir => {
-                    gravZone.dir = dir % 4;
-                }
-            }
+            event: dir => {
+                gravZone.dir = dir % 4;
+            },
+            value: dir + 2
         })
     ]);
     gravZone.inputs = {

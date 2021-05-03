@@ -548,8 +548,6 @@ contextBtns.deleteArea.addEventListener("click", () => {
 
 
 
-
-
 addArea("Home");
 // Start rendering
 (function run() {
