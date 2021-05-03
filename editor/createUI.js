@@ -1,24 +1,10 @@
-function createBR() {
-    return document.createElement("br");
-}
-function createSpan(str = "", _class = "", id = "") {
-    let el = document.createElement("span");
-    if (id) el.id = id;
-    if (_class) el.className = _class;
-    el.innerHTML = str;
-    return el;
-}
 function createLI(_class = "", id = "") {
     let el = document.createElement("li");
     if (id) el.id = id;
     if (_class) el.className = _class;
     return el;
 }
-/**
- * @param {string} title
- * @param {HTMLLIElement[]} lis 
- */
-function createFolder(title, lis) {
+function createFolder(title = "Title", lis = []) {
     const folder = createLI("folder");
     let ul = document.createElement("ul");
     ul.classList.add("indent");
@@ -36,15 +22,12 @@ function createFolder(title, lis) {
     folder.appendChild(ul);
     return folder;
 }
-/**
- * @param {string} name 
- * @param {HTMLInputElement} input 
- * @param {string} type 
- * @param {{value: *, event: function(*), selectType?: "text" | "number", selectOptions: [string, *][]}} options
- */
-function createProperty(name, input, type = "text", options = {}) {
+function createProperty(name = "name", input = document.createElement("input"), type = "text", options = {}) {
     const li = createLI("property " + type);
-    li.appendChild(createSpan(name, "label"));
+    const span = document.createElement("span");
+    span.classList.add("span");
+    span.innerHTML = name;
+    li.appendChild(span);
     if ("value" in options && input) input.value = options.value;
     if (type === "color") {
         const label = document.createElement("label");

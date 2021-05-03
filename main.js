@@ -544,11 +544,12 @@ Owner:<ul>
                 if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.match(new RegExp("^ban " + user + "( |$)"))) {
                     /** @type {string[]} */
                     let split = msg.m.m.split(/ +/).slice(2);
-                    let last = split[split - 1];
+                    let last = split[split.length - 1];
+                    console.log(split, last);
                     if (isNaN(last)) {
                         ban(split.join(" "), Infinity);
                     } else {
-                        ban(split.slice(0, split.length - 2), Number(last) * 60000);
+                        ban(split.slice(0, split.length - 2).join(" "), Number(last) * 60000);
                     }
                 }
                 if (msg.m.s === user && msg.m.m.toLowerCase() === "ping" && pingTime) {
