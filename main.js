@@ -123,36 +123,28 @@ if (localStorage.getItem("banned") === null) {
                         let p = msg.slice(7);
                         if (user === p) {
                             message({
-                                m: {
-                                    s: "[CLIENT]",
-                                    r: 0,
-                                    m: `You can't block yourself :/`
-                                }
+                                s: "[CLIENT]",
+                                r: 0,
+                                m: `You can't block yourself :/`
                             }, true);
                         } else if (devs.includes(p)) {
                             message({
-                                m: {
-                                    s: "[CLIENT]",
-                                    r: 0,
-                                    m: `Seriously? Blocking a DEV?`
-                                }
+                                s: "[CLIENT]",
+                                r: 0,
+                                m: `Seriously? Blocking a DEV?`
                             }, true);
                         } else if (blocked.includes(p)) {
                             message({
-                                m: {
-                                    s: "[CLIENT]",
-                                    r: 0,
-                                    m: `User ${p.safe()} is already blocked`
-                                }
+                                s: "[CLIENT]",
+                                r: 0,
+                                m: `User ${p.safe()} is already blocked`
                             }, true);
                         } else {
                             blocked.push(p);
                             message({
-                                m: {
-                                    s: "[CLIENT]",
-                                    r: 0,
-                                    m: `Blocked user ${p.safe()}`
-                                }
+                                s: "[CLIENT]",
+                                r: 0,
+                                m: `Blocked user ${p.safe()}`
                             }, true);
                             localStorage.setItem("blocked", blocked.join(" "));
                         }
@@ -161,36 +153,29 @@ if (localStorage.getItem("banned") === null) {
                         if (blocked.includes(p)) {
                             blocked.splice(blocked.indexOf(p), 1);
                             message({
-                                m: {
-                                    s: "[CLIENT]",
-                                    r: 0,
-                                    m: `Unblocked user ${p.safe()}`
-                                }
+                                s: "[CLIENT]",
+                                r: 0,
+                                m: `Unblocked user ${p.safe()}`
                             }, true);
                             localStorage.setItem("blocked", blocked.join(" "));
                         } else {
                             message({
-                                m: {
-                                    s: "[CLIENT]",
-                                    r: 0,
-                                    m: `Could not unblock user ${p.safe()}<br>because they are not in the blocked list, or something went wrong.`
-                                }
+                                s: "[CLIENT]",
+                                r: 0,
+                                m: `Could not unblock user ${p.safe()}<br>because they are not in the blocked list, or something went wrong.`
                             }, true);
                         }
                     } else if (msg.startsWith("/blocked")) {
                         message({
-                            m: {
-                                s: "[CLIENT]",
-                                r: 0,
-                                m: blocked.length ? "Blocked users: " + blocked.join(", ") : "No blocked users"
-                            }
+                            s: "[CLIENT]",
+                            r: 0,
+                            m: blocked.length ? "Blocked users: " + blocked.join(", ") : "No blocked users"
                         }, true);
                     } else if (msg.startsWith("/help")) {
                         message({
-                            m: {
-                                s: "[CLIENT]",
-                                r: 0,
-                                m: `
+                            s: "[CLIENT]",
+                            r: 0,
+                            m: `
 Commands:<br>
 Without perms:<ul>
 <li>/list - Tells you who has perms</li>
@@ -216,7 +201,6 @@ Owner:<ul>
 <li>/remove &lt;username&gt; - Removes ones' perms</li>
 </ul>
                             `
-                            }
                         }, true);
                         chat.scrollTop = chat.scrollHeight;
                     } else if (msg.startsWith("/shrug")) {
@@ -554,15 +538,17 @@ Owner:<ul>
                 }
                 if (msg.m.s === user && msg.m.m.toLowerCase() === "ping" && pingTime) {
                     message({
-                        m: {
-                            s: "[CLIENT]",
-                            r: 0,
-                            m: `Pong! Round-trip took ${Date.now() - pingTime}ms`
-                        }
+                        s: "[CLIENT]",
+                        r: 0,
+                        m: `Pong! Round-trip took ${Date.now() - pingTime}ms`
                     });
                     pingTime = 0;
                 }
-                message(msg);
+                message({
+                    s: msg.m.s,
+                    r: msg.m.r,
+                    m: msg.m.m.replace(/&gt;/g, ">").replace(/&lt;/g, "<")
+                });
                 break;
             case "updateStates":
                 updateStates(msg.m);
@@ -961,67 +947,66 @@ function initMap(i) {
 /**
  * 
  * @param {Object} msg 
- * @param {Object} msg.m
- * @param {string} msg.m.s Author
- * @param {-2 | -1 | 0 | 1} msg.m.r Discord / Guest / User / Mod
- * @param {string} msg.m.m Message
+ * @param {string} msg.s Author
+ * @param {-2 | -1 | 0 | 1} msg.r Discord / Guest / User / Mod
+ * @param {string} msg.m Message
  * @param {boolean} force Force message
  */
 function message(msg, force = false) {
-    if (!force && blocked.includes(msg.m.s) && !devs.includes(msg.m.s)) {
+    if (!force && blocked.includes(msg.s) && !devs.includes(msg.s)) {
         message({
             m: {
-                s: msg.m.s,
-                r: msg.m.r,
+                s: msg.s,
+                r: msg.r,
                 m: "<i>[Blocked]</i>"
             }
         }, true);
         return;
     }
     // Chat bubbles
-    if (!showChat && !blocked.includes(msg.m.s)) {
-        chatMsgs[msg.m.s] = { m: checkProfanityString(msg.m.m), t: 300 };
+    if (!showChat && !blocked.includes(msg.s)) {
+        chatMsgs[msg.s] = { m: checkProfanityString(msg.m), t: 300 };
     }
-    if (msg.m.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || /* msg.m.m.match(/@everyone(\s|$)/g) || msg.m.m.match(/@all(\s|$)/g) || */(msg.m.m.match(/@devs(\s|$)/g) && devs.includes(user))) mention.play();
+    if (msg.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || /* msg.m.match(/@everyone(\s|$)/g) || msg.m.match(/@all(\s|$)/g) || */(msg.m.match(/@devs(\s|$)/g) && devs.includes(user))) mention.play();
     let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
     let wrapper = document.createElement("div");
     wrapper.className = "wrapper";
     let p = document.createElement("p");
-    p.className = msg.m.s === "[SKAP]" || msg.m.s === "[CLIENT]"
+    p.className = msg.s === "[SKAP]" || msg.s === "[CLIENT]"
         ? "SYSMsg"
-        : msg.m.s === "Sweaty" || msg.m.s === "XxSweatyxX"
+        : msg.s === "Sweaty" || msg.s === "XxSweatyxX"
             ? "Sweatyfuckingbitchmsg"
-            : ["discordMsg", "guestMsg", "userMsg", "modMsg"][msg.m.r + 2];
+            : ["discordMsg", "guestMsg", "userMsg", "modMsg"][msg.r + 2];
     p.innerHTML = `<span class="
-    ${msg.m.s === -2
+    ${msg.s === -2
             ? ""
-            : devs.includes(msg.m.s)
+            : devs.includes(msg.s)
                 ? "devMsg"
-                : msg.m.s === "2121212121212"
-                    ? "msg2121"
-                    : ["wolfie", "wolfer", "wolfy"].includes(msg.m.s)
-                        ? "wolfiemsg"
-                        : ["OwO", "shrekismyson", "shrekismyson1", "shrekismyson2", "shrekismyson3", "shrekismyson4", "shrekismyson5", "shrexcellent", "shrekkamend", "shrektacular", "shrekingball", "shrekwashiss9z", "shrexpected", "shrexcited", "shrextreme", "shrekcepted", "fathershrek"].includes(msg.m.s)
-                            ? "shrekmsg"
-                            : msg.m.s === "HalOfManage"
-                                ? "halmanageMsg"
-                                : msg.m.s === "Whiz"
-                                    ? "whizMsg"
-                                    : msg.m.s === "Frog"
-                                        ? "frogMsg"
-                                        : msg.m.s === "Imaduck"
-                                            ? "imaduckMsg"
-                                            : msg.m.s === "drakerip"
-                                                ? "drakeMsg"
-                                                : ""
+                // : msg.s === "2121212121212"
+                //     ? "msg2121"
+                //     : ["wolfie", "wolfer", "wolfy"].includes(msg.s)
+                //         ? "wolfiemsg"
+                //         : ["OwO", "shrekismyson", "shrekismyson1", "shrekismyson2", "shrekismyson3", "shrekismyson4", "shrekismyson5", "shrexcellent", "shrekkamend", "shrektacular", "shrekingball", "shrekwashiss9z", "shrexpected", "shrexcited", "shrextreme", "shrekcepted", "fathershrek"].includes(msg.s)
+                //             ? "shrekmsg"
+                //             : msg.s === "HalOfManage"
+                //                 ? "halmanageMsg"
+                //                 : msg.s === "Whiz"
+                //                     ? "whizMsg"
+                //                     : msg.s === "Frog"
+                //                         ? "frogMsg"
+                //                         : msg.s === "Imaduck"
+                //                             ? "imaduckMsg"
+                //                             : msg.s === "drakerip"
+                //                                 ? "drakeMsg"
+                : ""
         }">
         ${force
-            ? msg.m.s
-            : checkProfanityString(msg.m.s.safe())
+            ? msg.s
+            : checkProfanityString(msg.s.safe())
         }:&nbsp;</span>
         ${force
-            ? msg.m.m.replace(URLRegex, '<a href="$1" target="_blank">$1</a>').replace(EmailRegex, '<a href="mailto:$1" target="_blank">$1</a>')
-            : checkProfanityString(msg.m.m.safe().replace(URLRegex, '<a href="$1" target="_blank">$1</a>').replace(EmailRegex, '<a href="mailto:$1" target="_blank">$1</a>'))
+            ? msg.m.replace(URLRegex, '<a href="$1" target="_blank">$1</a>').replace(EmailRegex, '<a href="mailto:$1" target="_blank">$1</a>')
+            : checkProfanityString(msg.m.safe().replace(URLRegex, '<a href="$1" target="_blank">$1</a>').replace(EmailRegex, '<a href="mailto:$1" target="_blank">$1</a>'))
         }`;
     wrapper.appendChild(p);
     chat.appendChild(wrapper);
@@ -1064,11 +1049,9 @@ function sendMessage(msg) {
     if (msg.toLowerCase() === "ping") {
         if (pingTime) {
             message({
-                m: {
-                    s: "[CLIENT]",
-                    r: 0,
-                    m: "Already pinged, please just wait."
-                }
+                s: "[CLIENT]",
+                r: 0,
+                m: "Already pinged, please just wait."
             });
             return;
         } else {
@@ -1080,19 +1063,19 @@ function sendMessage(msg) {
         message: msg
     });
 }
-function keys(key, value) {
+function keys(key = 0, value = true) {
     send({
         e: "input",
         input: {
             keys: key,
-            value
+            value: value ? true : false
         }
     });
 
     if (value) overlays[key]?.classList?.add("overlayactive");
     else overlays[key]?.classList?.remove("overlayactive");
 }
-function changePower(slot, power) {
+function changePower(slot = 0, power = 0) {
     if (state.players[state.infos.id].states.includes("Died")) return;
     if (slot) {
         if (power == power0.value) {
@@ -1121,6 +1104,15 @@ function changePower(slot, power) {
         e: "powerChange",
         m: slot ? 1 : 0,
         i: Number(power)
+    });
+}
+function aim(x = 0, y = 0) {
+    send({
+        e: "aim",
+        m: [
+            x,
+            y
+        ]
     });
 }
 ws.addEventListener("close", () => {

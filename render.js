@@ -199,13 +199,7 @@ function render() {
     let mY = (mouse.y - canvas.height / 2) / camScale + camY;
     aimXSpan.innerHTML = mX.toFixed(3);
     aimYSpan.innerHTML = mY.toFixed(3);
-    send({
-        e: "aim",
-        m: [
-            mX,
-            mY
-        ]
-    });
+    aim(mX, mY);
 
     if (renderSettings.render.obstacle) {
         // Render obstacles
