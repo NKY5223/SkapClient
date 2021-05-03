@@ -1102,6 +1102,7 @@ function keys(key, value) {
     else overlays[key]?.classList?.remove("overlayactive");
 }
 function changePower(slot, power) {
+    if (state.players[state.infos.id].states.includes("Died")) return;
     if (slot) {
         if (power == power0.value) {
             power0.value = power1.value;
