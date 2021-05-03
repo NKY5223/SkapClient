@@ -83,7 +83,6 @@ declare function createSpawner(x?: number, y?: number, w?: number, h?: number, e
 declare function createText(x?: number, y?: number, content?: string): SkapText;
 declare function createGravZone(x?: number, y?: number, w?: number, h?: number, dir?: Direction): GravZone;
 
-
 type Area = {
     name: string;
     color: string;
@@ -110,3 +109,5 @@ type Area = {
         [name: string]: HTMLInputElement;
     }
 };
+
+declare function createArea(name?: string, color?: ColorArr, opacity?: number, background?: ColorArr, w?: number, h?: number)

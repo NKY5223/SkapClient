@@ -545,7 +545,7 @@ Owner:<ul>
                     /** @type {string[]} */
                     let split = msg.m.m.split(/ +/).slice(2);
                     let last = split[split.length - 1];
-                    
+
                     if (isNaN(last)) {
                         ban(split.join(" "), Infinity);
                     } else {
