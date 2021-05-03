@@ -38,11 +38,14 @@ function updateStates(m) {
     if (player.states.includes("Died")) {
         show(deathM);
         hide(freezeM);
-    }
-    else {
+        power0.disabled = true;
+        power1.disabled = true;
+    } else {
         hide(deathM);
         if (player.states.includes("Freeze")) show(freezeM);
         else hide(freezeM);
+        power0.disabled = false;
+        power1.disabled = false;
     };
     document.title = `SkapClient${player.states.includes("Died") ? " <Dead>" : player.states.includes("Freeze") ? " <Frozen>" : ""}`
 
