@@ -693,7 +693,7 @@ function loadImage(src) {
  * safe
  */
 String.prototype.safe = function () {
-    return this.replace(/&/g, "&amp;").replace(/ /g, "&nbsp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return this.replace(/&/g, "&amp;").replace(/ /g, "&nbsp;").replace(/<s/g, "&lt;s").replace(/t>/g, "t&gt;");
 }
 /**
  * clamp when
