@@ -4,11 +4,18 @@ declare function createFolder(title?: string, lis?: HTMLLIElement[]): HTMLLIElem
 type PropertyOptions<Type> = {
     value?: Type;
     event(value: Type): void;
-    selectType: "number" | "string";
-    selectOptions: [string, Type][];
 };
+type SelectOptions<Type> = {
+    value?: Type;
+    event(value: Type): void;
+    selectType: string;
+    selectOptions: [string, Type][];
+}
+declare function createProperty(name: string, input: HTMLInputElement, type: string, options: PropertyOptions<any>): HTMLLIElement;
 declare function createProperty(name: string, input: HTMLInputElement, type: "direction", options: PropertyOptions<number>): HTMLLIElement;
 declare function createProperty(name: string, input: null, type: "cardinal", options: PropertyOptions<0 | 1 | 2 | 3>): HTMLLIElement;
+declare function createProperty(name: string, input: null, type: "select", options: SelectOptions): HTMLLIElement;
+declare function createProperty(name: string, input: HTMLInputElement, type: "switch", options: null): HTMLLIElement;
 declare function createProperty(name: string, input: HTMLInputElement, type: "number", options: null): HTMLLIElement;
 declare function createProperty(name: string, input: HTMLInputElement, type: "text", options: null): HTMLLIElement;
 
@@ -76,7 +83,12 @@ type GravZone = BaseSkapObject & {
     type: "gravZone";
 };
 type RotatingLava = BaseSkapObject & {
-    point: VectorLike;
+    point: {
+        x: number;
+        y: number;
+        type: "rotLavaPoint";
+        rotLava: RotatingLava;
+    };
     startAngle: number;
     speed: number;
     type: "rotatingLava"
@@ -94,6 +106,17 @@ declare function createSpawner(x?: number, y?: number, w?: number, h?: number, e
 declare function createText(x?: number, y?: number, content?: string): SkapText;
 declare function createGravZone(x?: number, y?: number, w?: number, h?: number, dir?: Direction): GravZone;
 declare function createRotatingLava(x?: number, y?: number, w?: number, h?: number, pointX?: number, pointY?: number, startAngle?: number, speed?: number): RotatingLava;
+
+declare function addObstacle(): void;
+declare function addLava(): void;
+declare function addSlime(): void;
+declare function addIce(): void;
+declare function addBlock(): void;
+declare function addTeleporter(): void;
+declare function addSpawner(): void;
+declare function addText(): void;
+declare function addGravZone(): void;
+declare function addRotatingLava(): void;
 
 type Area = {
     name: string;

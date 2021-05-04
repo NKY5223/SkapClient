@@ -703,81 +703,81 @@ function rickroll(newWindow = false) {
 function zerotix(x = "ZeroTix") {
     return x + " pro";
 }
-function haha0201(x = "haha0201") {
-    if (x.toLowerCase() != "zerotix" && x.toLowerCase() != "zerofix" && x.toLowerCase() != "zephyrus") {
-        for (let i = 3; i--; i > 0) {
-            message({
-                s: "[CLIENT]",
-                r: 0,
-                m: `${x} pro`
-            }, true);
-        }
-        customAlert(x + " pro", 10000);
-        setTimeout(() => {
-            sendMessage(x + " very pro");
-            RENDER_HAT = "ravelHat";
-            renderSettings.render.invert = !renderSettings.render.invert;
-        }, 5000)
-        setTimeout(() => {
-            RENDER_HAT = "crown";
-            renderSettings.render.invert = !renderSettings.render.invert;
-        }, 5500)
-        setTimeout(() => {
-            RENDER_HAT = "";
-            renderSettings.render.invert = !renderSettings.render.invert;
-        }, 6000)
-        setTimeout(() => {
-            renderSettings.render.invert = !renderSettings.render.invert;
-        }, 6200)
+// function haha0201(x = "haha0201") {
+//     if (x.toLowerCase() != "zerotix" && x.toLowerCase() != "zerofix" && x.toLowerCase() != "zephyrus") {
+//         for (let i = 3; i--; i > 0) {
+//             message({
+//                 s: "[CLIENT]",
+//                 r: 0,
+//                 m: `${x} pro`
+//             }, true);
+//         }
+//         customAlert(x + " pro", 10000);
+//         setTimeout(() => {
+//             sendMessage(x + " very pro");
+//             RENDER_HAT = "ravelHat";
+//             renderSettings.render.invert = !renderSettings.render.invert;
+//         }, 5000)
+//         setTimeout(() => {
+//             RENDER_HAT = "crown";
+//             renderSettings.render.invert = !renderSettings.render.invert;
+//         }, 5500)
+//         setTimeout(() => {
+//             RENDER_HAT = "";
+//             renderSettings.render.invert = !renderSettings.render.invert;
+//         }, 6000)
+//         setTimeout(() => {
+//             renderSettings.render.invert = !renderSettings.render.invert;
+//         }, 6200)
 
-        setTimeout(() => {
-            sendMessage(x + " super pro")
-        }, 10000)
-        renderSettings.render.invert = !renderSettings.render.invert;
-        RENDER_HAT = "ravelHat"
+//         setTimeout(() => {
+//             sendMessage(x + " super pro")
+//         }, 10000)
+//         renderSettings.render.invert = !renderSettings.render.invert;
+//         RENDER_HAT = "ravelHat"
 
-        setTimeout(() => {
-            renderSettings.render.invert = !renderSettings.render.invert
-        }, 500)
-        setTimeout(() => {
-            renderSettings.render.invert = !renderSettings.render.invert
-            RENDER_HAT = ""
-        }, 700)
-        setTimeout(() => {
-            renderSettings.render.invert = !renderSettings.render.invert
-        }, 900)
+//         setTimeout(() => {
+//             renderSettings.render.invert = !renderSettings.render.invert
+//         }, 500)
+//         setTimeout(() => {
+//             renderSettings.render.invert = !renderSettings.render.invert
+//             RENDER_HAT = ""
+//         }, 700)
+//         setTimeout(() => {
+//             renderSettings.render.invert = !renderSettings.render.invert
+//         }, 900)
 
-        return x + " pro";
-    } else {
-        for (let i = 3; i--; i > 0) {
-            message({
-                s: "[CLIENT]",
-                r: 0,
-                m: `${x} trash`
-            }, true);
-        }
-        customAlert(x + " noob", 10000);
-        setTimeout(() => {
-            sendMessage(x + " very noob")
-        }, 10000)
-        renderSettings.render.invert = !renderSettings.render.invert;
-        RENDER_HAT = "ravelHat"
+//         return x + " pro";
+//     } else {
+//         for (let i = 3; i--; i > 0) {
+//             message({
+//                 s: "[CLIENT]",
+//                 r: 0,
+//                 m: `${x} trash`
+//             }, true);
+//         }
+//         customAlert(x + " noob", 10000);
+//         setTimeout(() => {
+//             sendMessage(x + " very noob")
+//         }, 10000)
+//         renderSettings.render.invert = !renderSettings.render.invert;
+//         RENDER_HAT = "ravelHat"
 
-        setTimeout(() => {
-            renderSettings.render.invert = !renderSettings.render.invert
-        }, 500)
-        setTimeout(() => {
-            renderSettings.render.invert = !renderSettings.render.invert
-            RENDER_HAT = ""
-        }, 700)
-        setTimeout(() => {
-            renderSettings.render.invert = !renderSettings.render.invert
-        }, 900)
+//         setTimeout(() => {
+//             renderSettings.render.invert = !renderSettings.render.invert
+//         }, 500)
+//         setTimeout(() => {
+//             renderSettings.render.invert = !renderSettings.render.invert
+//             RENDER_HAT = ""
+//         }, 700)
+//         setTimeout(() => {
+//             renderSettings.render.invert = !renderSettings.render.invert
+//         }, 900)
 
-        return x + " noob";
-    }
+//         return x + " noob";
+//     }
 
-}
+// }
 /**
  * 
  * @param {function(string)} func 

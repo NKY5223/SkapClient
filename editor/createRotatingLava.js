@@ -1,4 +1,5 @@
 function createRotatingLava(x = 0, y = 0, w = 10, h = 10, pointX = x, pointY = y, startAngle = 0, speed = 180) {
+    /** @type {RotatingLava} */
     const rotLava = {
         pos: {
             x,
@@ -10,12 +11,14 @@ function createRotatingLava(x = 0, y = 0, w = 10, h = 10, pointX = x, pointY = y
         },
         point: {
             x: pointX,
-            y: pointY
+            y: pointY,
+            type: "rotLavaPoint"
         },
         startAngle,
         speed,
         type: "rotatingLava"
     };
+    rotLava.point.rotLava = rotLava;
 
     // Create inputs/labels
     const xInput = document.createElement("input");

@@ -17,7 +17,6 @@ function getObjects(type = "obstacle") {
         return currentArea.objects.block.filter(o => o.layer);
     }
     if (type === "rotLavaPoint") {
-        return [];
         return currentArea.objects.rotatingLava.reduce((accumulator, value) => {
             accumulator.push(value.point)
             return accumulator
@@ -32,8 +31,6 @@ const renderSettings = {
     render: {
         obstacle: true,
         lava: true,
-        movLava: true,
-        rotLava: true,
         slime: true,
         ice: true,
         spawner: true,
@@ -47,6 +44,8 @@ const renderSettings = {
     colors: {
         obstacle: "rgb(48, 56, 117.6)", // Is variable (shit) (no moar shit)
         lava: "#d01000",
+        rotLavaPoint: "#00000080",
+        rotLavaShadow: "#00000040",
         slime: "#00c000",
         ice: "#00ffff",
         box: "#00000060",
@@ -332,6 +331,7 @@ const contextBtns = {
     text: document.getElementById("createText"),
     spawner: document.getElementById("createSpawner"),
     gravZone: document.getElementById("createGravZone"),
+    rotLava: document.getElementById("createRotLava"),
 
     area: document.getElementById("createArea"),
     deleteArea: document.getElementById("deleteArea"),

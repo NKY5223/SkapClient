@@ -126,7 +126,7 @@ function render() {
         }
         // Render rotLava
         ctx.globalAlpha = 1;
-        ctx.fillStyle = "#00000040";
+        ctx.fillStyle = renderSettings.colors.rotLavaShadow;
         for (let obj of currentArea.objects.rotatingLava) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -149,13 +149,13 @@ function render() {
             ctx.restore();
         }
 
-        ctx.fillStyle = "#000000";
+        ctx.fillStyle = renderSettings.colors.rotLavaPoint;
         for (let obj of currentArea.objects.rotatingLava) {
             ctx.beginPath();
             ctx.ellipse(
                 Math.round(canvas.width / 2 + camScale * (obj.point.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.point.y - camY)),
-                2 * camScale, 2 * camScale, 0, 0, 7
+                0.5 * camScale, 0.5 * camScale, 0, 0, 7
             );
             ctx.fill();
         }
@@ -427,7 +427,7 @@ function render() {
             );
             ctx.stroke();
             return;
-        }
+        } else if (selectedObject.type === "rotLavaPoint") return;
         ctx.strokeRect(
             Math.round(canvas.width / 2 + camScale * (selectedObject.pos.x - camX)),
             Math.round(canvas.height / 2 + camScale * (selectedObject.pos.y - camY)),
