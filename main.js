@@ -2,6 +2,14 @@ localStorage.removeItem("username");
 localStorage.removeItem("password");
 localStorage.removeItem("cookie");
 
+const logo = document.getElementById("logo");
+logo.addEventListener('click', event => {
+  if (event.detail > 20){
+      customAlert("You have found the easter egg!");
+      renderSettings.render.invert = true;
+  }
+});
+
 
 if (localStorage.getItem("banned") === null) {
     ws.addEventListener("open", () => {
