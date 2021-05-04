@@ -8,13 +8,20 @@ const controls = [
     localStorage.getItem("right") ?? "d"
 ];
 
-const types = ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "spawner", "door", "switch", "button", "slime", "ice", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"];
+const types = ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "spawner", "door", "switch", "button", "slime", "ice", "rotLavaPoint", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"];
 function getObjects(type = "obstacle") {
     if (type === "block0") {
         return currentArea.objects.block.filter(o => !o.layer);
     }
     if (type === "block1") {
         return currentArea.objects.block.filter(o => o.layer);
+    }
+    if (type === "rotLavaPoint") {
+        return [];
+        return currentArea.objects.rotatingLava.reduce((accumulator, value) => {
+            accumulator.push(value.point)
+            return accumulator
+        }, []);
     }
     if (type in currentArea.objects) {
         return currentArea.objects[type];

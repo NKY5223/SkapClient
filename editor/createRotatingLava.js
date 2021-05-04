@@ -62,7 +62,7 @@ function createRotatingLava(x = 0, y = 0, w = 10, h = 10, pointX = x, pointY = y
         rotLava.speed = Number(speedInput.value);
     });
 
-    rotLava.element = createFolder("Lava Properties", [
+    rotLava.element = createFolder("Rotating Lava Properties", [
         createFolder("Position", [
             createProperty("x", xInput, "number"),
             createProperty("y", yInput, "number")
