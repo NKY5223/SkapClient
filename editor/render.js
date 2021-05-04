@@ -1,114 +1,3 @@
-let time = 0;
-/**
- * @typedef SkapObject
- * @property {string} id
- * @property {"obstacle" | "lava" | "slime" | "teleporter" | "text" | "door" | "button"} type
- * @property {"0" | "1" | "2" | "3"} dir
- * @property {Object} pos
- * @property {number} pos.x
- * @property {number} pos.y
- * @property {Object} size
- * @property {number} size.x
- * @property {number} size.y
- * @property {Object} center
- * @property {number} center.x
- * @property {number} center.y
- * @property {string} text
- * @property {boolean} opened
- * @property {boolean} pressed
- * @property {boolean} switch
- * @property {0 | 1} layer
- * @property {[number, number, number]} color
- * @property {number} opacity
- * @property {number} angle
- * @property {number[]} linkIds
- * @property {number[]} linkIdsOn
- * @property {number[]} linkIdsOff
- * @property {SkapObject[]} linksOn
- * @property {SkapObject[]} linksOff
- * 
- * 
- * @typedef SkapEntity
- * @property {"bomb" | "bouncer" | "spike" | "normal" | "megaBouncer" | "taker" | "wavy" | "freezer" | "snek" | "immune" | "monster" | "stutter" | "contractor" | "expanding" | "turretBullet" | "enemyBullet" | "shield" | "healingGhost" | "meteorBullet" | "path"} type
- * bombs/bouncers/normal/spike
- * @property {number} radius
- * @property {number} opacity
- * @property {boolean} phase
- * @property {boolean} exploding FINALLY TYPO                      v 
- * @property {boolean} triggered why can't you merge these two .-. ^
- * @property {Object} pos
- * @property {number} pos.x
- * @property {number} pos.y
- * rotating >:(
- * @property {number} angle
- * snek >:(
- * @property {number} dir
- * @property {{ x: number, y: number, radius: number, time: number }[]} states
- * 
- * 
- * @typedef Player
- * @property {Object} pos
- * @property {number} pos.x
- * @property {number} pos.y
- * @property {Object} vel
- * @property {number} vel.x
- * @property {number} vel.y
- * @property {string[]} states
- * @property {number} fuel
- * @property {0 | 1 | 2 | 3} gravDir
- * @property {3 | 2.25} radius
- * @property {string} name
- * @property {[number, number, number]} color
- * @property {string} hat
- *
- * 
- * @typedef SkapMap
- * @property {Object} areaSize
- * @property {number} areaSize.x
- * @property {number} areaSize.y
- * @property {[number, number, number]} areaColor
- * @property {[number, number, number, number]} backgroundColor
- * @property {SkapObject[]} objects
- * 
- * @typedef {Object<string, SkapObject[]>} ParsedMap
- * 
- * @typedef State
- * @property {{id: string, fuel: number, oneCooldown: number | null, twoCooldown: number | null, oneHeat: number, twoHeat: number}} infos
- * @property {Object<string, Player>} players id:Player
- * @property {[string, string, boolean][]} playerList
- * @property {SkapEntity[]} entities
- * 
- * @typedef Hat
- * @property {[number, number]} offset
- * @property {[number, number]} size
- * @property {number} textOffset
- * @property {HTMLImageElement} texture
- * 
- * @typedef RenderOptions
- * @property {Object<string, boolean>} render
- * @property {Object<string, string>} colors
- * @property {Object} textures
- * @property {Object<string, HTMLImageElement | HTMLImageElement[]>} textures.enemies
- * @property {Object<string, Hat>} textures.hats
- * @property {HTMLImageElement[]} textures.powers
- * @property {Object<string, HTMLImageElement>} textures.skins
- * @property {HTMLImageElement} textures.trail
- * 
- * @typedef Particle
- */
-
-/**
- * @param {CanvasRenderingContext2D} ctx
- * 
- * @param {ParsedMap} currentArea.objects
- * 
- * @param {SkapMap} map
- * 
- * @param {RenderOptions} renderSettings
- * 
- * @param {number} camX
- * @param {number} camY
- */
 function render() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -116,8 +5,8 @@ function render() {
     ctx.textBaseline = "middle";
     ctx.lineCap = "round";
 
-    camX += camSpeed / camScale * (keysDown.has(othercontrols[6]) - keysDown.has(othercontrols[4]) + keysDown.has(controls[3]) - keysDown.has(controls[1]));
-    camY += camSpeed / camScale * (keysDown.has(othercontrols[5]) - keysDown.has(othercontrols[3]) + keysDown.has(controls[2]) - keysDown.has(controls[0]));
+    camX += camSpeed / camScale * (keysDown.has(controls[3]) - keysDown.has(controls[1]));
+    camY += camSpeed / camScale * (keysDown.has(controls[2]) - keysDown.has(controls[0]));
 
 
     ctx.fillStyle = currentArea?.color;

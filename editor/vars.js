@@ -1,10 +1,9 @@
-/**
- * @type {HTMLCanvasElement}
- */
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const controls = (localStorage.getItem("controls") || "w a s d shift   r").split(" ");
+const controls = [
+    localStorage.getItem("up")
+];
 const othercontrols = (localStorage.getItem("othercontrols") || "u i f arrowup arrowleft arrowdown arrowright o").split(" ");
 
 const types = ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "spawner", "door", "switch", "button", "slime", "ice", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"];
@@ -265,14 +264,6 @@ const renderSettings = {
     }
 };
 
-/**
- * @typedef SkapMap
- * @property {{name: string | null, creator: string | null, spawnPos: [number, number], spawnArea: string, version: number | null, skapclient_version: number | null}} settings
- * @property {Area[]} areas
-**/
-/**
- * @type {SkapMap}
- */
 const map = {
     settings: {
         name: null,
@@ -295,9 +286,7 @@ let camScale = 5;
 const camSpeed = 10;
 let camX = 50;
 let camY = 50;
-/** @type {SkapObject} */
 let selectedObject = null;
-/** @type {Area} */
 let currentArea = null;
 
 const selectBuffer = 5;
@@ -373,7 +362,7 @@ function hexToArr(hex) {
     ];
 }
 /**
- * @param {number[]} arr 
+ * @param {ColorArr} arr 
  */
 function arrtoRGBA(arr) {
     return `rgba(${arr.join()})`;
@@ -382,13 +371,13 @@ function fillZeros(str = "0", digits = 2, filler = "0") {
     return filler.repeat(digits - str.length) + str;
 }
 /**
- * @param {number[]} arr 
+ * @param {ColorArr} arr 
  */
 function arrtoHex(arr) {
     return `#${fillZeros(arr[0].toString(16))}${fillZeros(arr[1].toString(16))}${fillZeros(arr[2].toString(16))}`;
 }
 /**
- * @param {[number, number, number]} color 
+ * @param {ColorArr} color 
  * @param {number} opacity
  */
 function blend240([r, g, b], opacity) {

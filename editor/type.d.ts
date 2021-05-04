@@ -17,7 +17,7 @@ type VectorLike = {
 type ColorArr = [number, number, number];
 type Direction = 0 | 1 | 2 | 3;
 
-type SkapObject = {
+type BaseSkapObject = {
     pos: VectorLike;
     size: VectorLike;
     type: string;
@@ -26,19 +26,19 @@ type SkapObject = {
     };
     element: HTMLLIElement;
 };
-type Obstacle = SkapObject & {
+type Obstacle = BaseSkapObject & {
     type: "obstacle";
 };
-type Lava = SkapObject & {
+type Lava = BaseSkapObject & {
     type: "lava";
 };
-type Slime = SkapObject & {
+type Slime = BaseSkapObject & {
     type: "slime";
 };
-type Ice = SkapObject & {
+type Ice = BaseSkapObject & {
     type: "ice";
 };
-type Block = SkapObject & {
+type Block = BaseSkapObject & {
     colorArr: ColorArr;
     color: string;
     opacity: number;
@@ -46,14 +46,14 @@ type Block = SkapObject & {
     layer: boolean;
     type: "block";
 };
-type Teleporter = SkapObject & {
+type Teleporter = BaseSkapObject & {
     dir: 0 | 1 | 2 | 3;
     id: number;
     targetArea: string;
     targetID: number;
     type: "teleporter";
 };
-type SkapText = SkapObject & {
+type SkapText = BaseSkapObject & {
     text: string;
     size: {
         x: 5;
@@ -61,17 +61,19 @@ type SkapText = SkapObject & {
     };
     type: "text";
 };
-type Spawner = SkapObject & {
+type Spawner = BaseSkapObject & {
     enemyType: string;
     number: number;
     speed: number;
     radius: number;
     type: "spawner"
 };
-type GravZone = SkapObject & {
+type GravZone = BaseSkapObject & {
     dir: 0 | 1 | 2 | 3;
     type: "gravZone";
 };
+
+type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone;
 
 declare function createObstacle(x?: number, y?: number, w?: number, h?: number): Obstacle;
 declare function createLava(x?: number, y?: number, w?: number, h?: number): Lava;
@@ -110,4 +112,20 @@ type Area = {
     }
 };
 
-declare function createArea(name?: string, color?: ColorArr, opacity?: number, background?: ColorArr, w?: number, h?: number)
+declare function createArea(name?: string, color?: ColorArr, opacity?: number, background?: ColorArr, w?: number, h?: number): Area;
+
+type SkapMap = {
+    settings: {
+        name: string | null;
+        creator: string | null;
+        spawnArea: string;
+        spawnPos: [number, number];
+        version: number | null;
+        skapclient_version: number | null;
+    };
+    areas: Area[];
+}
+declare const map: SkapMap;
+
+declare let currentArea: Area;
+declare let selectedObject: SkapObject | null
