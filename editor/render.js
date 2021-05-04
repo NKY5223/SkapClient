@@ -115,8 +115,6 @@ function render() {
                 Math.round(camScale * obj.size.y)
             );
         }
-    }
-    if (renderSettings.render.movLava) {
         // Render movLava
         for (let obj of currentArea.objects.movingLava) {
             ctx.fillRect(
@@ -126,18 +124,17 @@ function render() {
                 Math.round(camScale * obj.size.y)
             );
         }
-    }
-    if (renderSettings.render.rotLava) {
         // Render rotLava
         ctx.globalAlpha = 1;
+        let time = (Date.now() - timeOnEnter) / 1000;
         for (let obj of currentArea.objects.rotatingLava) {
             ctx.save();
             ctx.translate(
-                Math.round(canvas.width / 2 + camScale * (obj.center.x - camX)),
-                Math.round(canvas.height / 2 + camScale * (obj.center.y - camY))
+                Math.round(canvas.width / 2 + camScale * (obj.point.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.point.y - camY))
             );
-            ctx.rotate(obj.angle);
-            ctx.fillRect(-camScale * obj.size.x / 2, -camScale * obj.size.y / 2, camScale * obj.size.x, camScale * obj.size.y);
+            ctx.rotate((obj.startAngle + time * obj.speed) * Math.PI / 180);
+            ctx.fillRect(camScale * (obj.pos.x - obj.point.x), camScale * (obj.pos.y - obj.point.y), camScale * obj.size.x, camScale * obj.size.y);
             ctx.restore();
         }
     }

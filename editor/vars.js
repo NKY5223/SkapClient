@@ -264,6 +264,8 @@ const renderSettings = {
     }
 };
 
+let timeOnEnter = Date.now();
+
 const map = {
     settings: {
         name: null,

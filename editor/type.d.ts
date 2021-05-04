@@ -75,8 +75,14 @@ type GravZone = BaseSkapObject & {
     dir: 0 | 1 | 2 | 3;
     type: "gravZone";
 };
+type RotatingLava = BaseSkapObject & {
+    point: VectorLike;
+    startAngle: number;
+    speed: number;
+    type: "rotatingLava"
+};
 
-type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone;
+type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone | RotatingLava;
 
 declare function createObstacle(x?: number, y?: number, w?: number, h?: number): Obstacle;
 declare function createLava(x?: number, y?: number, w?: number, h?: number): Lava;
@@ -87,6 +93,7 @@ declare function createTeleporter(x?: number, y?: number, w?: number, h?: number
 declare function createSpawner(x?: number, y?: number, w?: number, h?: number, enemyType?: string, number?: number, speed?: number, radius?: number): Spawner;
 declare function createText(x?: number, y?: number, content?: string): SkapText;
 declare function createGravZone(x?: number, y?: number, w?: number, h?: number, dir?: Direction): GravZone;
+declare function createRotatingLava(x?: number, y?: number, w?: number, h?: number, pointX?: number, pointY?: number, startAngle?: number, speed?: number): RotatingLava;
 
 type Area = {
     name: string;
@@ -107,6 +114,7 @@ type Area = {
         text: SkapText[];
         spawner: Spawner[];
         gravityZone: GravZone[];
+        rotatingLava: RotatingLava[];
     };
     element: HTMLLIElement;
     button: HTMLButtonElement;

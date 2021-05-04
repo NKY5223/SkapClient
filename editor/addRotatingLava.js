@@ -1,4 +1,4 @@
-function addSlime() {
+function addRotatingLava() {
     lockCursor = true;
     canvas.style.cursor = "crosshair";
 
@@ -26,19 +26,19 @@ function addSlime() {
 
         let posX = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
         let posY = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
-        let slime = createSlime(posX, posY, 0, 0);
-        currentArea.objects.slime.push(slime);
-        objectmenu.appendChild(slime.element);
+        let rotLava = createRotatingLava(posX, posY, 0, 0);
+        currentArea.objects.rotatingLava.push(rotLava);
+        objectmenu.appendChild(rotLava.element);
         if (selectedObject) hide(selectedObject.element);
-        selectedObject = slime;
+        selectedObject = rotLava;
 
         function mousemove(e) {
             let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
             let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
-            slime.size.x = Math.max(x - posX, 0);
-            slime.size.y = Math.max(y - posY, 0);
-            slime.inputs.w.value = slime.size.x;
-            slime.inputs.h.value = slime.size.y;
+            rotLava.size.x = Math.max(x - posX, 0);
+            rotLava.size.y = Math.max(y - posY, 0);
+            rotLava.inputs.w.value = rotLava.size.x;
+            rotLava.inputs.h.value = rotLava.size.y;
         }
 
         canvas.addEventListener("mousemove", mousemove);

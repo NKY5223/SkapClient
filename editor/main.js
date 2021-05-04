@@ -198,6 +198,8 @@ canvas.addEventListener("mousedown", e => {
                 if (selectedObject) hide(selectedObject.element);
                 selectedObject = null;
 
+                timeOnEnter = Date.now();
+
                 show(area.element);
                 return;
             }
@@ -557,7 +559,7 @@ addArea("Home");
 
 
 {
-    objectmenu.appendChild(createRotatingLava().element);
+    addRotatingLava()
 }
 
 
