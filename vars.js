@@ -300,7 +300,7 @@ let RENDER_SKIN = null;
 
 const parsedMap = {
     background: "#ffffff",
-    areaSize: {x: 100, y: 100},
+    areaSize: { x: 100, y: 100 },
     obstacle: [],
     movingObstacle: [],
     circularObstacle: [],
@@ -702,6 +702,51 @@ function rickroll(newWindow = false) {
 }
 function zerotix(x = "ZeroTix") {
     return x + " pro";
+}
+function haha0201(x = "haha0201") {
+    if (x.toLowerCase() != "zerotix" && x.toLowerCase() != "zerofix" && x.toLowerCase() != "zephyrus") {
+        for (let i = 3; i--; i > 0) {
+            message({
+                s: "[CLIENT]",
+                r: 0,
+                m: `${x} pro`
+            }, true);
+        }
+        for (let i = 10; i--; i > 0) {
+            customAlert(x + " pro", i * 1000);
+        }
+        setTimeout(() => { sendMessage(x + " very pro") }, 10000);
+        renderSettings.render.invert = !renderSettings.render.invert;
+        RENDER_HAT = "ravelHat"
+
+        setTimeout(() => { renderSettings.render.invert = !renderSettings.render.invert; }, 500);
+        setTimeout(() => {
+            renderSettings.render.invert = !renderSettings.render.invert;
+            RENDER_HAT = "";
+        }, 700);
+        setTimeout(() => { renderSettings.render.invert = !renderSettings.render.invert; }, 900);
+
+        return x + " pro";
+    } else {
+        message({
+            s: "[CLIENT]",
+            r: 0,
+            m: `${x} noob`
+        }, true);
+        customAlert(x + " noob", 10000);
+        setTimeout(() => { sendMessage(x + " very noob") }, 10000);
+        renderSettings.render.invert = !renderSettings.render.invert;
+        RENDER_HAT = "ravelHat";
+
+        setTimeout(() => { renderSettings.render.invert = !renderSettings.render.invert; }, 500);
+        setTimeout(() => {
+            renderSettings.render.invert = !renderSettings.render.invert;
+            RENDER_HAT = "";
+        }, 700);
+        setTimeout(() => { renderSettings.render.invert = !renderSettings.render.invert; }, 900);
+
+        return x + " noob";
+    }
 }
 /**
  * 
