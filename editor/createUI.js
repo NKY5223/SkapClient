@@ -25,7 +25,7 @@ function createFolder(title = "Title", lis = []) {
 function createProperty(name = "name", input = document.createElement("input"), type = "text", options = {}) {
     const li = createLI("property " + type);
     const span = document.createElement("span");
-    span.classList.add("span");
+    span.classList.add("label");
     span.innerHTML = name;
     li.appendChild(span);
     if ("value" in options && input) input.value = options.value;
@@ -176,7 +176,7 @@ function createProperty(name = "name", input = document.createElement("input"), 
         document.addEventListener("mouseup", () => changing = false);
 
         input.type = "number";
-        input.value = 0;
+        input.value = options.value;
 
         lever.appendChild(handle);
         circle.appendChild(lever);

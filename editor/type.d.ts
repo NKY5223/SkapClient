@@ -7,7 +7,10 @@ type PropertyOptions<Type> = {
     selectType: "number" | "string";
     selectOptions: [string, Type][];
 };
-declare function createProperty(name?: string, input?: HTMLInputElement, type?: string, options?: PropertyOptions<any>): HTMLLIElement;
+declare function createProperty(name: string, input: HTMLInputElement, type: "direction", options: PropertyOptions<number>): HTMLLIElement;
+declare function createProperty(name: string, input: null, type: "cardinal", options: PropertyOptions<0 | 1 | 2 | 3>): HTMLLIElement;
+declare function createProperty(name: string, input: HTMLInputElement, type: "number", options: null): HTMLLIElement;
+declare function createProperty(name: string, input: HTMLInputElement, type: "text", options: null): HTMLLIElement;
 
 
 type VectorLike = {
@@ -128,4 +131,7 @@ type SkapMap = {
 declare const map: SkapMap;
 
 declare let currentArea: Area;
-declare let selectedObject: SkapObject | null
+declare let selectedObject: SkapObject | null;
+
+declare const canvas: HTMLCanvasElement;
+declare const ctx: CanvasRenderingContext2D;

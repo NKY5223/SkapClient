@@ -19,13 +19,13 @@ function createSpawner(x = 0, y = 0, w = 10, h = 10, enemyType = "normal", numbe
     const xInput = document.createElement("input");
     xInput.value = x;
     xInput.addEventListener("input", () => {
-        spawner.pos.x = xInput.value = Math.max(xInput.value, 0);
+        spawner.pos.x = Number(xInput.value)
     });
 
     const yInput = document.createElement("input");
     yInput.value = y;
     yInput.addEventListener("input", () => {
-        spawner.pos.y = yInput.value = Math.max(yInput.value, 0);
+        spawner.pos.y = Number(yInput.value)
     });
 
     const wInput = document.createElement("input");

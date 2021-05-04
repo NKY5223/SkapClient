@@ -19,13 +19,13 @@ function createTeleporter(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0, targetA
     const xInput = document.createElement("input");
     xInput.value = x;
     xInput.addEventListener("input", () => {
-        teleporter.pos.x = xInput.value = Math.max(xInput.value, 0);
+        teleporter.pos.x = Number(xInput.value);
     });
 
     const yInput = document.createElement("input");
     yInput.value = y;
     yInput.addEventListener("input", () => {
-        teleporter.pos.y = yInput.value = Math.max(yInput.value, 0);
+        teleporter.pos.y = Number(yInput.value);
     });
 
     const wInput = document.createElement("input");

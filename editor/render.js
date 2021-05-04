@@ -1,3 +1,4 @@
+let time = 0;
 function render() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
