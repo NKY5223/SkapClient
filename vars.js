@@ -6,11 +6,11 @@ function ban(reason, time) {
 if (localStorage.getItem("banned") !== null) {
     if (localStorage.getItem("bantime") === "Infinity" || Date.now() <= parseInt(localStorage.getItem("bantime"))) {
         document.getElementById("connecting").innerHTML = `
-    You are banned<br>
+    YOU ARE BANNED!<br>
     Reason: ${localStorage.getItem("banned")}<br>
     Banned ${localStorage.getItem("bantime") === "Infinity" ? "forever" : "until " + new Date(parseInt(localStorage.getItem("bantime")))}`;
     } else {
-        alert("Your ban has expired.");
+        alert("Your ban is over. Don't get banned again.");
         localStorage.removeItem("banned");
     }
 }
@@ -21,9 +21,9 @@ if (localStorage.getItem("banned") !== null) {
     setTimeout(() => {
         video.style.pointerEvents = "none";
     }, 5000);
-    setTimeout(() => {
+    video.addEventListener("ended", function () {
         video.remove();
-    }, 100000);
+    });
 }
 
 const ws = new WebSocket("wss://skap.io");
@@ -293,6 +293,19 @@ const renderSettings = {
             NKY: loadImage("skins/NKY.png"),
             NKY5223: loadImage("skins/NKY.png"),
             haha0201: loadImage("skins/kinda_pro.png"),
+            haha0202: loadImage("skins/kinda_pro.png"),
+            haha0203: loadImage("skins/kinda_pro.png"),
+            haha0204: loadImage("skins/kinda_pro.png"),
+            haha0205: loadImage("skins/kinda_pro.png"),
+            haha0206: loadImage("skins/kinda_pro.png"),
+            haha0207: loadImage("skins/kinda_pro.png"),
+            haha0208: loadImage("skins/kinda_pro.png"),
+            haha0209: loadImage("skins/kinda_pro.png"),
+            haha0210: loadImage("skins/kinda_pro.png"),
+            haha0211: loadImage("skins/kinda_pro.png"),
+            haha0212: loadImage("skins/kinda_pro.png"),
+            haha0213: loadImage("skins/kinda_pro.png"),
+            haha0214: loadImage("skins/kinda_pro.png"),     
             ZeroTix: loadImage("skins/zerotixpro.png"),
             Sonicexe: loadImage("skins/beggar.png"),
             wolfie: loadImage("skins/wolfer.png"),
@@ -393,7 +406,7 @@ let blocked = localStorage.getItem("blocked") ? localStorage.getItem("blocked").
 let viewWS = false;
 let debug = Boolean(localStorage.getItem("debug"));
 let noUS = false;
-const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "ZeroFix", "RayhanADev"];
+const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "ZeroFix", "RayhanADev", "haha0201"];
 const banned = ["RxdRxses", "Elijah"];
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");
@@ -445,7 +458,12 @@ const emojiList = emoji === "0" ? {}
             eyes: {
                 char: "👀",
                 regex: /:eyes:/gi
+            },
+            poop: {
+                char: "💩",
+                regex: /:poop:/gi
             }
+            
         }
         : emoji === "2"
             ? {
@@ -517,6 +535,10 @@ const emojiList = emoji === "0" ? {}
                 eyes: {
                     char: "👀",
                     regex: /:eyes:/gi
+                },
+                poop: {
+                    char: "💩",
+                    regex: /:poop:/gi
                 }
             } : {};
 
@@ -655,13 +677,13 @@ function customAlert(s, t = 1) {
     alertDiv.style.opacity = 1;
     let i = 0;
     let interv = setInterval(() => {
-        i += 0.01;
+        i += 0.02;
         if (i >= t) {
             hide(alertDiv);
             clearInterval(interv);
         }
         alertDiv.style.opacity -= 0.01 / t;
-    }, 10)
+    }, 20)
 }
 /**
  * Hide Element
@@ -713,6 +735,23 @@ function rickroll(newWindow = false) {
 }
 function zerotix(x = "ZeroTix") {
     return x + " pro";
+}
+function haha0201(x = "haha0201") {
+    if (x.toLowerCase() != "zerotix" && x.toLowerCase() != "zerofix"){
+        let question = prompt(`Is ${x} pro? yes/no`);
+        if (question != "yes") rickroll();
+        alert(`Yes, ${x} is pro!`);
+        customAlert(x + " pro", 10000);
+        return x + " pro";
+    }
+    else{
+        let question = prompt(`Is ${x} pro? yes/no`);
+        if (question != "no") rickroll();
+        alert(`Yes, ${x} is not pro!`);
+        customAlert(x + " noob", 10000);
+        return x + " noob";
+    }
+    
 }
 /**
  * 
