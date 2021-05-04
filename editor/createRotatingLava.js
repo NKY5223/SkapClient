@@ -45,13 +45,13 @@ function createRotatingLava(x = 0, y = 0, w = 10, h = 10, pointX = x, pointY = y
     const pointXInput = document.createElement("input");
     pointXInput.value = x;
     pointXInput.addEventListener("input", () => {
-        rotLava.pos.x = pointXInput.value = Math.max(pointXInput.value, 0);
+        rotLava.point.x = Number(pointXInput.value);
     });
 
     const pointYInput = document.createElement("input");
     pointYInput.value = pointX;
     pointYInput.addEventListener("input", () => {
-        rotLava.pos.y = pointYInput.value = Math.max(pointYInput.value, 0);
+        rotLava.point.y = Number(pointYInput.value);
     });
 
     const startAngleInput = document.createElement("input");
@@ -85,7 +85,9 @@ function createRotatingLava(x = 0, y = 0, w = 10, h = 10, pointX = x, pointY = y
         x: xInput,
         y: yInput,
         w: wInput,
-        h: hInput
+        h: hInput,
+        pX: pointXInput,
+        pY: pointYInput
     };
 
     return rotLava;

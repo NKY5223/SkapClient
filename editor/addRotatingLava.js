@@ -35,10 +35,12 @@ function addRotatingLava() {
         function mousemove(e) {
             let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
             let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
-            rotLava.size.x = Math.max(x - posX, 0);
-            rotLava.size.y = Math.max(y - posY, 0);
-            rotLava.inputs.w.value = rotLava.size.x;
-            rotLava.inputs.h.value = rotLava.size.y;
+            
+            rotLava.inputs.w.value = rotLava.size.x = Math.max(x - posX, 0);
+            rotLava.inputs.h.value = rotLava.size.y = Math.max(y - posY, 0);
+         
+            rotLava.inputs.pX.value = rotLava.point.x = rotLava.pos.x + rotLava.size.x / 2;
+            rotLava.inputs.pY.value = rotLava.point.y = rotLava.pos.y + rotLava.size.y / 2;
         }
 
         canvas.addEventListener("mousemove", mousemove);

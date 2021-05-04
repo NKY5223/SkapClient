@@ -143,3 +143,5 @@ declare let selectedObject: SkapObject | null;
 
 declare const canvas: HTMLCanvasElement;
 declare const ctx: CanvasRenderingContext2D;
+
+declare const keysDown: Set<string>;

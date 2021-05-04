@@ -2,9 +2,11 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const controls = [
-    localStorage.getItem("up")
+    localStorage.getItem("up") ?? "w",
+    localStorage.getItem("left") ?? "a",
+    localStorage.getItem("down") ?? "s",
+    localStorage.getItem("right") ?? "d"
 ];
-const othercontrols = (localStorage.getItem("othercontrols") || "u i f arrowup arrowleft arrowdown arrowright o").split(" ");
 
 const types = ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "spawner", "door", "switch", "button", "slime", "ice", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"];
 function getObjects(type = "obstacle") {

@@ -126,6 +126,16 @@ function render() {
         }
         // Render rotLava
         ctx.globalAlpha = 1;
+        ctx.fillStyle = "#00000040";
+        for (let obj of currentArea.objects.rotatingLava) {
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
+
         let time = (Date.now() - timeOnEnter) / 1000;
         for (let obj of currentArea.objects.rotatingLava) {
             ctx.save();
@@ -134,8 +144,20 @@ function render() {
                 Math.round(canvas.height / 2 + camScale * (obj.point.y - camY))
             );
             ctx.rotate((obj.startAngle + time * obj.speed) * Math.PI / 180);
+            ctx.fillStyle = renderSettings.colors.lava;
             ctx.fillRect(camScale * (obj.pos.x - obj.point.x), camScale * (obj.pos.y - obj.point.y), camScale * obj.size.x, camScale * obj.size.y);
             ctx.restore();
+        }
+
+        ctx.fillStyle = "#000000";
+        for (let obj of currentArea.objects.rotatingLava) {
+            ctx.beginPath();
+            ctx.ellipse(
+                Math.round(canvas.width / 2 + camScale * (obj.point.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.point.y - camY)),
+                2 * camScale, 2 * camScale, 0, 0, 7
+            );
+            ctx.fill();
         }
     }
     if (renderSettings.render.ice) {

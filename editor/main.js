@@ -336,7 +336,7 @@ document.addEventListener("click", e => {
 });
 document.addEventListener("keydown", e => {
     if (e.target instanceof HTMLInputElement) return;
-    if (e.key.toLowerCase() === othercontrols[7]) renderSettings.render.hitbox = !renderSettings.render.hitbox;
+    if (e.key.toLowerCase() === localStorage.getItem("hitbox")) renderSettings.render.hitbox = !renderSettings.render.hitbox;
 });
 resizemenu.addEventListener("mousedown", () => {
     resizing = true;
