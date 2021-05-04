@@ -1,4 +1,4 @@
-function createRotatingLava(x = 0, y = 0, w = 10, h = 10, startAngle = 0, speed = 180) {
+function createRotatingLava(x = 0, y = 0, w = 10, h = 10, pointX = 0, pointY = 0, startAngle = 0, speed = 180) {
     const rotLava = {
         pos: {
             x,
@@ -49,12 +49,18 @@ function createRotatingLava(x = 0, y = 0, w = 10, h = 10, startAngle = 0, speed 
     });
 
     const pointYInput = document.createElement("input");
-    pointYInput.value = y;
+    pointYInput.value = pointX;
     pointYInput.addEventListener("input", () => {
         rotLava.pos.y = pointYInput.value = Math.max(pointYInput.value, 0);
     });
 
     const startAngleInput = document.createElement("input");
+
+    const speedInput = document.createElement("input");
+    speedInput.value = pointY;
+    speedInput.addEventListener("input", () => {
+        rotLava.speed = Number(speedInput.value);
+    });
 
     rotLava.element = createFolder("Lava Properties", [
         createFolder("Position", [
@@ -69,10 +75,11 @@ function createRotatingLava(x = 0, y = 0, w = 10, h = 10, startAngle = 0, speed 
             createProperty("x", pointXInput, "number"),
             createProperty("y", pointYInput, "number")
         ]),
-        createProperty("y", pointYInput, "direction", {
+        createProperty("startAngle", pointYInput, "direction", {
             value: startAngle,
             event: angle => rotLava.startAngle = angle
-        })
+        }),
+        createProperty("speed <small>(degrees/s)</small>", speedInput, "number")
     ]);
     rotLava.inputs = {
         x: xInput,

