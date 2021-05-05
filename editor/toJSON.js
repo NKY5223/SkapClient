@@ -124,3 +124,9 @@ function gravZoneToJSON(gravZone) {
 function rotLavaToJSON(rotLava) {
     return `{"type":"rotatingLava","position":[${rotLava.pos.x},${rotLava.pos.y}],"size":[${rotLava.size.x},${rotLava.size.y}],"point":[${rotLava.point.x},${rotLava.point.y}],"startAngle":${rotLava.startAngle},"speed":${rotLava.speed}}`;
 }
+/**
+ * @param {CircularObject} cirObj
+ */
+function cirObjToJSON(cirObj) {
+    return `{"type":"circular${capitalise(cirObj.objectType)}","position":[${cirObj.pos.x},${cirObj.pos.y}],"radius":${cirObj.radius}}`;
+}

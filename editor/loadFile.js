@@ -130,6 +130,38 @@ function loadFile(str) {
                         hide(rotLava.element);
                         break;
                     }
+                    case "circularObstacle": {
+                        const cirObj = createCircularObject(object.position[0], object.position[1], object.radius, "obstacle");
+                        parsedArea.objects.circularObject.push(cirObj);
+
+                        objectmenu.appendChild(cirObj.element);
+                        hide(cirObj.element);
+                        break;
+                    }
+                    case "circularLava": {
+                        const cirObj = createCircularObject(object.position[0], object.position[1], object.radius, "lava");
+                        parsedArea.objects.circularObject.push(cirObj);
+
+                        objectmenu.appendChild(cirObj.element);
+                        hide(cirObj.element);
+                        break;
+                    }
+                    case "circularSlime": {
+                        const cirObj = createCircularObject(object.position[0], object.position[1], object.radius, "slime");
+                        parsedArea.objects.circularObject.push(cirObj);
+
+                        objectmenu.appendChild(cirObj.element);
+                        hide(cirObj.element);
+                        break;
+                    }
+                    case "circularIce": {
+                        const cirObj = createCircularObject(object.position[0], object.position[1], object.radius, "ice");
+                        parsedArea.objects.circularObject.push(cirObj);
+
+                        objectmenu.appendChild(cirObj.element);
+                        hide(cirObj.element);
+                        break;
+                    }
                     default: {
                         console.log("Unsupported object type", object.type);
                         console.log(object);
