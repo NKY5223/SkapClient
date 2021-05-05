@@ -345,6 +345,7 @@ function render() {
         }
         // Render cirIce
         for (let obj of parsedMap.circularIce) {
+            ctx.beginPath();
             ctx.ellipse(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.radius - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.radius - camY)),
