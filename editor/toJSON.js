@@ -55,7 +55,7 @@ function areaToJSON(area) {
     for (let spawner of area.objects.spawner) {
         objects.push(spawnerToJSON(spawner));
     }
-    for (let gravZone of area.objects.gravZone) {
+    for (let gravZone of area.objects.gravityZone) {
         objects.push(gravZoneToJSON(gravZone));
     }
     for (let rotLava of area.objects.rotatingLava) {

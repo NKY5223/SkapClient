@@ -359,6 +359,8 @@ const contextBtns = {
     area: document.getElementById("createArea"),
     deleteArea: document.getElementById("deleteArea"),
 
+    resetTime: document.getElementById("resetTime"),
+
     objectActions: document.getElementById("objectActions"),
     deleteObject: document.getElementById("deleteObject")
 };
