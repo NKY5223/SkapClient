@@ -93,8 +93,13 @@ type RotatingLava = BaseSkapObject & {
     speed: number;
     type: "rotatingLava"
 };
+type CircularObject = BaseSkapObject & {
+    radius: number;
+    objectType: "obstacle" | "lava" | "slime" | "ice";
+    type: "circularObject";
+}
 
-type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone | RotatingLava;
+type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone | RotatingLava | CircularObject;
 
 declare function createObstacle(x?: number, y?: number, w?: number, h?: number): Obstacle;
 declare function createLava(x?: number, y?: number, w?: number, h?: number): Lava;
@@ -106,6 +111,7 @@ declare function createSpawner(x?: number, y?: number, w?: number, h?: number, e
 declare function createText(x?: number, y?: number, content?: string): SkapText;
 declare function createGravZone(x?: number, y?: number, w?: number, h?: number, dir?: Direction): GravZone;
 declare function createRotatingLava(x?: number, y?: number, w?: number, h?: number, pointX?: number, pointY?: number, startAngle?: number, speed?: number): RotatingLava;
+declare function createCircularObject(x?: number, y?: number, w?: number, type?: "obstacle" | "lava" | "slime" | "ice"): CircularObject;
 
 declare function addObstacle(): void;
 declare function addLava(): void;
@@ -117,6 +123,7 @@ declare function addSpawner(): void;
 declare function addText(): void;
 declare function addGravZone(): void;
 declare function addRotatingLava(): void;
+declare function addCircularObject(): void;
 
 type Area = {
     name: string;
@@ -138,6 +145,7 @@ type Area = {
         spawner: Spawner[];
         gravityZone: GravZone[];
         rotatingLava: RotatingLava[];
+        circularObject: CircularObject[];
     };
     element: HTMLLIElement;
     button: HTMLButtonElement;

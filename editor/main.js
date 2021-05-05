@@ -2,8 +2,8 @@
 canvas.addEventListener("wheel", e => {
     if (e.ctrlKey) return;
     let m = 0.85 ** (e.deltaY / 125);
-    let x = (e.offsetX - canvas.width / 2) / camScale + camX;
-    let y = (e.offsetY - canvas.height / 2) / camScale + camY;
+    let x = (e.pageX - canvas.width / 2) / camScale + camX;
+    let y = (e.pageY - canvas.height / 2) / camScale + camY;
     camX = (m * x - x + camX) / m;
     camY = (m * y - y + camY) / m;
     camScale *= m;
@@ -23,8 +23,8 @@ canvas.addEventListener("mousedown", e => {
         if (target.type === "rotLavaPoint") {
             let rotLava = target.rotLava;
             resize = e => {
-                let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
-                let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
+                let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
 
                 rotLava.inputs.pX.value = target.x = Math.round(x - mouseX + posX);
                 rotLava.inputs.pY.value = target.y = Math.round(y - mouseY + posY);
@@ -37,182 +37,273 @@ canvas.addEventListener("mousedown", e => {
         }
         const { x: posX, y: posY } = target.pos ?? target;
         const { x: sizeX, y: sizeY } = target.size ?? { x: 0, y: 0 };
-        const mouseX = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
-        const mouseY = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
+        const mouseX = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+        const mouseY = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
         if (target.type !== "rotLavaPoint")
-            switch (selectMode) {
-                case "u":
-                    resize = e => {
-                        let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
-                        if (posY - y + sizeY > 0) {
-                            target.pos.y = y;
-                            target.size.y = posY - y + sizeY;
-                        } else {
-                            target.pos.y = posY + sizeY;
-                            target.size.y = 0;
-                        }
-                        target.inputs.y.value = target.pos.y;
-                        target.inputs.h.value = target.size.y;
-                    }
-                    break;
-                case "ur":
-                    resize = e => {
-                        let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
-                        let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
-                        if (posX - x < 0) {
-                            target.size.x = x - posX;
-                        } else {
-                            target.size.x = 0;
-                        }
-                        if (posY - y + sizeY > 0) {
-                            target.pos.y = y;
-                            target.size.y = posY - y + sizeY;
-                        } else {
-                            target.pos.y = posY + sizeY;
-                            target.size.y = 0;
-                        }
-                        target.inputs.x.value = target.pos.x;
-                        target.inputs.y.value = target.pos.y;
-                        target.inputs.w.value = target.size.x;
-                        target.inputs.h.value = target.size.y;
-                    }
-                    break;
-                case "r":
-                    resize = e => {
-                        let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
-                        if (posX - x < 0) {
-                            target.size.x = x - posX;
-                        } else {
-                            target.size.x = 0;
-                        }
-                        target.inputs.x.value = target.pos.x;
-                        target.inputs.w.value = target.size.x;
-                    }
-                    break;
-                case "dr":
-                    resize = e => {
-                        let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
-                        let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
-                        if (posX - x < 0) {
-                            target.size.x = x - posX;
-                        } else {
-                            target.size.x = 0;
-                        }
-                        if (posY - y < 0) {
-                            target.size.y = y - posY;
-                        } else {
-                            target.size.y = 0;
-                        }
-                        target.inputs.x.value = target.pos.x;
-                        target.inputs.y.value = target.pos.y;
-                        target.inputs.w.value = target.size.x;
-                        target.inputs.h.value = target.size.y;
-                    }
-                    break;
-                case "d":
-                    resize = e => {
-                        let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
-                        if (posY - y < 0) {
-                            target.size.y = y - posY;
-                        } else {
-                            target.size.y = 0;
-                        }
-                        target.inputs.y.value = target.pos.y;
-                        target.inputs.h.value = target.size.y;
-                    }
-                    break;
-                case "dl":
-                    resize = e => {
-                        let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
-                        let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
-                        if (posX - x + sizeX > 0) {
-                            target.pos.x = x;
-                            target.size.x = posX - x + sizeX;
-                        } else {
-                            target.pos.x = posX + sizeX;
-                            target.size.x = 0;
-                        }
-                        if (posY - y < 0) {
-                            target.size.y = y - posY;
-                        } else {
-                            target.size.y = 0;
-                        }
-                        target.inputs.x.value = target.pos.x;
-                        target.inputs.y.value = target.pos.y;
-                        target.inputs.w.value = target.size.x;
-                        target.inputs.h.value = target.size.y;
-                    }
-                    break;
-                case "l":
-                    resize = e => {
-                        let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
-                        if (posX - x + sizeX > 0) {
-                            target.pos.x = x;
-                            target.size.x = posX - x + sizeX;
-                        } else {
-                            target.pos.x = posX + sizeX;
-                            target.size.x = 0;
-                        }
-                        target.inputs.x.value = target.pos.x;
-                        target.inputs.w.value = target.size.x;
-                    }
-                    break;
-                case "ul":
-                    resize = e => {
-                        let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
-                        let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
-                        if (posX - x + sizeX > 0) {
-                            target.pos.x = x;
-                            target.size.x = posX - x + sizeX;
-                        } else {
-                            target.pos.x = posX + sizeX;
-                            target.size.x = 0;
-                        }
-                        if (posY - y + sizeY > 0) {
-                            target.pos.y = y;
-                            target.size.y = posY - y + sizeY;
-                        } else {
-                            target.pos.y = posY + sizeY;
-                            target.size.y = 0;
-                        }
-                        target.inputs.x.value = target.pos.x;
-                        target.inputs.y.value = target.pos.y;
-                        target.inputs.w.value = target.size.x;
-                        target.inputs.h.value = target.size.y;
-                    }
-                    break;
-                case "m":
-                    if (target.type === "rotatingLava") {
-                        const { x: pX, y: pY } = target.point;
+            if (target.type.startsWith("circular"))
+                switch (selectMode) {
+                    case "u":
                         resize = e => {
-                            let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
-                            let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+
+                            target.inputs.radius.value = target.radius = Math.max(posY + sizeY - y, 0) / 2;
+                            target.size.y = target.size.x = 2 * target.radius;
+                            target.inputs.y.value = target.pos.y = posY + sizeY - target.size.y;
+                            target.inputs.x.value = target.pos.x = posX + sizeY / 2 - target.radius;
+                        }
+                        break;
+                    case "ur":
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+
+                            target.inputs.radius.value = target.radius = Math.min(Math.max(posY + sizeY - y, 0), Math.max(x - posX, 0)) / 2;
+                            target.size.y = target.size.x = 2 * target.radius;
+                            target.inputs.y.value = target.pos.y = posY + sizeY - target.size.y;
+                        }
+                        break;
+                    case "r":
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+
+                            target.inputs.radius.value = target.radius = Math.max(x - posX, 0) / 2;
+                            target.size.y = target.size.x = 2 * target.radius;
+                            target.inputs.y.value = target.pos.y = posY + sizeX / 2 - target.radius;
+                        }
+                        break;
+                    case "dr":
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+
+                            target.inputs.radius.value = target.radius = Math.min(Math.max(y - posY, 0), Math.max(x - posX, 0)) / 2;
+                            target.size.y = target.size.x = 2 * target.radius;
+                        }
+                        break;
+                    case "d":
+                        resize = e => {
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+
+                            target.inputs.radius.value = target.radius = Math.max(y - posY, 0) / 2;
+                            target.size.y = target.size.x = 2 * target.radius;
+                            target.inputs.x.value = target.pos.x = posX + sizeY / 2 - target.radius;
+                        }
+                        break;
+                    case "dl":
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+
+                            target.inputs.radius.value = target.radius = Math.min(Math.max(y - posY, 0), Math.max(posX + sizeX - x, 0)) / 2;
+                            target.size.y = target.size.x = 2 * target.radius;
+                            target.inputs.x.value = target.pos.x = posX + sizeX - target.size.x;
+                        }
+                        break;
+                    case "l":
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+
+                            target.inputs.radius.value = target.radius = Math.max(posX + sizeX - x, 0) / 2;
+                            target.size.y = target.size.x = 2 * target.radius;
+                            target.inputs.y.value = target.pos.y = posY + sizeX / 2 - target.radius;
+                            target.inputs.x.value = target.pos.x = posX + sizeX - target.size.x;
+                        }
+                        break;
+                    case "ul":
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+
+                            target.inputs.radius.value = target.radius = Math.min(Math.max(posY + sizeY - y, 0), Math.max(posX + sizeX - x, 0)) / 2;
+                            target.size.y = target.size.x = 2 * target.radius;
+                            target.inputs.x.value = target.pos.x = posX + sizeX - target.size.x;
+                            target.inputs.y.value = target.pos.y = posY + sizeY - target.size.y;
+                        }
+                        break;
+                    case "m":
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
 
                             target.inputs.x.value = target.pos.x = x - mouseX + posX;
                             target.inputs.y.value = target.pos.y = y - mouseY + posY;
-                            
-                            target.inputs.pX.value = target.point.x = pX + x - mouseX;
-                            target.inputs.pY.value = target.point.y = pY + y - mouseY;
                         }
                         break;
-                    }
-                    resize = e => {
-                        let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
-                        let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
+                }
+            else
+                switch (selectMode) {
+                    case "u":
+                        resize = e => {
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+                            if (posY - y + sizeY > 0) {
+                                target.pos.y = y;
+                                target.size.y = posY - y + sizeY;
+                            } else {
+                                target.pos.y = posY + sizeY;
+                                target.size.y = 0;
+                            }
+                            target.inputs.y.value = target.pos.y;
+                            target.inputs.h.value = target.size.y;
+                        }
+                        break;
+                    case "ur":
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+                            if (posX - x < 0) {
+                                target.size.x = x - posX;
+                            } else {
+                                target.size.x = 0;
+                            }
+                            if (posY - y + sizeY > 0) {
+                                target.pos.y = y;
+                                target.size.y = posY - y + sizeY;
+                            } else {
+                                target.pos.y = posY + sizeY;
+                                target.size.y = 0;
+                            }
+                            target.inputs.x.value = target.pos.x;
+                            target.inputs.y.value = target.pos.y;
+                            target.inputs.w.value = target.size.x;
+                            target.inputs.h.value = target.size.y;
+                        }
+                        break;
+                    case "r":
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                            if (posX - x < 0) {
+                                target.size.x = x - posX;
+                            } else {
+                                target.size.x = 0;
+                            }
+                            target.inputs.x.value = target.pos.x;
+                            target.inputs.w.value = target.size.x;
+                        }
+                        break;
+                    case "dr":
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+                            if (posX - x < 0) {
+                                target.size.x = x - posX;
+                            } else {
+                                target.size.x = 0;
+                            }
+                            if (posY - y < 0) {
+                                target.size.y = y - posY;
+                            } else {
+                                target.size.y = 0;
+                            }
+                            target.inputs.x.value = target.pos.x;
+                            target.inputs.y.value = target.pos.y;
+                            target.inputs.w.value = target.size.x;
+                            target.inputs.h.value = target.size.y;
+                        }
+                        break;
+                    case "d":
+                        resize = e => {
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+                            if (posY - y < 0) {
+                                target.size.y = y - posY;
+                            } else {
+                                target.size.y = 0;
+                            }
+                            target.inputs.y.value = target.pos.y;
+                            target.inputs.h.value = target.size.y;
+                        }
+                        break;
+                    case "dl":
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+                            if (posX - x + sizeX > 0) {
+                                target.pos.x = x;
+                                target.size.x = posX - x + sizeX;
+                            } else {
+                                target.pos.x = posX + sizeX;
+                                target.size.x = 0;
+                            }
+                            if (posY - y < 0) {
+                                target.size.y = y - posY;
+                            } else {
+                                target.size.y = 0;
+                            }
+                            target.inputs.x.value = target.pos.x;
+                            target.inputs.y.value = target.pos.y;
+                            target.inputs.w.value = target.size.x;
+                            target.inputs.h.value = target.size.y;
+                        }
+                        break;
+                    case "l":
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                            if (posX - x + sizeX > 0) {
+                                target.pos.x = x;
+                                target.size.x = posX - x + sizeX;
+                            } else {
+                                target.pos.x = posX + sizeX;
+                                target.size.x = 0;
+                            }
+                            target.inputs.x.value = target.pos.x;
+                            target.inputs.w.value = target.size.x;
+                        }
+                        break;
+                    case "ul":
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+                            if (posX - x + sizeX > 0) {
+                                target.pos.x = x;
+                                target.size.x = posX - x + sizeX;
+                            } else {
+                                target.pos.x = posX + sizeX;
+                                target.size.x = 0;
+                            }
+                            if (posY - y + sizeY > 0) {
+                                target.pos.y = y;
+                                target.size.y = posY - y + sizeY;
+                            } else {
+                                target.pos.y = posY + sizeY;
+                                target.size.y = 0;
+                            }
+                            target.inputs.x.value = target.pos.x;
+                            target.inputs.y.value = target.pos.y;
+                            target.inputs.w.value = target.size.x;
+                            target.inputs.h.value = target.size.y;
+                        }
+                        break;
+                    case "m":
+                        if (target.type === "rotatingLava") {
+                            const { x: pX, y: pY } = target.point;
+                            resize = e => {
+                                let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                                let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
 
-                        target.pos.x = x - mouseX + posX;
-                        target.pos.y = y - mouseY + posY;
+                                target.inputs.x.value = target.pos.x = x - mouseX + posX;
+                                target.inputs.y.value = target.pos.y = y - mouseY + posY;
 
-                        target.inputs.x.value = target.pos.x;
-                        target.inputs.y.value = target.pos.y;
-                    }
-                    break;
-            }
+                                target.inputs.pX.value = target.point.x = pX + x - mouseX;
+                                target.inputs.pY.value = target.point.y = pY + y - mouseY;
+                            }
+                            break;
+                        }
+                        resize = e => {
+                            let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                            let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+
+                            target.pos.x = x - mouseX + posX;
+                            target.pos.y = y - mouseY + posY;
+
+                            target.inputs.x.value = target.pos.x;
+                            target.inputs.y.value = target.pos.y;
+                        }
+                        break;
+                }
         lockCursor = true;
-        canvas.addEventListener("mousemove", resize);
+        document.addEventListener("mousemove", resize);
         document.addEventListener("mouseup", () => {
             lockCursor = false;
-            canvas.removeEventListener("mousemove", resize);
+            document.removeEventListener("mousemove", resize);
         });
 
     } else {
@@ -251,7 +342,7 @@ function targetedObject(e) {
         for (let i = objects.length - 1; i >= 0; i--) {
             const obj = objects[i];
             const [{ x: x0, y: y0 }, { x: x1, y: y1 }] = points(type === "rotLavaPoint" ? { pos: obj, size: { x: 0, y: 0 } } : obj);
-            const mouse = { x: e.offsetX, y: e.offsetY };
+            const mouse = { x: e.pageX, y: e.pageY };
             if (type === "text") {
                 if (pointInCircle(mouse, { x: x0, y: y0 }, 5 * camScale + selectBuffer)) {
                     return obj;
@@ -433,6 +524,7 @@ contextBtns.text.addEventListener("click", addText);
 contextBtns.spawner.addEventListener("click", addSpawner);
 contextBtns.gravZone.addEventListener("click", addGravZone);
 contextBtns.rotLava.addEventListener("click", addRotatingLava);
+contextBtns.cirObj.addEventListener("click", addCircularObject);
 contextBtns.area.addEventListener("click", () => addArea());
 
 contextBtns.deleteObject.addEventListener("click", () => {
@@ -499,7 +591,7 @@ function points(obj) {
  * @returns {VectorLike}
  */
 function point(e) {
-    return { x: e.offsetX, y: e.offsetY };
+    return { x: e.pageX, y: e.pageY };
 }
 /**
  * @param {VectorLike} point 

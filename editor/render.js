@@ -34,6 +34,17 @@ function render() {
                 Math.round(camScale * obj.size.y)
             );
         }
+        for (let obj of currentArea.objects.circularObject.filter(obj => obj.objectType === "obstacle")) {
+            ctx.beginPath();
+            ctx.ellipse(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.radius - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.radius - camY)),
+                Math.round(camScale * obj.radius),
+                Math.round(camScale * obj.radius),
+                0, 0, 7
+            );
+            ctx.fill();
+        }
     }
     // Render the ****ing teleporters (they suck)
     if (renderSettings.render.teleporter) {
@@ -161,6 +172,19 @@ function render() {
             );
             ctx.fill();
         }
+
+        ctx.fillStyle = renderSettings.colors.lava;
+        for (let obj of currentArea.objects.circularObject.filter(obj => obj.objectType === "lava")) {
+            ctx.beginPath();
+            ctx.ellipse(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.radius - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.radius - camY)),
+                Math.round(camScale * obj.radius),
+                Math.round(camScale * obj.radius),
+                0, 0, 7
+            );
+            ctx.fill();
+        }
     }
     if (renderSettings.render.ice) {
         // Render ice
@@ -173,6 +197,17 @@ function render() {
                 Math.round(camScale * obj.size.y)
             );
         }
+        for (let obj of currentArea.objects.circularObject.filter(obj => obj.objectType === "ice")) {
+            ctx.beginPath();
+            ctx.ellipse(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.radius - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.radius - camY)),
+                Math.round(camScale * obj.radius),
+                Math.round(camScale * obj.radius),
+                0, 0, 7
+            );
+            ctx.fill();
+        }
     }
     if (renderSettings.render.slime) {
         // Render slime
@@ -184,6 +219,17 @@ function render() {
                 Math.round(camScale * obj.size.x),
                 Math.round(camScale * obj.size.y)
             );
+        }
+        for (let obj of currentArea.objects.circularObject.filter(obj => obj.objectType === "slime")) {
+            ctx.beginPath();
+            ctx.ellipse(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.radius - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y + obj.radius - camY)),
+                Math.round(camScale * obj.radius),
+                Math.round(camScale * obj.radius),
+                0, 0, 7
+            );
+            ctx.fill();
         }
     }
     // Render buttons
@@ -396,8 +442,8 @@ function render() {
     ctx.lineWidth = 3;
     if (renderSettings.render.hitbox) {
         ctx.strokeStyle = renderSettings.colors.hitbox;
-        for (let type in currentArea.objects) {
-            for (let o of currentArea.objects[type]) {
+        for (let type of types) {
+            for (let o of getObjects(type)) {
                 if (type === "text") {
                     ctx.beginPath();
                     ctx.ellipse(
@@ -408,6 +454,7 @@ function render() {
                     ctx.stroke();
                     continue;
                 }
+                if (type === "rotLavaPoint") continue;
                 ctx.strokeRect(
                     Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
                     Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
@@ -429,7 +476,7 @@ function render() {
             );
             ctx.stroke();
             return;
-        } else if (selectedObject.type === "rotLavaPoint") return;
+        }
         ctx.strokeRect(
             Math.round(canvas.width / 2 + camScale * (selectedObject.pos.x - camX)),
             Math.round(canvas.height / 2 + camScale * (selectedObject.pos.y - camY)),

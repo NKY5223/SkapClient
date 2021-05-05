@@ -102,9 +102,7 @@ function createSpawner(x = 0, y = 0, w = 10, h = 10, enemyType = "normal", numbe
                     ["Disabler", "disabler"],
                     ["Drainer", "drainer"]
                 ],
-                event: e => {
-                    spawner.enemyType = e;
-                }
+                event: e => spawner.enemyType = e
             }),
             createProperty("count", numberInput, "number"),
             createProperty("speed", speedInput, "number"),

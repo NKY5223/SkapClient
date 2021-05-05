@@ -1,3 +1,4 @@
+/** @type {HTMLCanvasElement} */
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -8,7 +9,7 @@ const controls = [
     localStorage.getItem("right") ?? "d"
 ];
 
-const types = ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "spawner", "door", "switch", "button", "slime", "ice", "rotLavaPoint", "rotatingLava", "movingLava", "lava", "teleporter", "obstacle"];
+const types = ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "spawner", "door", "switch", "button", "circularSlime", "slime", "circularIce", "ice", "circularLava", "rotLavaPoint", "rotatingLava", "movingLava", "lava", "teleporter", "circularObstacle", "obstacle"];
 function getObjects(type = "obstacle") {
     if (type === "block0") {
         return currentArea.objects.block.filter(o => !o.layer);
@@ -21,6 +22,18 @@ function getObjects(type = "obstacle") {
             accumulator.push(value.point)
             return accumulator
         }, []);
+    }
+    if (type === "circularObstacle") {
+        return currentArea.objects.circularObject.filter(obj => obj.objectType === "obstacle");
+    }
+    if (type === "circularLava") {
+        return currentArea.objects.circularObject.filter(obj => obj.objectType === "lava");
+    }
+    if (type === "circularSlime") {
+        return currentArea.objects.circularObject.filter(obj => obj.objectType === "slime");
+    }
+    if (type === "circularIce") {
+        return currentArea.objects.circularObject.filter(obj => obj.objectType === "ice");
     }
     if (type in currentArea.objects) {
         return currentArea.objects[type];
@@ -303,7 +316,9 @@ let camScale = 5;
 const camSpeed = 10;
 let camX = 50;
 let camY = 50;
+/** @type {SkapObject} */
 let selectedObject = null;
+/** @type {Area} */
 let currentArea = null;
 
 const selectBuffer = 5;
@@ -339,6 +354,7 @@ const contextBtns = {
     spawner: document.getElementById("createSpawner"),
     gravZone: document.getElementById("createGravZone"),
     rotLava: document.getElementById("createRotLava"),
+    cirObj: document.getElementById("createCirObj"),
 
     area: document.getElementById("createArea"),
     deleteArea: document.getElementById("deleteArea"),
