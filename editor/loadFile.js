@@ -131,7 +131,7 @@ function loadFile(str) {
                         break;
                     }
                     case "circularObstacle": {
-                        const cirObj = createCircularObject(object.position[0], object.position[1], object.radius, "obstacle");
+                        const cirObj = createCircularObject(object.position[0] - object.radius, object.position[1] - object.radius, object.radius, "obstacle");
                         parsedArea.objects.circularObject.push(cirObj);
 
                         objectmenu.appendChild(cirObj.element);
@@ -139,7 +139,7 @@ function loadFile(str) {
                         break;
                     }
                     case "circularLava": {
-                        const cirObj = createCircularObject(object.position[0], object.position[1], object.radius, "lava");
+                        const cirObj = createCircularObject(object.position[0] - object.radius, object.position[1] - object.radius, object.radius, "lava");
                         parsedArea.objects.circularObject.push(cirObj);
 
                         objectmenu.appendChild(cirObj.element);
@@ -147,7 +147,7 @@ function loadFile(str) {
                         break;
                     }
                     case "circularSlime": {
-                        const cirObj = createCircularObject(object.position[0], object.position[1], object.radius, "slime");
+                        const cirObj = createCircularObject(object.position[0] - object.radius, object.position[1] - object.radius, object.radius, "slime");
                         parsedArea.objects.circularObject.push(cirObj);
 
                         objectmenu.appendChild(cirObj.element);
@@ -155,7 +155,7 @@ function loadFile(str) {
                         break;
                     }
                     case "circularIce": {
-                        const cirObj = createCircularObject(object.position[0], object.position[1], object.radius, "ice");
+                        const cirObj = createCircularObject(object.position[0] - object.radius, object.position[1] - object.radius, object.radius, "ice");
                         parsedArea.objects.circularObject.push(cirObj);
 
                         objectmenu.appendChild(cirObj.element);
