@@ -499,7 +499,7 @@ downloadBtn.addEventListener("click", () => {
     download(map.settings.name || "map");
 });
 importInput.addEventListener("input", () => {
-    importInput.files[0].text()
+    if (importInput.files.length) importInput.files[0].text()
         .then(value => loadFile(value))
         .catch(console.error);
 });
@@ -526,6 +526,7 @@ contextBtns.gravZone.addEventListener("click", addGravZone);
 contextBtns.rotLava.addEventListener("click", addRotatingLava);
 contextBtns.cirObj.addEventListener("click", addCircularObject);
 contextBtns.area.addEventListener("click", () => addArea());
+contextBtns.resetTime.addEventListener("click", () => timeOnEnter = Date.now());
 
 contextBtns.deleteObject.addEventListener("click", () => {
     if (selectedObject) {

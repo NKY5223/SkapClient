@@ -88,6 +88,7 @@ function loadFile(str) {
                     case "teleporter": {
                         const teleporter = createTeleporter(object.position[0], object.position[1], object.size[0], object.size[1], Number(object.dir), object.id, object.targetArea, object.targetId);
                         parsedArea.objects.teleporter.push(teleporter);
+                        console.log(object, teleporter);
 
                         objectmenu.appendChild(teleporter.element);
                         hide(teleporter.element);

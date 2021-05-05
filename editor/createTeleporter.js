@@ -8,7 +8,7 @@ function createTeleporter(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0, targetA
             x: w,
             y: h
         },
-        id: 0,
+        id,
         targetArea,
         targetId,
         dir,
