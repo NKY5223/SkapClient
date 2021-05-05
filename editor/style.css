@@ -586,6 +586,22 @@ input:checked+.switchSpan::after {
 .cardinalLeft.active {
     border-right-color: var(--cardinal) !important;
 }
+.cardinalCenter {
+    display: block;
+    top: 16px;
+    left: 16px;
+    width: 13px !important;
+    height: 13px !important;
+    border: none;
+    border-radius: 50%;
+    background: #ffffff !important;
+}
+.cardinalCenter:hover {
+    background: #c0c0c0;
+}
+.cardinalCenter.active {
+    background: var(--cardinal) !important;
+}
 
 .property.select select {
     margin-top: 5.5px;
@@ -660,13 +676,6 @@ input:checked+.switchSpan::after {
 }
 .directionHandle:hover {
     background: var(--direction_background_hover);
-}
-.directionTHICC {
-    position: absolute;
-    left: -100vw;
-    top: -100vh;
-    width: 200vw;
-    height: 200vh;
 }
 
 @media (prefers-color-scheme: light) {

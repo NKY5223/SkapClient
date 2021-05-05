@@ -64,13 +64,15 @@ const renderSettings = {
             "#ffff00",
             "#ff0000",
             "#0000ff",
-            "#00ff00"
+            "#00ff00",
+            "#000000",
         ],
         gravFill: [
             "#ffff0008",
             "#ff000008",
             "#0000ff08",
-            "#00ff0008"
+            "#00ff0008",
+            "#00000008"
         ],
         button: "#404040",
         buttonPressed: "#505050",
@@ -91,6 +93,9 @@ const renderSettings = {
 
         contracRegion: "#8080a010",
         contracTriggerRegion: "#c000c010",
+
+        drainerRegion: "#00000020",
+        drainerDrainingRegion: "#ffc00020",
 
         playerDead: "#ff0000",
         playerFreeze: "#00ffff",
@@ -144,7 +149,9 @@ const renderSettings = {
             harmless: loadImage("enemies/harmless.svg"),
             accelerator: loadImage("enemies/accelerator.svg"),
             decelerator: loadImage("enemies/decelerator.svg"),
-
+            drainer: loadImage("enemies/drainer.svg"),
+            disabler: loadImage("enemies/disabler.svg"),
+            
             none: loadImage("enemies/none.svg")
         },
         hats: {

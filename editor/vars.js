@@ -56,13 +56,15 @@ const renderSettings = {
             "#ffff00",
             "#ff0000",
             "#0000ff",
-            "#00ff00"
+            "#00ff00",
+            "#000000",
         ],
         gravFill: [
             "#ffff0008",
             "#ff000008",
             "#0000ff08",
-            "#00ff0008"
+            "#00ff0008",
+            "#00000008"
         ],
         button: "#404040",
         buttonPressed: "#505050",
@@ -135,6 +137,11 @@ const renderSettings = {
             gravityDown: loadImage("enemies/gravityDown.svg"),
             gravityLeft: loadImage("enemies/gravityLeft.svg"),
             gravityRight: loadImage("enemies/gravityRight.svg"),
+            harmless: loadImage("enemies/harmless.svg"),
+            accelerator: loadImage("enemies/accelerator.svg"),
+            decelerator: loadImage("enemies/decelerator.svg"),
+            drainer: loadImage("enemies/drainer.svg"),
+            disabler: loadImage("enemies/disabler.svg"),
 
             none: loadImage("enemies/none.svg")
         },

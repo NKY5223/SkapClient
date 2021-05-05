@@ -95,7 +95,12 @@ function createSpawner(x = 0, y = 0, w = 10, h = 10, enemyType = "normal", numbe
                     ["Mega Bouncer", "megaBouncer"],
                     ["Gravity (Left)", "gravityLeft"],
                     ["Gravity (Up)", "gravityUp"],
-                    ["Gravity (Right)", "gravityRight"]
+                    ["Gravity (Right)", "gravityRight"],
+                    ["Harmless", "harmless"],
+                    ["Accelerator", "accelerator"],
+                    ["Decelerator", "decelerator"],
+                    ["Disabler", "disabler"],
+                    ["Drainer", "drainer"]
                 ],
                 event: e => {
                     spawner.enemyType = e;

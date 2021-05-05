@@ -11,8 +11,8 @@ function createBlock(x = 0, y = 0, w = 10, h = 10, color = [0, 0, 0], opacity = 
         colorArr: color,
         color: arrtoRGBA(color),
         opacity,
-        collide,
-        layer,
+        collide: collide == 1,
+        layer: layer == 1 ? 1 : 0,
         type: "block"
     };
 
@@ -59,13 +59,11 @@ function createBlock(x = 0, y = 0, w = 10, h = 10, color = [0, 0, 0], opacity = 
     });
 
     const collideInput = document.createElement("input");
-    collideInput.checked = collide;
     collideInput.addEventListener("input", () => {
         block.collide = collideInput.checked;
     });
 
     const layerInput = document.createElement("input");
-    collideInput.checked = layer;
     layerInput.addEventListener("input", () => {
         block.layer = layerInput.checked;
     });
@@ -82,8 +80,8 @@ function createBlock(x = 0, y = 0, w = 10, h = 10, color = [0, 0, 0], opacity = 
         ]),
         createProperty("color", colorInput, "color"),
         createProperty("opacity", opacityInput, "number"),
-        createProperty("collide", collideInput, "switch"),
-        createProperty("layer", layerInput, "switch")
+        createProperty("collide", collideInput, "switch", { value: collide }),
+        createProperty("layer", layerInput, "switch", { value: layer })
     ]);
 
     block.inputs = {

@@ -118,6 +118,67 @@ function createProperty(name = "name", input = document.createElement("input"), 
         wrapper.appendChild(down);
         wrapper.appendChild(right);
         li.appendChild(wrapper);
+    } else if (type === "cardinalCenter") {
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("cardinalWrapper");
+        const up = document.createElement("button");
+        up.classList.add("cardinalUp");
+        const left = document.createElement("button");
+        left.classList.add("cardinalLeft");
+        const down = document.createElement("button");
+        down.classList.add("cardinalDown");
+        const right = document.createElement("button");
+        right.classList.add("cardinalRight");
+        const center = document.createElement("button");
+        center.classList.add("cardinalCenter");
+
+        let active = [up, right, down, left, center][(Number(options.value ?? 0) % 5 + 5) % 5];
+        active.classList.add("active");
+
+        up.addEventListener("click", () => {
+            if (active === up) return;
+            active.classList.remove("active");
+            up.classList.add("active");
+            active = up;
+            options.event(2);
+        });
+        right.addEventListener("click", () => {
+            if (active === right) return;
+            active.classList.remove("active");
+            right.classList.add("active");
+            active = right;
+            options.event(3);
+        });
+        down.addEventListener("click", () => {
+            if (active === down) return;
+            active.classList.remove("active");
+            down.classList.add("active");
+            active = down;
+            options.event(0);
+        });
+        left.addEventListener("click", () => {
+            if (active === left) return;
+            active.classList.remove("active");
+            left.classList.add("active");
+            active = left;
+            options.event(1);
+        });
+        center.addEventListener("click", () => {
+            if (active === center) return;
+            active.classList.remove("active");
+            center.classList.add("active");
+            active = center;
+            options.event(4);
+        });
+
+        wrapper.appendChild(up);
+        wrapper.appendChild(left);
+        wrapper.appendChild(down);
+        wrapper.appendChild(right);
+        wrapper.appendChild(center);
+        li.classList.remove("cardinalCenter");
+        li.classList.add("cardinal");
+        li.appendChild(wrapper);
     } else if (type === "select") {
         const select = document.createElement("select");
 

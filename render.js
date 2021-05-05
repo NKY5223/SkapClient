@@ -578,6 +578,7 @@ function render() {
             case "harmless":
             case "accelerator":
             case "decelerator":
+            case "disabler":
                 ctx.globalAlpha = obj.opacity || 1;
                 ctx.drawImage(renderSettings.textures.enemies[obj.type], canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX), canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY), camScale * obj.radius * 2, camScale * obj.radius * 2);
                 break;
@@ -665,6 +666,26 @@ function render() {
                 ctx.ellipse(canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY), camScale * obj.radius, camScale * obj.radius, 0, 0, 7);
                 ctx.fillStyle = renderSettings.colors.refuel;
                 ctx.fill();
+                break;
+            case "drainer":
+                ctx.globalAlpha = obj.opacity || 1;
+                ctx.beginPath();
+                ctx.ellipse(
+                    canvas.width / 2 + camScale * (obj.pos.x - camX),
+                    canvas.height / 2 + camScale * (obj.pos.y - camY),
+                    camScale * (obj.region + obj.radius),
+                    camScale * (obj.region + obj.radius),
+                    0, 0, 7
+                );
+                ctx.fillStyle = obj.draining ? renderSettings.colors.drainerDrainingRegion : renderSettings.colors.drainerRegion;
+                ctx.fill();
+                ctx.drawImage(
+                    renderSettings.textures.enemies.drainer,
+                    canvas.width / 2 + camScale * (obj.pos.x - obj.radius - camX),
+                    canvas.height / 2 + camScale * (obj.pos.y - obj.radius - camY),
+                    camScale * obj.radius * 2,
+                    camScale * obj.radius * 2
+                );
                 break;
             default:
                 ctx.globalAlpha = obj.opacity || 1;

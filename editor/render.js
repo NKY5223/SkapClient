@@ -91,6 +91,8 @@ function render() {
 
             let tex = renderSettings.textures.enemies[obj.enemyType];
             if (tex instanceof Array) tex = tex[0];
+            if (!(obj.enemyType in renderSettings.textures.enemies)) tex = renderSettings.textures.enemies.none;
+
             if (["snek", "daddySnek", "babySnek"].includes(obj.enemyType)) tex = renderSettings.textures.enemies.snekHead;
 
             let size = Math.min(obj.size.x, Math.min(obj.size.y, 2 * obj.radius));

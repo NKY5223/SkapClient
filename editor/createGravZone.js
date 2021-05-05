@@ -47,11 +47,11 @@ function createGravZone(x = 0, y = 0, w = 10, h = 20, dir = 2) {
             createProperty("width", wInput, "number"),
             createProperty("height", hInput, "number")
         ]),
-        createProperty("direction", null, "cardinal", {
+        createProperty("direction", null, "cardinalCenter", {
             event: dir => {
-                gravZone.dir = dir % 4;
+                gravZone.dir = dir;
             },
-            value: dir + 2
+            value: dir === 4 ? 4 : ((dir + 2) % 4)
         })
     ]);
     gravZone.inputs = {

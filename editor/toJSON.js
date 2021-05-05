@@ -58,6 +58,9 @@ function areaToJSON(area) {
     for (let gravZone of area.objects.gravZone) {
         objects.push(gravZoneToJSON(gravZone));
     }
+    for (let rotLava of area.objects.rotatingLava) {
+        objects.push(rotLavaToJSON(rotLava));
+    }
     return `{"name":${JSON.stringify(area.name)},"size":[${area.size[0]},${area.size[1]}],"backgroundColor":[${area.colorArr.join()},${area.opacity}],"areaColor":[${area.backgroundArr.join()}],"objects":[${objects.join()}]}`;
 }
 
@@ -113,5 +116,11 @@ function spawnerToJSON(spawner) {
  * @param {GravZone} gravZone 
  */
 function gravZoneToJSON(gravZone) {
-    return `{"type":"gravZone","position":[${gravZone.pos.x},${gravZone.pos.y}],"size":[${gravZone.size.x},${gravZone.size.y}],"dir":${gravZone.dir}}`;
+    return `{"type":"gravityZone","position":[${gravZone.pos.x},${gravZone.pos.y}],"size":[${gravZone.size.x},${gravZone.size.y}],"dir":${gravZone.dir}}`;
+}
+/**
+ * @param {RotatingLava} rotLava 
+ */
+function rotLavaToJSON(rotLava) {
+    return `{"type":"rotatingLava","position":[${rotLava.pos.x},${rotLava.pos.y}],"size":[${rotLava.size.x},${rotLava.size.y}],"point":[${rotLava.point.x},${rotLava.point.y}],"startAngle":${rotLava.startAngle},"speed":${rotLava.speed}}`;
 }
