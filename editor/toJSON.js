@@ -61,7 +61,10 @@ function areaToJSON(area) {
     for (let rotLava of area.objects.rotatingLava) {
         objects.push(rotLavaToJSON(rotLava));
     }
-    return `{"name":${JSON.stringify(area.name)},"size":[${area.size[0]},${area.size[1]}],"backgroundColor":[${area.colorArr.join()},${area.opacity}],"areaColor":[${area.backgroundArr.join()}],"objects":[${objects.join()}]}`;
+    for (let cirObj of area.objects.circularObject) {
+        objects.push(cirObjToJSON(cirObj));
+    }
+    return `{"name":${JSON.stringify(area.name)},"size":[${area.size[0]},${area.size[1]}],"backgroundColor":[${area.colorArr.join()},${area.opacity}],"areaColor":[${area.backgroundArr.join()}],"objects":[${objects.join()}],"gravity":${area.gravity * 100}}`;
 }
 
 /**
@@ -128,5 +131,5 @@ function rotLavaToJSON(rotLava) {
  * @param {CircularObject} cirObj
  */
 function cirObjToJSON(cirObj) {
-    return `{"type":"circular${capitalise(cirObj.objectType)}","position":[${cirObj.pos.x},${cirObj.pos.y}],"radius":${cirObj.radius}}`;
+    return `{"type":"circular${capitalise(cirObj.objectType)}","position":[${cirObj.pos.x + cirObj.radius},${cirObj.pos.y + cirObj.radius}],"radius":${cirObj.radius}}`;
 }

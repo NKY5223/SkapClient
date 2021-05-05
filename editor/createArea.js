@@ -1,42 +1,4 @@
-/**
- * @typedef {[number, number, number]} ColorArr
- * 
- * @typedef SkapObject
- * @property {VectorLike} pos
- * @property {VectorLike} size
- * @property {Object<string, HTMLInputElement>} inputs
- * @property {string} type
- * @property {HTMLLIElement} element
- * 
- * @typedef Area
- * @property {string} name
- * @property {string} color
- * @property {ColorArr} colorArr
- * @property {string} background
- * @property {ColorArr} backgroundArr
- * @property {number} opacity
- * @property {[number, number]} size
- * @property {Object} objects
- * @property {Obstacle[]} objects.obstacle
- * @property {Lava[]} objects.lava
- * @property {Slime[]} objects.slime
- * @property {Block[]} objects.block
- * @property {Teleporter[]} objects.teleporter
- * @property {SkapText[]} objects.text
- * @property {Spawner[]} objects.spawner
- * @property {HTMLLIElement} element
- * @property {HTMLButtonElement} button
- * @property {{w: HTMLInputElement, h: HTMLInputElement, name: HTMLInputElement}} inputs
- * 
- * @param {string} name 
- * @param {ColorArr} color 
- * @param {number} opacity 
- * @param {ColorArr} background 
- * @param {number} w 
- * @param {number} h 
- * @returns {Area}
- */
-function createArea(name = "New Area", color = [0, 10, 87], opacity = 0.8, background = [230, 230, 230], w = 100, h = 100) {
+function createArea(name = "New Area", color = [0, 10, 87], opacity = 0.8, background = [230, 230, 230], w = 100, h = 100, gravity = 1) {
     const area = {
         name,
         color: blend240(color, opacity),
@@ -45,6 +7,7 @@ function createArea(name = "New Area", color = [0, 10, 87], opacity = 0.8, backg
         backgroundArr: background,
         opacity,
         size: [w, h],
+        gravity,
         objects: {
             obstacle: [],
             teleporter: [],
@@ -116,6 +79,13 @@ function createArea(name = "New Area", color = [0, 10, 87], opacity = 0.8, backg
         area.size[1] = Number(hInput.value);
     });
 
+    const gravInput = document.createElement("input");
+    gravInput.value = gravity;
+    gravInput.step = 0.05;
+    gravInput.addEventListener("input", () => {
+        area.gravity = gravInput.value;
+    });
+
     area.element = createFolder("Area Properties", [
         createProperty("name", nameInput, "text"),
         createProperty("color", colorInput, "color"),
@@ -124,7 +94,8 @@ function createArea(name = "New Area", color = [0, 10, 87], opacity = 0.8, backg
         createFolder("Size", [
             createProperty("width", wInput, "number"),
             createProperty("height", hInput, "number")
-        ])
+        ]),
+        createProperty("gravity", gravInput, "number")
     ]);
     area.inputs = {
         name: nameInput,

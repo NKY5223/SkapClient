@@ -147,6 +147,8 @@ type Area = {
         rotatingLava: RotatingLava[];
         circularObject: CircularObject[];
     };
+    gravity: number;
+    
     element: HTMLLIElement;
     button: HTMLButtonElement;
     inputs: {

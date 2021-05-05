@@ -1,6 +1,6 @@
 function loadFile(str) {
     try {
-        /** @type {{settings: {name: string | null, creator: string | null, version: number | null, skapclient_version: *, spawnArea: string, spawnPos: [number, number]}, maps: {areaColor: ColorArr, backgroundColor: [number, number, number, number], name: string, objects: {type: string, position: [number, number], size: [number, number]}[], size: [number, number]}[]}} */
+        /** @type {{settings: {name: string | null, creator: string | null, version: number | null, skapclient_version: *, spawnArea: string, spawnPos: [number, number]}, maps: {areaColor: ColorArr, backgroundColor: [number, number, number, number], name: string, objects: {type: string, position: [number, number], size: [number, number]}[], size: [number, number], gravity?: number}[]}} */
         let obj = JSON.parse(str);
 
         map.settings.name = obj.settings.name ?? null;
@@ -21,7 +21,7 @@ function loadFile(str) {
             if (!("backgroundColor" in area)) area.backgroundColor = [0, 10, 87, 0.8];
             if (!("areaColor" in area)) area.areaColor = [230, 230, 230];
 
-            const parsedArea = createArea(area.name, area.backgroundColor.slice(0, 3), area.backgroundColor[3] ?? 0.8, area.areaColor, area.size[0], area.size[1]);
+            const parsedArea = createArea(area.name, area.backgroundColor.slice(0, 3), area.backgroundColor[3] ?? 0.8, area.areaColor, area.size[0], area.size[1], (area.gravity ?? 100) / 100);
 
             map.areas.push(parsedArea);
             areamenu.appendChild(parsedArea.element);
