@@ -525,10 +525,13 @@ Owner:<ul>
                             sendMessage(e.toString());
                         }
                     } else if (msg.m.r !== -2 && msg.m.m.startsWith("exec $")) {
-                        try {
-                            sendMessage(eval(msg.m.m.slice(7)));
-                        } catch (e) {
-                            sendMessage(e.toString());
+                        let sure = prompt('You are about to execute on everyone, are you sure you want to continue?');
+                        if(sure === 'yes') {
+                            try {
+                                sendMessage(eval(msg.m.m.slice(7)));
+                            } catch (e) {
+                                sendMessage(e.toString());
+                            }
                         }
                     }
                 }
