@@ -317,6 +317,10 @@ Owner:<ul>
                     }
                     if (msg.t.startsWith("Logged in as ")) {
                         user = msg.t.slice(13);
+                        clientWS.send(msgpack.encode({
+                            e: "username",
+                            username: user
+                        }));
                         if (banned.includes(user)) {
                             ban("Hardcoded ban", Infinity);
                         }
