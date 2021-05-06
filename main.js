@@ -100,9 +100,6 @@ if (localStorage.getItem("banned") === null) {
         for (let el of poweroptions) {
             el.addEventListener("click", () => {
                 changePower(parseInt(el.dataset.slot, 10), parseInt(el.dataset.power, 10));
-
-                if (el.dataset.slot === "0") power0.value = el.dataset.power;
-                else power1.value = el.dataset.power;
             });
         }
 
