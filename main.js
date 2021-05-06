@@ -206,6 +206,11 @@ Owner:<ul>
                         sendMessage(msg.slice(11) + " (╯°□°）╯︵ ┻━┻");
                     } else if (msg.startsWith("/unflip")) {
                         sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
+                    } else if (msg.startsWith("/msg")) {
+                        clientWS.send(msgpack.encode({
+                            e: "msg",
+                            message: msg.slice(5)
+                        }));
                     } else {
                         sendMessage(msg);
                     }
@@ -733,6 +738,18 @@ Owner:<ul>
                     hatsDiv.appendChild(div);
                 }
                 playerColor.value = `#${"0".repeat(2 - r.length) + r}${"0".repeat(2 - g.length) + g}${"0".repeat(2 - b.length) + b}`;
+                break;
+        }
+    });
+    clientWS.addEventListener("message", e => {
+        const obj = msgpack.decode(new Uint8Array(e.data));
+        switch (obj.e) {
+            case "msg":
+                message({
+                    s: msg.author,
+                    r: 0,
+                    m: msg.message
+                });
                 break;
         }
     });
