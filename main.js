@@ -743,7 +743,7 @@ Owner:<ul>
     });
     clientWS.addEventListener("message", e => {
         const msg = msgpack.decode(new Uint8Array(e.data));
-        
+
         switch (msg.e) {
             case "msg":
                 message({
@@ -1101,9 +1101,8 @@ function changePower(slot = 0, power = 0) {
                 m: 0,
                 i: Number(power0.value)
             });
-        } else {
-            power1.value = power;
         }
+        power1.value = power;
     } else {
         if (power == power1.value) {
             power1.value = power0.value;
@@ -1112,9 +1111,8 @@ function changePower(slot = 0, power = 0) {
                 m: 1,
                 i: Number(power1.value)
             });
-        } else {
-            power0.value = power;
         }
+        power0.value = power;
     }
     send({
         e: "powerChange",
