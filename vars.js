@@ -805,10 +805,13 @@ function getToken(func, onerr = console.error) {
     });
 }
 /**
- * @param {Object} obj 
+ * @param {Object | Uint8Array} obj 
  */
-function send(obj) {
-    if (canSend) ws.send(msgpack.encode(obj));
+function send(obj, e = ws) {
+    if (e.readyState === e.OPEN) {
+        if (obj instanceof Uint8Array) e.send(obj);
+        else e.send(msgpack.encode(obj));
+    }
 }
 /**
  * @param {string} hex

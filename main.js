@@ -207,10 +207,10 @@ Owner:<ul>
                     } else if (msg.startsWith("/unflip")) {
                         sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
                     } else if (msg.startsWith("/msg")) {
-                        clientWS.send(msgpack.encode({
+                        send(msgpack.encode({
                             e: "msg",
                             message: msg.slice(5)
-                        }));
+                        }), clientWS);
                     } else {
                         sendMessage(msg);
                     }
@@ -742,11 +742,12 @@ Owner:<ul>
         }
     });
     clientWS.addEventListener("message", e => {
-        const obj = msgpack.decode(new Uint8Array(e.data));
-        switch (obj.e) {
+        const msg = msgpack.decode(new Uint8Array(e.data));
+        
+        switch (msg.e) {
             case "msg":
                 message({
-                    s: msg.author,
+                    s: "[CLIENT] " + msg.author,
                     r: 0,
                     m: msg.message
                 });
@@ -987,7 +988,7 @@ function message(msg, force = false) {
     let wrapper = document.createElement("div");
     wrapper.className = "wrapper";
     let p = document.createElement("p");
-    p.className = msg.s === "[SKAP]" || msg.s === "[CLIENT]"
+    p.className = msg.s === "[SKAP]" || msg.s.startsWith("[CLIENT]")
         ? "SYSMsg"
         : msg.s === "Sweaty" || msg.s === "XxSweatyxX"
             ? "Sweatyfuckingbitchmsg"
