@@ -9,7 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     font-family: Verdana, Arial, Helvetica, sans-serif;
-    background: #404040;
+    background: #303030;
     color: #ffffff;
 }
 
@@ -116,10 +116,10 @@ button {
 }
 #play {
     color: #ffffff;
-    border: 2.5px solid #202020;
+    border: 2.5px solid #101810;
     border-radius: 10px;
-    background: #404040;
-    padding: 20px 40px;
+    background: #303830;
+    padding: 20px 40px; 
 }
 
 #links {
@@ -151,8 +151,8 @@ button {
     top: 10%;
     width: 80%;
     height: 80%;
-    background: #404040;
-    border: solid 3px #202020;
+    background: #303030;
+    border: solid 3px #000000;
     border-radius: 5px;
     overflow-y: auto;
 }
