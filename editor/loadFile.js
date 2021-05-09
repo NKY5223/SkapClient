@@ -3,13 +3,16 @@ function loadFile(str) {
         /** @type {{settings: {name: string | null, creator: string | null, version: number | null, skapclient_version: *, spawnArea: string, spawnPos: [number, number]}, maps: {areaColor: ColorArr, backgroundColor: [number, number, number, number], name: string, objects: {type: string, position: [number, number], size: [number, number]}[], size: [number, number], gravity?: number}[]}} */
         let obj = JSON.parse(str);
 
-        map.settings.name = obj.settings.name ?? null;
-        map.settings.creator = obj.settings.creator ?? null;
+        map.inputs.name.value = map.settings.name = obj.settings.name ?? null;
+        map.inputs.creator.value = map.settings.creator = obj.settings.creator ?? null;
+
         map.settings.version = obj.settings.version ?? null;
         map.settings.skapclient_version = obj.settings.skapclient_version ?? null;
-        map.settings.spawnPos[0] = obj.settings.spawnPosition[0] ?? 0;
-        map.settings.spawnPos[1] = obj.settings.spawnPosition[1] ?? 0;
-        map.settings.spawnArea = obj.settings.spawnArea ?? "Home";
+
+        map.inputs.spawnX.value = settings.spawnPos[0] = obj.settings.spawnPosition[0] ?? 0;
+        map.inputs.spawnY.value = settings.spawnPos[1] = obj.settings.spawnPosition[1] ?? 0;
+        
+        map.inputs.spawnArea.value = map.settings.spawnArea = obj.settings.spawnArea ?? "Home";
         map.areas = [];
 
         while (areamenu.firstChild) areamenu.removeChild(areamenu.firstChild);

@@ -22,6 +22,7 @@ function createFolder(title = "Title", lis = []) {
     folder.appendChild(ul);
     return folder;
 }
+
 function createProperty(name = "name", input = document.createElement("input"), type = "text", options = {}) {
     const li = createLI("property " + type);
     const span = document.createElement("span");
@@ -252,6 +253,59 @@ function createProperty(name = "name", input = document.createElement("input"), 
     }
     return li;
 }
+
+function createNumberArrayProperty(name = "Name", array = [0], update = array => {}) {
+    function values() {
+        return Array.from(li.getElementsByTagName("input")).reduce((accumulator, input) => {
+            accumulator.push(Number(input.value));
+            return accumulator;
+        }, []);
+    }
+    function create(value) {
+        const input = document.createElement("input");
+        input.value = value;
+        input.addEventListener("input", () => {
+            update(values());
+        });
+
+        const property = createProperty("", input, "number");
+        const inside = document.createElement("div");
+        const removeBtn = document.createElement("button");
+
+        inside.appendChild(property.children[0]);
+        inside.appendChild(property.children[0]);
+        inside.classList.add("wrapper");
+
+        removeBtn.addEventListener("click", () => {
+            property.remove();
+            update(values());
+        });
+        removeBtn.classList.add("remove");
+
+        property.appendChild(inside);
+        property.appendChild(removeBtn);
+        return property;
+    }
+
+    const li = createFolder(name, array.reduce((accumulator, value) => {
+        accumulator.push(create(value));
+        return accumulator;
+    }, []));
+    const ul = li.children[1];
+
+    const addBtn = document.createElement("button");
+    addBtn.classList.add("add");
+    addBtn.addEventListener("click", () => {
+        ul.insertBefore(create(0), addBtn);
+        update(values());
+    });
+
+    li.classList.add("array");
+    li.children[1].appendChild(addBtn);
+
+    return li;
+}
+
 let currentId = 0;
 function generateId() {
     return "generated" + currentId++;

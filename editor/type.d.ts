@@ -11,13 +11,16 @@ type SelectOptions<Type> = {
     selectType: string;
     selectOptions: [string, Type][];
 }
-declare function createProperty(name: string, input: HTMLInputElement, type: string, options: PropertyOptions<any>): HTMLLIElement;
-declare function createProperty(name: string, input: HTMLInputElement, type: "direction", options: PropertyOptions<number>): HTMLLIElement;
-declare function createProperty(name: string, input: null, type: "cardinal", options: PropertyOptions<0 | 1 | 2 | 3>): HTMLLIElement;
-declare function createProperty(name: string, input: null, type: "select", options: SelectOptions): HTMLLIElement;
-declare function createProperty(name: string, input: HTMLInputElement, type: "switch", options: null): HTMLLIElement;
 declare function createProperty(name: string, input: HTMLInputElement, type: "number", options: null): HTMLLIElement;
 declare function createProperty(name: string, input: HTMLInputElement, type: "text", options: null): HTMLLIElement;
+declare function createProperty(name: string, input: HTMLInputElement, type: "direction", options: PropertyOptions<number>): HTMLLIElement;
+declare function createProperty(name: string, input: null, type: "cardinal", options: PropertyOptions<Direction>): HTMLLIElement;
+declare function createProperty(name: string, input: null, type: "cardinalCenter", options: PropertyOptions<Direction | 4>): HTMLLIElement;
+declare function createProperty(name: string, input: null, type: "select", options: SelectOptions): HTMLLIElement;
+declare function createProperty(name: string, input: HTMLInputElement, type: "switch", options: null): HTMLLIElement;
+declare function createProperty(name: string, input: HTMLInputElement, type: string, options: PropertyOptions<any>): HTMLLIElement;
+
+declare function createNumberArrayProperty(name?: string, array?: number[], update: (array: number[]) => void): HTMLLIElement;
 
 
 type VectorLike = {
@@ -98,6 +101,15 @@ type CircularObject = BaseSkapObject & {
     objectType: "obstacle" | "lava" | "slime" | "ice";
     type: "circularObject";
 }
+type Door = BaseSkapObject & {
+    linkIds: number[];
+    type: "door";
+}
+type Switch = BaseSkapObject & {
+    id: number;
+    dir: Direction;
+    type: "button";
+}
 
 type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone | RotatingLava | CircularObject;
 
@@ -111,7 +123,9 @@ declare function createSpawner(x?: number, y?: number, w?: number, h?: number, e
 declare function createText(x?: number, y?: number, content?: string): SkapText;
 declare function createGravZone(x?: number, y?: number, w?: number, h?: number, dir?: Direction): GravZone;
 declare function createRotatingLava(x?: number, y?: number, w?: number, h?: number, pointX?: number, pointY?: number, startAngle?: number, speed?: number): RotatingLava;
-declare function createCircularObject(x?: number, y?: number, w?: number, type?: "obstacle" | "lava" | "slime" | "ice"): CircularObject;
+declare function createCircularObject(x?: number, y?: number, r?: number, type?: "obstacle" | "lava" | "slime" | "ice"): CircularObject;
+declare function createDoor(x?: number, y?: number, w?: number, h?: number, linkIds?: number[]): Door;
+declare function createSwitch(x?: number, y?: number, w?: number, h?: number, dir: Direction, id: number): Switch;
 
 declare function addObstacle(): void;
 declare function addLava(): void;
@@ -124,6 +138,8 @@ declare function addText(): void;
 declare function addGravZone(): void;
 declare function addRotatingLava(): void;
 declare function addCircularObject(): void;
+declare function addDoor(): void;
+declare function addSwitch(): void;
 
 type Area = {
     name: string;
@@ -146,6 +162,8 @@ type Area = {
         gravityZone: GravZone[];
         rotatingLava: RotatingLava[];
         circularObject: CircularObject[];
+        door: Door[];
+        switch: Switch[];
     };
     gravity: number;
     
@@ -157,6 +175,7 @@ type Area = {
 };
 
 declare function createArea(name?: string, color?: ColorArr, opacity?: number, background?: ColorArr, w?: number, h?: number): Area;
+declare function addArea(name?: string): void;
 
 type SkapMap = {
     settings: {
@@ -168,6 +187,10 @@ type SkapMap = {
         skapclient_version: number | null;
     };
     areas: Area[];
+    element: HTMLLIElement;
+    inputs: {
+        [name: string]: HTMLInputElement;
+    }
 }
 declare const map: SkapMap;
 

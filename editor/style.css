@@ -174,6 +174,7 @@ body {
 }
 
 #tip {
+    display: none;
     position: absolute;
     top: -5px;
     left: 60px;
@@ -337,6 +338,9 @@ input[type=number] {
     text-align: center;
     cursor: pointer;
 }
+#togglemenu:focus {
+    outline: none;
+}
 #togglemenu::after {
     content: "Close Menu";
 }
@@ -385,10 +389,11 @@ li {
     position: absolute;
     display: block;
     transform-origin: center;
-    transform: translate(-13px, 0) rotate(-45deg) scale(0.5);
+    transform: translate(-13px, 0) rotate(45deg) scale(0.5);
+    transition: transform 0.1s;
 }
 .closed > .title::before {
-    transform: translate(-13px, 0) rotate(45deg) scale(0.5);
+    transform: translate(-13px, 0) rotate(-45deg) scale(0.5);
 }
 .indent {
     margin-left: 4px;
@@ -678,6 +683,67 @@ input:checked+.switchSpan::after {
     background: var(--direction_background_hover);
 }
 
+.array {
+    counter-reset: index;
+}
+.array .label::after {
+    counter-increment: index;
+    content: counter(index);
+}
+.array .add {
+    width: 100%;
+    font: 11px "Lucida Grande", sans-serif;
+    line-height: 20px;
+    background: #000000;
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 1px solid #303030;
+}
+.array .add::after {
+    content: "Add Item";
+}
+.array .add:focus {
+    outline: none;
+}
+.array .wrapper {
+    width: 100%;
+}
+.array .property {
+    position: relative;
+}
+.array .property:hover .wrapper {
+    width: calc(100% - 25px);
+}
+.array .remove {
+    display: none;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: 3.7px;
+    background: #303030;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    padding: 0;
+}
+.array .remove:hover {
+    background: #404040;
+}
+.array .remove::after {
+    content: "×";
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 20px;
+    color: #202020;
+}
+.array .property:hover .remove {
+    display: block;
+}
+
 @media (prefers-color-scheme: light) {
     :root {
         --text: hsl(147, 75%, 40%);
@@ -686,11 +752,11 @@ input:checked+.switchSpan::after {
         background: #e0e0e0;
     }
     #menu input:hover {
-        background: #d0d0d0;
+        background: #dcdcdc;
     }
     #menu input:focus {
-        background: #c0c0c0;
-        color: #000000;
+        background: #d8d8d8;
+        color: #000000 !important;
     }
     .title {
         background: #c0c0c0;
@@ -707,6 +773,11 @@ input:checked+.switchSpan::after {
     #togglemenu {
         background: #c0c0c0;
         color: #000000;
+    }
+    .array .add {
+        background: #c0c0c0;
+        color: #000000;
+        border-bottom-color: #b0b0b0;
     }
     .cardinalUp {
         border-bottom-color: #c0c0c0;

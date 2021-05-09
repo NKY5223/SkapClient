@@ -477,7 +477,7 @@ document.addEventListener("keydown", e => {
 resizemenu.addEventListener("mousedown", () => {
     resizing = true;
 });
-resizemenu.addEventListener("mouseup", () => {
+document.addEventListener("mouseup", () => {
     resizing = false;
 });
 document.addEventListener("mousemove", e => {
@@ -508,6 +508,64 @@ window.addEventListener("beforeunload", e => {
     e.preventDefault();
     return e.returnValue = "Have you saved your map?";
 });
+
+
+
+// Setup map
+{
+    const nameInput = document.createElement("input");
+    nameInput.value = map.settings.name;
+    nameInput.addEventListener("input", () => {
+        map.settings.name = nameInput.value;
+    });
+
+    const creatorInput = document.createElement("input");
+    creatorInput.value = map.settings.creator;
+    creatorInput.addEventListener("input", () => {
+        map.settings.creator = creatorInput.value;
+    });
+
+    const spawnAreaInput = document.createElement("input");
+    spawnAreaInput.value = map.settings.spawnArea;
+    spawnAreaInput.addEventListener("change", () => {
+
+        if (map.areas.some(area => area.name === spawnAreaInput.value)) map.settings.spawnArea = spawnAreaInput.value;
+        else if (prompt(`Area ${spawnAreaInput.value} not found, would you like to create it?`)) addArea(spawnAreaInput.value);
+        else alert("You'd better make that area then.");
+
+    })
+
+    const spawnXInput = document.createElement("input");
+    spawnXInput.value = map.settings.spawnPos[0];
+    spawnXInput.addEventListener("input", () => {
+        map.settings.spawnPos[0] = Number(spawnXInput.value);
+    });
+
+    const spawnYInput = document.createElement("input");
+    spawnYInput.value = map.settings.spawnPos[1];
+    spawnYInput.addEventListener("input", () => {
+        map.settings.spawnPos[1] = Number(spawnYInput.value);
+    });
+
+    map.element = createFolder("Map Properties", [
+        createProperty("name", nameInput, "text"),
+        createProperty("creator", creatorInput, "text"),
+        createProperty("spawnArea", spawnAreaInput, "text"),
+        createFolder("Spawn Position", [
+            createProperty("x", spawnXInput, "number"),
+            createProperty("y", spawnYInput, "number")
+        ])
+    ]);
+    map.element.classList.add("closed");
+    menu.insertBefore(map.element, areamenu);
+    map.inputs = {
+        name: nameInput,
+        creator: creatorInput,
+        spawnArea: spawnAreaInput,
+        spawnX: spawnXInput,
+        spawnY: spawnYInput
+    }
+}
 
 obstacleBtn.addEventListener("click", addObstacle);
 lavaBtn.addEventListener("click", addLava);

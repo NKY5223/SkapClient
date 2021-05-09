@@ -294,18 +294,18 @@ function render() {
             Math.round(camScale * obj.size.x),
             Math.round(camScale * obj.size.y)
         );
-        for (let b of obj.linksOn) {
+        ctx.strokeStyle = renderSettings.colors.doorLineOff;
+        for (let s of currentArea.objects.switch.filter(s => obj.linkIds.includes(s.id))) {
             ctx.beginPath();
-            ctx.strokeStyle = b.pressed || b.switch ? renderSettings.colors.doorLineOn : renderSettings.colors.doorLineOff;
             ctx.moveTo(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
-            ctx.lineTo(canvas.width / 2 + camScale * (b.pos.x + b.size.x / 2 - camX), canvas.height / 2 + camScale * (b.pos.y + b.size.y / 2 - camY));
+            ctx.lineTo(canvas.width / 2 + camScale * (s.pos.x + s.size.x / 2 - camX), canvas.height / 2 + camScale * (s.pos.y + s.size.y / 2 - camY));
             ctx.stroke();
         }
-        for (let b of obj.linksOff) {
+        ctx.strokeStyle = renderSettings.colors.doorLineOn;
+        for (let s of currentArea.objects.switch.filter(s => obj.linkIds.includes(-s.id))) {
             ctx.beginPath();
-            ctx.strokeStyle = b.pressed || b.switch ? renderSettings.colors.doorLineOff : renderSettings.colors.doorLineOn;
             ctx.moveTo(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
-            ctx.lineTo(canvas.width / 2 + camScale * (b.pos.x + b.size.x / 2 - camX), canvas.height / 2 + camScale * (b.pos.y + b.size.y / 2 - camY));
+            ctx.lineTo(canvas.width / 2 + camScale * (s.pos.x + s.size.x / 2 - camX), canvas.height / 2 + camScale * (s.pos.y + s.size.y / 2 - camY));
             ctx.stroke();
         }
     }

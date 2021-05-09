@@ -294,10 +294,13 @@ const renderSettings = {
 
 let timeOnEnter = Date.now();
 
+const randomMapNames = ["editor test", "My Map", "EPIC MAP", "{{map->name}}"];
+const randomMapCreators = ["anonymous", "xXDark_L0rd_69420Xx", "Editor", "{{map->creator}}"];
+
 const map = {
     settings: {
-        name: null,
-        creator: null,
+        name: randomMapNames[Math.floor(Math.random() * randomMapNames.length)],
+        creator: randomMapCreators[Math.floor(Math.random() * randomMapCreators.length)],
         spawnPos: [50, 50],
         spawnArea: "Home",
         version: null,
