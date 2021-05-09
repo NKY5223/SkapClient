@@ -1,4 +1,4 @@
-function createButton(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0) {
+function createButton(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0, time = 5) {
     const button = {
         pos: {
             x,
@@ -10,6 +10,7 @@ function createButton(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0) {
         },
         id,
         dir,
+        time,
         type: "button"
     };
 
@@ -44,6 +45,12 @@ function createButton(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0) {
         button.id = idInput.value = Math.max(idInput.value, 0);
     });
 
+    const timeInput = document.createElement("input");
+    timeInput.value = time;
+    timeInput.addEventListener("input", () => {
+        button.time = timeInput.value = Math.max(timeInput.value, 0);
+    });
+
     button.element = createFolder("Button Properties", [
         createFolder("Position", [
             createProperty("x", xInput, "number"),
@@ -59,7 +66,8 @@ function createButton(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0) {
                 button.dir = (dir + 2) % 4;
             }
         }),
-        createProperty("id", idInput, "number")
+        createProperty("id", idInput, "number"),
+        createProperty("time", timeInput, "number")
     ]);
     button.inputs = {
         x: xInput,

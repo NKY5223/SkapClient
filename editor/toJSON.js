@@ -64,6 +64,15 @@ function areaToJSON(area) {
     for (let cirObj of area.objects.circularObject) {
         objects.push(cirObjToJSON(cirObj));
     }
+    for (let door of area.objects.door) {
+        objects.push(doorToJSON(door));
+    }
+    for (let Switch of area.objects.switch) {
+        objects.push(switchToJSON(Switch));
+    }
+    for (let button of area.objects.button) {
+        objects.push(buttonToJSON(button));
+    }
     return `{"name":${JSON.stringify(area.name)},"size":[${area.size[0]},${area.size[1]}],"backgroundColor":[${area.colorArr.join()},${area.opacity}],"areaColor":[${area.backgroundArr.join()}],"objects":[${objects.join()}],"gravity":${area.gravity * 100}}`;
 }
 
@@ -132,4 +141,22 @@ function rotLavaToJSON(rotLava) {
  */
 function cirObjToJSON(cirObj) {
     return `{"type":"circular${capitalise(cirObj.objectType)}","position":[${cirObj.pos.x + cirObj.radius},${cirObj.pos.y + cirObj.radius}],"radius":${cirObj.radius}}`;
+}
+/**
+ * @param {Door} door 
+ */
+function doorToJSON(door) {
+    return `{"type":"door","position":[${door.pos.x},${door.pos.y}],"size":[${door.size.x},${door.size.y}],"linkIds":[${door.linkIds.join()}]}`;
+}
+/**
+ * @param {Switch} Switch 
+ */
+function switchToJSON(Switch) {
+    return `{"type":"switch","position":[${Switch.pos.x},${Switch.pos.y}],"size":[${Switch.size.x},${Switch.size.y}],"id":${Switch.id}}`;
+}
+/**
+ * @param {Button} button 
+ */
+function buttonToJSON(button) {
+    return `{"type":"button","position":[${button.pos.x},${button.pos.y}],"size":[${button.size.x},${button.size.y}],"id":${button.id},"time":${button.time}}`;
 }
