@@ -38,7 +38,7 @@ function createDoor(x = 0, y = 0, w = 10, h = 10, linkIds = [0]) {
     });
 
 
-    door.element = createFolder("Obstacle Properties", [
+    door.element = createFolder("Door Properties", [
         createFolder("Position", [
             createProperty("x", xInput, "number"),
             createProperty("y", yInput, "number")

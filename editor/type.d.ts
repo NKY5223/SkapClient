@@ -108,10 +108,15 @@ type Door = BaseSkapObject & {
 type Switch = BaseSkapObject & {
     id: number;
     dir: Direction;
+    type: "switch";
+}
+type Button = BaseSkapObject & {
+    id: number;
+    dir: Direction;
     type: "button";
 }
 
-type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone | RotatingLava | CircularObject;
+type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone | RotatingLava | CircularObject | Door | Switch | Button;
 
 declare function createObstacle(x?: number, y?: number, w?: number, h?: number): Obstacle;
 declare function createLava(x?: number, y?: number, w?: number, h?: number): Lava;
@@ -126,6 +131,7 @@ declare function createRotatingLava(x?: number, y?: number, w?: number, h?: numb
 declare function createCircularObject(x?: number, y?: number, r?: number, type?: "obstacle" | "lava" | "slime" | "ice"): CircularObject;
 declare function createDoor(x?: number, y?: number, w?: number, h?: number, linkIds?: number[]): Door;
 declare function createSwitch(x?: number, y?: number, w?: number, h?: number, dir: Direction, id: number): Switch;
+declare function createButton(x?: number, y?: number, w?: number, h?: number, dir: Direction, id: number): Button;
 
 declare function addObstacle(): void;
 declare function addLava(): void;
@@ -140,6 +146,7 @@ declare function addRotatingLava(): void;
 declare function addCircularObject(): void;
 declare function addDoor(): void;
 declare function addSwitch(): void;
+declare function addButton(): void;
 
 type Area = {
     name: string;
@@ -164,6 +171,7 @@ type Area = {
         circularObject: CircularObject[];
         door: Door[];
         switch: Switch[];
+        button: Button[];
     };
     gravity: number;
     

@@ -234,54 +234,89 @@ function render() {
     }
     // Render buttons
     ctx.setLineDash([]);
+    ctx.fillStyle = renderSettings.colors.button;
     for (let obj of currentArea.objects.button) {
         ctx.beginPath();
+        const points = [
+            [
+                obj.pos.x + (obj.dir === 0 ? obj.size.x * 0.1 : 0),
+                obj.pos.y + (obj.dir === 3 ? obj.size.y * 0.1 : 0)
+            ],
+            [
+                obj.pos.x + (obj.dir === 0 ? obj.size.x * 0.9 : obj.size.x),
+                obj.pos.y + (obj.dir === 1 ? obj.size.y * 0.1 : 0)
+            ],
+            [
+                obj.pos.x + (obj.dir === 2 ? obj.size.x * 0.9 : obj.size.x),
+                obj.pos.y + (obj.dir === 1 ? obj.size.y * 0.9 : obj.size.y)
+            ],
+            [
+                obj.pos.x + (obj.dir === 2 ? obj.size.x * 0.1 : 0),
+                obj.pos.y + (obj.dir === 3 ? obj.size.y * 0.9 : obj.size.y)
+            ]
+        ];
         ctx.moveTo(
-            Math.round(canvas.width / 2 + camScale * (obj.points[0][0] - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.points[0][1] - camY))
+            Math.round(canvas.width / 2 + camScale * (points[0][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (points[0][1] - camY))
         );
         ctx.lineTo(
-            Math.round(canvas.width / 2 + camScale * (obj.points[1][0] - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.points[1][1] - camY))
+            Math.round(canvas.width / 2 + camScale * (points[1][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (points[1][1] - camY))
         );
         ctx.lineTo(
-            Math.round(canvas.width / 2 + camScale * (obj.points[2][0] - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.points[2][1] - camY))
+            Math.round(canvas.width / 2 + camScale * (points[2][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (points[2][1] - camY))
         );
         ctx.lineTo(
-            Math.round(canvas.width / 2 + camScale * (obj.points[3][0] - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.points[3][1] - camY))
+            Math.round(canvas.width / 2 + camScale * (points[3][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (points[3][1] - camY))
         );
-        ctx.fillStyle = obj.pressed ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
         ctx.fill();
     }
     // Render switches?
     for (let obj of currentArea.objects.switch) {
         ctx.beginPath();
+        const points = [
+            [
+                obj.pos.x - (obj.dir === 3 ? 2 : 0),
+                obj.pos.y
+            ],
+            [
+                obj.pos.x + obj.size.x,
+                obj.pos.y - (obj.dir === 0 ? 2 : 0)
+            ],
+            [
+                obj.pos.x + (obj.dir === 1 ? 2 : 0) + obj.size.x,
+                obj.pos.y + obj.size.y
+            ],
+            [
+                obj.pos.x,
+                obj.pos.y + (obj.dir === 2 ? 2 : 0) + obj.size.y
+            ]
+        ];
         ctx.moveTo(
-            Math.round(canvas.width / 2 + camScale * (obj.points[0][0] - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.points[0][1] - camY))
+            Math.round(canvas.width / 2 + camScale * (points[0][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (points[0][1] - camY))
         );
         ctx.lineTo(
-            Math.round(canvas.width / 2 + camScale * (obj.points[1][0] - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.points[1][1] - camY))
+            Math.round(canvas.width / 2 + camScale * (points[1][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (points[1][1] - camY))
         );
         ctx.lineTo(
-            Math.round(canvas.width / 2 + camScale * (obj.points[2][0] - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.points[2][1] - camY))
+            Math.round(canvas.width / 2 + camScale * (points[2][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (points[2][1] - camY))
         );
         ctx.lineTo(
-            Math.round(canvas.width / 2 + camScale * (obj.points[3][0] - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.points[3][1] - camY))
+            Math.round(canvas.width / 2 + camScale * (points[3][0] - camX)),
+            Math.round(canvas.height / 2 + camScale * (points[3][1] - camY))
         );
-        ctx.fillStyle = obj.switch ? renderSettings.colors.buttonPressed : renderSettings.colors.button;
         ctx.fill();
     }
     // Render doors
     ctx.fillStyle = renderSettings.colors.doorFill;
+    ctx.strokeStyle = renderSettings.colors.doorClosedOutline;
     ctx.lineWidth = camScale;
     for (let obj of currentArea.objects.door) {
-        ctx.strokeStyle = obj.opened ? renderSettings.colors.doorOpenedOutline : renderSettings.colors.doorClosedOutline;
         ctx.strokeRect(
             Math.round(canvas.width / 2 + camScale * (obj.pos.x + 0.5 - camX)),
             Math.round(canvas.height / 2 + camScale * (obj.pos.y + 0.5 - camY)),
@@ -301,11 +336,23 @@ function render() {
             ctx.lineTo(canvas.width / 2 + camScale * (s.pos.x + s.size.x / 2 - camX), canvas.height / 2 + camScale * (s.pos.y + s.size.y / 2 - camY));
             ctx.stroke();
         }
+        for (let b of currentArea.objects.button.filter(b => obj.linkIds.includes(b.id))) {
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
+            ctx.lineTo(canvas.width / 2 + camScale * (b.pos.x + b.size.x / 2 - camX), canvas.height / 2 + camScale * (b.pos.y + b.size.y / 2 - camY));
+            ctx.stroke();
+        }
         ctx.strokeStyle = renderSettings.colors.doorLineOn;
         for (let s of currentArea.objects.switch.filter(s => obj.linkIds.includes(-s.id))) {
             ctx.beginPath();
             ctx.moveTo(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
             ctx.lineTo(canvas.width / 2 + camScale * (s.pos.x + s.size.x / 2 - camX), canvas.height / 2 + camScale * (s.pos.y + s.size.y / 2 - camY));
+            ctx.stroke();
+        }
+        for (let b of currentArea.objects.button.filter(b => obj.linkIds.includes(-b.id))) {
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
+            ctx.lineTo(canvas.width / 2 + camScale * (b.pos.x + b.size.x / 2 - camX), canvas.height / 2 + camScale * (b.pos.y + b.size.y / 2 - camY));
             ctx.stroke();
         }
     }

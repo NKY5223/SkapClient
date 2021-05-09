@@ -358,6 +358,9 @@ const contextBtns = {
     gravZone: document.getElementById("createGravZone"),
     rotLava: document.getElementById("createRotLava"),
     cirObj: document.getElementById("createCirObj"),
+    door: document.getElementById("createDoor"),
+    switch: document.getElementById("createSwitch"),
+    button: document.getElementById("createButton"),
 
     area: document.getElementById("createArea"),
     deleteArea: document.getElementById("deleteArea"),

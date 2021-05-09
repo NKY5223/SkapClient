@@ -583,6 +583,10 @@ contextBtns.spawner.addEventListener("click", addSpawner);
 contextBtns.gravZone.addEventListener("click", addGravZone);
 contextBtns.rotLava.addEventListener("click", addRotatingLava);
 contextBtns.cirObj.addEventListener("click", addCircularObject);
+contextBtns.door.addEventListener("click", addDoor);
+contextBtns.switch.addEventListener("click", addSwitch);
+contextBtns.button.addEventListener("click", addButton);
+
 contextBtns.area.addEventListener("click", () => addArea());
 contextBtns.resetTime.addEventListener("click", () => timeOnEnter = Date.now());
 

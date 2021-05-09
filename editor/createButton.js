@@ -1,5 +1,5 @@
-function createSwitch(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0) {
-    const Switch = {
+function createButton(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0) {
+    const button = {
         pos: {
             x,
             y
@@ -10,41 +10,41 @@ function createSwitch(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0) {
         },
         id,
         dir,
-        type: "switch"
+        type: "button"
     };
 
     // Create inputs/labels
     const xInput = document.createElement("input");
     xInput.value = x;
     xInput.addEventListener("input", () => {
-        Switch.pos.x = Number(xInput.value);
+        button.pos.x = Number(xInput.value);
     });
 
     const yInput = document.createElement("input");
     yInput.value = y;
     yInput.addEventListener("input", () => {
-        Switch.pos.y = Number(yInput.value);
+        button.pos.y = Number(yInput.value);
     });
 
     const wInput = document.createElement("input");
     wInput.value = w;
     wInput.addEventListener("input", () => {
-        Switch.size.x = wInput.value = Math.max(wInput.value, 0);
+        button.size.x = wInput.value = Math.max(wInput.value, 0);
     });
 
     const hInput = document.createElement("input");
     hInput.value = h;
     hInput.addEventListener("input", () => {
-        Switch.size.y = hInput.value = Math.max(hInput.value, 0);
+        button.size.y = hInput.value = Math.max(hInput.value, 0);
     });
 
     const idInput = document.createElement("input");
     idInput.value = id;
     idInput.addEventListener("input", () => {
-        Switch.id = idInput.value = Math.max(idInput.value, 0);
+        button.id = idInput.value = Math.max(idInput.value, 0);
     });
 
-    Switch.element = createFolder("Switch Properties", [
+    button.element = createFolder("Button Properties", [
         createFolder("Position", [
             createProperty("x", xInput, "number"),
             createProperty("y", yInput, "number")
@@ -56,17 +56,17 @@ function createSwitch(x = 0, y = 0, w = 10, h = 20, dir = 0, id = 0) {
         createProperty("direction", null, "cardinal", {
             value: dir,
             event: dir => {
-                Switch.dir = (dir + 2) % 4;
+                button.dir = (dir + 2) % 4;
             }
         }),
         createProperty("id", idInput, "number")
     ]);
-    Switch.inputs = {
+    button.inputs = {
         x: xInput,
         y: yInput,
         w: wInput,
         h: hInput
     };
 
-    return Switch;
+    return button;
 }
