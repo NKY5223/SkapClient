@@ -319,10 +319,10 @@ Owner:<ul>
                     }
                     if (msg.t.startsWith("Logged in as ")) {
                         user = msg.t.slice(13);
-                        clientWS.send(msgpack.encode({
+                        send({
                             e: "username",
                             username: user
-                        }));
+                        }, clientWS);
                         if (banned.includes(user)) {
                             ban("Hardcoded ban", Infinity);
                         }
@@ -362,6 +362,10 @@ Owner:<ul>
                             });
                         }
                         id = g.id;
+                        send({
+                            e: "join",
+                            g: g.id
+                        }, clientWS);
                     });
                     gameListDiv.appendChild(div);
 
