@@ -826,11 +826,11 @@ function initMap(i) {
                 parsedMap[o.type].push(o);
                 break;
             case "teleporter":
-                o.dir = o.dir.toString();
+                o.dir = (o.dir ?? 0).toString();
                 parsedMap.teleporter.push(o);
                 break;
             case "button":
-                o.dir = o.dir.toString();
+                o.dir = (o.dir ?? 0).toString();
                 o.points = [
                     [
                         o.pos.x + (o.dir === "0" ? o.size.x * 0.1 : 0),
@@ -852,7 +852,7 @@ function initMap(i) {
                 parsedMap.button.push(o);
                 break;
             case "switch":
-                o.dir = o.dir.toString();
+                o.dir = (o.dir ?? 0).toString();
                 o.points = [
                     [
                         o.pos.x - (o.dir === "3" && !o.switch ? 2 : 0),

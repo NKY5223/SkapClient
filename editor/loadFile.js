@@ -9,8 +9,8 @@ function loadFile(str) {
         map.settings.version = obj.settings.version ?? null;
         map.settings.skapclient_version = obj.settings.skapclient_version ?? null;
 
-        map.inputs.spawnX.value = settings.spawnPos[0] = obj.settings.spawnPosition[0] ?? 0;
-        map.inputs.spawnY.value = settings.spawnPos[1] = obj.settings.spawnPosition[1] ?? 0;
+        map.inputs.spawnX.value = map.settings.spawnPos[0] = obj.settings.spawnPosition[0] ?? 0;
+        map.inputs.spawnY.value = map.settings.spawnPos[1] = obj.settings.spawnPosition[1] ?? 0;
         
         map.inputs.spawnArea.value = map.settings.spawnArea = obj.settings.spawnArea ?? "Home";
         map.areas = [];
