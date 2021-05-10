@@ -130,8 +130,8 @@ declare function createGravZone(x?: number, y?: number, w?: number, h?: number, 
 declare function createRotatingLava(x?: number, y?: number, w?: number, h?: number, pointX?: number, pointY?: number, startAngle?: number, speed?: number): RotatingLava;
 declare function createCircularObject(x?: number, y?: number, r?: number, type?: "obstacle" | "lava" | "slime" | "ice"): CircularObject;
 declare function createDoor(x?: number, y?: number, w?: number, h?: number, linkIds?: number[]): Door;
-declare function createSwitch(x?: number, y?: number, w?: number, h?: number, dir: Direction, id: number): Switch;
-declare function createButton(x?: number, y?: number, w?: number, h?: number, dir: Direction, id: number): Button;
+declare function createSwitch(x?: number, y?: number, w?: number, h?: number, dir?: Direction, id?: number): Switch;
+declare function createButton(x?: number, y?: number, w?: number, h?: number, dir?: Direction, id?: number, time?: number): Button;
 
 declare function addObstacle(): void;
 declare function addLava(): void;

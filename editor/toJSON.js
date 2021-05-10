@@ -152,11 +152,11 @@ function doorToJSON(door) {
  * @param {Switch} Switch 
  */
 function switchToJSON(Switch) {
-    return `{"type":"switch","position":[${Switch.pos.x},${Switch.pos.y}],"size":[${Switch.size.x},${Switch.size.y}],"id":${Switch.id}}`;
+    return `{"type":"switch","position":[${Switch.pos.x},${Switch.pos.y}],"size":[${Switch.size.x},${Switch.size.y}],"id":${Switch.id},"dir":${Switch.dir}}`;
 }
 /**
  * @param {Button} button 
  */
 function buttonToJSON(button) {
-    return `{"type":"button","position":[${button.pos.x},${button.pos.y}],"size":[${button.size.x},${button.size.y}],"id":${button.id},"time":${button.time}}`;
+    return `{"type":"button","position":[${button.pos.x},${button.pos.y}],"size":[${button.size.x},${button.size.y}],"id":${button.id},"dir":${button.dir},"time":${button.time}}`;
 }

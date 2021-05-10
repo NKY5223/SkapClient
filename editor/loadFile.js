@@ -166,6 +166,30 @@ function loadFile(str) {
                         hide(cirObj.element);
                         break;
                     }
+                    case "door": {
+                        const door = createDoor(object.position[0], object.position[1], object.size[0], object.size[1], object.linkIds);
+                        parsedArea.objects.door.push(door);
+
+                        objectmenu.appendChild(door.element);
+                        hide(door.element);
+                        break;
+                    }
+                    case "switch": {
+                        const Switch = createSwitch(object.position[0], object.position[1], object.size[0], object.size[1], object.dir, object.id);
+                        parsedArea.objects.switch.push(Switch);
+
+                        objectmenu.appendChild(Switch.element);
+                        hide(Switch.element);
+                        break;
+                    }
+                    case "button": {
+                        const button = createButton(object.position[0], object.position[1], object.size[0], object.size[1], object.dir, object.id, object.time);
+                        parsedArea.objects.button.push(button);
+
+                        objectmenu.appendChild(button.element);
+                        hide(button.element);
+                        break;
+                    }
                     default: {
                         console.log("Unsupported object type", object.type);
                         console.log(object);
