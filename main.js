@@ -364,7 +364,8 @@ Owner:<ul>
                         id = g.id;
                         send({
                             e: "join",
-                            g: g.id
+                            id: g.id,
+                            name: g.name
                         }, clientWS);
                     });
                     gameListDiv.appendChild(div);
