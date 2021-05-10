@@ -392,6 +392,9 @@ canvas {
 .deadPlayerName {
     color: #ff0000;
 }
+.freezePlayerName {
+    color: #00ffff;
+}
 
 #chat {
     position: absolute;

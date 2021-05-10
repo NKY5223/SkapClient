@@ -8,7 +8,8 @@
  * @param {number} m.infos.oneHeat
  * @param {number} m.infos.twoHeat
  * @param {Object<string, Player>} m.players id:Player
- * @param {[string, string, boolean][]} m.playerList
+ * @param {[string, string, boolean, boolean][]} m.playerList name, area, dea
+ * d, freeze
  * @param {SkapEntity[]} m.entities
  * @param {Object[]} m.particles
  */
@@ -50,9 +51,16 @@ function updateStates(m) {
     document.title = `SkapClient${player.states.includes("Died") ? " <Dead>" : player.states.includes("Freeze") ? " <Frozen>" : ""}`
 
     // List players
-    playerList.innerHTML = "";
+    while (playerList.firstChild) {
+        playerList.firstChild.remove();
+    }
     for (let p of m.playerList) {
-        playerList.innerHTML += `<p${p[2] ? " class='deadPlayerName'" : ""}>${p[0].safe()}: ${p[1].safe()}</p>`
+        const el = document.createElement("p");
+        if (p[2]) el.classList.add("deadPlayerName");
+        if (p[3]) el.classList.add("freezePlayerName");
+        el.innerHTML = p[0].safe() + ":&nbsp;" + p[1].safe();
+
+        playerList.appendChild(el);
     }
     // Fuel bar 
     fuelBar.style.width = 100 * m.infos.fuel / 10 + "%";
