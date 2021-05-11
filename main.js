@@ -976,11 +976,9 @@ function initMap(i) {
 function message(msg, force = false) {
     if (!force && blocked.includes(msg.s) && !devs.includes(msg.s)) {
         message({
-            m: {
-                s: msg.s,
-                r: msg.r,
-                m: "<i>[Blocked]</i>"
-            }
+            s: msg.s,
+            r: msg.r,
+            m: "<i>[Blocked]</i>"
         }, true);
         return;
     }
