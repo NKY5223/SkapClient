@@ -16,13 +16,13 @@ function createDoor(x = 0, y = 0, w = 10, h = 10, linkIds = [0]) {
     const xInput = document.createElement("input");
     xInput.value = x;
     xInput.addEventListener("input", () => {
-        door.pos.x = Number(xInput.value)
+        door.pos.x = Number(xInput.value);
     });
 
     const yInput = document.createElement("input");
     yInput.value = y;
     yInput.addEventListener("input", () => {
-        door.pos.y = Number(yInput.value)
+        door.pos.y = Number(yInput.value);
     });
 
     const wInput = document.createElement("input");

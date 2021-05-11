@@ -16,13 +16,13 @@ function createGravZone(x = 0, y = 0, w = 10, h = 20, dir = 2) {
     const xInput = document.createElement("input");
     xInput.value = x;
     xInput.addEventListener("input", () => {
-        gravZone.pos.x = Number(xInput.value)
+        gravZone.pos.x = Number(xInput.value);
     });
 
     const yInput = document.createElement("input");
     yInput.value = y;
     yInput.addEventListener("input", () => {
-        gravZone.pos.y = Number(yInput.value)
+        gravZone.pos.y = Number(yInput.value);
     });
 
     const wInput = document.createElement("input");

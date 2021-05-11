@@ -15,13 +15,13 @@ function createLava(x = 0, y = 0, w = 10, h = 10) {
     const xInput = document.createElement("input");
     xInput.value = x;
     xInput.addEventListener("input", () => {
-        lava.pos.x = Number(xInput.value)
+        lava.pos.x = Number(xInput.value);
     });
 
     const yInput = document.createElement("input");
     yInput.value = y;
     yInput.addEventListener("input", () => {
-        lava.pos.y = Number(yInput.value)
+        lava.pos.y = Number(yInput.value);
     });
 
     const wInput = document.createElement("input");

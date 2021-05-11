@@ -15,13 +15,13 @@ function createSlime(x = 0, y = 0, w = 10, h = 10) {
     const xInput = document.createElement("input");
     xInput.value = x;
     xInput.addEventListener("input", () => {
-        slime.pos.x = Number(xInput.value)
+        slime.pos.x = Number(xInput.value);
     });
 
     const yInput = document.createElement("input");
     yInput.value = y;
     yInput.addEventListener("input", () => {
-        slime.pos.y = Number(yInput.value)
+        slime.pos.y = Number(yInput.value);
     });
 
     const wInput = document.createElement("input");

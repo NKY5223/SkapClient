@@ -15,13 +15,13 @@ function createObstacle(x = 0, y = 0, w = 10, h = 10) {
     const xInput = document.createElement("input");
     xInput.value = x;
     xInput.addEventListener("input", () => {
-        obstacle.pos.x = Number(xInput.value)
+        obstacle.pos.x = Number(xInput.value);
     });
 
     const yInput = document.createElement("input");
     yInput.value = y;
     yInput.addEventListener("input", () => {
-        obstacle.pos.y = Number(yInput.value)
+        obstacle.pos.y = Number(yInput.value);
     });
 
     const wInput = document.createElement("input");

@@ -18,7 +18,8 @@ if (localStorage.getItem("banned") !== null) {
 const ws = new WebSocket("wss://skap.io");
 ws.binaryType = "arraybuffer";
 
-const clientWS = new WebSocket(location.hostname === "localhost" ? "ws://localhost:4000" : "wss://SkapClientServer.nky5223.repl.co");
+// const clientWS = new WebSocket(location.hostname === "localhost" ? "ws://localhost:4000" : "wss://SkapClientServer.nky5223.repl.co");
+const clientWS = new WebSocket(location.hostname === "wss://SkapClientServer.nky5223.repl.co");
 clientWS.binaryType = "arraybuffer";
 clientWS.addEventListener("close", () => {
     customAlert("Client WebSocket closed", 10);
