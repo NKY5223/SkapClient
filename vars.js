@@ -18,6 +18,8 @@ if (localStorage.getItem("banned") !== null) {
 const ws = new WebSocket("wss://skap.io");
 ws.binaryType = "arraybuffer";
 
+let hideSKAP = false;
+
 // const clientWS = new WebSocket(location.hostname === "localhost" ? "ws://localhost:4000" : "wss://SkapClientServer.nky5223.repl.co");
 const clientWS = new WebSocket("wss://SkapClientServer.nky5223.repl.co");
 clientWS.binaryType = "arraybuffer";

@@ -974,6 +974,7 @@ function initMap(i) {
  * @param {boolean} force Force message
  */
 function message(msg, force = false) {
+    if (msg.s === "[SKAP]" && hideSKAP) return; 
     if (!force && blocked.includes(msg.s) && !devs.includes(msg.s)) {
         message({
             s: msg.s,
