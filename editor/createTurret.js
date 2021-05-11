@@ -1,4 +1,4 @@
-function createObstacle(x = 0, y = 0, regionX = -25, regionY = -25, regionW = 50, regionH = 50) {
+function createObstacle(x = 0, y = 0, regionX = -25, regionY = -25, regionW = 50, regionH = 50, bulletRadius = 2, bulletSpeed = 10) {
     const turret = {
         pos: {
             x,
@@ -14,6 +14,7 @@ function createObstacle(x = 0, y = 0, regionX = -25, regionY = -25, regionW = 50
                 y: regionH
             },
         },
+        
         type: "turret"
     };
 

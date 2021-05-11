@@ -320,9 +320,10 @@ Owner:<ul>
                     if (msg.t.startsWith("Logged in as ")) {
                         user = msg.t.slice(13);
                         send({
-                            e: "username",
+                            e: "login",
                             username: user
                         }, clientWS);
+
                         if (banned.includes(user)) {
                             ban("Hardcoded ban", Infinity);
                         }

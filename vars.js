@@ -20,8 +20,8 @@ ws.binaryType = "arraybuffer";
 
 let hideSKAP = false;
 
-// const clientWS = new WebSocket(location.hostname === "localhost" ? "ws://localhost:4000" : "wss://SkapClientServer.nky5223.repl.co");
-const clientWS = new WebSocket("wss://SkapClientServer.nky5223.repl.co");
+// const clientWS = new WebSocket(location.hostname === "localhost" ? "ws://localhost:4000" : "wss://skapclientserver.nky5223.repl.co");
+const clientWS = new WebSocket("wss://skapclientserver.nky5223.repl.co");
 clientWS.binaryType = "arraybuffer";
 clientWS.addEventListener("close", () => {
     customAlert("Client WebSocket closed", 10);
@@ -39,7 +39,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "zerotix video last pass";
+const version = "test server";
 
 /**
  * @type {HTMLCanvasElement}

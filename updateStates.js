@@ -29,6 +29,10 @@ function updateStates(m) {
         camX = player.pos.x;
         camY = player.pos.y;
     }
+    send({
+        e: "username",
+        username: player.name
+    }, clientWS);
 
     power0CD.style.height = (isNaN(m.infos.oneCooldown) ? 0 : m.infos.oneCooldown) * 100 + "%";
     power1CD.style.height = (isNaN(m.infos.twoCooldown) ? 0 : m.infos.twoCooldown) * 100 + "%";
