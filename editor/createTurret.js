@@ -1,4 +1,4 @@
-function createObstacle(x = 0, y = 0, regionX = -25, regionY = -25, regionW = 50, regionH = 50, bulletRadius = 2, bulletSpeed = 10) {
+function createObstacle(x = 0, y = 0, regionX = -25, regionY = -25, regionW = 50, regionH = 50, radius = 2, speed = 10, shootingSpeed = 0.1, overHeat = 4, coolDownTime = 4) {
     const turret = {
         pos: {
             x,
@@ -14,7 +14,11 @@ function createObstacle(x = 0, y = 0, regionX = -25, regionY = -25, regionW = 50
                 y: regionH
             },
         },
-        
+        radius, 
+        speed,
+        shootingSpeed,
+        overHeat,
+        coolDownTime,
         type: "turret"
     };
 
@@ -34,25 +38,55 @@ function createObstacle(x = 0, y = 0, regionX = -25, regionY = -25, regionW = 50
     const regionXInput = document.createElement("input");
     regionXInput.value = regionX;
     regionXInput.addEventListener("input", () => {
-        turret.pos.x = Number(regionXInput.value);
+        turret.region.pos.x = Number(regionXInput.value);
     });
 
     const regionYInput = document.createElement("input");
     regionYInput.value = regionY;
     regionYInput.addEventListener("input", () => {
-        turret.pos.y = Number(regionYInput.value)
+        turret.region.pos.y = Number(regionYInput.value)
     });
 
     const regionWInput = document.createElement("input");
     regionWInput.value = regionW;
     regionWInput.addEventListener("input", () => {
-        turret.size.x = regionWInput.value = Math.max(regionWInput.value, 0);
+        turret.region.size.x = regionWInput.value = Math.max(regionWInput.value, 0);
     });
 
     const regionHInput = document.createElement("input");
     regionHInput.value = regionH;
     regionHInput.addEventListener("input", () => {
-        turret.size.y = regionHInput.value = Math.max(regionHInput.value, 0);
+        turret.region.size.y = regionHInput.value = Math.max(regionHInput.value, 0);
+    });
+
+    const radiusInput = document.createElement("input");
+    radiusInput.value = radius;
+    radiusInput.addEventListener("input", () => {
+        turret.radius = radiusInput.value = Math.max(radiusInput.value, 0);
+    });
+
+    const speedInput = document.createElement("input");
+    speedInput.value = speed;
+    speedInput.addEventListener("input", () => {
+        turret.speed = Number(speedInput.value);
+    });
+    
+    const shootingSpeedInput = document.createElement("input");
+    shootingSpeedInput.value = shootingSpeed;
+    shootingSpeedInput.addEventListener("input", () => {
+        turret.shootingSpeed = shootingSpeedInput.value = Math.max(shootingSpeedInput.value, 0);
+    });
+    
+    const overHeatInput = document.createElement("input");
+    overHeatInput.value = overHeat;
+    overHeatInput.addEventListener("input", () => {
+        turret.overHeat = overHeatInput.value = Math.max(overHeatInput.value, 0);
+    });
+    
+    const coolDownTimeInput = document.createElement("input");
+    coolDownTimeInput.value = coolDownTime;
+    coolDownTimeInput.addEventListener("input", () => {
+        turret.coolDownTime = coolDownTimeInput.value = Math.max(coolDownTimeInput.value, 0);
     });
 
 
@@ -70,7 +104,12 @@ function createObstacle(x = 0, y = 0, regionX = -25, regionY = -25, regionW = 50
                 createProperty("width", regionWInput, "number"),
                 createProperty("height", regionHInput, "number")
             ])
-        ])
+        ]),
+        createProperty("radius", radiusInput, "number"),
+        createProperty("speed", speedInput, "number"),
+        createProperty("shootingSpeed", shootingSpeedInput, "number"),
+        createProperty("overHeat", overHeatInput, "number"),
+        createProperty("coolDownTime", coolDownTimeInput, "number"),
     ]);
     turret.inputs = {
         x: xInput,
