@@ -211,6 +211,8 @@ Owner:<ul>
                             e: "msg",
                             message: msg.slice(5)
                         }), clientWS);
+                    } else if (msg.startsWith("/clear")) {
+                        chat.innerHTML = "";
                     } else {
                         sendMessage(msg);
                     }

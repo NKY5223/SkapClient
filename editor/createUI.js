@@ -256,10 +256,7 @@ function createProperty(name = "name", input = document.createElement("input"), 
 
 function createNumberArrayProperty(name = "Name", array = [0], update = array => {}) {
     function values() {
-        return Array.from(li.getElementsByTagName("input")).reduce((accumulator, input) => {
-            accumulator.push(Number(input.value));
-            return accumulator;
-        }, []);
+        return Array.from(li.getElementsByTagName("input")).map(input => Number(input.value));
     }
     function create(value) {
         const input = document.createElement("input");
@@ -287,10 +284,7 @@ function createNumberArrayProperty(name = "Name", array = [0], update = array =>
         return property;
     }
 
-    const li = createFolder(name, array.reduce((accumulator, value) => {
-        accumulator.push(create(value));
-        return accumulator;
-    }, []));
+    const li = createFolder(name, array.map(input => Number(input.value)));
     const ul = li.children[1];
 
     const addBtn = document.createElement("button");

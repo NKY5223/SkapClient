@@ -18,10 +18,7 @@ function getObjects(type = "obstacle") {
         return currentArea.objects.block.filter(o => o.layer);
     }
     if (type === "rotLavaPoint") {
-        return currentArea.objects.rotatingLava.reduce((accumulator, value) => {
-            accumulator.push(value.point)
-            return accumulator
-        }, []);
+        return currentArea.objects.rotatingLava.map(rotLava => rotLava.point);
     }
     if (type === "circularObstacle") {
         return currentArea.objects.circularObject.filter(obj => obj.objectType === "obstacle");
