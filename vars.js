@@ -306,7 +306,9 @@ const renderSettings = {
             wolfy: loadImage("skins/wolfer.png"),
             Frog: loadImage("skins/Frog.png"),
             HayrenRyzm: loadImage("skins/RayhanADev.png"),
-            RayhanADev: loadImage("skins/RayhanADev.png")
+            RayhanADev: loadImage("skins/RayhanADev.png"),
+            funke: loadImage("skins/shrek.png"),
+            shrekismyson: loadImage("skins/shrek.png")
         },
         trail: loadImage(`https://skap.io/textures/particles/${["apple", "blackHeart", "greyPaw", "heart", "pinkPaw", "sparkles", "whitePaw"][Math.floor(Math.random() * 7)]}.png`)
     }
