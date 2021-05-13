@@ -21,11 +21,11 @@ ws.binaryType = "arraybuffer";
 let hideSKAP = false;
 
 // const clientWS = new WebSocket(location.hostname === "localhost" ? "ws://localhost:4000" : "wss://skapclientserver.nky5223.repl.co");
-const clientWS = new WebSocket("wss://skapclientserver.nky5223.repl.co");
-clientWS.binaryType = "arraybuffer";
-clientWS.addEventListener("close", () => {
-    customAlert("Client WebSocket closed", 10);
-});
+// const clientWS = new WebSocket("wss://skapclientserver.nky5223.repl.co");
+// clientWS.binaryType = "arraybuffer";
+// clientWS.addEventListener("close", () => {
+//     customAlert("Client WebSocket closed", 10);
+// });
 
 const URLParams = new URLSearchParams(location.search);
 const autojoinGameId = URLParams.get("gameId");

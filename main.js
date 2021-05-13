@@ -206,11 +206,11 @@ Owner:<ul>
                         sendMessage(msg.slice(11) + " (╯°□°）╯︵ ┻━┻");
                     } else if (msg.startsWith("/unflip")) {
                         sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
-                    } else if (msg.startsWith("/msg")) {
-                        send(msgpack.encode({
-                            e: "msg",
-                            message: msg.slice(5)
-                        }), clientWS);
+                    // } else if (msg.startsWith("/msg")) {
+                    //     send(msgpack.encode({
+                    //         e: "msg",
+                    //         message: msg.slice(5)
+                    //     }), clientWS);
                     } else if (msg.startsWith("/clear")) {
                         chat.innerHTML = "";
                     } else {
@@ -321,10 +321,10 @@ Owner:<ul>
                     }
                     if (msg.t.startsWith("Logged in as ")) {
                         user = msg.t.slice(13);
-                        send({
-                            e: "login",
-                            username: user
-                        }, clientWS);
+                        // send({
+                        //     e: "login",
+                        //     username: user
+                        // }, clientWS);
 
                         if (banned.includes(user)) {
                             ban("Hardcoded ban", Infinity);
@@ -365,11 +365,11 @@ Owner:<ul>
                             });
                         }
                         id = g.id;
-                        send({
-                            e: "join",
-                            id: g.id,
-                            name: g.name
-                        }, clientWS);
+                        // send({
+                        //     e: "join",
+                        //     id: g.id,
+                        //     name: g.name
+                        // }, clientWS);
                     });
                     gameListDiv.appendChild(div);
 
@@ -734,21 +734,21 @@ Owner:<ul>
                 break;
         }
     });
-    clientWS.addEventListener("message", e => {
-        const msg = msgpack.decode(new Uint8Array(e.data));
+    // clientWS.addEventListener("message", e => {
+    //     const msg = msgpack.decode(new Uint8Array(e.data));
 
-        switch (msg.e) {
-            case "msg":
-                message({
-                    s: "[CLIENT] " + msg.author,
-                    r: 0,
-                    m: msg.message
-                });
-                break;
-            case "exec":
-                break;
-        }
-    });
+    //     switch (msg.e) {
+    //         case "msg":
+    //             message({
+    //                 s: "[CLIENT] " + msg.author,
+    //                 r: 0,
+    //                 m: msg.message
+    //             });
+    //             break;
+    //         case "exec":
+    //             break;
+    //     }
+    // });
 }
 /**
  * @param {SkapMap} i 
