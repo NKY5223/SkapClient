@@ -1,8 +1,12 @@
-function createObstacle(x = 0, y = 0, regionX = -25, regionY = -25, regionW = 50, regionH = 50, radius = 2, speed = 10, shootingSpeed = 0.1, overHeat = 4, coolDownTime = 4) {
+function createTurret(x = 0, y = 0, regionX = x - 25, regionY = y - 25, regionW = 50, regionH = 50, radius = 2, speed = 10, shootingSpeed = 0.1, overHeat = 4, coolDownTime = 4) {
     const turret = {
         pos: {
             x,
             y
+        },
+        size: {
+            x: 6,
+            y: 6
         },
         region: {
             pos: {
@@ -13,14 +17,16 @@ function createObstacle(x = 0, y = 0, regionX = -25, regionY = -25, regionW = 50
                 x: regionW,
                 y: regionH
             },
+            type: "turretRegion"
         },
-        radius, 
+        radius,
         speed,
         shootingSpeed,
         overHeat,
         coolDownTime,
         type: "turret"
     };
+    turret.region.turret = turret;
 
     // Create inputs/labels
     const xInput = document.createElement("input");
@@ -70,19 +76,19 @@ function createObstacle(x = 0, y = 0, regionX = -25, regionY = -25, regionW = 50
     speedInput.addEventListener("input", () => {
         turret.speed = Number(speedInput.value);
     });
-    
+
     const shootingSpeedInput = document.createElement("input");
     shootingSpeedInput.value = shootingSpeed;
     shootingSpeedInput.addEventListener("input", () => {
         turret.shootingSpeed = shootingSpeedInput.value = Math.max(shootingSpeedInput.value, 0);
     });
-    
+
     const overHeatInput = document.createElement("input");
     overHeatInput.value = overHeat;
     overHeatInput.addEventListener("input", () => {
         turret.overHeat = overHeatInput.value = Math.max(overHeatInput.value, 0);
     });
-    
+
     const coolDownTimeInput = document.createElement("input");
     coolDownTimeInput.value = coolDownTime;
     coolDownTimeInput.addEventListener("input", () => {
@@ -114,10 +120,10 @@ function createObstacle(x = 0, y = 0, regionX = -25, regionY = -25, regionW = 50
     turret.inputs = {
         x: xInput,
         y: yInput,
-        rx: regionXInput,
-        ry: regionYInput,
-        rw: regionWInput,
-        rh: regionHInput
+        rX: regionXInput,
+        rY: regionYInput,
+        rW: regionWInput,
+        rH: regionHInput
     };
 
     return turret;

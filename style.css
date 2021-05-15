@@ -572,6 +572,7 @@ canvas {
     width: clamp(200px, 100% - 650px, 600px);
     height: 25px;
     border: 5px solid #202020;
+    pointer-events: none;
 }
 #fuelBarInner {
     position: absolute;
@@ -588,6 +589,7 @@ canvas {
     background: #00000080;
     padding: 5px;
     text-align: right;
+    pointer-events: none;
 }
 #pos p {
     margin: 5px;
@@ -600,6 +602,7 @@ canvas {
     background: #00000080;
     padding: 5px;
     text-align: right;
+    pointer-events: none;
 }
 
 #overlay {
@@ -609,6 +612,7 @@ canvas {
     width: 210px;
     display: flex;
     flex-wrap: wrap;
+    pointer-events: none;
 }
 #overlay.hidden {
     display: none;

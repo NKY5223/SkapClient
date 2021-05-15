@@ -85,13 +85,12 @@ type GravZone = BaseSkapObject & {
     dir: 0 | 1 | 2 | 3;
     type: "gravZone";
 };
+type RotLavaPoint = VectorLike & {
+    type: "rotLavaPoint";
+    rotLava: RotatingLava;
+}
 type RotatingLava = BaseSkapObject & {
-    point: {
-        x: number;
-        y: number;
-        type: "rotLavaPoint";
-        rotLava: RotatingLava;
-    };
+    point: RotLavaPoint;
     startAngle: number;
     speed: number;
     type: "rotatingLava"
@@ -100,23 +99,41 @@ type CircularObject = BaseSkapObject & {
     radius: number;
     objectType: "obstacle" | "lava" | "slime" | "ice";
     type: "circularObject";
-}
+};
 type Door = BaseSkapObject & {
     linkIds: number[];
     type: "door";
-}
+};
 type Switch = BaseSkapObject & {
     id: number;
     dir: Direction;
     type: "switch";
-}
+};
 type Button = BaseSkapObject & {
     id: number;
     dir: Direction;
     type: "button";
-}
+};
+type TurretRegion = {
+    pos: VectorLike;
+    size: VectorLike;
+    type: "turretRegion";
+};
+type Turret = BaseSkapObject & {
+    size: {
+        x: 6;
+        y: 6;
+    };
+    region: TurretRegion;
+    radius: number;
+    speed: number;
+    shootingSpeed: number;
+    overHeat: number;
+    coolDownTime: number;
+    type: "turret";
+};
 
-type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone | RotatingLava | CircularObject | Door | Switch | Button;
+type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone | RotatingLava | CircularObject | Door | Switch | Button | Turret;
 
 declare function createObstacle(x?: number, y?: number, w?: number, h?: number): Obstacle;
 declare function createLava(x?: number, y?: number, w?: number, h?: number): Lava;
@@ -132,6 +149,7 @@ declare function createCircularObject(x?: number, y?: number, r?: number, type?:
 declare function createDoor(x?: number, y?: number, w?: number, h?: number, linkIds?: number[]): Door;
 declare function createSwitch(x?: number, y?: number, w?: number, h?: number, dir?: Direction, id?: number): Switch;
 declare function createButton(x?: number, y?: number, w?: number, h?: number, dir?: Direction, id?: number, time?: number): Button;
+declare function createTurret(x: number, y: number, regionX: number, regionY: number, regionW: number, regionH: number, radius: number, speed: number, shootingSpeed: number, overHeat: number, coolDownTime: number): Turret;
 
 declare function addObstacle(): void;
 declare function addLava(): void;
@@ -147,6 +165,7 @@ declare function addCircularObject(): void;
 declare function addDoor(): void;
 declare function addSwitch(): void;
 declare function addButton(): void;
+declare function addTurret(): void;
 
 type Area = {
     name: string;
@@ -172,9 +191,10 @@ type Area = {
         door: Door[];
         switch: Switch[];
         button: Button[];
+        turret: Turret[];
     };
     gravity: number;
-    
+
     element: HTMLLIElement;
     button: HTMLButtonElement;
     inputs: {

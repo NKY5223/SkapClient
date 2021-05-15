@@ -258,7 +258,7 @@ function createNumberArrayProperty(name = "Name", array = [0], update = array =>
     function values() {
         return Array.from(li.getElementsByTagName("input")).map(input => Number(input.value));
     }
-    function create(value) {
+    function create(value = 0) {
         const input = document.createElement("input");
         input.value = value;
         input.addEventListener("input", () => {
@@ -284,7 +284,7 @@ function createNumberArrayProperty(name = "Name", array = [0], update = array =>
         return property;
     }
 
-    const li = createFolder(name, array.map(input => Number(input.value)));
+    const li = createFolder(name, array.map(input => create(Number(input.value))));
     const ul = li.children[1];
 
     const addBtn = document.createElement("button");

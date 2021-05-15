@@ -388,17 +388,15 @@ function render() {
 
     // Render turrets
     ctx.globalAlpha = 1;
+    ctx.fillStyle = renderSettings.colors.turretBody;
     for (let obj of currentArea.objects.turret) {
-        ctx.save();
-        ctx.translate(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
-        ctx.rotate(obj.dir);
-        ctx.fillStyle = renderSettings.colors.turretCannon;
-        ctx.fillRect(0, -camScale * 2, camScale * 5, camScale * 4);
-        ctx.fillStyle = renderSettings.colors.turretBody;
         ctx.beginPath();
-        ctx.ellipse(0, 0, camScale * obj.size.x / 2, camScale * obj.size.y / 2, 0, 0, 7);
+        ctx.ellipse(
+            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+            Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+            camScale * 3, camScale * 3, 0, 0, 7
+        );
         ctx.fill();
-        ctx.restore();
     }
     // Render blocks(1)
     if (renderSettings.render.block1) {
@@ -501,7 +499,18 @@ function render() {
                     ctx.stroke();
                     continue;
                 }
+                if (type === "turret") {
+                    ctx.beginPath();
+                    ctx.ellipse(
+                        Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
+                        Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
+                        3 * camScale, 3 * camScale, 0, 0, 7
+                    );
+                    ctx.stroke();
+                    continue;
+                }
                 if (type === "rotLavaPoint") continue;
+                if (type === "turretRegion") continue;
                 ctx.strokeRect(
                     Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
                     Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
@@ -522,6 +531,24 @@ function render() {
                 5 * camScale, 5 * camScale, 0, 0, 7
             );
             ctx.stroke();
+            return;
+        }
+        if (selectedObject.type === "turret") {
+            ctx.beginPath();
+            ctx.ellipse(
+                Math.round(canvas.width / 2 + camScale * (selectedObject.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (selectedObject.pos.y - camY)),
+                3 * camScale, 3 * camScale, 0, 0, 7
+            );
+            ctx.stroke();
+
+            ctx.fillStyle = renderSettings.colors.turretRegion;
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (selectedObject.region.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (selectedObject.region.pos.y - camY)),
+                Math.round(camScale * selectedObject.region.size.x),
+                Math.round(camScale * selectedObject.region.size.y)
+            );
             return;
         }
         ctx.strokeRect(

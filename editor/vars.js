@@ -9,7 +9,7 @@ const controls = [
     localStorage.getItem("right") ?? "d"
 ];
 
-const types = ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "image0", "block0", "spawner", "door", "switch", "button", "circularSlime", "slime", "circularIce", "ice", "circularLava", "rotLavaPoint", "rotatingLava", "movingLava", "lava", "teleporter", "circularObstacle", "obstacle"];
+const types = ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "turretRegion", "image0", "block0", "spawner", "door", "switch", "button", "circularSlime", "slime", "circularIce", "ice", "circularLava", "rotLavaPoint", "rotatingLava", "movingLava", "lava", "teleporter", "circularObstacle", "obstacle"];
 function getObjects(type = "obstacle") {
     if (type === "block0") {
         return currentArea.objects.block.filter(o => !o.layer);
@@ -31,6 +31,9 @@ function getObjects(type = "obstacle") {
     }
     if (type === "circularIce") {
         return currentArea.objects.circularObject.filter(obj => obj.objectType === "ice");
+    }
+    if (type === "turretRegion") {
+        return currentArea.objects.turret.includes(selectedObject) ? [selectedObject.region] : [];
     }
     if (type in currentArea.objects) {
         return currentArea.objects[type];
@@ -86,7 +89,7 @@ const renderSettings = {
         doorLineOff: "#40404040",
 
         turretBody: "#404040",
-        turretCannon: "#303030",
+        turretRegion: "#ff000040",
 
         spawner: "#00004040",
 
@@ -296,8 +299,12 @@ const randomMapCreators = ["anonymous", "xXDark_L0rd_69420Xx", "Editor", "{{map-
 
 const map = {
     settings: {
-        name: randomMapNames[Math.floor(Math.random() * randomMapNames.length)],
-        creator: randomMapCreators[Math.floor(Math.random() * randomMapCreators.length)],
+        // name: randomMapNames[Math.floor(Math.random() * randomMapNames.length)],
+        // creator: randomMapCreators[Math.floor(Math.random() * randomMapCreators.length)],
+
+        name: "",
+        creator: "",
+
         spawnPos: [50, 50],
         spawnArea: "Home",
         version: null,
@@ -358,6 +365,7 @@ const contextBtns = {
     door: document.getElementById("createDoor"),
     switch: document.getElementById("createSwitch"),
     button: document.getElementById("createButton"),
+    turret: document.getElementById("createTurret"),
 
     area: document.getElementById("createArea"),
     deleteArea: document.getElementById("deleteArea"),

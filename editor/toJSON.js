@@ -73,6 +73,9 @@ function areaToJSON(area) {
     for (let button of area.objects.button) {
         objects.push(buttonToJSON(button));
     }
+    for (let turret of area.objects.turret) {
+        objects.push(turretToJSON(turret));
+    }
     return `{"name":${JSON.stringify(area.name)},"size":[${area.size[0]},${area.size[1]}],"backgroundColor":[${area.colorArr.join()},${area.opacity}],"areaColor":[${area.backgroundArr.join()}],"objects":[${objects.join()}],"gravity":${area.gravity * 100}}`;
 }
 
@@ -159,4 +162,10 @@ function switchToJSON(Switch) {
  */
 function buttonToJSON(button) {
     return `{"type":"button","position":[${button.pos.x},${button.pos.y}],"size":[${button.size.x},${button.size.y}],"id":${button.id},"dir":${button.dir},"time":${button.time}}`;
+}
+/**
+ * @param {Turret} turret 
+ */
+function turretToJSON(turret) {
+    return `{"type":"turret","position":[${turret.pos.x},${turret.pos.y}],"regionPosition":[${turret.region.pos.x},${turret.region.pos.y}],"regionSize":[${turret.region.size.x},${turret.region.size.y}],"radius":${turret.radius},"speed":${turret.speed},"shootingSpeed":${turret.shootingSpeed},"overHeat":${turret.overHeat},"coolDownTime":${turret.coolDownTime}}`;
 }

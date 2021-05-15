@@ -188,6 +188,14 @@ function loadFile(str) {
                         hide(button.element);
                         break;
                     }
+                    case "turret": {
+                        const turret = createTurret(object.position[0], object.position[1], object.regionPosition[0], object.regionPosition[1], object.regionSize[0], object.regionSize[1], object.radius, object.speed, object.shootingSpeed, object.overHeat, object.coolDownTime);
+                        parsedArea.objects.turret.push(turret);
+
+                        objectmenu.appendChild(turret.element);
+                        hide(turret.element);
+                        break;
+                    }
                     default: {
                         console.log("Unsupported object type", object.type);
                         console.log(object);
