@@ -35,6 +35,9 @@ function getObjects(type = "obstacle") {
     if (type === "turretRegion") {
         return currentArea.objects.turret.includes(selectedObject) ? [selectedObject.region] : [];
     }
+    if (type === "movingLava") {
+        return currentArea.objects.movingObject.filter(obj => obj.objectType === "lava");
+    }
     if (type in currentArea.objects) {
         return currentArea.objects[type];
     }
@@ -57,8 +60,8 @@ const renderSettings = {
     colors: {
         obstacle: "rgb(48, 56, 117.6)", // Is variable (shit) (no moar shit)
         lava: "#d01000",
-        rotLavaPoint: "#00000080",
-        rotLavaShadow: "#00000040",
+        lavaPoint: "#000000",
+        lavaShadow: "#00000040",
         slime: "#00c000",
         ice: "#00ffff",
         box: "#00000060",

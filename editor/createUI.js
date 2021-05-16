@@ -254,51 +254,6 @@ function createProperty(name = "name", input = document.createElement("input"), 
     return li;
 }
 
-function createNumberArrayProperty(name = "Name", array = [0], update = array => {}) {
-    function values() {
-        return Array.from(li.getElementsByTagName("input")).map(input => Number(input.value));
-    }
-    function create(value = 0) {
-        const input = document.createElement("input");
-        input.value = value;
-        input.addEventListener("input", () => {
-            update(values());
-        });
-
-        const property = createProperty("", input, "number");
-        const inside = document.createElement("div");
-        const removeBtn = document.createElement("button");
-
-        inside.appendChild(property.children[0]);
-        inside.appendChild(property.children[0]);
-        inside.classList.add("wrapper");
-
-        removeBtn.addEventListener("click", () => {
-            property.remove();
-            update(values());
-        });
-        removeBtn.classList.add("remove");
-
-        property.appendChild(inside);
-        property.appendChild(removeBtn);
-        return property;
-    }
-
-    const li = createFolder(name, array.map(input => create(Number(input.value))));
-    const ul = li.children[1];
-
-    const addBtn = document.createElement("button");
-    addBtn.classList.add("add");
-    addBtn.addEventListener("click", () => {
-        ul.insertBefore(create(0), addBtn);
-        update(values());
-    });
-
-    li.classList.add("array");
-    li.children[1].appendChild(addBtn);
-
-    return li;
-}
 
 let currentId = 0;
 function generateId() {

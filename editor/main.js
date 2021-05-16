@@ -488,21 +488,32 @@ canvas.addEventListener("mousedown", e => {
     }
 
     if (e.detail > 1 && selectedObject && selectedObject.type === "teleporter" && selectedObject.targetArea !== currentArea.name) {
-        for (let area of map.areas) {
-            if (selectedObject.targetArea === area.name) {
-                hide(currentArea.element);
-                currentArea = area;
-                if (selectedObject) hide(selectedObject.element);
+        let area = null;
+        if (area = map.areas.find(a => a.name === selectedObject.targetArea)) {
+            hide(currentArea.element);
+            currentArea = area;
+            if (selectedObject) hide(selectedObject.element);
+
+            let tp = null;
+            if (tp = area.objects.teleporter.find(t => t.id === selectedObject.targetID)) {
+                selectedObject = tp;
+                camX = tp.pos.x;
+                camY = tp.pos.y;
+            } else {
                 selectedObject = null;
-
-                timeOnEnter = Date.now();
-
-                show(area.element);
-                return;
+                camX = area.size[0] / 2;
+                camY = area.size[1] / 2;
             }
-        }
-        if (confirm(`Did not find area ${selectedObject.targetArea}, would you like to create it?`)) {
+
+            timeOnEnter = Date.now();
+
+            show(area.element);
+
+            return;
+        } else if (confirm(`Did not find area ${selectedObject.targetArea}, would you like to create it?`)) {
             addArea(selectedObject.targetArea);
+            camX = 50;
+            camY = 50;
         }
     }
 });

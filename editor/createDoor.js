@@ -37,6 +37,41 @@ function createDoor(x = 0, y = 0, w = 10, h = 10, linkIds = [0]) {
         door.size.y = hInput.value = Math.max(hInput.value, 0);
     });
 
+    // Link Ids
+    function update() {
+        door.linkIds = Array.from(linkIdsEl.children[1].children).map(property => Number(property.children[0].children[1].value));
+    }
+    function createLinkId(num) {
+        const input = document.createElement("input");
+        input.value = num;
+        input.addEventListener("input", update);
+        const property = createProperty("", input, "number");
+        property.children[0].classList.add("counter");
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("wrapper");
+        wrapper.appendChild(property.firstChild);
+        wrapper.appendChild(property.firstChild);
+        const remove = document.createElement("button");
+        remove.classList.add("remove");
+        remove.addEventListener("click", () => {
+            property.remove();
+            update();
+        });
+
+        property.appendChild(wrapper);
+        property.appendChild(remove);
+
+        return property;
+    }
+    const linkIdsEl = createFolder("Links", linkIds.map(createLinkId));
+    const addBtn = document.createElement("button");
+    linkIdsEl.classList.add("array");
+    addBtn.classList.add("add");
+    addBtn.addEventListener("click", () => {
+        linkIdsEl.children[1].appendChild(createLinkId(0));
+        update();
+    });
+    linkIdsEl.appendChild(addBtn);
 
     door.element = createFolder("Door Properties", [
         createFolder("Position", [
@@ -47,7 +82,7 @@ function createDoor(x = 0, y = 0, w = 10, h = 10, linkIds = [0]) {
             createProperty("width", wInput, "number"),
             createProperty("height", hInput, "number")
         ]),
-        createNumberArrayProperty("Links", linkIds, linkIds => door.linkIds = linkIds)
+        linkIdsEl
     ]);
     door.inputs = {
         x: xInput,

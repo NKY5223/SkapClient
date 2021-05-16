@@ -21,6 +21,7 @@ function render() {
         Math.round(currentArea?.size[1] * camScale),
     );
 
+    let time = (Date.now() - timeOnEnter) / 1000;
 
     if (!currentArea) return;
     if (renderSettings.render.obstacle) {
@@ -129,17 +130,90 @@ function render() {
             );
         }
         // Render movLava
-        for (let obj of currentArea.objects.movingLava) {
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = renderSettings.colors.lavaShadow;
+        for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "lava")) {
             ctx.fillRect(
-                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
-                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(canvas.width / 2 + camScale * (obj.points[0].x - obj.size.x / 2 - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.points[0].y - obj.size.y / 2 - camY)),
                 Math.round(camScale * obj.size.x),
                 Math.round(camScale * obj.size.y)
             );
         }
+
+        ctx.fillStyle = renderSettings.colors.lava;
+        for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "lava")) {
+            const times = obj.points.map((point, index, points) => {
+                let other = points[(index + points.length - 1) % points.length];
+                return Math.sqrt((other.x - point.x) * (other.x - point.x) + (other.y - point.y) * (other.y - point.y)) / point.vel;
+            });
+            const totalTime = times.reduce((a, n) => a + n, 0);
+
+            const currentTime = time % totalTime;
+
+            let timeI = 0;
+            let { x, y } = obj.points[0];
+            for (let i in obj.points) {
+                let pointTime = times[i];
+
+                // if (i == 0) console.log(timeI.toFixed(2), currentTime.toFixed(2), (timeI + pointTime).toFixed(2));
+                if (timeI <= currentTime && currentTime <= timeI + pointTime) {
+                    let point = obj.points[i];
+                    let next = obj.points[(Number(i) + 1) % obj.points.length];
+
+                    let ratio = (currentTime - timeI) / pointTime;
+                    x = point.x + ratio * (next.x - point.x);
+                    y = point.y + ratio * (next.y - point.y);
+
+                    break;
+                }
+                timeI += pointTime;
+            }
+
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (x - obj.size.x / 2 - camX)),
+                Math.round(canvas.height / 2 + camScale * (y - obj.size.y / 2 - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
+        ctx.fillStyle = renderSettings.colors.lavaPoint;
+        ctx.strokeStyle = renderSettings.colors.lavaPoint;
+        for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "lava")) {
+            for (let point of obj.points) {
+                ctx.beginPath();
+                ctx.ellipse(
+                    Math.round(canvas.width / 2 + camScale * (point.x - camX)),
+                    Math.round(canvas.height / 2 + camScale * (point.y - camY)),
+                    2 * camScale, 2 * camScale, 0, 0, 7
+                );
+                ctx.fill();
+            }
+
+            // Lines
+            ctx.lineWidth = camScale;
+            
+            ctx.beginPath();
+            ctx.moveTo(
+                Math.round(canvas.width / 2 + camScale * (obj.points[0].x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.points[0].y - camY))
+            );
+            for (let point of obj.points) {
+                ctx.lineTo(
+                    Math.round(canvas.width / 2 + camScale * (point.x - camX)),
+                    Math.round(canvas.height / 2 + camScale * (point.y - camY))
+                );
+            }
+            ctx.lineTo(
+                Math.round(canvas.width / 2 + camScale * (obj.points[0].x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.points[0].y - camY))
+            );
+            ctx.stroke();
+        }
+
         // Render rotLava
         ctx.globalAlpha = 1;
-        ctx.fillStyle = renderSettings.colors.rotLavaShadow;
+        ctx.fillStyle = renderSettings.colors.lavaShadow;
         for (let obj of currentArea.objects.rotatingLava) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -149,7 +223,6 @@ function render() {
             );
         }
 
-        let time = (Date.now() - timeOnEnter) / 1000;
         for (let obj of currentArea.objects.rotatingLava) {
             ctx.save();
             ctx.translate(
@@ -162,7 +235,7 @@ function render() {
             ctx.restore();
         }
 
-        ctx.fillStyle = renderSettings.colors.rotLavaPoint;
+        ctx.fillStyle = renderSettings.colors.lavaPoint;
         for (let obj of currentArea.objects.rotatingLava) {
             ctx.beginPath();
             ctx.ellipse(
@@ -343,13 +416,13 @@ function render() {
             ctx.stroke();
         }
         ctx.strokeStyle = renderSettings.colors.doorLineOn;
-        for (let s of currentArea.objects.switch.filter(s => obj.linkIds.includes(-s.id))) {
+        for (let s of currentArea.objects.switch.filter(s => obj.linkIds.includes(-s.id) && !obj.linkIds.includes(s.id))) {
             ctx.beginPath();
             ctx.moveTo(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
             ctx.lineTo(canvas.width / 2 + camScale * (s.pos.x + s.size.x / 2 - camX), canvas.height / 2 + camScale * (s.pos.y + s.size.y / 2 - camY));
             ctx.stroke();
         }
-        for (let b of currentArea.objects.button.filter(b => obj.linkIds.includes(-b.id))) {
+        for (let b of currentArea.objects.button.filter(b => obj.linkIds.includes(-b.id) && !obj.linkIds.includes(b.id))) {
             ctx.beginPath();
             ctx.moveTo(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
             ctx.lineTo(canvas.width / 2 + camScale * (b.pos.x + b.size.x / 2 - camX), canvas.height / 2 + camScale * (b.pos.y + b.size.y / 2 - camY));
@@ -551,6 +624,7 @@ function render() {
             );
             return;
         }
+        // if (selectedObject.type === "movingObject") return;
         ctx.strokeRect(
             Math.round(canvas.width / 2 + camScale * (selectedObject.pos.x - camX)),
             Math.round(canvas.height / 2 + camScale * (selectedObject.pos.y - camY)),

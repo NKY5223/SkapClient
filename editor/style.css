@@ -602,7 +602,7 @@ input:checked+.switchSpan::after {
     background: #ffffff !important;
 }
 .cardinalCenter:hover {
-    background: #c0c0c0;
+    background: #c0c0c0 !important;
 }
 .cardinalCenter.active {
     background: var(--cardinal) !important;
@@ -686,7 +686,7 @@ input:checked+.switchSpan::after {
 .array {
     counter-reset: index;
 }
-.array .label::after {
+.array .counter::after {
     counter-increment: index;
     content: counter(index);
 }
@@ -742,6 +742,24 @@ input:checked+.switchSpan::after {
 }
 .array .property:hover .remove {
     display: block;
+}
+.array .title:hover .remove {
+    display: block;
+}
+.array .title {
+    position: relative;
+}
+.array .title .remove::after {
+    color: #000000;
+}
+.array.min .property:hover .remove {
+    display: none !important;
+}
+.array.min .title:hover .remove {
+    display: none !important;
+}
+.array.min .property:hover .wrapper {
+    width: 100% !important;
 }
 
 @media (prefers-color-scheme: light) {

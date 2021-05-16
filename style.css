@@ -453,7 +453,7 @@ canvas {
 }
 
 .discordMsg {
-    color: #7289da;
+    color: #5865F2;
 }
 .discordMsg:before {
     content: '[DISCORD]';

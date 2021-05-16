@@ -20,8 +20,6 @@ declare function createProperty(name: string, input: null, type: "select", optio
 declare function createProperty(name: string, input: HTMLInputElement, type: "switch", options: null): HTMLLIElement;
 declare function createProperty(name: string, input: HTMLInputElement, type: string, options: PropertyOptions<any>): HTMLLIElement;
 
-declare function createNumberArrayProperty(name?: string, array?: number[], update: (array: number[]) => void): HTMLLIElement;
-
 
 type VectorLike = {
     x: number;
@@ -132,8 +130,15 @@ type Turret = BaseSkapObject & {
     coolDownTime: number;
     type: "turret";
 };
+type MovingObject = BaseSkapObject & {
+    points: {
+        x: number;
+        y: number;
+        vel: Number;
+    }[];
+}
 
-type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone | RotatingLava | CircularObject | Door | Switch | Button | Turret;
+type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone | RotatingLava | CircularObject | Door | Switch | Button | Turret | MovingObject;
 
 declare function createObstacle(x?: number, y?: number, w?: number, h?: number): Obstacle;
 declare function createLava(x?: number, y?: number, w?: number, h?: number): Lava;
@@ -192,6 +197,7 @@ type Area = {
         switch: Switch[];
         button: Button[];
         turret: Turret[];
+        movingObject: MovingObject[];
     };
     gravity: number;
 
