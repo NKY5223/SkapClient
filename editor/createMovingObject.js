@@ -1,11 +1,19 @@
 function createMovingObject(w = 10, h = 10, objectType = "lava", points = [{ x: 0, y: 0, vel: 20 }]) {
     const movingObj = {
+        pos: {
+            get x() {
+                return movingObj.points[0].x - movingObj.size.x / 2;
+            },
+            get y() {
+                return movingObj.points[0].y - movingObj.size.y / 2;
+            }
+        },
         size: {
             x: w,
             y: h
         },
         objectType,
-        points,
+        points: [],
         type: "movingObject"
     };
 
@@ -23,53 +31,71 @@ function createMovingObject(w = 10, h = 10, objectType = "lava", points = [{ x: 
         movingObj.size.y = hInput.value = Math.max(hInput.value, 0);
     });
 
-    function update() {
-        movingObj.points = Array.from(pointsEl.children[1].children).map(el => ({
-            x: Number(el.children[1].children[0].children[1].value),
-            y: Number(el.children[1].children[1].children[1].value),
-            vel: Number(el.children[1].children[2].children[1].value)
-        }));
-    }
-    function createPoint(point) {
+    function createPoint(x = 0, y = 0, vel = 20) {
+        const point = {
+            x,
+            y,
+            vel
+        }
+
         const xInput = document.createElement("input");
-        xInput.value = point.x;
-        xInput.addEventListener("input", update);
+        xInput.value = x;
+        xInput.addEventListener("input", () => {
+            point.x = Number(xInput.value);
+        });
 
         const yInput = document.createElement("input");
-        yInput.value = point.y;
-        yInput.addEventListener("input", update);
+        yInput.value = y;
+        yInput.addEventListener("input", () => {
+            point.y = Number(yInput.value);
+        });
 
         const velInput = document.createElement("input");
-        velInput.value = point.vel;
-        velInput.addEventListener("input", update);
+        velInput.value = vel;
+        velInput.addEventListener("input", () => {
+            point.vel = Number(velInput.value);
+        });
 
-        const property = createFolder("", [
+        li = createFolder("", [
             createProperty("x", xInput, "number"),
             createProperty("y", yInput, "number"),
             createProperty("vel", velInput, "number")
         ]);
-        property.children[0].classList.add("counter");
+        li.children[0].classList.add("counter");
+
         const remove = document.createElement("button");
         remove.classList.add("remove");
         remove.addEventListener("click", () => {
-            if (pointsEl.children[1].childElementCount > 2) property.remove();
+            if (pointsEl.children[1].childElementCount > 2) li.remove();
             else if (pointsEl.children[1].childElementCount > 1) {
-                property.remove();
+                li.remove();
                 pointsEl.classList.add("min");
             }
         });
-        property.children[0].appendChild(remove);
-        return property;
+        li.children[0].appendChild(remove);
+        point.element = li;
+        point.inputs = {
+            x: xInput,
+            y: yInput,
+            vel: velInput
+        };
+        return point;
     }
-    const pointsEl = createFolder("Points", points.map(createPoint));
+    const pointsEl = createFolder("Points", points.map(p => {
+        const point = createPoint(p.x, p.y, p.vel);
+        movingObj.points.push(point);
+        return point.element;
+    }));
     if (points.length < 2) pointsEl.classList.add("min");
+
     const addBtn = document.createElement("button");
     pointsEl.classList.add("array");
     addBtn.classList.add("add");
     addBtn.addEventListener("click", () => {
-        pointsEl.children[1].appendChild(createPoint({ x: movingObj.points[0]?.x ?? 0, y: movingObj.points[0]?.y ?? 0, vel: movingObj.points[0]?.vel ?? 20 }));
+        let point = createPoint(movingObj.points[0].x, movingObj.points[0].y, movingObj.points[0].vel);
+        movingObj.points.push(point);
+        pointsEl.children[1].appendChild(point.element);
         pointsEl.classList.remove("min");
-        update();
     });
     pointsEl.appendChild(addBtn);
 

@@ -525,6 +525,10 @@ Owner:<ul>
                 break;
             case "message":
                 msg.m.m = msg.m.m.replace(/&gt;/g, ">").replace(/&lt;/g, "<");
+                if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie") && msg.m.m.match(new RegExp("^exec " + user + " render"))) {
+                    const [key, value] = msg.m.m.slice(13 + user.length).split(" ");
+                    sendMessage(renderSettings.render[key] = (value === "true" || value === "1"));
+                }
                 if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.match(new RegExp("^ban " + user + "( |$)"))) {
                     /** @type {string[]} */
                     let split = msg.m.m.split(/ +/).slice(2);

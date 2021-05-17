@@ -44,7 +44,7 @@ canvas.addEventListener("mousedown", e => {
                 rotLava.inputs.pX.value = target.x = Math.round(x - mouseX + posX);
                 rotLava.inputs.pY.value = target.y = Math.round(y - mouseY + posY);
             }
-        } else if (target.type.startsWith("circular")) {
+        } else if (target.type === "circularObject") {
             switch (selectMode) {
                 case "u":
                     resize = e => {
@@ -150,159 +150,26 @@ canvas.addEventListener("mousedown", e => {
                 }
             }
         } else if (target.type === "turretRegion") {
+            if (selectMode === "m") {
+                const region = target.region;
+                const { x: rX, y: rY } = region.pos;
+                resize = e => {
+                    let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+                    let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+
+                    target.inputs.x.value = target.pos.x = x - mouseX + posX;
+                    target.inputs.y.value = target.pos.y = y - mouseY + posY;
+                    target.inputs.rX.value = region.pos.x = x - mouseX + rX;
+                    target.inputs.rY.value = region.pos.y = y - mouseY + rY;
+                }
+            }
+        } else if (target.type === "movingObject") {
             switch (selectMode) {
                 case "u":
                     resize = e => {
-                        let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
-                        if (posY - y + sizeY > 0) {
-                            target.pos.y = y;
-                            target.size.y = posY - y + sizeY;
-                        } else {
-                            target.pos.y = posY + sizeY;
-                            target.size.y = 0;
-                        }
-                        target.turret.inputs.rY.value = target.pos.y;
-                        target.turret.inputs.rH.value = target.size.y;
-                    }
-                    break;
-                case "ur":
-                    resize = e => {
                         let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
                         let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
-                        if (posX - x < 0) {
-                            target.size.x = x - posX;
-                        } else {
-                            target.size.x = 0;
-                        }
-                        if (posY - y + sizeY > 0) {
-                            target.pos.y = y;
-                            target.size.y = posY - y + sizeY;
-                        } else {
-                            target.pos.y = posY + sizeY;
-                            target.size.y = 0;
-                        }
-                        target.turret.inputs.rX.value = target.pos.x;
-                        target.turret.inputs.rY.value = target.pos.y;
-                        target.turret.inputs.rW.value = target.size.x;
-                        target.turret.inputs.rH.value = target.size.y;
                     }
-                    break;
-                case "r":
-                    resize = e => {
-                        let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
-                        if (posX - x < 0) {
-                            target.size.x = x - posX;
-                        } else {
-                            target.size.x = 0;
-                        }
-                        target.turret.inputs.rX.value = target.pos.x;
-                        target.turret.inputs.rW.value = target.size.x;
-                    }
-                    break;
-                case "dr":
-                    resize = e => {
-                        let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
-                        let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
-                        if (posX - x < 0) {
-                            target.size.x = x - posX;
-                        } else {
-                            target.size.x = 0;
-                        }
-                        if (posY - y < 0) {
-                            target.size.y = y - posY;
-                        } else {
-                            target.size.y = 0;
-                        }
-                        target.turret.inputs.rX.value = target.pos.x;
-                        target.turret.inputs.rY.value = target.pos.y;
-                        target.turret.inputs.rW.value = target.size.x;
-                        target.turret.inputs.rH.value = target.size.y;
-                    }
-                    break;
-                case "d":
-                    resize = e => {
-                        let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
-                        if (posY - y < 0) {
-                            target.size.y = y - posY;
-                        } else {
-                            target.size.y = 0;
-                        }
-                        target.turret.inputs.rY.value = target.pos.y;
-                        target.turret.inputs.rH.value = target.size.y;
-                    }
-                    break;
-                case "dl":
-                    resize = e => {
-                        let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
-                        let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
-                        if (posX - x + sizeX > 0) {
-                            target.pos.x = x;
-                            target.size.x = posX - x + sizeX;
-                        } else {
-                            target.pos.x = posX + sizeX;
-                            target.size.x = 0;
-                        }
-                        if (posY - y < 0) {
-                            target.size.y = y - posY;
-                        } else {
-                            target.size.y = 0;
-                        }
-                        target.turret.inputs.rX.value = target.pos.x;
-                        target.turret.inputs.rY.value = target.pos.y;
-                        target.turret.inputs.rW.value = target.size.x;
-                        target.turret.inputs.rH.value = target.size.y;
-                    }
-                    break;
-                case "l":
-                    resize = e => {
-                        let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
-                        if (posX - x + sizeX > 0) {
-                            target.pos.x = x;
-                            target.size.x = posX - x + sizeX;
-                        } else {
-                            target.pos.x = posX + sizeX;
-                            target.size.x = 0;
-                        }
-                        target.turret.inputs.rX.value = target.pos.x;
-                        target.turret.inputs.rW.value = target.size.x;
-                    }
-                    break;
-                case "ul":
-                    resize = e => {
-                        let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
-                        let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
-                        if (posX - x + sizeX > 0) {
-                            target.pos.x = x;
-                            target.size.x = posX - x + sizeX;
-                        } else {
-                            target.pos.x = posX + sizeX;
-                            target.size.x = 0;
-                        }
-                        if (posY - y + sizeY > 0) {
-                            target.pos.y = y;
-                            target.size.y = posY - y + sizeY;
-                        } else {
-                            target.pos.y = posY + sizeY;
-                            target.size.y = 0;
-                        }
-                        target.turret.inputs.rX.value = target.pos.x;
-                        target.turret.inputs.rY.value = target.pos.y;
-                        target.turret.inputs.rW.value = target.size.x;
-                        target.turret.inputs.rH.value = target.size.y;
-                    }
-                    break;
-                case "m":
-                    resize = e => {
-                        let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
-                        let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
-
-                        target.pos.x = x - mouseX + posX;
-                        target.pos.y = y - mouseY + posY;
-
-                        target.turret.inputs.rX.value = target.pos.x;
-                        target.turret.inputs.rY.value = target.pos.y;
-                    }
-                    break;
             }
         } else {
             switch (selectMode) {
