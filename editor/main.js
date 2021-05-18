@@ -363,9 +363,9 @@ canvas.addEventListener("mousedown", e => {
 
             let tp = null;
             if (tp = area.objects.teleporter.find(t => t.id === selectedObject.targetID)) {
-                selectedObject = tp;
                 camX = tp.pos.x;
                 camY = tp.pos.y;
+                selectedObject = tp;
             } else {
                 selectedObject = null;
                 camX = area.size[0] / 2;
@@ -596,7 +596,7 @@ window.addEventListener("beforeunload", e => {
     spawnAreaInput.addEventListener("change", () => {
 
         if (map.areas.some(area => area.name === spawnAreaInput.value)) map.settings.spawnArea = spawnAreaInput.value;
-        else if (prompt(`Area ${spawnAreaInput.value} not found, would you like to create it?`)) addArea(spawnAreaInput.value);
+        else if (confirm(`Area ${spawnAreaInput.value} not found, would you like to create it?`)) addArea(spawnAreaInput.value);
         else alert("You'd better make that area then.");
 
     })

@@ -1025,7 +1025,13 @@ function message(msg, force = false) {
         ${force
             ? msg.m.replace(URLRegex, '<a href="$1" target="_blank">$1</a>').replace(EmailRegex, '<a href="mailto:$1" target="_blank">$1</a>')
             : checkProfanityString(msg.m.safe().replace(URLRegex, '<a href="$1" target="_blank">$1</a>').replace(EmailRegex, '<a href="mailto:$1" target="_blank">$1</a>'))
-        }`;
+        }<span class="timestamp">${(function getTimestamp() {
+            let now = new Date();
+            function fillZeros(num) {
+                return "0".repeat(2 - (num = String(num)).length) + num;
+            }
+            return now.getHours() + ":" + fillZeros(now.getMinutes());
+        })()}</span>`;
     wrapper.appendChild(p);
     chat.appendChild(wrapper);
     if (scroll) p.scrollIntoView();
