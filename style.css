@@ -693,4 +693,5 @@ canvas {
     top: 0;
     left: 0;
     pointer-events: none;
+    transition: 0.4s ease-in-out;
 }
