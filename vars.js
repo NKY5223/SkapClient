@@ -649,6 +649,8 @@ const hatRewards = {
 };
 const exitHatRewards = document.getElementsByClassName("exithatreward");
 
+const invertDiv = document.getElementById("invert");
+
 // Functions
 /**
  * Custom Alert UwU <3

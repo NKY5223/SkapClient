@@ -258,8 +258,10 @@ Owner:<ul>
         });
         document.getElementById("logo").addEventListener("mousedown", e => {
             if (e.detail >= 20) {
-                renderSettings.render.invert = true;
-                customAlert("invert mode turned ON");
+                customAlert("Toggled Invert Mode");
+                invertDiv.classList.toggle("hidden");
+            } else if (e.detail >= 10) {
+                customAlert(e.detail);
             }
         });
         createGameBtn.addEventListener("click", () => {

@@ -679,3 +679,18 @@ canvas {
 .exitreward:focus {
     outline: none;
 }
+
+#invert.hidden {
+    display: block;
+    top: -100%;
+}
+#invert {
+    mix-blend-mode: difference;
+    background: #ffffff;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
