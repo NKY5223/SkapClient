@@ -298,6 +298,7 @@ const renderSettings = {
         skins: {
             NKY: loadImage("skins/NKY.png"),
             NKY5223: loadImage("skins/NKY.png"),
+            NKYv2: loadImage("skins/Peach.svg"),
             haha0201: loadImage("skins/kinda_pro.png"),
             ZeroTix: loadImage("skins/zerotixpro.png"),
             Sonicexe: loadImage("skins/beggar.png"),
