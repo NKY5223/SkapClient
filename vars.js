@@ -304,7 +304,7 @@ const renderSettings = {
             wolfie: loadImage("skins/wolfer.png"),
             wolfer: loadImage("skins/wolfer.png"),
             wolfy: loadImage("skins/wolfer.png"),
-            Frog: loadImage("skins/Frog.png"),
+            Frog: loadImage("skins/Frog.svg "),
             HayrenRyzm: loadImage("skins/RayhanADev.png"),
             RayhanADev: loadImage("skins/RayhanADev.png")
         },
