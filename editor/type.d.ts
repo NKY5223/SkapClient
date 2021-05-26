@@ -16,7 +16,7 @@ declare function createProperty(name: string, input: HTMLInputElement, type: "te
 declare function createProperty(name: string, input: HTMLInputElement, type: "direction", options: PropertyOptions<number>): HTMLLIElement;
 declare function createProperty(name: string, input: null, type: "cardinal", options: PropertyOptions<Direction>): HTMLLIElement;
 declare function createProperty(name: string, input: null, type: "cardinalCenter", options: PropertyOptions<Direction | 4>): HTMLLIElement;
-declare function createProperty(name: string, input: null, type: "select", options: SelectOptions): HTMLLIElement;
+declare function createProperty(name: string, input: null, type: "select", options: SelectOptions<any>): HTMLLIElement;
 declare function createProperty(name: string, input: HTMLInputElement, type: "switch", options: null): HTMLLIElement;
 declare function createProperty(name: string, input: HTMLInputElement, type: string, options: PropertyOptions<any>): HTMLLIElement;
 
