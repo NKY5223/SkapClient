@@ -26,7 +26,7 @@ function addMovingObject() {
 
         let posX = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
         let posY = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
-        let movingObj = createMovingObject(0, 0);
+        let movingObj = createMovingObject(0, 0, "lava", [{ x: posX, y: posY, vel: 20 }]);
         currentArea.objects.movingObject.push(movingObj);
         objectmenu.appendChild(movingObj.element);
         if (selectedObject) hide(selectedObject.element);
@@ -35,10 +35,10 @@ function addMovingObject() {
         function mousemove(e) {
             let x = Math.round((e.offsetX - canvas.width / 2) / camScale + camX);
             let y = Math.round((e.offsetY - canvas.height / 2) / camScale + camY);
-            
+
             movingObj.inputs.w.value = movingObj.size.x = Math.max(x - posX, 0);
             movingObj.inputs.h.value = movingObj.size.y = Math.max(y - posY, 0);
-         
+
             movingObj.inputs.x.value = movingObj.points[0].x = posX + movingObj.size.x / 2;
             movingObj.inputs.y.value = movingObj.points[0].y = posY + movingObj.size.y / 2;
         }

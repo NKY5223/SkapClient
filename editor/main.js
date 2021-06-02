@@ -151,16 +151,16 @@ canvas.addEventListener("mousedown", e => {
             }
         } else if (target.type === "turretRegion") {
             if (selectMode === "m") {
-                const region = target.region;
-                const { x: rX, y: rY } = region.pos;
+                const { x: rX, y: rY } = target.pos;
+                const turret = target.turret;
                 resize = e => {
                     let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
                     let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
 
-                    target.inputs.x.value = target.pos.x = x - mouseX + posX;
-                    target.inputs.y.value = target.pos.y = y - mouseY + posY;
-                    target.inputs.rX.value = region.pos.x = x - mouseX + rX;
-                    target.inputs.rY.value = region.pos.y = y - mouseY + rY;
+                    turret.inputs.x.value = target.pos.x = x - mouseX + posX;
+                    turret.inputs.y.value = target.pos.y = y - mouseY + posY;
+                    turret.inputs.rX.value = target.pos.x = x - mouseX + rX;
+                    turret.inputs.rY.value = target.pos.y = y - mouseY + rY;
                 }
             }
         } else if (target.type === "movingObject") {
@@ -653,6 +653,7 @@ contextBtns.door.addEventListener("click", addDoor);
 contextBtns.switch.addEventListener("click", addSwitch);
 contextBtns.button.addEventListener("click", addButton);
 contextBtns.turret.addEventListener("click", addTurret);
+contextBtns.movObj.addEventListener("click", addMovingObject);
 
 contextBtns.area.addEventListener("click", () => addArea());
 contextBtns.resetTime.addEventListener("click", () => timeOnEnter = Date.now());

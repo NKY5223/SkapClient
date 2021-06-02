@@ -369,6 +369,7 @@ const contextBtns = {
     switch: document.getElementById("createSwitch"),
     button: document.getElementById("createButton"),
     turret: document.getElementById("createTurret"),
+    movObj: document.getElementById("createMovObj"),
 
     area: document.getElementById("createArea"),
     deleteArea: document.getElementById("deleteArea"),
