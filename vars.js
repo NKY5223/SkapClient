@@ -301,11 +301,9 @@ const renderSettings = {
             NKYv2: loadImage("skins/Peach.svg"),
             haha0201: loadImage("skins/kinda_pro.png"),
             ZeroTix: loadImage("skins/zerotixpro.png"),
-            Sonicexe: loadImage("skins/beggar.png"),
             wolfie: loadImage("skins/wolfer.png"),
             wolfer: loadImage("skins/wolfer.png"),
             wolfy: loadImage("skins/wolfer.png"),
-            Frog: loadImage("skins/Frog.svg "),
             HayrenRyzm: loadImage("skins/RayhanADev.png"),
             RayhanADev: loadImage("skins/RayhanADev.png")
         },
