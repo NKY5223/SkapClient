@@ -1,4 +1,3 @@
-let time = 0;
 function render() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -228,8 +227,6 @@ function render() {
                 return Math.sqrt((next.x - point.x) * (next.x - point.x) + (next.y - point.y) * (next.y - point.y)) / point.vel;
             });
             const totalTime = times.reduce((a, n) => a + n, 0);
-
-            console.log(times);
 
             const currentTime = time % totalTime;
 
