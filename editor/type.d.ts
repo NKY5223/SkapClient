@@ -136,6 +136,7 @@ type MovingObject = BaseSkapObject & {
         y: number;
         vel: Number;
     }[];
+    objectType: "obstacle" | "lava" | "slime" | "ice"
 }
 
 type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone | RotatingLava | CircularObject | Door | Switch | Button | Turret | MovingObject;
@@ -155,6 +156,7 @@ declare function createDoor(x?: number, y?: number, w?: number, h?: number, link
 declare function createSwitch(x?: number, y?: number, w?: number, h?: number, dir?: Direction, id?: number): Switch;
 declare function createButton(x?: number, y?: number, w?: number, h?: number, dir?: Direction, id?: number, time?: number): Button;
 declare function createTurret(x: number, y: number, regionX: number, regionY: number, regionW: number, regionH: number, radius: number, speed: number, shootingSpeed: number, overHeat: number, coolDownTime: number): Turret;
+declare function createMovingObject(w?: number, h?: number, objectType?: "obstacle" | "lava" | "slime" | "ice", points?: { x: number, y: number, vel: number }[]);
 
 declare function addObstacle(): void;
 declare function addLava(): void;

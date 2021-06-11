@@ -163,14 +163,14 @@ canvas.addEventListener("mousedown", e => {
                     turret.inputs.rY.value = target.pos.y = y - mouseY + rY;
                 }
             }
-        } else if (target.type === "movingObject") {
-            switch (selectMode) {
-                case "u":
-                    resize = e => {
-                        let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
-                        let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
-                    }
-            }
+        // } else if (target.type === "movingObject") {
+        //     switch (selectMode) {
+        //         case "u":
+        //             resize = e => {
+        //                 let x = Math.round((e.pageX - canvas.width / 2) / camScale + camX);
+        //                 let y = Math.round((e.pageY - canvas.height / 2) / camScale + camY);
+        //             }
+        //     }
         } else {
             switch (selectMode) {
                 case "u":

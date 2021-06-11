@@ -46,6 +46,87 @@ function render() {
             );
             ctx.fill();
         }
+        // Render movObstacle
+        // Shadow
+        ctx.globalAlpha = 0.4;
+        for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "obstacle")) {
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.points[0].x - obj.size.x / 2 - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.points[0].y - obj.size.y / 2 - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
+
+        ctx.globalAlpha = 1;
+        for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "obstacle")) {
+            const times = obj.points.map((point, index, points) => {
+                let other = points[(index + points.length - 1) % points.length];
+                return Math.sqrt((other.x - point.x) * (other.x - point.x) + (other.y - point.y) * (other.y - point.y)) / point.vel;
+            });
+            const totalTime = times.reduce((a, n) => a + n, 0);
+
+            const currentTime = time % totalTime;
+
+            let timeI = 0;
+            let { x, y } = obj.points[0];
+            for (let i in obj.points) {
+                let pointTime = times[i];
+
+                // if (i == 0) console.log(timeI.toFixed(2), currentTime.toFixed(2), (timeI + pointTime).toFixed(2));
+                if (timeI <= currentTime && currentTime <= timeI + pointTime) {
+                    let point = obj.points[i];
+                    let next = obj.points[(Number(i) + 1) % obj.points.length];
+
+                    let ratio = (currentTime - timeI) / pointTime;
+                    x = point.x + ratio * (next.x - point.x);
+                    y = point.y + ratio * (next.y - point.y);
+
+                    break;
+                }
+                timeI += pointTime;
+            }
+
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (x - obj.size.x / 2 - camX)),
+                Math.round(canvas.height / 2 + camScale * (y - obj.size.y / 2 - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
+        ctx.fillStyle = renderSettings.colors.point;
+        ctx.strokeStyle = renderSettings.colors.point;
+        for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "obstacle")) {
+            for (let point of obj.points) {
+                ctx.beginPath();
+                ctx.ellipse(
+                    Math.round(canvas.width / 2 + camScale * (point.x - camX)),
+                    Math.round(canvas.height / 2 + camScale * (point.y - camY)),
+                    2 * camScale, 2 * camScale, 0, 0, 7
+                );
+                ctx.fill();
+            }
+
+            // Lines
+            ctx.lineWidth = camScale;
+            
+            ctx.beginPath();
+            ctx.moveTo(
+                Math.round(canvas.width / 2 + camScale * (obj.points[0].x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.points[0].y - camY))
+            );
+            for (let point of obj.points) {
+                ctx.lineTo(
+                    Math.round(canvas.width / 2 + camScale * (point.x - camX)),
+                    Math.round(canvas.height / 2 + camScale * (point.y - camY))
+                );
+            }
+            ctx.lineTo(
+                Math.round(canvas.width / 2 + camScale * (obj.points[0].x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.points[0].y - camY))
+            );
+            ctx.stroke();
+        }
     }
     // Render the ****ing teleporters (they suck)
     if (renderSettings.render.teleporter) {
@@ -130,8 +211,8 @@ function render() {
             );
         }
         // Render movLava
-        ctx.globalAlpha = 1;
-        ctx.fillStyle = renderSettings.colors.lavaShadow;
+        // Shadow
+        ctx.globalAlpha = 0.4;
         for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "lava")) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.points[0].x - obj.size.x / 2 - camX)),
@@ -141,7 +222,7 @@ function render() {
             );
         }
 
-        ctx.fillStyle = renderSettings.colors.lava;
+        ctx.globalAlpha = 1;
         for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "lava")) {
             const times = obj.points.map((point, index, points) => {
                 let other = points[(index + points.length - 1) % points.length];
@@ -177,8 +258,8 @@ function render() {
                 Math.round(camScale * obj.size.y)
             );
         }
-        ctx.fillStyle = renderSettings.colors.lavaPoint;
-        ctx.strokeStyle = renderSettings.colors.lavaPoint;
+        ctx.fillStyle = renderSettings.colors.point;
+        ctx.strokeStyle = renderSettings.colors.point;
         for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "lava")) {
             for (let point of obj.points) {
                 ctx.beginPath();
@@ -212,8 +293,9 @@ function render() {
         }
 
         // Render rotLava
-        ctx.globalAlpha = 1;
-        ctx.fillStyle = renderSettings.colors.lavaShadow;
+        // Shadow
+        ctx.globalAlpha = 0.4;
+        ctx.fillStyle = renderSettings.colors.lava;
         for (let obj of currentArea.objects.rotatingLava) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -223,6 +305,7 @@ function render() {
             );
         }
 
+        ctx.globalAlpha = 1;
         for (let obj of currentArea.objects.rotatingLava) {
             ctx.save();
             ctx.translate(
@@ -230,12 +313,11 @@ function render() {
                 Math.round(canvas.height / 2 + camScale * (obj.point.y - camY))
             );
             ctx.rotate((obj.startAngle + time * obj.speed) * Math.PI / 180);
-            ctx.fillStyle = renderSettings.colors.lava;
             ctx.fillRect(camScale * (obj.pos.x - obj.point.x), camScale * (obj.pos.y - obj.point.y), camScale * obj.size.x, camScale * obj.size.y);
             ctx.restore();
         }
 
-        ctx.fillStyle = renderSettings.colors.lavaPoint;
+        ctx.fillStyle = renderSettings.colors.point;
         for (let obj of currentArea.objects.rotatingLava) {
             ctx.beginPath();
             ctx.ellipse(
@@ -281,6 +363,87 @@ function render() {
             );
             ctx.fill();
         }
+        // Render movLava
+        // Shadow
+        ctx.globalAlpha = 0.4;
+        for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "ice")) {
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.points[0].x - obj.size.x / 2 - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.points[0].y - obj.size.y / 2 - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
+
+        ctx.globalAlpha = 1;
+        for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "ice")) {
+            const times = obj.points.map((point, index, points) => {
+                let other = points[(index + points.length - 1) % points.length];
+                return Math.sqrt((other.x - point.x) * (other.x - point.x) + (other.y - point.y) * (other.y - point.y)) / point.vel;
+            });
+            const totalTime = times.reduce((a, n) => a + n, 0);
+
+            const currentTime = time % totalTime;
+
+            let timeI = 0;
+            let { x, y } = obj.points[0];
+            for (let i in obj.points) {
+                let pointTime = times[i];
+
+                // if (i == 0) console.log(timeI.toFixed(2), currentTime.toFixed(2), (timeI + pointTime).toFixed(2));
+                if (timeI <= currentTime && currentTime <= timeI + pointTime) {
+                    let point = obj.points[i];
+                    let next = obj.points[(Number(i) + 1) % obj.points.length];
+
+                    let ratio = (currentTime - timeI) / pointTime;
+                    x = point.x + ratio * (next.x - point.x);
+                    y = point.y + ratio * (next.y - point.y);
+
+                    break;
+                }
+                timeI += pointTime;
+            }
+
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (x - obj.size.x / 2 - camX)),
+                Math.round(canvas.height / 2 + camScale * (y - obj.size.y / 2 - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
+        ctx.fillStyle = renderSettings.colors.point;
+        ctx.strokeStyle = renderSettings.colors.point;
+        for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "ice")) {
+            for (let point of obj.points) {
+                ctx.beginPath();
+                ctx.ellipse(
+                    Math.round(canvas.width / 2 + camScale * (point.x - camX)),
+                    Math.round(canvas.height / 2 + camScale * (point.y - camY)),
+                    2 * camScale, 2 * camScale, 0, 0, 7
+                );
+                ctx.fill();
+            }
+
+            // Lines
+            ctx.lineWidth = camScale;
+            
+            ctx.beginPath();
+            ctx.moveTo(
+                Math.round(canvas.width / 2 + camScale * (obj.points[0].x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.points[0].y - camY))
+            );
+            for (let point of obj.points) {
+                ctx.lineTo(
+                    Math.round(canvas.width / 2 + camScale * (point.x - camX)),
+                    Math.round(canvas.height / 2 + camScale * (point.y - camY))
+                );
+            }
+            ctx.lineTo(
+                Math.round(canvas.width / 2 + camScale * (obj.points[0].x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.points[0].y - camY))
+            );
+            ctx.stroke();
+        }
     }
     if (renderSettings.render.slime) {
         // Render slime
@@ -303,6 +466,87 @@ function render() {
                 0, 0, 7
             );
             ctx.fill();
+        }
+        // Render movLava
+        // Shadow
+        ctx.globalAlpha = 0.4;
+        for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "slime")) {
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.points[0].x - obj.size.x / 2 - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.points[0].y - obj.size.y / 2 - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
+
+        ctx.globalAlpha = 1;
+        for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "slime")) {
+            const times = obj.points.map((point, index, points) => {
+                let other = points[(index + points.length - 1) % points.length];
+                return Math.sqrt((other.x - point.x) * (other.x - point.x) + (other.y - point.y) * (other.y - point.y)) / point.vel;
+            });
+            const totalTime = times.reduce((a, n) => a + n, 0);
+
+            const currentTime = time % totalTime;
+
+            let timeI = 0;
+            let { x, y } = obj.points[0];
+            for (let i in obj.points) {
+                let pointTime = times[i];
+
+                // if (i == 0) console.log(timeI.toFixed(2), currentTime.toFixed(2), (timeI + pointTime).toFixed(2));
+                if (timeI <= currentTime && currentTime <= timeI + pointTime) {
+                    let point = obj.points[i];
+                    let next = obj.points[(Number(i) + 1) % obj.points.length];
+
+                    let ratio = (currentTime - timeI) / pointTime;
+                    x = point.x + ratio * (next.x - point.x);
+                    y = point.y + ratio * (next.y - point.y);
+
+                    break;
+                }
+                timeI += pointTime;
+            }
+
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (x - obj.size.x / 2 - camX)),
+                Math.round(canvas.height / 2 + camScale * (y - obj.size.y / 2 - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
+        ctx.fillStyle = renderSettings.colors.point;
+        ctx.strokeStyle = renderSettings.colors.point;
+        for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "slime")) {
+            for (let point of obj.points) {
+                ctx.beginPath();
+                ctx.ellipse(
+                    Math.round(canvas.width / 2 + camScale * (point.x - camX)),
+                    Math.round(canvas.height / 2 + camScale * (point.y - camY)),
+                    2 * camScale, 2 * camScale, 0, 0, 7
+                );
+                ctx.fill();
+            }
+
+            // Lines
+            ctx.lineWidth = camScale;
+            
+            ctx.beginPath();
+            ctx.moveTo(
+                Math.round(canvas.width / 2 + camScale * (obj.points[0].x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.points[0].y - camY))
+            );
+            for (let point of obj.points) {
+                ctx.lineTo(
+                    Math.round(canvas.width / 2 + camScale * (point.x - camX)),
+                    Math.round(canvas.height / 2 + camScale * (point.y - camY))
+                );
+            }
+            ctx.lineTo(
+                Math.round(canvas.width / 2 + camScale * (obj.points[0].x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.points[0].y - camY))
+            );
+            ctx.stroke();
         }
     }
     // Render buttons
@@ -502,7 +746,7 @@ function render() {
     }
     // Render grav zones
     ctx.setLineDash([Math.round(2 * camScale), Math.round(6 * camScale)]);
-    ctx.lineDashOffset = Math.round((time += 0.5) * camScale);
+    ctx.lineDashOffset = Math.round(time * 25 * camScale);
     ctx.lineWidth = Math.round(camScale);
     ctx.lineCap = "round";
     for (let obj of currentArea.objects.gravityZone) {

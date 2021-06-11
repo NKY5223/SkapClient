@@ -76,6 +76,9 @@ function areaToJSON(area) {
     for (let turret of area.objects.turret) {
         objects.push(turretToJSON(turret));
     }
+    for (let movObj of area.objects.movingObject) {
+        objects.push(movObjToJSON(movObj));
+    }
     return `{"name":${JSON.stringify(area.name)},"size":[${area.size[0]},${area.size[1]}],"backgroundColor":[${area.colorArr.join()},${area.opacity}],"areaColor":[${area.backgroundArr.join()}],"objects":[${objects.join()}],"gravity":${area.gravity * 100}}`;
 }
 
@@ -168,4 +171,10 @@ function buttonToJSON(button) {
  */
 function turretToJSON(turret) {
     return `{"type":"turret","position":[${turret.pos.x},${turret.pos.y}],"regionPosition":[${turret.region.pos.x},${turret.region.pos.y}],"regionSize":[${turret.region.size.x},${turret.region.size.y}],"radius":${turret.radius},"speed":${turret.speed},"shootingSpeed":${turret.shootingSpeed},"overHeat":${turret.overHeat},"coolDownTime":${turret.coolDownTime}}`;
+}
+/**
+ * @param {MovingObject} movObj
+ */
+function movObjToJSON(movObj) {
+    return `{"type":"moving${capitalise(movObj.objectType)}","size":[${movObj.size.x},${movObj.size.y}],"points":[${movObj.points.map(point=>(`{"position": [${point.x}, ${point.y}],"vel": ${point.vel}}`)).join()}]}`;
 }

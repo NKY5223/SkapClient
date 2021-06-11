@@ -9,7 +9,7 @@ const controls = [
     localStorage.getItem("right") ?? "d"
 ];
 
-const types = ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "turretRegion", "image0", "block0", "spawner", "door", "switch", "button", "circularSlime", "slime", "circularIce", "ice", "circularLava", "rotLavaPoint", "rotatingLava", "movingLava", "lava", "teleporter", "circularObstacle", "obstacle"];
+const types = ["text", "hatReward", "reward", "gravityZone", "image1", "block1", "turret", "turretRegion", "image0", "block0", "spawner", "door", "switch", "button", "circularSlime", "slime", "movingSlime", "circularIce", "ice", "movingIce", "circularLava", "rotLavaPoint", "rotatingLava", "movingLava", "lava", "teleporter", "circularObstacle", "obstacle", "movingObstacle"];
 function getObjects(type = "obstacle") {
     if (type === "block0") {
         return currentArea.objects.block.filter(o => !o.layer);
@@ -35,8 +35,17 @@ function getObjects(type = "obstacle") {
     if (type === "turretRegion") {
         return currentArea.objects.turret.includes(selectedObject) ? [selectedObject.region] : [];
     }
+    if (type === "movingObstacle") {
+        return currentArea.objects.movingObject.filter(obj => obj.objectType === "obstacle");
+    }
     if (type === "movingLava") {
         return currentArea.objects.movingObject.filter(obj => obj.objectType === "lava");
+    }
+    if (type === "movingSlime") {
+        return currentArea.objects.movingObject.filter(obj => obj.objectType === "slime");
+    }
+    if (type === "movingIce") {
+        return currentArea.objects.movingObject.filter(obj => obj.objectType === "ice");
     }
     if (type in currentArea.objects) {
         return currentArea.objects[type];
@@ -60,10 +69,11 @@ const renderSettings = {
     colors: {
         obstacle: "rgb(48, 56, 117.6)", // Is variable (shit) (no moar shit)
         lava: "#d01000",
-        lavaPoint: "#000000",
-        lavaShadow: "#00000040",
         slime: "#00c000",
         ice: "#00ffff",
+
+        point: "#000000",
+
         box: "#00000060",
         hitbox: "#ffff00",
         teleporterHitbox: "#0000ffc0",

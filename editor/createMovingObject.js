@@ -4,11 +4,31 @@ function createMovingObject(w = 10, h = 10, objectType = "lava", points = [{ x: 
             get x() {
                 return movingObj.points[0].x - movingObj.size.x / 2;
             },
+            set x(to) {
+                movingObj.points[0].x = to + movingObj.size.x / 2;
+            },
             get y() {
                 return movingObj.points[0].y - movingObj.size.y / 2;
+            },
+            set y(to) {
+                movingObj.points[0].y = to + movingObj.size.y / 2;
             }
         },
         size: {
+            get x() {
+                return movingObj._size.x;
+            },
+            set x(to) {
+                movingObj.points[0].x += -(movingObj._size.x - (movingObj._size.x = to)) / 2;
+            },
+            get y() {
+                return movingObj._size.y;
+            },
+            set y(to) {
+                movingObj.points[0].y += -(movingObj._size.y - (movingObj._size.y = to)) / 2;
+            }
+        },
+        _size: {
             x: w,
             y: h
         },

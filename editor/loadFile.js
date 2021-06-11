@@ -196,6 +196,54 @@ function loadFile(str) {
                         hide(turret.element);
                         break;
                     }
+                    case "movingObstacle": {
+                        const movObj = createMovingObject(object.size[0], object.size[1], "obstacle", object.points.map(point => ({
+                            x: point.position[0],
+                            y: point.position[1],
+                            vel: point.vel
+                        })));
+                        parsedArea.objects.movingObject.push(movObj);
+
+                        objectmenu.appendChild(movObj.element);
+                        hide(movObj.element);
+                        break;
+                    }
+                    case "movingLava": {
+                        const movObj = createMovingObject(object.size[0], object.size[1], "lava", object.points.map(point => ({
+                            x: point.position[0],
+                            y: point.position[1],
+                            vel: point.vel
+                        })));
+                        parsedArea.objects.movingObject.push(movObj);
+
+                        objectmenu.appendChild(movObj.element);
+                        hide(movObj.element);
+                        break;
+                    }
+                    case "movingSlime": {
+                        const movObj = createMovingObject(object.size[0], object.size[1], "slime", object.points.map(point => ({
+                            x: point.position[0],
+                            y: point.position[1],
+                            vel: point.vel
+                        })));
+                        parsedArea.objects.movingObject.push(movObj);
+
+                        objectmenu.appendChild(movObj.element);
+                        hide(movObj.element);
+                        break;
+                    }
+                    case "movingIce": {
+                        const movObj = createMovingObject(object.size[0], object.size[1], "ice", object.points.map(point => ({
+                            x: point.position[0],
+                            y: point.position[1],
+                            vel: point.vel
+                        })));
+                        parsedArea.objects.movingObject.push(movObj);
+
+                        objectmenu.appendChild(movObj.element);
+                        hide(movObj.element);
+                        break;
+                    }
                     default: {
                         console.log("Unsupported object type", object.type);
                         console.log(object);
