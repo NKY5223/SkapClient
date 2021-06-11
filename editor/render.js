@@ -71,9 +71,8 @@ function render() {
             let timeI = 0;
             let { x, y } = obj.points[0];
             for (let i in obj.points) {
-                let pointTime = times[i];
+                let pointTime = times[(i + 1) % times.length];
 
-                // if (i == 0) console.log(timeI.toFixed(2), currentTime.toFixed(2), (timeI + pointTime).toFixed(2));
                 if (timeI <= currentTime && currentTime <= timeI + pointTime) {
                     let point = obj.points[i];
                     let next = obj.points[(Number(i) + 1) % obj.points.length];
@@ -239,7 +238,6 @@ function render() {
             for (let i in obj.points) {
                 let pointTime = times[(i + 1) % times.length];
 
-                // if (i == 0) console.log(timeI.toFixed(2), currentTime.toFixed(2), (timeI + pointTime).toFixed(2));
                 if (timeI <= currentTime && currentTime <= timeI + pointTime) {
                     let point = obj.points[i];
                     let next = obj.points[(Number(i) + 1) % obj.points.length];
@@ -390,9 +388,8 @@ function render() {
             let timeI = 0;
             let { x, y } = obj.points[0];
             for (let i in obj.points) {
-                let pointTime = times[i];
+                let pointTime = times[(i + 1) % times.length];
 
-                // if (i == 0) console.log(timeI.toFixed(2), currentTime.toFixed(2), (timeI + pointTime).toFixed(2));
                 if (timeI <= currentTime && currentTime <= timeI + pointTime) {
                     let point = obj.points[i];
                     let next = obj.points[(Number(i) + 1) % obj.points.length];
@@ -494,9 +491,8 @@ function render() {
             let timeI = 0;
             let { x, y } = obj.points[0];
             for (let i in obj.points) {
-                let pointTime = times[i];
+                let pointTime = times[(i + 1) % times.length];
 
-                // if (i == 0) console.log(timeI.toFixed(2), currentTime.toFixed(2), (timeI + pointTime).toFixed(2));
                 if (timeI <= currentTime && currentTime <= timeI + pointTime) {
                     let point = obj.points[i];
                     let next = obj.points[(Number(i) + 1) % obj.points.length];
