@@ -61,8 +61,8 @@ function render() {
         ctx.globalAlpha = 1;
         for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "obstacle")) {
             const times = obj.points.map((point, index, points) => {
-                let other = points[(index + points.length - 1) % points.length];
-                return Math.sqrt((other.x - point.x) * (other.x - point.x) + (other.y - point.y) * (other.y - point.y)) / point.vel;
+                let next = points[(index + points.length - 1) % points.length];
+                return Math.sqrt((next.x - point.x) * (next.x - point.x) + (next.y - point.y) * (next.y - point.y)) / point.vel;
             });
             const totalTime = times.reduce((a, n) => a + n, 0);
 
@@ -225,17 +225,19 @@ function render() {
         ctx.globalAlpha = 1;
         for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "lava")) {
             const times = obj.points.map((point, index, points) => {
-                let other = points[(index + points.length - 1) % points.length];
-                return Math.sqrt((other.x - point.x) * (other.x - point.x) + (other.y - point.y) * (other.y - point.y)) / point.vel;
+                let next = points[(index + points.length - 1) % points.length];
+                return Math.sqrt((next.x - point.x) * (next.x - point.x) + (next.y - point.y) * (next.y - point.y)) / point.vel;
             });
             const totalTime = times.reduce((a, n) => a + n, 0);
+
+            console.log(times);
 
             const currentTime = time % totalTime;
 
             let timeI = 0;
             let { x, y } = obj.points[0];
             for (let i in obj.points) {
-                let pointTime = times[i];
+                let pointTime = times[(i + 1) % times.length];
 
                 // if (i == 0) console.log(timeI.toFixed(2), currentTime.toFixed(2), (timeI + pointTime).toFixed(2));
                 if (timeI <= currentTime && currentTime <= timeI + pointTime) {
@@ -378,8 +380,8 @@ function render() {
         ctx.globalAlpha = 1;
         for (let obj of currentArea.objects.movingObject.filter(obj => obj.objectType === "ice")) {
             const times = obj.points.map((point, index, points) => {
-                let other = points[(index + points.length - 1) % points.length];
-                return Math.sqrt((other.x - point.x) * (other.x - point.x) + (other.y - point.y) * (other.y - point.y)) / point.vel;
+                let next = points[(index + points.length - 1) % points.length];
+                return Math.sqrt((next.x - point.x) * (next.x - point.x) + (next.y - point.y) * (next.y - point.y)) / point.vel;
             });
             const totalTime = times.reduce((a, n) => a + n, 0);
 
