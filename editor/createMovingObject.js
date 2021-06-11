@@ -33,6 +33,7 @@ function createMovingObject(w = 10, h = 10, objectType = "lava", points = [{ x: 
             y: h
         },
         objectType,
+        /** @type {MovObjPoint[]} */
         points: [],
         type: "movingObject"
     };
@@ -85,12 +86,18 @@ function createMovingObject(w = 10, h = 10, objectType = "lava", points = [{ x: 
 
         const remove = document.createElement("button");
         remove.classList.add("remove");
-        remove.addEventListener("click", () => {
-            if (pointsEl.children[1].childElementCount > 2) li.remove();
-            else if (pointsEl.children[1].childElementCount > 1) {
-                li.remove();
+        remove.addEventListener("click", e => {
+            if (movingObj.points.length > 1) {
+                movingObj.points.splice(movingObj.points.indexOf(point), 1);
+
+                setTimeout(() => li.remove(), 5);
+            } else if (movingObj.points.length) {
+                movingObj.points.splice(movingObj.points.indexOf(point), 1);
+
+                setTimeout(() => li.remove(), 5);
                 pointsEl.classList.add("min");
             }
+            e.stopPropagation();
         });
         li.children[0].appendChild(remove);
         point.element = li;
@@ -132,15 +139,23 @@ function createMovingObject(w = 10, h = 10, objectType = "lava", points = [{ x: 
                 ["Lava", "lava"],
                 ["Slime", "slime"],
                 ["Ice", "ice"]
-            ], 
+            ],
             selectType: "text"
         }),
         pointsEl
     ]);
 
     movingObj.inputs = {
-        x: pointsEl.children[1].children[0].children[1].children[0].children[1],
-        y: pointsEl.children[1].children[0].children[1].children[1].children[1],
+        x: {
+            set value(_to) {
+                movingObj.points[0].inputs.x.value = movingObj.points[0].x;
+            }
+        },
+        y: {
+            set value(_to) {
+                movingObj.points[0].inputs.y.value = movingObj.points[0].y;
+            }
+        },
         w: wInput,
         h: hInput
     };

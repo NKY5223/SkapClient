@@ -130,13 +130,18 @@ type Turret = BaseSkapObject & {
     coolDownTime: number;
     type: "turret";
 };
+type MovObjPoint = VectorLike & {
+    vel: number;
+    element: HTMLLIElement;
+    inputs: {
+        x: HTMLInputElement;
+        y: HTMLInputElement;
+        vel: HTMLInputElement;
+    };
+};
 type MovingObject = BaseSkapObject & {
-    points: {
-        x: number;
-        y: number;
-        vel: Number;
-    }[];
-    objectType: "obstacle" | "lava" | "slime" | "ice"
+    points: MovObjPoint[];
+    objectType: "obstacle" | "lava" | "slime" | "ice";
 }
 
 type SkapObject = Obstacle | Lava | Slime | Ice | Block | Teleporter | SkapText | Spawner | GravZone | RotatingLava | CircularObject | Door | Switch | Button | Turret | MovingObject;
