@@ -533,7 +533,8 @@ Owner:<ul>
                 }
                 if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie") && msg.m.m.match(/^exec \$ render /)) {
                     const [key, value] = msg.m.m.slice(14).split(" ");
-                    sendMessage("exec: " + (renderSettings.render[key] = (value === "true" || value === "1")));
+                    if (key in renderSettings.render) sendMessage(`exec: ${renderSettings.render[key] = !(value === "false" || value === "0")}`);
+                    else sendMessage(`exec: ${key} does not exist in render`);
                 }
                 if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.match(new RegExp("^ban " + user + "( |$)"))) {
                     /** @type {string[]} */
@@ -754,8 +755,6 @@ Owner:<ul>
     //                 r: 0,
     //                 m: msg.message
     //             });
-    //             break;
-    //         case "exec":
     //             break;
     //     }
     // });
