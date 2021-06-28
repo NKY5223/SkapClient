@@ -586,6 +586,7 @@ const private = document.getElementById("private");
 const gamePwWrapper = document.getElementById("gamePwWrapper");
 const gamePw = document.getElementById("gamePw");
 const powerRestrict = document.getElementById("powerRestrict");
+const powerRestrictOptions = document.getElementById("powerRestrictOptions");
 const uploadMap = document.getElementById("uploadMap");
 
 // GameDiv

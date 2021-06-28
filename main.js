@@ -206,11 +206,11 @@ Owner:<ul>
                         sendMessage(msg.slice(11) + " (╯°□°）╯︵ ┻━┻");
                     } else if (msg.startsWith("/unflip")) {
                         sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
-                    // } else if (msg.startsWith("/msg")) {
-                    //     send(msgpack.encode({
-                    //         e: "msg",
-                    //         message: msg.slice(5)
-                    //     }), clientWS);
+                        // } else if (msg.startsWith("/msg")) {
+                        //     send(msgpack.encode({
+                        //         e: "msg",
+                        //         message: msg.slice(5)
+                        //     }), clientWS);
                     } else if (msg.startsWith("/clear")) {
                         chat.innerHTML = "";
                     } else {
@@ -256,6 +256,15 @@ Owner:<ul>
         gameName.addEventListener("keydown", e => {
             e.stopPropagation();
         });
+        powerRestrict.addEventListener("input", () => {
+            if (powerRestrict.checked) show(powerRestrictOptions);
+            else hide(powerRestrictOptions);
+        });
+        for (let power of powerRestrictOptions.children) {
+            power.addEventListener("click", () => {
+                power.classList.toggle("restricted");
+            });
+        }
         document.getElementById("logo").addEventListener("mousedown", e => {
             if (e.detail >= 20) {
                 customAlert("Toggled Invert Mode");
@@ -273,6 +282,7 @@ Owner:<ul>
                         p: private.checked,
                         pa: gamePw.value,
                         r: powerRestrict.checked,
+                        rd: Array.from(powerRestrictOptions.children).slice(3, 15).map((el, i) => el.classList.contains("restricted") ? i : false).filter(i => i !== false),
                         u: uploadMap.checked
                     };
                     try {
@@ -282,7 +292,7 @@ Owner:<ul>
                             j: JSON.parse(e)
                         });
                     } catch (err) {
-                        customAlert("Something went wrong");
+                        customAlert("Error: " + err);
                     }
                 });
             } else {
@@ -292,8 +302,10 @@ Owner:<ul>
                     p: private.checked,
                     pa: gamePw.value,
                     r: powerRestrict.checked,
+                    rd: Array.from(powerRestrictOptions.children).slice(3, 15).map((el, i) => el.classList.contains("restricted") ? i : false).filter(i => i !== false),
                     u: uploadMap.checked
                 };
+                console.log(settings.rd);
                 send({
                     e: "createGame",
                     s: settings

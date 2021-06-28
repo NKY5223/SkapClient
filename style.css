@@ -135,7 +135,7 @@ button {
     margin-right: 5px;
     text-decoration: none;
 }
-#editorLink {
+.buttonLink {
     box-sizing: border-box;
     padding: 5px 10px;
     border: 1px solid #717171;
@@ -229,6 +229,12 @@ input[type=color] {
 
 #createGameMenu {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#createGameMenu.hidden {
+    display: none;
 }
 #gameFileLabel {
     padding: 5px 20px;
@@ -237,6 +243,27 @@ input[type=color] {
 }
 #gameFileLabel:hover {
     background: #000000c0;
+}
+#powerRestrictOptions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 240px;
+}
+#powerRestrictOptions.hidden {
+    display: none;
+}
+#powerRestrictOptions img {
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    margin: 2px;
+    background: #00ff0020;
+    cursor: pointer;
+}
+#powerRestrictOptions img.restricted {
+    background: #ff000020;
 }
 
 .switchLabel {

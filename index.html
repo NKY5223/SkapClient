@@ -67,8 +67,11 @@
                 <a href="https://discord.gg/NsmaBUb" target="_blank" title="Join the Discord">
                     <img src="discord.png" width="50" height="50" />
                 </a>
-                <a href="editor" target="_blank" title="Editor" id="editorLink">
+                <a href="editor" target="_blank" title="Editor" class="buttonLink">
                     SkapClient Editor<br>WIP
+                </a>
+                <a href="settings" target="_blank" title="Settings" class="buttonLink">
+                    SkapClient Settings
                 </a>
                 <button id="changelogBtn">Changelog</button>
             </div>
@@ -258,16 +261,15 @@
         <div id="createGameMenu" class="hidden">
             <h1>Create Game</h1>
             <input type="text" id="gameName" placeholder="Game Name (optional)" />
-            <br><br>
+            <br>
             <label id="gameFileLabel" for="gameFile">Game JSON file (default overworld)</label>
             <input type="file" name="gameFile" id="gameFile" accept=".json" class="hidden" />
-            <br><br>
+            <br>
             <label for="perms" class="switchLabel">
                 Perms:
                 <input type="checkbox" name="perms" id="perms" class="hidden" checked />
                 <span class="switch"></span>
             </label>
-            <br>
             <label for="private" class="switchLabel">
                 Private?
                 <input type="checkbox" name="private" id="private" class="hidden" />
@@ -277,19 +279,35 @@
                 <br>
                 <input type="text" name="gamePw" id="gamePw" placeholder="Password" />
             </div>
-            <br>
             <label for="powerRestrict" class="switchLabel" class="hidden">
                 Restrict powers?
                 <input type="checkbox" name="powerRestrict" id="powerRestrict" class="hidden" />
                 <span class="switch"></span>
             </label>
-            <br>
+            <div id="powerRestrictOptions" class="hidden">
+                <br>
+                Choose what powers to restrict (red = restricted)
+                <br><br>
+                <img src="https://skap.io/textures/powers/shrinker.svg" title="Shrinker" />
+                <img src="https://skap.io/textures/powers/explosion.svg" title="Explosion" />
+                <img src="https://skap.io/textures/powers/build.svg" title="Build" />
+                <img src="https://skap.io/textures/powers/meteor.svg" title="Meteor" />
+                <img src="https://skap.io/textures/powers/refuel.svg" title="Refuel" />
+                <img src="https://skap.io/textures/powers/feather.svg" title="Feather" />
+                <img src="https://skap.io/textures/powers/shield.svg" title="Shield" />
+                <img src="https://skap.io/textures/powers/dash.svg" title="Dash" />
+                <img src="https://skap.io/textures/powers/lantern.svg" title="Lantern" />
+                <img src="https://skap.io/textures/powers/ghost.svg" title="Ghost" />
+                <img src="https://skap.io/textures/powers/frost.svg" title="Frost" />
+                <img src="https://skap.io/textures/powers/shell.svg" title="Shell" />
+                <br>
+            </div>
             <label for="uploadMap" class="switchLabel">
                 Upload map?
                 <input type="checkbox" name="uploadMap" id="uploadMap" class="hidden" />
                 <span class="switch"></span>
             </label>
-            <br><br>
+            <br>
             <button id="createGameBtn">Let's go! (this will take a while for large maps)</button>
         </div>
 
@@ -443,21 +461,31 @@
                 <div class="reward hidden" id="militaryHat">
                     <h3>Military Hat</h3>
                     <img src="https://skap.io/textures/hats/militaryHat.png" alt="militaryHat" width="300" height="300" />
+                    <p>A token of surviving the Battlefield.</p>
                     <button class="exitreward exithatreward">&times;</button>
                 </div>
                 <div class="reward hidden" id="santa">
                     <h3>Santa Hat</h3>
                     <img src="https://skap.io/textures/hats/santa.png" alt="santa" width="300" height="300" />
+                    <p>Ho, ho, ho... Merry Glacier Advanced!</p>
                     <button class="exitreward exithatreward">&times;</button>
                 </div>
                 <div class="reward hidden" id="crown">
                     <h3>Crown</h3>
                     <img src="https://skap.io/textures/hats/crown.png" alt="crown" width="300" height="300" />
+                    <p>Hidden deep in the wells of Inferno 25.</p>
                     <button class="exitreward exithatreward">&times;</button>
                 </div>
                 <div class="reward hidden" id="party">
                     <h3>Party Hat</h3>
                     <img src="https://skap.io/textures/hats/party.png" alt="party" width="300" height="300" />
+                    <p>Ugly...</p>
+                    <button class="exitreward exithatreward">&times;</button>
+                </div>
+                <div class="reward hidden" id="cowboy">
+                    <h3>Cowboy</h3>
+                    <img src="https://skap.io/textures/hats/cowboy.png" alt="cowboy" width="300" height="300" />
+                    <p>Congratulations. You have beaten... Exodus 100. THe road to 150 lies ahead,</p>
                     <button class="exitreward exithatreward">&times;</button>
                 </div>
 
