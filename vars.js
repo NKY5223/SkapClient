@@ -645,7 +645,8 @@ const hatRewards = {
     militaryHat: document.getElementById("militaryHat"),
     santa: document.getElementById("santa"),
     crown: document.getElementById("crown"),
-    party: document.getElementById("party")
+    party: document.getElementById("party"),
+    cowboy: document.getElementById("cowboy")
 };
 const exitHatRewards = document.getElementsByClassName("exithatreward");
 

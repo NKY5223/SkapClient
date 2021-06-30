@@ -305,7 +305,6 @@ Owner:<ul>
                     rd: Array.from(powerRestrictOptions.children).slice(3, 15).map((el, i) => el.classList.contains("restricted") ? i : false).filter(i => i !== false),
                     u: uploadMap.checked
                 };
-                console.log(settings.rd);
                 send({
                     e: "createGame",
                     s: settings
