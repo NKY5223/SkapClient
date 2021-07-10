@@ -66,10 +66,8 @@ const renderSettings = {
         obstacle: "#ffffff", // Is variable (shit) (no moar shit)
         lava: "#d01000",
         slime: "#00c000",
-        ice: "#00ffff",
+        ice: "#00c0c0",
         box: "#00000060",
-        hitbox: "#ffff00c0",
-        teleporterHitbox: "#0000ffc0",
         gravOutline: [
             "#ffff00",
             "#ff0000",
@@ -314,7 +312,7 @@ const renderSettings = {
 let RENDER_HAT = null;
 let RENDER_SKIN = null;
 
-const parsedMap = {
+const map = {
     background: "#ffffff",
     areaSize: { x: 100, y: 100 },
     obstacle: [],

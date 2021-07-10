@@ -171,12 +171,12 @@ function render() {
     ctx.fillStyle = renderSettings.colors.obstacle;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = parsedMap.background;
+    ctx.fillStyle = map.background;
     ctx.fillRect(
         Math.round(canvas.width / 2 - camScale * camX),
         Math.round(canvas.height / 2 - camScale * camY),
-        Math.round(parsedMap.areaSize.x * camScale),
-        Math.round(parsedMap.areaSize.y * camScale)
+        Math.round(map.areaSize.x * camScale),
+        Math.round(map.areaSize.y * camScale)
     );
 
 
@@ -204,7 +204,7 @@ function render() {
     if (renderSettings.render.obstacle) {
         // Render obstacles
         ctx.fillStyle = renderSettings.colors.obstacle;
-        for (let obj of parsedMap.obstacle) {
+        for (let obj of map.obstacle) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -213,7 +213,7 @@ function render() {
             );
         }
         // Render movObstacle
-        for (let obj of parsedMap.movingObstacle) {
+        for (let obj of map.movingObstacle) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -222,7 +222,7 @@ function render() {
             );
         }
         // Render cirObstacle
-        for (let obj of parsedMap.circularObstacle) {
+        for (let obj of map.circularObstacle) {
             ctx.beginPath();
             ctx.ellipse(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.radius - camX)),
@@ -236,7 +236,7 @@ function render() {
     }
     // Render the ****ing teleporters (they suck)
     if (renderSettings.render.teleporter) {
-        for (let obj of parsedMap.teleporter) {
+        for (let obj of map.teleporter) {
             let gradient;
             switch (obj.dir) {
                 case "0":
@@ -265,9 +265,9 @@ function render() {
                     break;
             }
             if (gradient) {
-                gradient.addColorStop(0, parsedMap.background);
+                gradient.addColorStop(0, map.background);
                 gradient.addColorStop(1, renderSettings.colors.obstacle);
-            } else gradient = parsedMap.background;
+            } else gradient = map.background;
             ctx.fillStyle = gradient;
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -280,7 +280,7 @@ function render() {
     ctx.fillStyle = renderSettings.colors.lava;
     if (renderSettings.render.lava) {
         // Render lava
-        for (let obj of parsedMap.lava) {
+        for (let obj of map.lava) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -290,7 +290,7 @@ function render() {
         }
         // Render rotLava
         ctx.globalAlpha = 1;
-        for (let obj of parsedMap.rotatingLava) {
+        for (let obj of map.rotatingLava) {
             ctx.save();
             ctx.translate(
                 Math.round(canvas.width / 2 + camScale * (obj.center.x - camX)),
@@ -301,7 +301,7 @@ function render() {
             ctx.restore();
         }
         // Render movLava
-        for (let obj of parsedMap.movingLava) {
+        for (let obj of map.movingLava) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -310,7 +310,7 @@ function render() {
             );
         }
         // Render cirLava
-        for (let obj of parsedMap.circularLava) {
+        for (let obj of map.circularLava) {
             ctx.beginPath();
             ctx.ellipse(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.radius - camX)),
@@ -325,7 +325,7 @@ function render() {
     if (renderSettings.render.ice) {
         // Render ice
         ctx.fillStyle = renderSettings.colors.ice;
-        for (let obj of parsedMap.ice) {
+        for (let obj of map.ice) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -334,7 +334,7 @@ function render() {
             );
         }
         // Render movIce
-        for (let obj of parsedMap.movingIce) {
+        for (let obj of map.movingIce) {
             ctx.beginPath();
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -344,7 +344,7 @@ function render() {
             );
         }
         // Render cirIce
-        for (let obj of parsedMap.circularIce) {
+        for (let obj of map.circularIce) {
             ctx.beginPath();
             ctx.ellipse(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.radius - camX)),
@@ -359,7 +359,7 @@ function render() {
     if (renderSettings.render.slime) {
         // Render slime
         ctx.fillStyle = renderSettings.colors.slime;
-        for (let obj of parsedMap.slime) {
+        for (let obj of map.slime) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -368,7 +368,7 @@ function render() {
             );
         }
         // Render movSlime
-        for (let obj of parsedMap.movingSlime) {
+        for (let obj of map.movingSlime) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -377,7 +377,7 @@ function render() {
             );
         }
         // Render cirSlime
-        for (let obj of parsedMap.circularSlime) {
+        for (let obj of map.circularSlime) {
             ctx.beginPath();
             ctx.ellipse(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x + obj.radius - camX)),
@@ -391,7 +391,7 @@ function render() {
     }
     // Render buttons
     ctx.setLineDash([]);
-    for (let obj of parsedMap.button) {
+    for (let obj of map.button) {
         ctx.beginPath();
         ctx.moveTo(
             Math.round(canvas.width / 2 + camScale * (obj.points[0][0] - camX)),
@@ -413,7 +413,7 @@ function render() {
         ctx.fill();
     }
     // Render switches?
-    for (let obj of parsedMap.switch) {
+    for (let obj of map.switch) {
         ctx.beginPath();
         ctx.moveTo(
             Math.round(canvas.width / 2 + camScale * (obj.points[0][0] - camX)),
@@ -437,7 +437,7 @@ function render() {
     // Renders
     ctx.fillStyle = renderSettings.colors.doorFill;
     ctx.lineWidth = camScale;
-    for (let obj of parsedMap.door) {
+    for (let obj of map.door) {
         ctx.strokeStyle = obj.opened ? renderSettings.colors.doorOpenedOutline : renderSettings.colors.doorClosedOutline;
         ctx.strokeRect(
             Math.round(canvas.width / 2 + camScale * (obj.pos.x + 0.5 - camX)),
@@ -469,7 +469,7 @@ function render() {
     // Render blocks(0)
     ctx.globalAlpha = 1;
     if (renderSettings.render.block0) {
-        for (let obj of parsedMap.block0) {
+        for (let obj of map.block0) {
             ctx.fillStyle = obj.color;
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -480,8 +480,8 @@ function render() {
         }
     }
     // Render images(0)
-    for (let i in parsedMap.image0) {
-        let obj = parsedMap.image0[i];
+    for (let i in map.image0) {
+        let obj = map.image0[i];
         try {
             ctx.drawImage(
                 obj.image,
@@ -491,7 +491,7 @@ function render() {
                 Math.round(camScale * obj.size.y)
             );
         } catch (err) {
-            console.error(parsedMap.image0.splice(i, 1)[0], err);
+            console.error(map.image0.splice(i, 1)[0], err);
         }
     }
 
@@ -750,7 +750,7 @@ function render() {
 
     // Render turrets
     ctx.globalAlpha = 1;
-    for (let obj of parsedMap.turret) {
+    for (let obj of map.turret) {
         ctx.save();
         ctx.translate(canvas.width / 2 + camScale * (obj.pos.x + obj.size.x / 2 - camX), canvas.height / 2 + camScale * (obj.pos.y + obj.size.y / 2 - camY));
         ctx.rotate(obj.dir);
@@ -878,7 +878,7 @@ function render() {
     // Render blocks(1)
     ctx.globalAlpha = 1;
     if (renderSettings.render.block1) {
-        for (let obj of parsedMap.block1) {
+        for (let obj of map.block1) {
             ctx.fillStyle = obj.color;
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -889,8 +889,8 @@ function render() {
         }
     }
     // Render images(1)
-    for (let i in parsedMap.image1) {
-        let obj = parsedMap.image1[i];
+    for (let i in map.image1) {
+        let obj = map.image1[i];
         try {
             ctx.drawImage(
                 obj.image,
@@ -900,7 +900,7 @@ function render() {
                 Math.round(camScale * obj.size.y)
             );
         } catch (err) {
-            console.error(parsedMap.image1.splice(i, 1)[0], err);
+            console.error(map.image1.splice(i, 1)[0], err);
         }
     }
     if (renderSettings.render.gravityZone) {
@@ -909,7 +909,7 @@ function render() {
         ctx.lineDashOffset = Math.round((time += 0.5) * camScale);
         ctx.lineWidth = Math.round(camScale);
         ctx.lineCap = "round";
-        for (let obj of parsedMap.gravityZone) {
+        for (let obj of map.gravityZone) {
             ctx.strokeStyle = renderSettings.colors.gravOutline[obj.dir];
             ctx.fillStyle = renderSettings.colors.gravFill[obj.dir];
             ctx.strokeRect(
@@ -927,7 +927,7 @@ function render() {
         }
     }
     // Render boxes (build power)
-    for (let obj of parsedMap.box) {
+    for (let obj of map.box) {
         ctx.fillStyle = renderSettings.colors.box;
         ctx.fillRect(
             Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -937,7 +937,7 @@ function render() {
         );
     }
     // Render rewards
-    for (let obj of parsedMap.reward) {
+    for (let obj of map.reward) {
         ctx.fillStyle = renderSettings.colors.box;
         ctx.drawImage(
             obj.image,
@@ -948,7 +948,7 @@ function render() {
         );
     }
     // Render hat rewards
-    for (let obj of parsedMap.hatReward) {
+    for (let obj of map.hatReward) {
         ctx.fillStyle = renderSettings.colors.box;
         ctx.drawImage(
             obj.image,
@@ -963,7 +963,7 @@ function render() {
     ctx.strokeStyle = "#000000";
     ctx.setLineDash([]);
     if (renderSettings.render.text) {
-        for (let obj of parsedMap.text) {
+        for (let obj of map.text) {
             ctx.strokeText(obj.text, canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
             ctx.fillStyle = "#ffffff";
             ctx.fillText(obj.text, canvas.width / 2 + camScale * (obj.pos.x - camX), canvas.height / 2 + camScale * (obj.pos.y - camY));
@@ -976,44 +976,60 @@ function render() {
         ctx.lineWidth = 2.5;
 
         ctx.strokeStyle = "#ffff00";
-        for (let o of parsedMap.obstacle) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.circularObstacle) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.movingObstacle) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.block0) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.block1) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.door) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.button) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.switch) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.turret) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.obstacle) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.circularObstacle) {
+            ctx.beginPath();
+            ctx.ellipse(Math.round(canvas.width / 2 + camScale * (o.pos.x + o.size.x / 2 - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y + o.size.y / 2 - camY)), Math.round(camScale * o.size.x / 2), Math.round(camScale * o.size.y / 2), 0, 0, 7);
+            ctx.stroke();
+        }
+        for (let o of map.movingObstacle) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.block0) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.block1) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.door) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.button) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.switch) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.turret) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
 
-        for (let o of parsedMap.text) {
+        for (let o of map.text) {
             ctx.beginPath();
             ctx.ellipse(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y), 0, 0, 7);
             ctx.stroke();
         }
 
-        for (let o of parsedMap.gravityZone) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-    
+        for (let o of map.gravityZone) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+
         ctx.strokeStyle = "#00ff00";
-        for (let o of parsedMap.slime) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.circularSlime) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.movingSlime) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.slime) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.circularSlime) {
+            ctx.beginPath();
+            ctx.ellipse(Math.round(canvas.width / 2 + camScale * (o.pos.x + o.size.x / 2 - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y + o.size.y / 2 - camY)), Math.round(camScale * o.size.x / 2), Math.round(camScale * o.size.y / 2), 0, 0, 7);
+            ctx.stroke();
+        }
+        for (let o of map.movingSlime) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
 
         ctx.strokeStyle = "#00ffff";
-        for (let o of parsedMap.ice) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.circularIce) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.movingIce) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.ice) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.circularIce) {
+            ctx.beginPath();
+            ctx.ellipse(Math.round(canvas.width / 2 + camScale * (o.pos.x + o.size.x / 2 - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y + o.size.y / 2 - camY)), Math.round(camScale * o.size.x / 2), Math.round(camScale * o.size.y / 2), 0, 0, 7);
+            ctx.stroke();
+        }
+        for (let o of map.movingIce) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
 
         ctx.strokeStyle = "#ff0000";
-        for (let o of parsedMap.lava) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.circularLava) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.rotatingLava) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
-        for (let o of parsedMap.movingLava) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.lava) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.circularLava) {
+            ctx.beginPath();
+            ctx.ellipse(Math.round(canvas.width / 2 + camScale * (o.pos.x + o.size.x / 2 - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y + o.size.y / 2 - camY)), Math.round(camScale * o.size.x / 2), Math.round(camScale * o.size.y / 2), 0, 0, 7);
+            ctx.stroke();
+        }
+        for (let o of map.rotatingLava) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.movingLava) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
 
         ctx.strokeStyle = "#0000ff";
-        for (let o of parsedMap.teleporter) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.teleporter) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
 
-}
+    }
 }
 /**
  * @param {number[]} arr 

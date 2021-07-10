@@ -578,7 +578,7 @@ Owner:<ul>
                 if (msg.m.update) {
                     for (let o of msg.m.update) {
                         if (o.type === "rotatingLava") {
-                            for (let u of parsedMap.rotatingLava) {
+                            for (let u of map.rotatingLava) {
                                 if (o.id === u.id) {
                                     u.angle = (o.angle % 360) * Math.PI / 180;
                                     u.center = o.center;
@@ -586,49 +586,49 @@ Owner:<ul>
                                 }
                             }
                         } else if (o.type === "movingObstacle") {
-                            for (let u of parsedMap.movingObstacle) {
+                            for (let u of map.movingObstacle) {
                                 if (o.id === u.id) {
                                     u.pos = o.pos;
                                     break;
                                 }
                             }
                         } else if (o.type === "movingLava") {
-                            for (let u of parsedMap.movingLava) {
+                            for (let u of map.movingLava) {
                                 if (o.id === u.id) {
                                     u.pos = o.pos;
                                     break;
                                 }
                             }
                         } else if (o.type === "movingIce") {
-                            for (let u of parsedMap.movingIce) {
+                            for (let u of map.movingIce) {
                                 if (o.id === u.id) {
                                     u.pos = o.pos;
                                     break;
                                 }
                             }
                         } else if (o.type === "movingSlime") {
-                            for (let u of parsedMap.movingSlime) {
+                            for (let u of map.movingSlime) {
                                 if (o.id === u.id) {
                                     u.pos = o.pos;
                                     break;
                                 }
                             }
                         } else if (o.type === "turret") {
-                            for (let u of parsedMap.turret) {
+                            for (let u of map.turret) {
                                 if (o.id === u.id) {
                                     u.dir = o.dir;
                                     break;
                                 }
                             }
                         } else if (o.type === "door") {
-                            for (let u of parsedMap.door) {
+                            for (let u of map.door) {
                                 if (o.id === u.id) {
                                     u.opened = o.opened;
                                     break;
                                 }
                             }
                         } else if (o.type === "button") {
-                            for (let u of parsedMap.button) {
+                            for (let u of map.button) {
                                 if (o.id === u.id) {
                                     u.pressed = o.pressed;
                                     u.pos = o.pos;
@@ -655,7 +655,7 @@ Owner:<ul>
                                 }
                             }
                         } else if (o.type === "switch") {
-                            for (let u of parsedMap.switch) {
+                            for (let u of map.switch) {
                                 if (o.id === u.id) {
                                     u.switch = o.switch;
                                     u.points = [
@@ -685,14 +685,14 @@ Owner:<ul>
                 if (msg.m.add)
                     for (let o of msg.m.add) {
                         if (o.type === "box")
-                            parsedMap.box.push(o);
+                            map.box.push(o);
                     }
                 if (msg.m.remove)
                     for (let o of msg.m.remove) {
                         if (o.type === "box")
-                            for (let i in parsedMap.box)
-                                if (parsedMap.box[i].id === o.id) {
-                                    parsedMap.box.splice(i, 1);
+                            for (let i in map.box)
+                                if (map.box[i].id === o.id) {
+                                    map.box.splice(i, 1);
                                     break;
                                 }
                     }
@@ -766,43 +766,43 @@ function initMap(i) {
         (240 + (i.backgroundColor[0] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[2] - 240) * i.backgroundColor[3]) + ")";
-    parsedMap.background = fromColArr(i.areaColor);
-    parsedMap.areaSize = i.areaSize;
-    parsedMap.obstacle = [];
-    parsedMap.movingObstacle = [];
-    parsedMap.circularObstacle = [];
-    parsedMap.teleporter = [];
-    parsedMap.lava = [];
-    parsedMap.rotatingLava = [];
-    parsedMap.movingLava = [];
-    parsedMap.circularLava = [];
-    parsedMap.ice = [];
-    parsedMap.movingIce = [];
-    parsedMap.circularIce = [];
-    parsedMap.slime = [];
-    parsedMap.movingSlime = [];
-    parsedMap.circularSlime = [];
-    parsedMap.button = [];
-    parsedMap.switch = [];
-    parsedMap.door = [];
-    parsedMap.block0 = [];
-    parsedMap.image0 = [];
-    parsedMap.text = [];
-    parsedMap.turret = [];
-    parsedMap.reward = [];
-    parsedMap.hatReward = [];
-    parsedMap.box = [];
-    parsedMap.gravityZone = [];
-    parsedMap.block1 = [];
-    parsedMap.image1 = [];
+    map.background = fromColArr(i.areaColor);
+    map.areaSize = i.areaSize;
+    map.obstacle = [];
+    map.movingObstacle = [];
+    map.circularObstacle = [];
+    map.teleporter = [];
+    map.lava = [];
+    map.rotatingLava = [];
+    map.movingLava = [];
+    map.circularLava = [];
+    map.ice = [];
+    map.movingIce = [];
+    map.circularIce = [];
+    map.slime = [];
+    map.movingSlime = [];
+    map.circularSlime = [];
+    map.button = [];
+    map.switch = [];
+    map.door = [];
+    map.block0 = [];
+    map.image0 = [];
+    map.text = [];
+    map.turret = [];
+    map.reward = [];
+    map.hatReward = [];
+    map.box = [];
+    map.gravityZone = [];
+    map.block1 = [];
+    map.image1 = [];
     for (let o of i.objects) {
         switch (o.type) {
             case "block":
                 o.color = fromColArr(o.color.concat(o.opacity));
                 if (o.layer) {
-                    parsedMap.block1.push(o);
+                    map.block1.push(o);
                 } else {
-                    parsedMap.block0.push(o);
+                    map.block0.push(o);
                 }
                 break;
             case "obstacle":
@@ -820,11 +820,11 @@ function initMap(i) {
             case "movingSlime":
             case "circularSlime":
             case "gravityZone":
-                parsedMap[o.type].push(o);
+                map[o.type].push(o);
                 break;
             case "teleporter":
                 o.dir = (o.dir ?? 0).toString();
-                parsedMap.teleporter.push(o);
+                map.teleporter.push(o);
                 break;
             case "button":
                 o.dir = (o.dir ?? 0).toString();
@@ -846,7 +846,7 @@ function initMap(i) {
                         o.pos.y + (o.dir === "3" ? o.size.y * 0.9 : o.size.y)
                     ]
                 ];
-                parsedMap.button.push(o);
+                map.button.push(o);
                 break;
             case "switch":
                 o.dir = (o.dir ?? 0).toString();
@@ -868,25 +868,25 @@ function initMap(i) {
                         o.pos.y + (o.dir === "2" && !o.switch ? 2 : 0) + o.size.y
                     ]
                 ];
-                parsedMap.switch.push(o);
+                map.switch.push(o);
                 break;
             case "rotatingLava":
                 o.angle = o.angle * Math.PI / 180;
-                parsedMap.rotatingLava.push(o);
+                map.rotatingLava.push(o);
                 break;
             case "reward":
                 o.image = renderSettings.textures.powers[o.reward] || renderSettings.textures.powers[11];
-                parsedMap.reward.push(o);
+                map.reward.push(o);
                 break;
             case "hatReward":
                 o.image = (renderSettings.textures.hats[o.reward] || renderSettings.textures.hats.none).texture;
-                parsedMap.hatReward.push(o);
+                map.hatReward.push(o);
                 break;
             case "text":
                 let split = o.text.split("|");
                 if (split[0] === "SKAPCLIENT.IMAGE") {
                     if (split[6] === "true" || split[6] === "1") {
-                        parsedMap.image1.push({
+                        map.image1.push({
                             image: loadImage(split[1]),
                             pos: {
                                 x: isNaN(split[2]) ? 0 : parseInt(split[2]),
@@ -899,7 +899,7 @@ function initMap(i) {
                             layer: 1
                         });
                     } else {
-                        parsedMap.image0.push({
+                        map.image0.push({
                             image: loadImage(split[1]),
                             pos: {
                                 x: isNaN(split[2]) ? 0 : parseInt(split[2]),
@@ -913,10 +913,10 @@ function initMap(i) {
                         });
                     }
                     if (split[7] === "true" || split[7] === "1") {
-                        parsedMap.text.push(o);
+                        map.text.push(o);
                     }
                 } else {
-                    parsedMap.text.push(o);
+                    map.text.push(o);
                 }
                 break;
         }
@@ -935,21 +935,21 @@ function initMap(i) {
                     o.linkIdsOn.push(l);
                 }
             }
-            for (let b of parsedMap.button) {
+            for (let b of map.button) {
                 if (o.linkIdsOn.includes(Math.floor(b.linkId))) {
                     o.linksOn.push(b);
                 } else if (o.linkIdsOff.includes(Math.floor(b.linkId))) {
                     o.linksOff.push(b);
                 }
             }
-            for (let s of parsedMap.switch) {
+            for (let s of map.switch) {
                 if (o.linkIdsOn.includes(Math.floor(s.linkId))) {
                     o.linksOn.push(s);
                 } else if (o.linkIdsOff.includes(Math.floor(s.linkId))) {
                     o.linksOff.push(s);
                 }
             }
-            parsedMap.door.push(o);
+            map.door.push(o);
         }
     }
     // Remove particles
