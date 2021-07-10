@@ -443,7 +443,7 @@ Owner:<ul>
                             FPSDisplay.innerHTML = calcFPS;
                         }
                         lastFrame = now;
-                        render(ctx, parsedMap, map, state, particles, renderSettings, camX, camY);
+                        render();
                         window.requestAnimationFrame(run);
                     })();
                     customAlert("Joined game");
@@ -680,18 +680,12 @@ Owner:<ul>
                                 }
                             }
                         }
-                        for (let u in map) {
-                            if (map[u].id === o.id) {
-                                map[u] = o;
-                            }
-                        }
                     }
                 }
                 if (msg.m.add)
                     for (let o of msg.m.add) {
                         if (o.type === "box")
                             parsedMap.box.push(o);
-                        map.objects.push(o);
                     }
                 if (msg.m.remove)
                     for (let o of msg.m.remove) {
@@ -701,12 +695,6 @@ Owner:<ul>
                                     parsedMap.box.splice(i, 1);
                                     break;
                                 }
-                        for (let i in map.objects) {
-                            if (map.objects[i].id === o.id) {
-                                map.objects.splice(i, 1);
-                                break;
-                            }
-                        }
                     }
 
                 break;
@@ -774,7 +762,6 @@ Owner:<ul>
  * @param {SkapMap} i 
  */
 function initMap(i) {
-    map = i;
     renderSettings.colors.obstacle = "rgb(" +
         (240 + (i.backgroundColor[0] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +

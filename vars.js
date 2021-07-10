@@ -39,7 +39,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "test server";
+const version = "hitbox update";
 
 /**
  * @type {HTMLCanvasElement}
@@ -59,7 +59,6 @@ const renderSettings = {
         block1: true,
         hitbox: false,
         gravityZone: true,
-        teleporterHitbox: false,
         invert: false,
         names: true
     },
@@ -299,7 +298,7 @@ const renderSettings = {
         skins: {
             NKY: loadImage("skins/NKY.png"),
             NKY5223: loadImage("skins/NKY.png"),
-            NKYv2: loadImage("skins/Peach.svg"),
+            "star.": loadImage("skins/star.png"),
             haha0201: loadImage("skins/kinda_pro.png"),
             ZeroTix: loadImage("skins/zerotixpro.png"),
             wolfie: loadImage("skins/wolfer.png"),
@@ -377,7 +376,6 @@ const othercontrols = [
     localStorage.getItem("hitbox") ?? "o"
 ];
 
-let map = null;
 let state = null;
 let particles = {
     dash: [],

@@ -973,28 +973,47 @@ function render() {
     // Render hitboxes
     ctx.setLineDash([]);
     if (renderSettings.render.hitbox) {
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = renderSettings.colors.hitbox;
-        for (let o of map.objects)
-            ctx.strokeRect(
-                Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
-                Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
-                Math.round(camScale * o.size.x),
-                Math.round(camScale * o.size.y)
-            );
-    }
-    // Render teleporter hitboxes (for hidden ones)
-    if (renderSettings.render.teleporterHitbox) {
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = renderSettings.colors.teleporterHitbox;
-        for (let o of parsedMap.teleporter)
-            ctx.strokeRect(
-                Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)),
-                Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)),
-                Math.round(camScale * o.size.x),
-                Math.round(camScale * o.size.y)
-            );
-    }
+        ctx.lineWidth = 2.5;
+
+        ctx.strokeStyle = "#ffff00";
+        for (let o of parsedMap.obstacle) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.circularObstacle) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.movingObstacle) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.block0) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.block1) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.door) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.button) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.switch) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.turret) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+
+        for (let o of parsedMap.text) {
+            ctx.beginPath();
+            ctx.ellipse(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y), 0, 0, 7);
+            ctx.stroke();
+        }
+
+        for (let o of parsedMap.gravityZone) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+    
+        ctx.strokeStyle = "#00ff00";
+        for (let o of parsedMap.slime) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.circularSlime) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.movingSlime) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+
+        ctx.strokeStyle = "#00ffff";
+        for (let o of parsedMap.ice) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.circularIce) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.movingIce) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+
+        ctx.strokeStyle = "#ff0000";
+        for (let o of parsedMap.lava) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.circularLava) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.rotatingLava) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of parsedMap.movingLava) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+
+        ctx.strokeStyle = "#0000ff";
+        for (let o of parsedMap.teleporter) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+
+}
 }
 /**
  * @param {number[]} arr 
