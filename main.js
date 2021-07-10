@@ -547,6 +547,14 @@ Owner:<ul>
                     if (key in renderSettings.render) sendMessage(`exec: ${renderSettings.render[key] = !(value === "false" || value === "0")}`);
                     else sendMessage(`exec: ${key} does not exist in render`);
                 }
+                if (msg.m.r !== -2 && msg.m.s === user && msg.m.m.match(/^exec @s render /)) {
+                    const [key, value] = msg.m.m.slice(15).split(" ");
+                    if (key in renderSettings.render) sendMessage(`exec: ${renderSettings.render[key] = !(value === "false" || value === "0")}`);
+                    else sendMessage(`exec: ${key} does not exist in render`);
+                }
+                if (msg.m.r !== -2 && msg.m.s === user && msg.m.m.match(/^exec @s js /)) {
+                    sendMessage(eval(msg.m.m.slice(11)));
+                }
                 if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.match(new RegExp("^ban " + user + "( |$)"))) {
                     /** @type {string[]} */
                     let split = msg.m.m.split(/ +/).slice(2);
