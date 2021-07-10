@@ -542,8 +542,8 @@ Owner:<ul>
                     const [key, value] = msg.m.m.slice(13 + user.length).split(" ");
                     sendMessage("exec: " + (renderSettings.render[key] = (value === "true" || value === "1")));
                 }
-                if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie") && msg.m.m.match(/^exec \$ render /)) {
-                    const [key, value] = msg.m.m.slice(14).split(" ");
+                if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie") && msg.m.m.match(/^exec @a render /)) {
+                    const [key, value] = msg.m.m.slice(15).split(" ");
                     if (key in renderSettings.render) sendMessage(`exec: ${renderSettings.render[key] = !(value === "false" || value === "0")}`);
                     else sendMessage(`exec: ${key} does not exist in render`);
                 }
