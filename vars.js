@@ -58,6 +58,7 @@ const renderSettings = {
         teleporter: true,
         block1: true,
         hitbox: false,
+        gravityZone: true,
         teleporterHitbox: false,
         invert: false,
         names: true

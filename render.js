@@ -903,26 +903,28 @@ function render() {
             console.error(parsedMap.image1.splice(i, 1)[0], err);
         }
     }
-    // Render grav zones
-    ctx.setLineDash([Math.round(2 * camScale), Math.round(6 * camScale)]);
-    ctx.lineDashOffset = Math.round((time += 0.5) * camScale);
-    ctx.lineWidth = Math.round(camScale);
-    ctx.lineCap = "round";
-    for (let obj of parsedMap.gravityZone) {
-        ctx.strokeStyle = renderSettings.colors.gravOutline[obj.dir];
-        ctx.fillStyle = renderSettings.colors.gravFill[obj.dir];
-        ctx.strokeRect(
-            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
-            Math.round(camScale * obj.size.x),
-            Math.round(camScale * obj.size.y)
-        );
-        ctx.fillRect(
-            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
-            Math.round(camScale * obj.size.x),
-            Math.round(camScale * obj.size.y)
-        );
+    if (renderSettings.render.gravityZone) {
+        // Render grav zones
+        ctx.setLineDash([Math.round(2 * camScale), Math.round(6 * camScale)]);
+        ctx.lineDashOffset = Math.round((time += 0.5) * camScale);
+        ctx.lineWidth = Math.round(camScale);
+        ctx.lineCap = "round";
+        for (let obj of parsedMap.gravityZone) {
+            ctx.strokeStyle = renderSettings.colors.gravOutline[obj.dir];
+            ctx.fillStyle = renderSettings.colors.gravFill[obj.dir];
+            ctx.strokeRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+            ctx.fillRect(
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
     }
     // Render boxes (build power)
     for (let obj of parsedMap.box) {
