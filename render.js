@@ -763,117 +763,120 @@ function render() {
         ctx.restore();
     }
     // Render players
-    for (let i in state.players) {
-        let p = state.players[i];
-        let died = p.states.includes("Died");
-        let freeze = p.states.includes("Freeze");
-        // Initiate hat
-        let hat = renderSettings.textures.hats.none;
-        if (RENDER_HAT) p.hat = RENDER_HAT;
-        if (p.hat in renderSettings.textures.hats) {
-            hat = renderSettings.textures.hats[p.hat];
-        }
-        // Skin?
-        let skin = p.name;
-        if (RENDER_SKIN) skin = RENDER_SKIN;
-
-        ctx.save();
-        ctx.translate(canvas.width / 2 + camScale * (p.pos.x - camX), canvas.height / 2 + camScale * (p.pos.y - camY));
-        ctx.rotate(p.gravDir / 2 * Math.PI);
-        ctx.beginPath();
-        // Body
-        if (skin in renderSettings.textures.skins && !died && !freeze) {
-            ctx.drawImage(renderSettings.textures.skins[skin], -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
-        }
-        if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
-            ctx.ellipse(p.radius * -0.105 * camScale, p.radius * 0.4 * camScale, p.radius * 0.557 * camScale, p.radius * 0.55 * camScale, 0, 0, 7);
-        } else {
-            ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
-        }
-        ctx.fillStyle = died
-            ? freeze
-                ? renderSettings.colors.playerFreezeDead
-                : renderSettings.colors.playerDead
-            : freeze
-                ? renderSettings.colors.playerFreeze
-                : skin in renderSettings.textures.skins
-                    ? "#00000000"
-                    : fromColArr(p.color);
-        ctx.fill();
-
-        // Hat
-        if (hat) {
-            if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
-                ctx.drawImage(
-                    hat.texture,
-                    camScale * hat.offset[0] * p.radius * 0.55,
-                    camScale * hat.offset[1] * p.radius * 0.55,
-                    camScale * hat.size[0] * p.radius * 0.5,
-                    camScale * hat.size[1] * p.radius * 0.5
-                );
-            } else {
-                ctx.drawImage(
-                    hat.texture,
-                    camScale * hat.offset[0] * p.radius,
-                    camScale * hat.offset[1] * p.radius,
-                    camScale * hat.size[0] * p.radius,
-                    camScale * hat.size[1] * p.radius
-                );
+    if (renderSettings.render.player) {
+        for (let i in state.players) {
+            let p = state.players[i];
+            let died = p.states.includes("Died");
+            let freeze = p.states.includes("Freeze");
+            // Initiate hat
+            let hat = renderSettings.textures.hats.none;
+            if (RENDER_HAT) p.hat = RENDER_HAT;
+            if (p.hat in renderSettings.textures.hats) {
+                hat = renderSettings.textures.hats[p.hat];
             }
-        }
-        // Name
-        if (renderSettings.render.names) {
-            ctx.font = camScale * 2 + "px Tahoma, Verdana, Segoe, sans-serif";
+            // Skin?
+            let skin = p.name;
+            if (RENDER_SKIN) skin = RENDER_SKIN;
+
+            ctx.save();
+            ctx.translate(canvas.width / 2 + camScale * (p.pos.x - camX), canvas.height / 2 + camScale * (p.pos.y - camY));
+            ctx.rotate(p.gravDir / 2 * Math.PI);
+            ctx.beginPath();
+            // Body
+            if (skin in renderSettings.textures.skins && !died && !freeze) {
+                ctx.drawImage(renderSettings.textures.skins[skin], -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
+            }
+            if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
+                ctx.ellipse(p.radius * -0.105 * camScale, p.radius * 0.4 * camScale, p.radius * 0.557 * camScale, p.radius * 0.55 * camScale, 0, 0, 7);
+            } else {
+                ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
+            }
             ctx.fillStyle = died
                 ? freeze
                     ? renderSettings.colors.playerFreezeDead
                     : renderSettings.colors.playerDead
                 : freeze
                     ? renderSettings.colors.playerFreeze
-                    : "#202020";
-            if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
-                ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius / 2);
-            } else {
-                ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius);
-            }
-        }
+                    : skin in renderSettings.textures.skins
+                        ? "#00000000"
+                        : fromColArr(p.color);
+            ctx.fill();
 
-        // fuelBar™️
-        ctx.fillStyle = died
-            ? freeze
-                ? renderSettings.colors.playerFreezeDead
-                : renderSettings.colors.playerDead
-            : freeze
-                ? renderSettings.colors.playerFreeze
-                : "#ffff40";
-        ctx.fillRect(-camScale * 5, camScale * (p.radius + 1), camScale * p.fuel, camScale * 2.5);
-        ctx.strokeStyle = "#202020";
-        ctx.lineWidth = camScale / 2;
-        ctx.strokeRect(-camScale * 5, camScale * (p.radius + 1), camScale * 10, camScale * 2.5);
-
-        // Messages
-        if (!showChat) {
-            ctx.font = camScale * 4 + "px Tahoma, Verdana, Segoe, sans-serif";
-            if (p.name in chatMsgs) {
-                let msg = chatMsgs[p.name];
-                if (msg.t--) {
-                    let metrics = ctx.measureText(msg.m);
-                    // console.log(metrics);
-                    ctx.fillStyle = "#ffffff80";
-                    ctx.fillRect(
-                        -metrics.actualBoundingBoxLeft - camScale,
-                        -metrics.fontBoundingBoxAscent - camScale / 2 + camScale * hat.textOffset * (p.radius + 3),
-                        metrics.width + 2 * camScale,
-                        metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent + camScale
+            // Hat
+            if (renderSettings.render.playerHat && hat) {
+                if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
+                    ctx.drawImage(
+                        hat.texture,
+                        camScale * hat.offset[0] * p.radius * 0.55,
+                        camScale * hat.offset[1] * p.radius * 0.55,
+                        camScale * hat.size[0] * p.radius * 0.5,
+                        camScale * hat.size[1] * p.radius * 0.5
                     );
-                    ctx.fillStyle = "#000000";
-                    ctx.fillText(msg.m, 0, camScale * hat.textOffset * (p.radius + 3));
                 } else {
-                    delete chatMsgs[p.name];
+                    ctx.drawImage(
+                        hat.texture,
+                        camScale * hat.offset[0] * p.radius,
+                        camScale * hat.offset[1] * p.radius,
+                        camScale * hat.size[0] * p.radius,
+                        camScale * hat.size[1] * p.radius
+                    );
                 }
             }
+            // Name
+            if (renderSettings.render.playerName) {
+                ctx.font = camScale * 2 + "px Tahoma, Verdana, Segoe, sans-serif";
+                ctx.fillStyle = died
+                    ? freeze
+                        ? renderSettings.colors.playerFreezeDead
+                        : renderSettings.colors.playerDead
+                    : freeze
+                        ? renderSettings.colors.playerFreeze
+                        : "#202020";
+                if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
+                    ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius / 2);
+                } else {
+                    ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius);
+                }
+            }
+
+            // fuelBar™️
+            if (renderSettings.render.playerFuel) {
+            ctx.fillStyle = died
+                ? freeze
+                    ? renderSettings.colors.playerFreezeDead
+                    : renderSettings.colors.playerDead
+                : freeze
+                    ? renderSettings.colors.playerFreeze
+                    : "#ffff40";
+            ctx.fillRect(-camScale * 5, camScale * (p.radius + 1), camScale * p.fuel, camScale * 2.5);
+            ctx.strokeStyle = "#202020";
+            ctx.lineWidth = camScale / 2;
+            ctx.strokeRect(-camScale * 5, camScale * (p.radius + 1), camScale * 10, camScale * 2.5);}
+
+            // Messages
+            if (!showChat) {
+                ctx.font = camScale * 4 + "px Tahoma, Verdana, Segoe, sans-serif";
+                if (p.name in chatMsgs) {
+                    let msg = chatMsgs[p.name];
+                    if (msg.t--) {
+                        let metrics = ctx.measureText(msg.m);
+                        // console.log(metrics);
+                        ctx.fillStyle = "#ffffff80";
+                        ctx.fillRect(
+                            -metrics.actualBoundingBoxLeft - camScale,
+                            -metrics.fontBoundingBoxAscent - camScale / 2 + camScale * hat.textOffset * (p.radius + 3),
+                            metrics.width + 2 * camScale,
+                            metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent + camScale
+                        );
+                        ctx.fillStyle = "#000000";
+                        ctx.fillText(msg.m, 0, camScale * hat.textOffset * (p.radius + 3));
+                    } else {
+                        delete chatMsgs[p.name];
+                    }
+                }
+            }
+            ctx.restore();
         }
-        ctx.restore();
     }
     // Render blocks(1)
     ctx.globalAlpha = 1;
@@ -910,8 +913,9 @@ function render() {
         ctx.lineWidth = Math.round(camScale);
         ctx.lineCap = "round";
         for (let obj of map.gravityZone) {
-            ctx.strokeStyle = renderSettings.colors.gravOutline[obj.dir];
-            ctx.fillStyle = renderSettings.colors.gravFill[obj.dir];
+            let isNormal = obj.dir === "0" || obj.dir === "1" || obj.dir === "2" || obj.dir === "3";
+            ctx.strokeStyle = renderSettings.colors.gravOutline[isNormal ? obj.dir : 4];
+            ctx.fillStyle = renderSettings.colors.gravFill[isNormal ? obj.dir : 4];
             ctx.strokeRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
                 Math.round(canvas.height / 2 + camScale * (obj.pos.y - camY)),
@@ -936,27 +940,29 @@ function render() {
             Math.round(camScale * obj.size.y)
         );
     }
-    // Render rewards
-    for (let obj of map.reward) {
-        ctx.fillStyle = renderSettings.colors.box;
-        ctx.drawImage(
-            obj.image,
-            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.pos.y + Math.sin(time / 15) * 3 - camY)),
-            Math.round(camScale * obj.size.x),
-            Math.round(camScale * obj.size.y)
-        );
-    }
-    // Render hat rewards
-    for (let obj of map.hatReward) {
-        ctx.fillStyle = renderSettings.colors.box;
-        ctx.drawImage(
-            obj.image,
-            Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
-            Math.round(canvas.height / 2 + camScale * (obj.pos.y + Math.sin(time / 15) * 3 - camY)),
-            Math.round(camScale * obj.size.x),
-            Math.round(camScale * obj.size.y)
-        );
+    if (renderSettings.render.reward) {
+        // Render rewards
+        for (let obj of map.reward) {
+            ctx.fillStyle = renderSettings.colors.box;
+            ctx.drawImage(
+                obj.image,
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y + Math.sin(time / 15) * 3 - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
+        // Render hat rewards
+        for (let obj of map.hatReward) {
+            ctx.fillStyle = renderSettings.colors.box;
+            ctx.drawImage(
+                obj.image,
+                Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
+                Math.round(canvas.height / 2 + camScale * (obj.pos.y + Math.sin(time / 15) * 3 - camY)),
+                Math.round(camScale * obj.size.x),
+                Math.round(camScale * obj.size.y)
+            );
+        }
     }
     // Render text
     ctx.font = camScale * 5 + "px Russo One, Verdana, Arial, Helvetica, sans-serif";
@@ -989,6 +995,9 @@ function render() {
         for (let o of map.button) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
         for (let o of map.switch) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
         for (let o of map.turret) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.box) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.reward) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
+        for (let o of map.hatReward) ctx.strokeRect(Math.round(canvas.width / 2 + camScale * (o.pos.x - camX)), Math.round(canvas.height / 2 + camScale * (o.pos.y - camY)), Math.round(camScale * o.size.x), Math.round(camScale * o.size.y));
 
         for (let o of map.text) {
             ctx.beginPath();

@@ -57,10 +57,19 @@ const renderSettings = {
         text: true,
         teleporter: true,
         block1: true,
-        hitbox: false,
         gravityZone: true,
-        invert: false,
-        names: true
+        door: true,
+        button: true,
+        switch: true,
+        turret: true,
+        reward: true,
+        player: true,
+        playerFuel: true,
+        playerHat: true,
+        playerName: true,
+        
+        hitbox: false,
+        invert: false
     },
     colors: {
         obstacle: "#ffffff", // Is variable (shit) (no moar shit)
