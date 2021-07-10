@@ -66,7 +66,7 @@ const renderSettings = {
         obstacle: "#ffffff", // Is variable (shit) (no moar shit)
         lava: "#d01000",
         slime: "#00c000",
-        ice: "#00c0c0",
+        ice: "#00e0e0",
         box: "#00000060",
         gravOutline: [
             "#ffff00",
