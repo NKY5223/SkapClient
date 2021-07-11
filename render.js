@@ -913,7 +913,7 @@ function render() {
         ctx.lineWidth = Math.round(camScale);
         ctx.lineCap = "round";
         for (let obj of map.gravityZone) {
-            let isNormal = obj.dir === "0" || obj.dir === "1" || obj.dir === "2" || obj.dir === "3";
+            let isNormal = (obj.dir === "0") || (obj.dir === "1") || (obj.dir === "2") || (obj.dir === "3");
             ctx.strokeStyle = renderSettings.colors.gravOutline[isNormal ? obj.dir : 4];
             ctx.fillStyle = renderSettings.colors.gravFill[isNormal ? obj.dir : 4];
             ctx.strokeRect(

@@ -827,12 +827,16 @@ function initMap(i) {
             case "circularIce":
             case "movingSlime":
             case "circularSlime":
-            case "gravityZone":
                 map[o.type].push(o);
                 break;
             case "teleporter":
                 o.dir = (o.dir ?? 0).toString();
                 map.teleporter.push(o);
+                break;
+            case "gravityZone":
+                o.dir = (o.dir ?? 4).toString();
+                console.log(o.dir);
+                map.gravityZone.push(o);
                 break;
             case "button":
                 o.dir = (o.dir ?? 0).toString();
