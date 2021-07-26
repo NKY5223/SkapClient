@@ -835,7 +835,6 @@ function initMap(i) {
                 break;
             case "gravityZone":
                 o.dir = (o.dir ?? 4).toString();
-                console.log(o.dir);
                 map.gravityZone.push(o);
                 break;
             case "button":
