@@ -839,20 +839,6 @@ function render() {
                 }
             }
 
-            // fuelBar™️
-            if (renderSettings.render.playerFuel) {
-            ctx.fillStyle = died
-                ? freeze
-                    ? renderSettings.colors.playerFreezeDead
-                    : renderSettings.colors.playerDead
-                : freeze
-                    ? renderSettings.colors.playerFreeze
-                    : "#ffff40";
-            ctx.fillRect(-camScale * 5, camScale * (p.radius + 1), camScale * p.fuel, camScale * 2.5);
-            ctx.strokeStyle = "#202020";
-            ctx.lineWidth = camScale / 2;
-            ctx.strokeRect(-camScale * 5, camScale * (p.radius + 1), camScale * 10, camScale * 2.5);}
-
             // Messages
             if (!showChat) {
                 ctx.font = camScale * 4 + "px Tahoma, Verdana, Segoe, sans-serif";

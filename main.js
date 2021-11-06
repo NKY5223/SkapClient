@@ -593,28 +593,28 @@ Owner:<ul>
                                     break;
                                 }
                             }
-                        } else if (o.type === "movingObstacle") {
+                        } else if (o.type === 2) {
                             for (let u of map.movingObstacle) {
                                 if (o.id === u.id) {
                                     u.pos = o.pos;
                                     break;
                                 }
                             }
-                        } else if (o.type === "movingLava") {
+                        } else if (o.type === 1) {
                             for (let u of map.movingLava) {
                                 if (o.id === u.id) {
                                     u.pos = o.pos;
                                     break;
                                 }
                             }
-                        } else if (o.type === "movingIce") {
+                        } else if (o.type === 3) {
                             for (let u of map.movingIce) {
                                 if (o.id === u.id) {
                                     u.pos = o.pos;
                                     break;
                                 }
                             }
-                        } else if (o.type === "movingSlime") {
+                        } else if (o.type === 4) {
                             for (let u of map.movingSlime) {
                                 if (o.id === u.id) {
                                     u.pos = o.pos;
@@ -770,6 +770,7 @@ Owner:<ul>
  * @param {SkapMap} i 
  */
 function initMap(i) {
+    console.log(i);
     renderSettings.colors.obstacle = "rgb(" +
         (240 + (i.backgroundColor[0] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +
@@ -819,15 +820,23 @@ function initMap(i) {
             case "lava":
             case "box":
             case "turret":
-            case "movingObstacle":
             case "circularObstacle":
-            case "movingLava":
             case "circularLava":
-            case "movingIce":
             case "circularIce":
-            case "movingSlime":
             case "circularSlime":
                 map[o.type].push(o);
+                break;
+            case 1:
+                map.movingLava.push(o);
+                break;
+            case 2:
+                map.movingObstacle.push(o);
+                break;
+            case 3:
+                map.movingIce.push(o);
+                break;
+            case 4:
+                map.movingSlime.push(o);
                 break;
             case "teleporter":
                 o.dir = (o.dir ?? 0).toString();
