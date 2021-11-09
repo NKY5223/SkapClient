@@ -148,6 +148,8 @@ function render() {
     particles.jetpack = particles.jetpack.filter(p => {
         p.x += p.vx;
         p.y += p.vy;
+        p.hue += 10;
+        p.s *= 0.95;
         return (p.o -= 0.02) > 0;
     });
     particles.trail = particles.trail.filter(p => {
@@ -738,8 +740,8 @@ function render() {
         ctx.globalAlpha = p.o;
         ctx.fill();
     }
-    ctx.fillStyle = renderSettings.colors.jetpack;
     for (let p of particles.jetpack) {
+        ctx.fillStyle = `hsl(${p.hue},${p.s}%,50%)`;
         ctx.globalAlpha = p.o;
         ctx.fillRect(canvas.width / 2 + camScale * (p.x - p.w / 2 - camX), canvas.height / 2 + camScale * (p.y - p.h / 2 - camY), p.w * camScale, p.h * camScale);
     }
@@ -824,19 +826,21 @@ function render() {
             }
             // Name
             if (renderSettings.render.playerName) {
+                ctx.globalCompositeOperation = "difference";
                 ctx.font = camScale * 2 + "px Tahoma, Verdana, Segoe, sans-serif";
                 ctx.fillStyle = died
                     ? freeze
-                        ? renderSettings.colors.playerFreezeDead
-                        : renderSettings.colors.playerDead
+                        ? renderSettings.colors.playerFreezeDeadText
+                        : renderSettings.colors.playerDeadText
                     : freeze
-                        ? renderSettings.colors.playerFreeze
-                        : "#202020";
+                        ? renderSettings.colors.playerFreezeText
+                        : "#ffffff";
                 if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
                     ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius / 2);
                 } else {
                     ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius);
                 }
+                ctx.globalCompositeOperation = "source-over";
             }
 
             // Messages
@@ -916,7 +920,7 @@ function render() {
             );
         }
     }
-    // Render boxes (build power)
+    // Render boxes (wall power)
     for (let obj of map.box) {
         ctx.fillStyle = renderSettings.colors.box;
         ctx.fillRect(

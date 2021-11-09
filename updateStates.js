@@ -16,11 +16,7 @@
 function updateStates(m) {
     let now = Date.now();
     let diff = now - lastUpdate;
-    minLU = Math.min(minLU, diff);
-    if (diff < 10000)
-        maxLU = Math.max(maxLU, diff);
-    lastUpdateDisplay.innerHTML = diff;
-    minMaxUpdate.innerHTML = minLU + " - " + maxLU;
+    TPSDisplay.innerHTML = (1000 / diff).toFixed(2);
     lastUpdate = now;
 
     let player = m.players[m.infos.id];
@@ -78,7 +74,7 @@ function updateStates(m) {
     maxVel = Math.max(maxVel, vel);
     maxVelP.innerHTML = maxVel.toFixed(3);
 
-    // Set entities... (totally not render)
+    // Set entities
     state = m;
     // Particles
     if (document.hasFocus()) {
@@ -165,6 +161,8 @@ function updateStates(m) {
                         y: p.pos.y,
                         vx: -s * Math.cos(dir),
                         vy: -s * Math.sin(dir),
+                        hue: 0,
+                        s: 100,
                         w: p.gravDir === 0 || p.gravDir === 2 ? 5 : 2,
                         h: p.gravDir === 0 || p.gravDir === 2 ? 2 : 5,
                         o: 1

@@ -117,6 +117,10 @@ const renderSettings = {
         playerDead: "#ff0000",
         playerFreeze: "#00ffff",
         playerFreezeDead: "#ff0080",
+        
+        playerDeadText: "#00ffff",
+        playerFreezeText: "#ff0000",
+        playerFreezeDeadText: "#00ff80",
 
         meteor: "#c08000e0",
         ghost: "#20a040e0",
@@ -537,9 +541,7 @@ let id = "";
 let canSend = false;
 
 
-let maxLU = 0;
 let lastUpdate = 0;
-let minLU = 1000;
 let lastFrame = 0;
 
 let maxVel = 0;
@@ -603,7 +605,7 @@ const chat = document.getElementById("chatContent");
 const chatInput = document.getElementById("chatInput");
 const fuelBar = document.getElementById("fuelBarInner");
 const lastUpdateDiv = document.getElementById("lastUpdateDiv");
-const lastUpdateDisplay = document.getElementById("lastUpdateDisplay");
+const TPSDisplay = document.getElementById("TPS");
 const minMaxUpdate = document.getElementById("minMaxUpdateDisplay");
 const FPSDisplay = document.getElementById("FPS");
 const posDiv = document.getElementById("pos");

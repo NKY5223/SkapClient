@@ -585,7 +585,7 @@ Owner:<ul>
             case "updateMap":
                 if (msg.m.update) {
                     for (let o of msg.m.update) {
-                        if (o.type === "rotatingLava") {
+                        if (o.type === 0) {
                             for (let u of map.rotatingLava) {
                                 if (o.id === u.id) {
                                     u.angle = (o.angle % 360) * Math.PI / 180;
@@ -890,7 +890,7 @@ function initMap(i) {
                 ];
                 map.switch.push(o);
                 break;
-            case "rotatingLava":
+            case 0:
                 o.angle = o.angle * Math.PI / 180;
                 map.rotatingLava.push(o);
                 break;
