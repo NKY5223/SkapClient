@@ -283,7 +283,8 @@ Owner:<ul>
                         pa: gamePw.value,
                         r: powerRestrict.checked,
                         rd: Array.from(powerRestrictOptions.children).slice(3, 15).map((el, i) => el.classList.contains("restricted") ? i : false).filter(i => i !== false),
-                        u: uploadMap.checked
+                        u: uploadMap.checked,
+                        s: speedrun.checked
                     };
                     try {
                         send({
@@ -303,7 +304,8 @@ Owner:<ul>
                     pa: gamePw.value,
                     r: powerRestrict.checked,
                     rd: Array.from(powerRestrictOptions.children).slice(3, 15).map((el, i) => el.classList.contains("restricted") ? i : false).filter(i => i !== false),
-                    u: uploadMap.checked
+                    u: uploadMap.checked,
+                    s: speedrun.checked
                 };
                 send({
                     e: "createGame",
@@ -991,13 +993,13 @@ function initMap(i) {
  * @param {boolean} force Force message
  */
 function message(msg, force = false) {
-    if (msg.s === "[SKAP]" && hideSKAP) return;
+    if (msg.s === "[SKAP]" && !msg.r === -2 && hideSKAP) return;
     if (!force && blocked.includes(msg.s) && !devs.includes(msg.s)) {
-        message({
-            s: msg.s,
-            r: msg.r,
-            m: "<i>[Blocked]</i>"
-        }, true);
+        // message({
+        //     s: msg.s,
+        //     r: msg.r,
+        //     m: "<i>[Blocked]</i>"
+        // }, true);
         return;
     }
     // Chat bubbles
@@ -1009,11 +1011,13 @@ function message(msg, force = false) {
     let wrapper = document.createElement("div");
     wrapper.className = "wrapper";
     let p = document.createElement("p");
-    p.className = msg.s === "[SKAP]" || msg.s.startsWith("[CLIENT]")
-        ? "SYSMsg"
-        : msg.s === "Sweaty" || msg.s === "XxSweatyxX"
-            ? "Sweatyfuckingbitchmsg"
-            : ["discordMsg", "guestMsg", "userMsg", "modMsg"][msg.r + 2];
+    p.className = msg.r === -2
+        ? "discordMsg"
+        : msg.s === "[SKAP]" || msg.s.startsWith("[CLIENT]")
+            ? "SYSMsg"
+            : msg.s === "Sweaty" || msg.s === "XxSweatyxX"
+                ? "Sweatyfuckingbitchmsg"
+                : ["guestMsg", "userMsg", "modMsg"][msg.r + 1];
     p.innerHTML = `<span class="
     ${msg.s === -2
             ? ""

@@ -590,6 +590,7 @@ const gameFile = document.getElementById("gameFile");
 const gameFileLabel = document.getElementById("gameFileLabel");
 const createGameBtn = document.getElementById("createGameBtn");
 const perms = document.getElementById("perms");
+const speedrun = document.getElementById("speedrun");
 const private = document.getElementById("private");
 const gamePwWrapper = document.getElementById("gamePwWrapper");
 const gamePw = document.getElementById("gamePw");
