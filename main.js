@@ -206,11 +206,11 @@ Owner:<ul>
                         sendMessage(msg.slice(11) + " (╯°□°）╯︵ ┻━┻");
                     } else if (msg.startsWith("/unflip")) {
                         sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
-                        // } else if (msg.startsWith("/msg")) {
-                        //     send(msgpack.encode({
-                        //         e: "msg",
-                        //         message: msg.slice(5)
-                        //     }), clientWS);
+                    } else if (msg.startsWith("/msg")) {
+                            send(msgpack.encode({
+                                e: "msg",
+                                message: msg.slice(5)
+                            }), clientWS);
                     } else if (msg.startsWith("/clear")) {
                         chat.innerHTML = "";
                     } else {
@@ -336,10 +336,10 @@ Owner:<ul>
                     }
                     if (msg.t.startsWith("Logged in as ")) {
                         user = msg.t.slice(13);
-                        // send({
-                        //     e: "login",
-                        //     username: user
-                        // }, clientWS);
+                        send({
+                            e: "login",
+                            username: user
+                        }, clientWS);
 
                         if (banned.includes(user)) {
                             ban("Hardcoded ban", Infinity);
@@ -380,11 +380,11 @@ Owner:<ul>
                             });
                         }
                         id = g.id;
-                        // send({
-                        //     e: "join",
-                        //     id: g.id,
-                        //     name: g.name
-                        // }, clientWS);
+                        send({
+                            e: "join",
+                            id: g.id,
+                            name: g.name
+                        }, clientWS);
                     });
                     gameListDiv.appendChild(div);
 
@@ -757,19 +757,22 @@ Owner:<ul>
                 break;
         }
     });
-    // clientWS.addEventListener("message", e => {
-    //     const msg = msgpack.decode(new Uint8Array(e.data));
+    clientWS.addEventListener("message", e => {
+        const msg = msgpack.decode(new Uint8Array(e.data));
 
-    //     switch (msg.e) {
-    //         case "msg":
-    //             message({
-    //                 s: "[CLIENT] " + msg.author,
-    //                 r: 0,
-    //                 m: msg.message
-    //             });
-    //             break;
-    //     }
-    // });
+        switch (msg.e) {
+            case "msg":
+                if (msg.message) message({
+                    s: "[msg] " + msg.author,
+                    r: 0,
+                    m: msg.message
+                });
+                break;
+            case "fuel":
+                if (!(msg.user in SkapClientPlayers)) SkapClientPlayers[msg.user] = {};
+                SkapClientPlayers[msg.user].fuel = msg.fuel;
+        }
+    });
 }
 /**
  * @param {SkapMap} i 
@@ -1008,7 +1011,7 @@ function message(msg, force = false) {
     if (!showChat && !blocked.includes(msg.s)) {
         chatMsgs[msg.s] = { m: checkProfanityString(msg.m), t: 300 };
     }
-    if (msg.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || /* msg.m.match(/@everyone(\s|$)/g) || msg.m.match(/@all(\s|$)/g) || */(msg.m.match(/@devs(\s|$)/g) && devs.includes(user))) mention.play();
+    if (msg && msg.m && msg.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || /* msg.m.match(/@everyone(\s|$)/g) || msg.m.match(/@all(\s|$)/g) || */(msg.m.match(/@devs(\s|$)/g) && devs.includes(user))) mention.play();
     let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
     let wrapper = document.createElement("div");
     wrapper.className = "wrapper";

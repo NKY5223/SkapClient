@@ -21,11 +21,11 @@ ws.binaryType = "arraybuffer";
 let hideSKAP = false;
 
 // const clientWS = new WebSocket(location.hostname === "localhost" ? "ws://localhost:4000" : "wss://skapclientserver.nky5223.repl.co");
-// const clientWS = new WebSocket("wss://skapclientserver.nky5223.repl.co");
-// clientWS.binaryType = "arraybuffer";
-// clientWS.addEventListener("close", () => {
-//     customAlert("Client WebSocket closed", 10);
-// });
+const clientWS = new WebSocket("wss://skapclientserver.nky5223.repl.co");
+clientWS.binaryType = "arraybuffer";
+clientWS.addEventListener("close", () => {
+    customAlert("Client WebSocket closed", 10);
+});
 
 const URLParams = new URLSearchParams(location.search);
 const autojoinGameId = URLParams.get("gameId");
@@ -323,7 +323,12 @@ const renderSettings = {
             HayrenRyzm: loadImage("skins/RayhanADev.png"),
             RayhanADev: loadImage("skins/RayhanADev.png")
         },
-        trail: loadImage(`https://skap.io/textures/particles/${["apple", "blackHeart", "greyPaw", "heart", "pinkPaw", "sparkles", "whitePaw"][Math.floor(Math.random() * 7)]}.png`)
+        trail: loadImage(`https://skap.io/textures/particles/${["apple", "blackHeart", "greyPaw", "heart", "pinkPaw", "sparkles", "whitePaw"][Math.floor(Math.random() * 7)]}.png`),
+        skapclient: loadImage("./skapclient.ico", true),
+        iconSize: {
+            x: 2,
+            y: 2
+        }
     }
 };
 
@@ -393,6 +398,8 @@ const othercontrols = [
 ];
 
 let state = null;
+/** @type {{ [name: string]: { fuel: number }}} */
+const SkapClientPlayers = {};
 let particles = {
     dash: [],
     shrink: [],
@@ -714,9 +721,9 @@ function show(el) {
  * LOAD IMAGE
  * @param {string} src 
  */
-function loadImage(src) {
+function loadImage(src = "", root = false) {
     let image = new Image();
-    image.src = src.startsWith("http") ? src : `Textures/${src}`;
+    image.src = src.startsWith("http") ? src : root ? src : `Textures/${src}`;
     image.onerror = () => {
         console.log("ERROR AT", image.src);
     }

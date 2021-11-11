@@ -852,12 +852,40 @@ function render() {
                     : freeze
                         ? renderSettings.colors.playerFreezeText
                         : "#ffffff";
-                if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
-                    ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius / 2);
+                if (p.name in SkapClientPlayers) {
+                    const width = ctx.measureText(p.name).width;
+                    if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
+                        ctx.fillText(p.name, camScale * (renderSettings.textures.iconSize.x / 2 + 0.1), camScale * hat.textOffset * p.radius / 2);
+                        ctx.globalCompositeOperation = "source-over";
+                        // ctx.drawImage(renderSettings.textures.skapclient, -width / 2, camScale * hat.textOffset * p.radius / 2, renderSettings.textures.iconSize.x, renderSettings.textures.iconSize.y);
+                    } else {
+                        ctx.fillText(p.name, camScale * (renderSettings.textures.iconSize.x / 2 + 0.1), camScale * hat.textOffset * p.radius);
+                        ctx.globalCompositeOperation = "source-over";
+                        ctx.drawImage(renderSettings.textures.skapclient, -(width + camScale * (renderSettings.textures.iconSize.x + 0.1)) / 2, camScale * hat.textOffset * p.radius - camScale * (renderSettings.textures.iconSize.y + 0.2) / 2, camScale * renderSettings.textures.iconSize.x, camScale * renderSettings.textures.iconSize.y);
+                    }
                 } else {
-                    ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius);
+                    if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
+                        ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius / 2);
+                    } else {
+                        ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius);
+                    }
+                    ctx.globalCompositeOperation = "source-over";
                 }
-                ctx.globalCompositeOperation = "source-over";
+            }
+
+            // fuelBar™️
+            if (renderSettings.render.playerFuel && p.name in SkapClientPlayers) {
+                ctx.fillStyle = died
+                    ? freeze
+                        ? renderSettings.colors.playerFreezeDead
+                        : renderSettings.colors.playerDead
+                    : freeze
+                        ? renderSettings.colors.playerFreeze
+                        : "#ffff40";
+                ctx.fillRect(-camScale * 5, camScale * (p.radius + 1), camScale * SkapClientPlayers[p.name].fuel, camScale * 2.5);
+                ctx.strokeStyle = "#202020";
+                ctx.lineWidth = camScale / 2;
+                ctx.strokeRect(-camScale * 5, camScale * (p.radius + 1), camScale * 10, camScale * 2.5);
             }
 
             // Messages

@@ -27,10 +27,15 @@ function updateStates(m) {
         camX = player.pos.x;
         camY = player.pos.y;
     }
-    // send({
-    //     e: "username",
-    //     username: player.name
-    // }, clientWS);
+    send({
+        e: "username",
+        username: player.name
+    }, clientWS);
+    send({
+        e: "fuel",
+        user: player.name,
+        fuel: player.fuel
+    }, clientWS);
 
     power0CD.style.height = (isNaN(m.infos.oneCooldown) ? 0 : m.infos.oneCooldown) * 100 + "%";
     power1CD.style.height = (isNaN(m.infos.twoCooldown) ? 0 : m.infos.twoCooldown) * 100 + "%";
@@ -60,6 +65,7 @@ function updateStates(m) {
         const el = document.createElement("p");
         if (p[2]) el.classList.add("deadPlayerName");
         if (p[3]) el.classList.add("freezePlayerName");
+        if (p[0] in SkapClientPlayers) el.classList.add("skapclientPlayerName")
         el.innerHTML = p[0].safe() + ":&nbsp;" + p[1].safe();
         
         playerList.appendChild(el);

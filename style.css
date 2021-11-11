@@ -42,7 +42,7 @@ input {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 .noselect {
     -webkit-user-select: none;  
@@ -424,6 +424,15 @@ canvas {
 }
 .deadPlayerName.freezePlayerName {
     color: #ff0080;
+}
+.skapclientPlayerName::before {
+    content: "";
+    background: url("./skapclient.ico") 0/100%;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
 }
 
 #chat {
