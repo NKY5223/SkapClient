@@ -295,7 +295,7 @@
                 <br><br>
                 <img src="https://skap.io/textures/powers/shrinker.svg" title="Shrinker" />
                 <img src="https://skap.io/textures/powers/explosion.svg" title="Explosion" />
-                <img src="https://skap.io/textures/powers/build.svg" title="Build" />
+                <img src="https://skap.io/textures/powers/wall.svg" title="Build" />
                 <img src="https://skap.io/textures/powers/meteor.svg" title="Meteor" />
                 <img src="https://skap.io/textures/powers/refuel.svg" title="Refuel" />
                 <img src="https://skap.io/textures/powers/feather.svg" title="Feather" />
@@ -331,14 +331,19 @@
 
                 <div id="pos" class="hidden">
                     <p>pos: <span id="posX"></span>, <span id="posY"></span></p>
-                    <p>vel: <span id="vel"></span> (<span id="velX"></span>, <span id="velY"></span>)</p>
-                    <P>maxVel: <span id="maxVel"></span></P>
+                    <p>vel: <span id="velX"></span>, <span id="velY"></span> (<span id="vel"></span>)</p>
                     <p>aim: <span id="aimX"></span>, <span id="aimY"></span></p>
                 </div>
 
-                <div id="lastUpdateDiv" class="hidden noselect">
-                    <span id="TPS" class="noselect">0</span>tps<br>
-                    <span id="FPS" class="noselect">0</span>fps
+                <div id="rate" class="hidden noselect">
+                    <div id="graphs">
+                        <canvas id="TPSGraph" width="75" height="50"></canvas>
+                        <canvas id="FPSGraph" width="75" height="50"></canvas>
+                    </div>
+                    <div id="numbers">
+                        <span style="color:#ff4040">TPS:</span>&nbsp;<span id="TPS" class="noselect">0</span><br>
+                        <span style="color:#4040ff">FPS:</span>&nbsp;<span id="FPS" class="noselect">0</span>
+                    </div>
                 </div>
 
                 <h3 id="deathText" class="hidden noselect">

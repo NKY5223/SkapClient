@@ -67,7 +67,7 @@ const renderSettings = {
         playerFuel: true,
         playerHat: true,
         playerName: true,
-        
+
         hitbox: false,
         invert: false
     },
@@ -117,7 +117,7 @@ const renderSettings = {
         playerDead: "#ff0000",
         playerFreeze: "#00ffff",
         playerFreezeDead: "#ff0080",
-        
+
         playerDeadText: "#00ffff",
         playerFreezeText: "#ff0000",
         playerFreezeDeadText: "#00ff80",
@@ -134,7 +134,12 @@ const renderSettings = {
         explosion: "#00000008",
         ghostParticles: "#40a040c0",
         refuel: "#ffff00c0",
-        jetpack: "#c0c0c020"
+        jetpack: "#c0c0c020",
+
+        FPSStroke: "#4040ff",
+        FPSFill: "#4040ff80",
+        TPSStroke: "#ff4040",
+        TPSFill: "#ff404080"
     },
     textures: {
         enemies: {
@@ -172,7 +177,7 @@ const renderSettings = {
             decelerator: loadImage("enemies/decelerator.svg"),
             drainer: loadImage("enemies/drainer.svg"),
             disabler: loadImage("enemies/disabler.svg"),
-            
+
             none: loadImage("enemies/none.svg")
         },
         hats: {
@@ -543,9 +548,10 @@ let canSend = false;
 
 let lastUpdate = 0;
 let lastFrame = 0;
-
-let maxVel = 0;
-const maxVelP = document.getElementById("maxVel");
+/** @type {{ time: number, fps: number }[]} */
+const FPSHistory = [];
+/** @type {{ time: number, tps: number }[]} */
+const TPSHistory = [];
 
 // HTML Elements
 // Other stuff
@@ -605,10 +611,13 @@ const chatDiv = document.getElementById("chat");
 const chat = document.getElementById("chatContent");
 const chatInput = document.getElementById("chatInput");
 const fuelBar = document.getElementById("fuelBarInner");
-const lastUpdateDiv = document.getElementById("lastUpdateDiv");
-const TPSDisplay = document.getElementById("TPS");
-const minMaxUpdate = document.getElementById("minMaxUpdateDisplay");
+const rateDiv = document.getElementById("rate");
 const FPSDisplay = document.getElementById("FPS");
+const TPSDisplay = document.getElementById("TPS");
+/** @type {HTMLCanvasElement} */
+const FPSCanvas = document.getElementById("FPSGraph");
+/** @type {HTMLCanvasElement} */
+const TPSCanvas = document.getElementById("TPSGraph");
 const posDiv = document.getElementById("pos");
 const posXSpan = document.getElementById("posX");
 const posYSpan = document.getElementById("posY");
@@ -619,8 +628,14 @@ const aimXSpan = document.getElementById("aimX");
 const aimYSpan = document.getElementById("aimY");
 if (debug) {
     show(posDiv);
-    show(lastUpdateDiv);
+    show(rateDiv);
 }
+const FPSctx = FPSCanvas.getContext("2d");
+const TPSctx = TPSCanvas.getContext("2d");
+FPSctx.strokeStyle = renderSettings.colors.FPSStroke;
+FPSctx.fillStyle = renderSettings.colors.FPSFill;
+TPSctx.strokeStyle = renderSettings.colors.TPSStroke;
+TPSctx.fillStyle = renderSettings.colors.TPSFill;
 
 const deathM = document.getElementById("deathText");
 const freezeM = document.getElementById("freezeText");

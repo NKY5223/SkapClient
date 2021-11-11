@@ -439,11 +439,14 @@ Owner:<ul>
                     }
                     power0.value = msg.i.powers[0];
                     power1.value = msg.i.powers[1];
-                    (function run(now = 0) {
+                    (function run() {
+                        const now = Date.now();
                         const calcFPS = Math.floor(1000 / (now - lastFrame));
                         if (calcFPS != Infinity && FPSDisplay.innerHTML !== String(calcFPS)) {
                             FPSDisplay.innerHTML = calcFPS;
                         }
+                        FPSHistory.push({ time: now, fps: calcFPS });
+                        if (FPSHistory.length > 100 || FPSHistory[FPSHistory.length - 1].time - FPSHistory[0].time > 1150) FPSHistory.splice(0, 1);
                         lastFrame = now;
                         render();
                         window.requestAnimationFrame(run);
@@ -772,7 +775,6 @@ Owner:<ul>
  * @param {SkapMap} i 
  */
 function initMap(i) {
-    console.log(i);
     renderSettings.colors.obstacle = "rgb(" +
         (240 + (i.backgroundColor[0] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +

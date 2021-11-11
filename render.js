@@ -113,6 +113,23 @@
  * @param {number} camY
  */
 function render() {
+    let now = Date.now();
+    FPSctx.clearRect(0, 0, FPSCanvas.width, FPSCanvas.height);
+    FPSctx.beginPath();
+    FPSctx.moveTo(FPSCanvas.width + (FPSHistory[0].time - now) / 15, FPSCanvas.height - FPSHistory[0].fps * FPSCanvas.height / 120);
+    for (let { time, fps } of FPSHistory) {
+        FPSctx.lineTo(FPSCanvas.width + (time - now) / 15, FPSCanvas.height - fps * FPSCanvas.height / 120);
+    }
+    FPSctx.stroke();
+    if (TPSHistory.length) {
+        TPSctx.clearRect(0, 0, TPSCanvas.width, TPSCanvas.height);
+        TPSctx.beginPath();
+        TPSctx.moveTo(TPSCanvas.width + (TPSHistory[0].time - now) / 15, TPSCanvas.height - TPSHistory[0].fps * TPSCanvas.height / 120);
+        for (let { time, tps } of TPSHistory) {
+            TPSctx.lineTo(TPSCanvas.width + (time - now) / 15, TPSCanvas.height - tps * TPSCanvas.height / 120);
+        }
+        TPSctx.stroke();
+    }
     // Particles
     particles.dash = particles.dash.filter(p => {
         p.x += p.vx;

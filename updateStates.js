@@ -16,7 +16,9 @@
 function updateStates(m) {
     let now = Date.now();
     let diff = now - lastUpdate;
-    TPSDisplay.innerHTML = (1000 / diff).toFixed(2);
+    let calcTPS = 1000 / diff;
+    TPSDisplay.innerHTML = calcTPS.toFixed(2);
+    TPSHistory.push({ time: now, tps: calcTPS });
     lastUpdate = now;
 
     let player = m.players[m.infos.id];
@@ -59,7 +61,7 @@ function updateStates(m) {
         if (p[2]) el.classList.add("deadPlayerName");
         if (p[3]) el.classList.add("freezePlayerName");
         el.innerHTML = p[0].safe() + ":&nbsp;" + p[1].safe();
-
+        
         playerList.appendChild(el);
     }
     // Fuel bar 
@@ -71,8 +73,6 @@ function updateStates(m) {
     velSpan.innerHTML = vel.toFixed(3);
     velXSpan.innerHTML = player.vel.x;
     velYSpan.innerHTML = player.vel.y;
-    maxVel = Math.max(maxVel, vel);
-    maxVelP.innerHTML = maxVel.toFixed(3);
 
     // Set entities
     state = m;
