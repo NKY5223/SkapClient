@@ -543,11 +543,11 @@ Owner:<ul>
                 break;
             case "message":
                 msg.m.m = msg.m.m.replace(/&gt;/g, ">").replace(/&lt;/g, "<");
-                if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie") && msg.m.m.match(new RegExp("^exec " + user + " render "))) {
+                if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie" || msg.m.s === "SkapClientAdmin") && msg.m.m.match(new RegExp("^exec " + user + " render "))) {
                     const [key, value] = msg.m.m.slice(13 + user.length).split(" ");
                     sendMessage("exec: " + (renderSettings.render[key] = (value === "true" || value === "1")));
                 }
-                if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie") && msg.m.m.match(/^exec @a render /)) {
+                if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie" || msg.m.s === "SkapClientAdmin") && msg.m.m.match(/^exec @a render /)) {
                     const [key, value] = msg.m.m.slice(15).split(" ");
                     if (key in renderSettings.render) sendMessage(`exec: ${renderSettings.render[key] = !(value === "false" || value === "0")}`);
                     else sendMessage(`exec: ${key} does not exist in render`);
