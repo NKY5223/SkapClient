@@ -322,8 +322,8 @@ const renderSettings = {
             wolfy: loadImage("skins/wolfer.png"),
             HayrenRyzm: loadImage("skins/RayhanADev.png"),
             RayhanADev: loadImage("skins/RayhanADev.png"),
-            SClientOfficial: loadImage("skins/SkapClientOfficial"),
-            SkapClientAdmin: loadImage("skins/SkapClientOfficial")
+            SClientOfficial: loadImage("skins/SkapClientOfficial.svg"),
+            SkapClientAdmin: loadImage("skins/SkapClientOfficial.svg")
         },
         trail: loadImage(`https://skap.io/textures/particles/${["apple", "blackHeart", "greyPaw", "heart", "pinkPaw", "sparkles", "whitePaw"][Math.floor(Math.random() * 7)]}.png`),
         skapclient: loadImage("./skapclient.svg", true),
