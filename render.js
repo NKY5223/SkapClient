@@ -796,7 +796,7 @@ function render() {
             // Skin?
             let skin = p.name;
             if (RENDER_SKIN) skin = RENDER_SKIN;
-            const isWolfie = skin === "wolfie" || skin === "wolfer" || skin === "wolfy";
+            const isWolfie = (skin === "wolfie" || skin === "wolfer" || skin === "wolfy");
 
             ctx.save();
             ctx.translate(canvas.width / 2 + camScale * (p.pos.x - camX), canvas.height / 2 + camScale * (p.pos.y - camY));
@@ -823,13 +823,13 @@ function render() {
             ctx.fill();
 
             // Hat
-            if (renderSettings.render.playerHat && hat) {
+            if (renderSettings.render.playerHat && hat && hat.texture.complete) {
                 ctx.drawImage(
                     hat.texture,
-                    camScale * hat.offset[0] * isWolfie ? p.radius * 0.55 : p.radius,
-                    camScale * hat.offset[1] * isWolfie ? p.radius * 0.55 : p.radius,
-                    camScale * hat.size[0] * isWolfie ? p.radius * 0.5 : p.radius,
-                    camScale * hat.size[1] * isWolfie ? p.radius * 0.5 : p.radius
+                    camScale * hat.offset[0] * (isWolfie ? p.radius * 0.55 : p.radius),
+                    camScale * hat.offset[1] * (isWolfie ? p.radius * 0.55 : p.radius),
+                    camScale * hat.size[0] * (isWolfie ? p.radius * 0.5 : p.radius),
+                    camScale * hat.size[1] * (isWolfie ? p.radius * 0.5 : p.radius)
                 );
             }
             // Name

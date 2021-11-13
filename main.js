@@ -923,6 +923,7 @@ function initMap(i) {
             case "text":
                 let split = o.text.split("|");
                 if (split[0] === "SKAPCLIENT.IMAGE") {
+                    if (split[1].startsWith("http")) break;
                     if (split[6] === "true" || split[6] === "1") {
                         map.image1.push({
                             image: loadImage(split[1]),
