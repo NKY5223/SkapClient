@@ -428,6 +428,8 @@ Owner:<ul>
                 if (msg.m) customAlert("Could not join game");
                 else {
                     initMap(msg.i.map);
+                    powers.clear();
+                    msg.i.powers.forEach(powers.add.bind(powers ));
                     document.body.classList.remove("scroll");
                     hide(gamesDiv);
                     hide(createGameMenu);
@@ -771,6 +773,15 @@ Owner:<ul>
             case "fuel":
                 if (!(msg.user in SkapClientPlayers)) SkapClientPlayers[msg.user] = {};
                 SkapClientPlayers[msg.user].fuel = msg.fuel;
+                break;
+            case "clientJoined":
+                if (!(msg.username in SkapClientPlayers)) SkapClientPlayers[msg.user] = {};
+                break;
+            case "clientLeft":
+                if (msg.username in SkapClientPlayers) delete SkapClientPlayers[msg.username];
+                break;
+            case "clients":
+                msg.clients.forEach(username => (username in SkapClientPlayers) || (SkapClientPlayers[username] = {}));
         }
     });
 }
@@ -1129,6 +1140,7 @@ function keys(key = 0, value = true) {
 }
 function changePower(slot = 0, power = 0) {
     if (state.players[state.infos.id].states.includes("Died")) return;
+    if (!powers.has(power)) return;
     if (slot) {
         if (power == power0.value) {
             power0.value = power1.value;

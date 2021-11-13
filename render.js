@@ -796,6 +796,7 @@ function render() {
             // Skin?
             let skin = p.name;
             if (RENDER_SKIN) skin = RENDER_SKIN;
+            const isWolfie = skin === "wolfie" || skin === "wolfer" || skin === "wolfy";
 
             ctx.save();
             ctx.translate(canvas.width / 2 + camScale * (p.pos.x - camX), canvas.height / 2 + camScale * (p.pos.y - camY));
@@ -805,7 +806,7 @@ function render() {
             if (skin in renderSettings.textures.skins && !died && !freeze) {
                 ctx.drawImage(renderSettings.textures.skins[skin], -p.radius * camScale, -p.radius * camScale, 2 * p.radius * camScale, 2 * p.radius * camScale);
             }
-            if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
+            if (isWolfie) {
                 ctx.ellipse(p.radius * -0.105 * camScale, p.radius * 0.4 * camScale, p.radius * 0.557 * camScale, p.radius * 0.55 * camScale, 0, 0, 7);
             } else {
                 ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
@@ -823,23 +824,13 @@ function render() {
 
             // Hat
             if (renderSettings.render.playerHat && hat) {
-                if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
-                    ctx.drawImage(
-                        hat.texture,
-                        camScale * hat.offset[0] * p.radius * 0.55,
-                        camScale * hat.offset[1] * p.radius * 0.55,
-                        camScale * hat.size[0] * p.radius * 0.5,
-                        camScale * hat.size[1] * p.radius * 0.5
-                    );
-                } else {
-                    ctx.drawImage(
-                        hat.texture,
-                        camScale * hat.offset[0] * p.radius,
-                        camScale * hat.offset[1] * p.radius,
-                        camScale * hat.size[0] * p.radius,
-                        camScale * hat.size[1] * p.radius
-                    );
-                }
+                ctx.drawImage(
+                    hat.texture,
+                    camScale * hat.offset[0] * isWolfie ? p.radius * 0.55 : p.radius,
+                    camScale * hat.offset[1] * isWolfie ? p.radius * 0.55 : p.radius,
+                    camScale * hat.size[0] * isWolfie ? p.radius * 0.5 : p.radius,
+                    camScale * hat.size[1] * isWolfie ? p.radius * 0.5 : p.radius
+                );
             }
             // Name
             if (renderSettings.render.playerName) {
@@ -854,21 +845,11 @@ function render() {
                         : "#ffffff";
                 if (p.name in SkapClientPlayers) {
                     const width = ctx.measureText(p.name).width;
-                    if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
-                        ctx.fillText(p.name, camScale * (renderSettings.textures.iconSize.x / 2 + 0.1), camScale * hat.textOffset * p.radius / 2);
-                        ctx.globalCompositeOperation = "source-over";
-                        // ctx.drawImage(renderSettings.textures.skapclient, -width / 2, camScale * hat.textOffset * p.radius / 2, renderSettings.textures.iconSize.x, renderSettings.textures.iconSize.y);
-                    } else {
-                        ctx.fillText(p.name, camScale * (renderSettings.textures.iconSize.x / 2 + 0.1), camScale * hat.textOffset * p.radius);
-                        ctx.globalCompositeOperation = "source-over";
-                        ctx.drawImage(renderSettings.textures.skapclient, -(width + camScale * (renderSettings.textures.iconSize.x + 0.1)) / 2, camScale * hat.textOffset * p.radius - camScale * (renderSettings.textures.iconSize.y + 0.2) / 2, camScale * renderSettings.textures.iconSize.x, camScale * renderSettings.textures.iconSize.y);
-                    }
+                    ctx.fillText(p.name, camScale * (renderSettings.textures.iconSize.x / 2 + 0.1), camScale * hat.textOffset * (isWolfie ? p.radius / 2 : p.radius));
+                    ctx.globalCompositeOperation = "source-over";
+                    ctx.drawImage(renderSettings.textures.skapclient, -(width + camScale * (renderSettings.textures.iconSize.x + 0.1)) / 2, camScale * hat.textOffset * (isWolfie ? p.radius / 2 : p.radius) - camScale * (renderSettings.textures.iconSize.y + 0.2) / 2, camScale * renderSettings.textures.iconSize.x, camScale * renderSettings.textures.iconSize.y);
                 } else {
-                    if (skin === "wolfie" || skin === "wolfer" || skin === "wolfy") {
-                        ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius / 2);
-                    } else {
-                        ctx.fillText(p.name, 0, camScale * hat.textOffset * p.radius);
-                    }
+                    ctx.fillText(p.name, 0, camScale * hat.textOffset * (isWolfie ? p.radius / 2 : p.radius));
                     ctx.globalCompositeOperation = "source-over";
                 }
             }
@@ -895,7 +876,6 @@ function render() {
                     let msg = chatMsgs[p.name];
                     if (msg.t--) {
                         let metrics = ctx.measureText(msg.m);
-                        // console.log(metrics);
                         ctx.fillStyle = "#ffffff80";
                         ctx.fillRect(
                             -metrics.actualBoundingBoxLeft - camScale,
