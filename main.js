@@ -1140,6 +1140,7 @@ function keys(key = 0, value = true) {
 }
 function changePower(slot = 0, power = 0) {
     if (state.players[state.infos.id].states.includes("Died")) return;
+    power = Number(power);
     if (!powers.has(power)) return;
     if (slot) {
         if (power == power0.value) {
