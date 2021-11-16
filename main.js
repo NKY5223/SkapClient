@@ -207,10 +207,10 @@ Owner:<ul>
                     } else if (msg.startsWith("/unflip")) {
                         sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
                     } else if (msg.startsWith("/msg")) {
-                            send(msgpack.encode({
-                                e: "msg",
-                                message: msg.slice(5)
-                            }), clientWS);
+                        send(msgpack.encode({
+                            e: "msg",
+                            message: msg.slice(5)
+                        }), clientWS);
                     } else if (msg.startsWith("/clear")) {
                         chat.innerHTML = "";
                     } else {
@@ -429,7 +429,7 @@ Owner:<ul>
                 else {
                     initMap(msg.i.map);
                     powers.clear();
-                    msg.i.powers.forEach(powers.add.bind(powers ));
+                    msg.i.powers.forEach(powers.add.bind(powers));
                     document.body.classList.remove("scroll");
                     hide(gamesDiv);
                     hide(createGameMenu);
@@ -439,8 +439,16 @@ Owner:<ul>
                             show(el);
                         }
                     }
-                    power0.value = msg.i.powers[0];
-                    power1.value = msg.i.powers[1];
+                    send({
+                        e: "power",
+                        slot: 0,
+                        power: power0.value = msg.i.powers[0]
+                    }, clientWS);
+                    send({
+                        e: "power",
+                        slot: 1,
+                        power: power1.value = msg.i.powers[1]
+                    }, clientWS);
                     (function run() {
                         const now = Date.now();
                         const calcFPS = Math.floor(1000 / (now - lastFrame));
@@ -765,23 +773,45 @@ Owner:<ul>
         switch (msg.e) {
             case "msg":
                 if (msg.message) message({
-                    s: "[msg] " + msg.author,
+                    s: "[/msg] " + msg.author,
                     r: 0,
                     m: msg.message
                 });
                 break;
             case "fuel":
-                if (!(msg.user in SkapClientPlayers)) SkapClientPlayers[msg.user] = {};
+                if (!(msg.user in SkapClientPlayers) && msg.user) SkapClientPlayers[msg.user] = {
+                    fuel: 0,
+                    powers: [null, null]
+                };
                 SkapClientPlayers[msg.user].fuel = msg.fuel;
                 break;
             case "clientJoined":
-                if (!(msg.username in SkapClientPlayers)) SkapClientPlayers[msg.user] = {};
+                if (!(msg.user in SkapClientPlayers) && msg.user) SkapClientPlayers[msg.user] = {
+                    fuel: 0,
+                    powers: [null, null]
+                };
                 break;
             case "clientLeft":
-                if (msg.username in SkapClientPlayers) delete SkapClientPlayers[msg.username];
+                if (msg.user in SkapClientPlayers) delete SkapClientPlayers[msg.user];
                 break;
             case "clients":
-                msg.clients.forEach(username => (username in SkapClientPlayers) || (SkapClientPlayers[username] = {}));
+                msg.clients.forEach(user => (user in SkapClientPlayers) || (SkapClientPlayers[user] = {
+                    fuel: 0,
+                    powers: [null, null]
+                }));
+                break;
+            case "power":
+                if (!(msg.user in SkapClientPlayers) && msg.user) SkapClientPlayers[msg.user] = {
+                    fuel: 0,
+                    powers: [null, null]
+                };
+                SkapClientPlayers[msg.user].powers[msg.slot] = msg.power;
+                break;
+            case "clientUsername":
+                if (!(msg.from in SkapClientPlayers)) return;
+                SkapClientPlayers[msg.to] = SkapClientPlayers[msg.from];
+                delete SkapClientPlayers[msg.from];
+                break;
         }
     });
 }
@@ -1030,10 +1060,12 @@ function message(msg, force = false) {
     let p = document.createElement("p");
     p.className = msg.r === -2
         ? "discordMsg"
-        : msg.s === "[SKAP]" || msg.s.startsWith("[CLIENT]")
+        : msg.s === "[SKAP]" || msg.s === "[CLIENT]"
             ? "SYSMsg"
-            : msg.s === "Sweaty" || msg.s === "XxSweatyxX"
-                ? "Sweatyfuckingbitchmsg"
+            : msg.s.startsWith("[/msg] ")
+                ? "msgMsg"
+                // : msg.s === "Sweaty" || msg.s === "XxSweatyxX"
+                // ? "Sweatyfuckingbitchmsg"
                 : ["guestMsg", "userMsg", "modMsg"][msg.r + 1];
     p.innerHTML = `<span class="
     ${msg.s === -2
@@ -1151,6 +1183,11 @@ function changePower(slot = 0, power = 0) {
                 m: 0,
                 i: Number(power0.value)
             });
+            send({
+                e: "power",
+                slot: 0,
+                power: Number(power0.value)
+            }, clientWS);
         }
         power1.value = power;
     } else {
@@ -1161,6 +1198,11 @@ function changePower(slot = 0, power = 0) {
                 m: 1,
                 i: Number(power1.value)
             });
+            send({
+                e: "power",
+                slot: 1,
+                power: Number(power1.value)
+            }, clientWS);
         }
         power0.value = power;
     }
@@ -1169,6 +1211,11 @@ function changePower(slot = 0, power = 0) {
         m: slot ? 1 : 0,
         i: Number(power)
     });
+    send({
+        e: "power",
+        slot: slot ? 1 : 0,
+        power: Number(power)
+    }, clientWS);
 }
 function aim(x = 0, y = 0) {
     send({

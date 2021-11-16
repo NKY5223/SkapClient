@@ -20,8 +20,8 @@ ws.binaryType = "arraybuffer";
 
 let hideSKAP = false;
 
-// const clientWS = new WebSocket(location.hostname === "localhost" ? "ws://localhost:4000" : "wss://skapclientserver.nky5223.repl.co");
-const clientWS = new WebSocket("wss://skapclientserver.nky5223.repl.co");
+const clientWS = new WebSocket(location.hostname === "localhost" ? "ws://localhost:4000" : "wss://skapclientserver.nky5223.repl.co");
+// const clientWS = new WebSocket("wss://skapclientserver.nky5223.repl.co");
 clientWS.binaryType = "arraybuffer";
 clientWS.addEventListener("close", () => {
     customAlert("Client WebSocket closed", 10);
@@ -68,6 +68,7 @@ const renderSettings = {
         playerFuel: true,
         playerHat: true,
         playerName: true,
+        playerPowers: true,
 
         hitbox: false,
         invert: false
@@ -122,6 +123,10 @@ const renderSettings = {
         playerDeadText: "#00ffff",
         playerFreezeText: "#ff0000",
         playerFreezeDeadText: "#00ff80",
+
+        fuel: "#ffff40",
+        powerBG: "#c0c0c0c0",
+        powerStroke: "#000000",
 
         meteor: "#c08000e0",
         ghost: "#20a040e0",
@@ -401,7 +406,7 @@ const othercontrols = [
 ];
 
 let state = null;
-/** @type {{ [name: string]: { fuel: number }}} */
+/** @type {{ [name: string]: { fuel: number, powers: [ number, number ] }}} */
 const SkapClientPlayers = {};
 let particles = {
     dash: [],
@@ -423,7 +428,7 @@ let blocked = localStorage.getItem("blocked") ? localStorage.getItem("blocked").
 let viewWS = false;
 let debug = Boolean(localStorage.getItem("debug"));
 let noUS = false;
-const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "ZeroTix", "ZeroFix", "haha0201", "RayhanADev"];
+const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "SkapClientAdmin", "ZeroTix", "ZeroFix", "haha0201", "RayhanADev"];
 const banned = [];
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");

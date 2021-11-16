@@ -862,7 +862,7 @@ function render() {
                         : renderSettings.colors.playerDead
                     : freeze
                         ? renderSettings.colors.playerFreeze
-                        : "#ffff40";
+                        : renderSettings.colors.fuel;
                 ctx.fillRect(-camScale * 5, camScale * (p.radius + 1), camScale * SkapClientPlayers[p.name].fuel, camScale * 2.5);
                 ctx.strokeStyle = "#202020";
                 ctx.lineWidth = camScale / 2;
@@ -889,6 +889,39 @@ function render() {
                         delete chatMsgs[p.name];
                     }
                 }
+            }
+
+            // Powers
+            if (renderSettings.render.playerPowers && p.name in SkapClientPlayers) {
+                ctx.fillStyle = renderSettings.colors.powerBG;
+                ctx.strokeStyle = renderSettings.colors.powerStroke;
+
+                ctx.fillRect(
+                    -6 * camScale,
+                    (p.radius + 4) * camScale,
+                    5 * camScale,
+                    5 * camScale
+                );
+                if (SkapClientPlayers[p.name].powers[0] !== null) ctx.drawImage(
+                    renderSettings.textures.powers[SkapClientPlayers[p.name].powers[0]] || renderSettings.textures.powers[11],
+                    -6 * camScale,
+                    (p.radius + 4) * camScale,
+                    5 * camScale,
+                    5 * camScale
+                );
+                ctx.fillRect(
+                    camScale,
+                    (p.radius + 4) * camScale,
+                    5 * camScale,
+                    5 * camScale
+                );
+                if (SkapClientPlayers[p.name].powers[1] !== null) ctx.drawImage(
+                    renderSettings.textures.powers[SkapClientPlayers[p.name].powers[1]] || renderSettings.textures.powers[11],
+                    camScale,
+                    (p.radius + 4) * camScale,
+                    5 * camScale,
+                    5 * camScale
+                );
             }
             ctx.restore();
         }

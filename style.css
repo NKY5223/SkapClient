@@ -517,6 +517,9 @@ canvas {
     background-clip: text;
     color: transparent;
 }
+.msgMsg {
+    color: #ff2040;
+}
 .modMsg {
     animation: rainbow 7s linear infinite;
 }
