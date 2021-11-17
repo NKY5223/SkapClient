@@ -902,21 +902,37 @@ function render() {
                     5 * camScale,
                     5 * camScale
                 );
-                if (SkapClientPlayers[p.name].powers[0] !== null) ctx.drawImage(
-                    renderSettings.textures.powers[SkapClientPlayers[p.name].powers[0]] || renderSettings.textures.powers[11],
-                    -6 * camScale,
-                    (p.radius + 4) * camScale,
-                    5 * camScale,
-                    5 * camScale
-                );
                 ctx.fillRect(
                     camScale,
                     (p.radius + 4) * camScale,
                     5 * camScale,
                     5 * camScale
                 );
-                if (SkapClientPlayers[p.name].powers[1] !== null) ctx.drawImage(
-                    renderSettings.textures.powers[SkapClientPlayers[p.name].powers[1]] || renderSettings.textures.powers[11],
+
+                ctx.fillStyle = renderSettings.colors.cooldown;
+
+                if (SkapClientPlayers[p.name].powers[0].cooldown) ctx.fillRect(
+                    -6 * camScale,
+                    (p.radius + 9 - 5 * SkapClientPlayers[p.name].powers[0].cooldown) * camScale,
+                    5 * camScale,
+                    5 * SkapClientPlayers[p.name].powers[0].cooldown * camScale
+                );
+                if (SkapClientPlayers[p.name].powers[1].cooldown) ctx.fillRect(
+                    camScale,
+                    (p.radius + 9 - 5 * SkapClientPlayers[p.name].powers[1].cooldown) * camScale,
+                    5 * camScale,
+                    5 * SkapClientPlayers[p.name].powers[1].cooldown * camScale
+                );
+
+                if (SkapClientPlayers[p.name].powers[0].power !== null) ctx.drawImage(
+                    renderSettings.textures.powers[SkapClientPlayers[p.name].powers[0].power] || renderSettings.textures.powers[11],
+                    -6 * camScale,
+                    (p.radius + 4) * camScale,
+                    5 * camScale,
+                    5 * camScale
+                );
+                if (SkapClientPlayers[p.name].powers[1].power !== null) ctx.drawImage(
+                    renderSettings.textures.powers[SkapClientPlayers[p.name].powers[1].power] || renderSettings.textures.powers[11],
                     camScale,
                     (p.radius + 4) * camScale,
                     5 * camScale,

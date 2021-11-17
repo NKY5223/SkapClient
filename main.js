@@ -184,6 +184,7 @@ Without perms:<ul>
 <li>/shrug &lt;message&gt; - [CLIENT] Appends ¯\\_(ツ)_/¯ to the end of the message.</li>
 <li>/tableflip &lt;message&gt; - [CLIENT] Appends (╯°□°）╯︵ ┻━┻ to the end of the message.</li>
 <li>/unflip &lt;message&gt; - [CLIENT] Appends ┬─┬ ノ( ゜-゜ノ) to the end of the message.</li>
+<li>/msg &lt;message&gt; - [CLIENT] Sends a private message to all client users.</li>
 </ul>
 With perms:<ul>
 <li>/res - Rescues yourself</li>
@@ -209,7 +210,7 @@ Owner:<ul>
                     } else if (msg.startsWith("/msg")) {
                         send(msgpack.encode({
                             e: "msg",
-                            message: msg.slice(5)
+                            message: Object.entries(emojiList).reduce((m, [i, { char, regex }]) => m.replace(regex, char), msg.slice(5))
                         }), clientWS);
                     } else if (msg.startsWith("/clear")) {
                         chat.innerHTML = "";
@@ -781,14 +782,26 @@ Owner:<ul>
             case "fuel":
                 if (!(msg.user in SkapClientPlayers) && msg.user) SkapClientPlayers[msg.user] = {
                     fuel: 0,
-                    powers: [null, null]
+                    powers: [{
+                        power: null,
+                        cooldown: 0
+                    }, {
+                        power: null,
+                        cooldown: 0
+                    }]
                 };
                 SkapClientPlayers[msg.user].fuel = msg.fuel;
                 break;
             case "clientJoined":
                 if (!(msg.user in SkapClientPlayers) && msg.user) SkapClientPlayers[msg.user] = {
                     fuel: 0,
-                    powers: [null, null]
+                    powers: [{
+                        power: null,
+                        cooldown: 0
+                    }, {
+                        power: null,
+                        cooldown: 0
+                    }]
                 };
                 break;
             case "clientLeft":
@@ -797,20 +810,45 @@ Owner:<ul>
             case "clients":
                 msg.clients.forEach(user => (user in SkapClientPlayers) || (SkapClientPlayers[user] = {
                     fuel: 0,
-                    powers: [null, null]
+                    powers: [{
+                        power: null,
+                        cooldown: 0
+                    }, {
+                        power: null,
+                        cooldown: 0
+                    }]
                 }));
                 break;
             case "power":
                 if (!(msg.user in SkapClientPlayers) && msg.user) SkapClientPlayers[msg.user] = {
                     fuel: 0,
-                    powers: [null, null]
+                    powers: [{
+                        power: null,
+                        cooldown: 0
+                    }, {
+                        power: null,
+                        cooldown: 0
+                    }]
                 };
-                SkapClientPlayers[msg.user].powers[msg.slot] = msg.power;
+                SkapClientPlayers[msg.user].powers[msg.slot].power = msg.power;
                 break;
             case "clientUsername":
                 if (!(msg.from in SkapClientPlayers)) return;
                 SkapClientPlayers[msg.to] = SkapClientPlayers[msg.from];
                 delete SkapClientPlayers[msg.from];
+                break;
+            case "cooldown":
+                if (!(msg.user in SkapClientPlayers) && msg.user) SkapClientPlayers[msg.user] = {
+                    fuel: 0,
+                    powers: [{
+                        power: null,
+                        cooldown: 0
+                    }, {
+                        power: null,
+                        cooldown: 0
+                    }]
+                };
+                SkapClientPlayers[msg.user].powers[msg.slot].cooldown = msg.cooldown;
                 break;
         }
     });
@@ -1137,10 +1175,7 @@ function sendMessage(msg) {
         }
     }
     // emojis
-    for (let i in emojiList) {
-        let emoji = emojiList[i];
-        msg = msg.replace(emoji.regex, emoji.char);
-    }
+    msg = Object.entries(emojiList).reduce((m, [i, { char, regex }]) => m.replace(regex, char), msg);
     // ping
     if (msg.toLowerCase() === "ping") {
         if (pingTime) {

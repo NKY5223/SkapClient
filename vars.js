@@ -127,6 +127,7 @@ const renderSettings = {
         fuel: "#ffff40",
         powerBG: "#c0c0c0c0",
         powerStroke: "#000000",
+        cooldown: "#ff404080",
 
         meteor: "#c08000e0",
         ghost: "#20a040e0",
@@ -406,7 +407,9 @@ const othercontrols = [
 ];
 
 let state = null;
-/** @type {{ [name: string]: { fuel: number, powers: [ number, number ] }}} */
+/** @typedef {0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | null} PowerValue */
+/** @typedef {{ power: PowerValue, cooldown: number }} Power 0 <= cooldown <= 1 */
+/** @type {{ [name: string]: { fuel: number, powers: [ Power, Power ] }}} */
 const SkapClientPlayers = {};
 let particles = {
     dash: [],

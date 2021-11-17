@@ -42,6 +42,17 @@ function updateStates(m) {
     power0Heat.style.height = m.infos.oneHeat * 100 + "%";
     power1Heat.style.height = m.infos.twoHeat * 100 + "%";
 
+    send({
+        e: "cooldown",
+        slot: 0,
+        cooldown: m.infos.oneCooldown
+    }, clientWS);
+    send({
+        e: "cooldown",
+        slot: 1,
+        cooldown: m.infos.twoCooldown
+    }, clientWS);
+
     // Death/Freeze message
     if (player.states.includes("Died")) {
         show(deathM);
