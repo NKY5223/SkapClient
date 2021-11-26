@@ -589,10 +589,10 @@ Owner:<ul>
                 if (msg.m.r !== -2 && msg.m.s === user && (msg.m.m.match(new RegExp("^badapple " + user + " block")) || msg.m.m.match(new RegExp("^badapple " + user)) || msg.m.m.match(/^badapple @s block/))) {
                     fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/block.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
                 }
-                if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "SkapClientAdmin") && (msg.m.m.match(new RegExp("^badapple " + user + " braille")) || msg.m.m.match(new RegExp("^badapple " + user)) || msg.m.m.match(/^badapple @a braille/))) {
+                if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "SkapClientAdmin") && (msg.m.m.match(new RegExp("^badapple " + user + " braille")) || msg.m.m.match(/^badapple @a braille/))) {
                     fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/braille.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
                 }
-                if (msg.m.r !== -2 && msg.m.s === user && (msg.m.m.match(new RegExp("^badapple " + user + " braille")) || msg.m.m.match(new RegExp("^badapple " + user)) || msg.m.m.match(/^badapple @s braille/))) {
+                if (msg.m.r !== -2 && msg.m.s === user && (msg.m.m.match(new RegExp("^badapple " + user + " braille")) || msg.m.m.match(/^badapple @s braille/))) {
                     fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/braille.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
                 }
                 if (msg.m.s === user && msg.m.m.toLowerCase() === "ping" && pingTime) {
