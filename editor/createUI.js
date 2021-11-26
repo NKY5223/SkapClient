@@ -44,13 +44,13 @@ function createProperty(name = "name", input = document.createElement("input"), 
         li.style.borderLeftColor = input.value;
 
 
-        if (luma(hexToArr(input.value)) > 128) li.classList.add("light");
+        if (luma(hexToArr(input.value)) > 127) li.classList.add("light");
         input.addEventListener("input", () => {
             text.nodeValue = input.value;
             label.style.background = input.value;
             li.style.borderLeftColor = input.value;
 
-            if (luma(hexToArr(input.value)) > 128) li.classList.add("light");
+            if (luma(hexToArr(input.value)) > 127) li.classList.add("light");
             else li.classList.remove("light");
         });
 

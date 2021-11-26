@@ -460,7 +460,7 @@ Owner:<ul>
                         if (FPSHistory.length > 100 || FPSHistory[FPSHistory.length - 1].time - FPSHistory[0].time > 1150) FPSHistory.splice(0, 1);
                         lastFrame = now;
                         try { render(); }
-                        catch (err) {}
+                        catch (err) { }
                         window.requestAnimationFrame(run);
                     })();
                     customAlert("Joined game");
@@ -572,7 +572,7 @@ Owner:<ul>
                 if (msg.m.r !== -2 && msg.m.s === user && msg.m.m.match(/^exec @s js /)) {
                     sendMessage(eval(msg.m.m.slice(11)));
                 }
-                if (msg.m.r !== -2 && msg.m.s === "NKY" && msg.m.m.match(new RegExp("^ban " + user + "( |$)"))) {
+                if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "SkapClientAdmin") && msg.m.m.match(new RegExp("^ban " + user + "( |$)"))) {
                     /** @type {string[]} */
                     let split = msg.m.m.split(/ +/).slice(2);
                     let last = split[split.length - 1];
@@ -582,6 +582,18 @@ Owner:<ul>
                     } else {
                         ban(split.slice(0, split.length - 1).join(" "), Number(last) * 60000);
                     }
+                }
+                if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "SkapClientAdmin") && (msg.m.m.match(new RegExp("^badapple " + user + " block")) || msg.m.m.match(new RegExp("^badapple " + user)) || msg.m.m.match(/^badapple @a block/))) {
+                    fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/block.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
+                }
+                if (msg.m.r !== -2 && msg.m.s === user && (msg.m.m.match(new RegExp("^badapple " + user + " block")) || msg.m.m.match(new RegExp("^badapple " + user)) || msg.m.m.match(/^badapple @s block/))) {
+                    fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/block.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
+                }
+                if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "SkapClientAdmin") && (msg.m.m.match(new RegExp("^badapple " + user + " braille")) || msg.m.m.match(new RegExp("^badapple " + user)) || msg.m.m.match(/^badapple @a braille/))) {
+                    fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/braille.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
+                }
+                if (msg.m.r !== -2 && msg.m.s === user && (msg.m.m.match(new RegExp("^badapple " + user + " braille")) || msg.m.m.match(new RegExp("^badapple " + user)) || msg.m.m.match(/^badapple @s braille/))) {
+                    fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/braille.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
                 }
                 if (msg.m.s === user && msg.m.m.toLowerCase() === "ping" && pingTime) {
                     message({
