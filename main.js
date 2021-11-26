@@ -436,9 +436,8 @@ Owner:<ul>
                     hide(createGameMenu);
                     show(gameDiv);
                     for (let el of poweroptions) {
-                        if (msg.i.powers.includes(parseInt(el.dataset.power))) {
-                            show(el);
-                        }
+                        if (msg.i.powers.includes(parseInt(el.dataset.power))) show(el);
+                        else hide(el);
                     }
                     send({
                         e: "power",
@@ -450,7 +449,8 @@ Owner:<ul>
                         slot: 1,
                         power: power1.value = msg.i.powers[1]
                     }, clientWS);
-                    (function run() {
+                    if (!isRendering) (function run() {
+                        isRendering = true;
                         const now = Date.now();
                         const calcFPS = Math.floor(1000 / (now - lastFrame));
                         if (calcFPS != Infinity && FPSDisplay.innerHTML !== String(calcFPS)) {
@@ -459,7 +459,8 @@ Owner:<ul>
                         FPSHistory.push({ time: now, fps: calcFPS });
                         if (FPSHistory.length > 100 || FPSHistory[FPSHistory.length - 1].time - FPSHistory[0].time > 1150) FPSHistory.splice(0, 1);
                         lastFrame = now;
-                        render();
+                        try { render(); }
+                        catch (err) {}
                         window.requestAnimationFrame(run);
                     })();
                     customAlert("Joined game");

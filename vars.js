@@ -19,6 +19,7 @@ const ws = new WebSocket("wss://skap.io");
 ws.binaryType = "arraybuffer";
 
 let hideSKAP = false;
+let isRendering = false;
 
 const clientWS = new WebSocket(location.hostname === "localhost" ? "ws://localhost:4000" : "wss://skapclientserver.nky5223.repl.co");
 // const clientWS = new WebSocket("wss://skapclientserver.nky5223.repl.co");
