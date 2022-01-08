@@ -247,6 +247,7 @@ function loadFile(str) {
                     default: {
                         console.log("Unsupported object type", object.type);
                         console.log(object);
+                        parsedArea.objects.unknown.push(object);
                     }
                 }
             }

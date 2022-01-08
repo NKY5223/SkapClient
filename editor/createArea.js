@@ -29,7 +29,8 @@ function createArea(name = "New Area", color = [0, 10, 87], opacity = 0.8, backg
             image1: [],
             spawner: [],
             circularObject: [],
-            movingObject: []
+            movingObject: [],
+            unknown: []
         }
     };
 

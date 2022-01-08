@@ -79,6 +79,9 @@ function areaToJSON(area) {
     for (let movObj of area.objects.movingObject) {
         objects.push(movObjToJSON(movObj));
     }
+    for (let unknown of area.objects.unknown) {
+        objects.push(JSON.stringify(unknown));
+    }
     return `{"name":${JSON.stringify(area.name)},"size":[${area.size[0]},${area.size[1]}],"backgroundColor":[${area.colorArr.join()},${area.opacity}],"areaColor":[${area.backgroundArr.join()}],"objects":[${objects.join()}],"gravity":${area.gravity * 100}}`;
 }
 
