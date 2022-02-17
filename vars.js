@@ -35,7 +35,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "hitbox update";
+const version = "auto-reconnect";
 
 /**
  * @type {HTMLCanvasElement}
