@@ -772,7 +772,7 @@ Owner:<ul>
                 break;
         }
     });
-    clientWS.addEventListener("message", e => {
+    clientWS.onmessage = e => {
         const msg = msgpack.decode(new Uint8Array(e.data));
 
         switch (msg.e) {
@@ -855,7 +855,7 @@ Owner:<ul>
                 SkapClientPlayers[msg.user].powers[msg.slot].cooldown = msg.cooldown;
                 break;
         }
-    });
+    };
 }
 /**
  * @param {SkapMap} i 
