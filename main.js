@@ -1130,7 +1130,9 @@ function message(msg, force = false) {
                 //                             ? "imaduckMsg"
                 //                             : msg.s === "drakerip"
                 //                                 ? "drakeMsg"
-                : ""
+                : msg.s === "Whiz"
+                    ? "whizmsg"
+                    : ""
         }">
         ${force
             ? msg.s

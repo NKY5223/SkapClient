@@ -74,7 +74,7 @@
  * @typedef State
  * @property {{id: string, fuel: number, oneCooldown: number | null, twoCooldown: number | null, oneHeat: number, twoHeat: number}} infos
  * @property {Object<string, Player>} players id:Player
- * @property {[string, string, boolean][]} playerList
+ * @property {[string, string, boolean, boolean][]} playerList
  * @property {SkapEntity[]} entities
  * 
  * @typedef Hat
