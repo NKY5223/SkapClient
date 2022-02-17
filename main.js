@@ -812,13 +812,13 @@ Owner:<ul>
                 if (msg.user in SkapClientPlayers) delete SkapClientPlayers[msg.user];
                 break;
             case "clients":
-                msg.clients.forEach(user => (user in SkapClientPlayers) || (SkapClientPlayers[user] = {
-                    fuel: 0,
+                Object.entries(msg.clients).forEacgh(([user, data]) => (user in SkapClientPlayers) || (SkapClientPlayers[user] = {
+                    fuel: data.fuel ?? 0,
                     powers: [{
-                        power: null,
+                        power: data.power[0].power ?? null,
                         cooldown: 0
                     }, {
-                        power: null,
+                        power: data.power[1].power ?? null,
                         cooldown: 0
                     }]
                 }));
