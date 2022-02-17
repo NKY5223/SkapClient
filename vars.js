@@ -22,12 +22,6 @@ let hideSKAP = false;
 let isRendering = false;
 
 const clientWS = new ClientWS(location.hostname === "localhost" ? "ws://localhost:4000" : "wss://skapclientserver.nky5223.repl.co");
-// const clientWS = new WebSocket("wss://skapclientserver.nky5223.repl.co");
-clientWS.onclose = () => {
-    customAlert("Client WebSocket closed, reconnecting in 3 seconds...", 10);
-    for (let name in SkapClientPlayers) delete SkapClientPlayers[name];
-    setTimeout(clientWS.init.bind(clientWS), 3000);
-};
 
 const URLParams = new URLSearchParams(location.search);
 const autojoinGameId = URLParams.get("gameId");

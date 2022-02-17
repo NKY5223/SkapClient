@@ -812,13 +812,13 @@ Owner:<ul>
                 if (msg.user in SkapClientPlayers) delete SkapClientPlayers[msg.user];
                 break;
             case "clients":
-                Object.entries(msg.clients).forEach(([user, data]) => (user in SkapClientPlayers) || (SkapClientPlayers[user] = {
+                msg.clients.forEach(data => (data.username in SkapClientPlayers) || (SkapClientPlayers[data.username] = {
                     fuel: data.fuel ?? 0,
                     powers: [{
-                        power: data.power[0].power ?? null,
+                        power: data.powers[0]?.power ?? null,
                         cooldown: 0
                     }, {
-                        power: data.power[1].power ?? null,
+                        power: data.powers[1]?.power ?? null,
                         cooldown: 0
                     }]
                 }));
@@ -856,6 +856,24 @@ Owner:<ul>
                 break;
         }
     };
+    clientWS.onclose = () => {
+        customAlert("Client WebSocket closed, reconnecting in 3 seconds...", 3);
+        for (let name in SkapClientPlayers) delete SkapClientPlayers[name];
+        setTimeout(clientWS.init.bind(clientWS), 3000);
+    };
+    clientWS.onopen = () => {
+        send({
+            e: "power",
+            slot: 0,
+            power: Number(power0.value)
+        }, clientWS);
+        send({
+            e: "power",
+            slot: 1,
+            power: Number(power1.value)
+        }, clientWS);
+    };
+    clientWS.init();
 }
 /**
  * @param {SkapMap} i 
