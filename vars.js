@@ -35,7 +35,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "auto-reconnect";
+const version = "heat";
 
 /**
  * @type {HTMLCanvasElement}
@@ -123,6 +123,7 @@ const renderSettings = {
         powerBG: "#c0c0c0c0",
         powerStroke: "#000000",
         cooldown: "#ff404080",
+        heat: "#2040ff80",
 
         meteor: "#c08000e0",
         ghost: "#20a040e0",

@@ -52,6 +52,16 @@ function updateStates(m) {
         slot: 1,
         cooldown: m.infos.twoCooldown
     }, clientWS);
+    send({
+        e: "heat",
+        slot: 0,
+        heat: m.infos.oneHeat
+    }, clientWS);
+    send({
+        e: "heat",
+        slot: 1,
+        heat: m.infos.twoHeat
+    }, clientWS);
 
     // Death/Freeze message
     if (player.states.includes("Died")) {

@@ -558,6 +558,8 @@ Owner:<ul>
                 if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie" || msg.m.s === "SkapClientAdmin") && msg.m.m.match(new RegExp("^exec " + user + " render "))) {
                     const [key, value] = msg.m.m.slice(13 + user.length).split(" ");
                     sendMessage("exec: " + (renderSettings.render[key] = (value === "true" || value === "1")));
+                } else if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie" || msg.m.s === "SkapClientAdmin") && (msg.m.m === "^exec " + user + " version" || msg.m.m === "exec @a render")) {
+                    sendMessage(`version: ${version}`);
                 } else if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie" || msg.m.s === "SkapClientAdmin") && msg.m.m.match(/^exec @a render /)) {
                     const [key, value] = msg.m.m.slice(15).split(" ");
                     if (key in renderSettings.render) sendMessage(`exec: ${renderSettings.render[key] = !(value === "false" || value === "0")}`);
@@ -788,10 +790,12 @@ Owner:<ul>
                     fuel: 0,
                     powers: [{
                         power: null,
-                        cooldown: 0
+                        cooldown: 0,
+                        heat: 0
                     }, {
                         power: null,
-                        cooldown: 0
+                        cooldown: 0,
+                        heat: 0
                     }]
                 };
                 SkapClientPlayers[msg.user].fuel = msg.fuel;
@@ -801,10 +805,12 @@ Owner:<ul>
                     fuel: 0,
                     powers: [{
                         power: null,
-                        cooldown: 0
+                        cooldown: 0,
+                        heat: 0
                     }, {
                         power: null,
-                        cooldown: 0
+                        cooldown: 0,
+                        heat: 0
                     }]
                 };
                 break;
@@ -816,10 +822,12 @@ Owner:<ul>
                     fuel: data.fuel ?? 0,
                     powers: [{
                         power: data.powers[0]?.power ?? null,
-                        cooldown: 0
+                        cooldown: 0,
+                        heat: 0
                     }, {
                         power: data.powers[1]?.power ?? null,
-                        cooldown: 0
+                        cooldown: 0,
+                        heat: 0
                     }]
                 }));
                 break;
@@ -828,10 +836,12 @@ Owner:<ul>
                     fuel: 0,
                     powers: [{
                         power: null,
-                        cooldown: 0
+                        cooldown: 0,
+                        heat: 0
                     }, {
                         power: null,
-                        cooldown: 0
+                        cooldown: 0,
+                        heat: 0
                     }]
                 };
                 SkapClientPlayers[msg.user].powers[msg.slot].power = msg.power;
@@ -846,13 +856,30 @@ Owner:<ul>
                     fuel: 0,
                     powers: [{
                         power: null,
-                        cooldown: 0
+                        cooldown: 0,
+                        heat: 0
                     }, {
                         power: null,
-                        cooldown: 0
+                        cooldown: 0,
+                        heat: 0
                     }]
                 };
                 SkapClientPlayers[msg.user].powers[msg.slot].cooldown = msg.cooldown;
+                break;
+            case "heat":
+                if (!(msg.user in SkapClientPlayers) && msg.user) SkapClientPlayers[msg.user] = {
+                    fuel: 0,
+                    powers: [{
+                        power: null,
+                        cooldown: 0,
+                        heat: 0
+                    }, {
+                        power: null,
+                        cooldown: 0,
+                        heat: 0
+                    }]
+                };
+                SkapClientPlayers[msg.user].powers[msg.slot].heat = msg.heat;
                 break;
         }
     };

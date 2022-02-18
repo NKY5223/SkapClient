@@ -924,6 +924,21 @@ function render() {
                     5 * SkapClientPlayers[p.name].powers[1].cooldown * camScale
                 );
 
+                ctx.fillStyle = renderSettings.colors.heat;
+
+                if (SkapClientPlayers[p.name].powers[0].heat) ctx.fillRect(
+                    -6 * camScale,
+                    (p.radius + 9 - 5 * SkapClientPlayers[p.name].powers[0].heat) * camScale,
+                    5 * camScale,
+                    5 * SkapClientPlayers[p.name].powers[0].heat * camScale
+                );
+                if (SkapClientPlayers[p.name].powers[1].heat) ctx.fillRect(
+                    camScale,
+                    (p.radius + 9 - 5 * SkapClientPlayers[p.name].powers[1].heat) * camScale,
+                    5 * camScale,
+                    5 * SkapClientPlayers[p.name].powers[1].heat * camScale
+                );
+
                 if (SkapClientPlayers[p.name].powers[0].power !== null) ctx.drawImage(
                     renderSettings.textures.powers[SkapClientPlayers[p.name].powers[0].power] || renderSettings.textures.powers[11],
                     -6 * camScale,
