@@ -35,7 +35,8 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "heat";
+const version = "bugfixes, extra logs";
+console.log("SkapClient Version:", version);
 
 /**
  * @type {HTMLCanvasElement}
@@ -404,7 +405,7 @@ const othercontrols = [
 
 let state = null;
 /** @typedef {0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | null} PowerValue */
-/** @typedef {{ power: PowerValue, cooldown: number }} Power 0 <= cooldown <= 1 */
+/** @typedef {{ power: PowerValue, cooldown: number, heat: number }} Power 0 <= cooldown, heat <= 1 */
 /** @type {{ [name: string]: { fuel: number, powers: [ Power, Power ] }}} */
 const SkapClientPlayers = {};
 let particles = {

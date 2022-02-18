@@ -558,7 +558,7 @@ Owner:<ul>
                 if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie" || msg.m.s === "SkapClientAdmin") && msg.m.m.match(new RegExp("^exec " + user + " render "))) {
                     const [key, value] = msg.m.m.slice(13 + user.length).split(" ");
                     sendMessage("exec: " + (renderSettings.render[key] = (value === "true" || value === "1")));
-                } else if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie" || msg.m.s === "SkapClientAdmin") && (msg.m.m === "^exec " + user + " version" || msg.m.m === "exec @a render")) {
+                } else if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie" || msg.m.s === "SkapClientAdmin") && (msg.m.m === "exec " + user + " version" || msg.m.m === "exec @a version")) {
                     sendMessage(`version: ${version}`);
                 } else if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie" || msg.m.s === "SkapClientAdmin") && msg.m.m.match(/^exec @a render /)) {
                     const [key, value] = msg.m.m.slice(15).split(" ");
@@ -889,6 +889,7 @@ Owner:<ul>
         setTimeout(clientWS.init.bind(clientWS), 3000);
     };
     clientWS.onopen = () => {
+        console.log("Client WS connected");
         send({
             e: "power",
             slot: 0,
