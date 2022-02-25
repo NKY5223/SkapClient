@@ -532,8 +532,15 @@ canvas {
     color: transparent;
 }
 .whizmsg {
-    color: #3adec1;
     background-image: repeating-linear-gradient(45deg, #3adec1, #d32144, #ba21d3, #3adec1);
+    animation: slide 3s linear infinite;
+    background-size: 7000% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.wishmsg {
+    background-image: repeating-linear-gradient(45deg, #ffa673, #6f0000, #ffa673);
     animation: slide 3s linear infinite;
     background-size: 7000% 100%;
     -webkit-background-clip: text;

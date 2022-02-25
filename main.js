@@ -1178,7 +1178,9 @@ function message(msg, force = false) {
                 //                                 ? "drakeMsg"
                 : msg.s === "Whiz"
                     ? "whizmsg"
-                    : ""
+                    : msg.s === "Wish"
+                        ? "wishmsg"
+                        : ""
         }">
         ${force
             ? msg.s
