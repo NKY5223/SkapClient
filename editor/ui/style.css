@@ -1,0 +1,513 @@
+:root {
+    --number: #2fa1d6;
+    --text: #1ed36f;
+    --boolean: #ad55c5;
+    --cardinal: #bb3e2d;
+    --direction: #2fa1d6;
+    --direction_background: #195f80;
+    --direction_background_transparent: #195f8080;
+    --direction_background_hover: #227faa;
+}
+
+/* Input styling */
+.gui input::-webkit-outer-spin-button, .gui input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.gui input[type=number] {
+    -moz-appearance: textfield;
+}
+.gui input {
+    font-family: Consolas, monospace;
+}
+
+
+.gui ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    overflow: visible;
+}
+.gui li {
+    list-style: none;
+    overflow: auto;
+}
+
+.gui input {
+    background: #303030;
+    border: none;
+    float: right;
+    width: 60%;
+    margin-top: 4.5px;
+    box-sizing: border-box;
+}
+.gui input:hover {
+    background: #404040;
+}
+.gui input:focus {
+    outline: none;
+    background: #505050;
+}
+
+
+.gui .folder {
+    list-style: none;
+}
+.gui .title {
+    /* margin-left: -4px; */
+    user-select: none;
+    padding: 0 4px 0 16px;
+    background: #000000;
+    color: #ffffff;
+    font: 11px Consolas, monospace;
+    line-height: 27px;
+    height: 27px;
+    cursor: pointer;
+    border-bottom: 1px solid #303030;
+}
+.gui .title::before {
+    content: "◢";
+    position: absolute;
+    display: block;
+    transform-origin: center;
+    transform: translate(-13px, 0) rotate(45deg) scale(0.5);
+    transition: transform 0.1s;
+}
+.gui .closed > .title::before {
+    transform: translate(-13px, 0) rotate(-45deg) scale(0.5);
+}
+.gui .indent {
+    margin-left: 5px;
+}
+.gui .label {
+    color: #ffffff;
+    font-family: Consolas, monospace;
+    width: 40%;
+    overflow: hidden;
+    font-size: 11px;
+    float: left;
+    display: block;
+    line-height: 27px;
+    margin: 0;
+}
+.gui .property {
+    user-select: none;
+    padding: 0 5px 0 4px;
+    border-bottom: 1px solid #303030;
+    background: #202020;
+}
+.gui .closed > .indent {
+    display: none;
+    transform: rotateX(90deg);
+}
+.gui .property.number {
+    border-left: 3px solid var(--number);
+}
+.gui .property.number input {
+    color: var(--number);
+}
+.gui .property.text {
+    border-left: 3px solid var(--text);
+}
+.gui .property.cardinal {
+    border-left: 3px solid var(--cardinal);
+}
+.gui .property.direction {
+    border-left: 3px solid var(--direction);
+}
+.gui .property.text input {
+    color: var(--text);
+}
+
+.gui .property.color {
+    border-left: 3px solid #ffffff;
+}
+.gui .property.color label {
+    box-sizing: border-box;
+    display: block;
+    float: right;
+    margin-top: 4.5px;
+    width: 60%;
+    height: calc(100% - 8px);
+    overflow: hidden;
+    border: 1px solid #303030;
+    font: bold 13px "Lucida Grande", sans-serif;
+    line-height: 17px;
+    text-align: center;
+    position: relative;
+}
+.gui .property.color input {
+    opacity: 0;
+    position: absolute;
+    cursor: pointer;
+    left: 0;
+    padding: 0;
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100%;
+}
+.gui .property.color.light label {
+    color: #000000;
+}
+.gui .property.switch {
+    border-left: 3px solid var(--boolean);
+}
+.gui .property.switch input {
+    color: var(--boolean);
+}
+.gui .property input {
+    color: #ffffff;
+}
+.gui .property input:focus {
+    color: #ffffff !important;
+}
+
+.gui .switchLabel {
+    float: right;
+    cursor: pointer;
+    margin-right: calc(30% - 17.5px);
+    margin-top: 4.5px;
+}
+.gui .switchLabel input {
+    display: none;
+}
+.gui .switchSpan {
+    width: 35px;
+    height: 20px;
+    display: block;
+    position: relative;
+    background: #808080;
+    border-radius: 12.5px;
+    transition: .4s;
+}
+.gui .switchSpan::after {
+    content: "";
+    display: block;
+    position: relative;
+    width: 15px;
+    height: 15px;
+    top: 2.5px;
+    left: 2.5px;
+    background: #ffffff;
+    transition: .4s;
+    border-radius: 50%;
+}
+.gui input:checked+.switchSpan {
+    background: var(--boolean);
+}
+.gui input:checked+.switchSpan::after {
+    left: calc(100% - 15px - 2.5px);
+}
+
+.gui .property.cardinal span {
+    line-height: 50px;
+}
+.gui .cardinalWrapper {
+    float: right;
+    position: relative;
+    width: 45px;
+    height: 45px;
+    margin-top: 2.5px;
+    margin-right: calc(30% - 22.5px);
+}
+.gui .cardinalWrapper button {
+    width: 0;
+    height: 0;
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    position: absolute;
+}
+.gui .cardinalWrapper button:focus {
+    outline: none;
+}
+.gui .cardinalUp {
+    left: 15px;
+    border-top: none;
+    border-left: 7.5px solid transparent;
+    border-right: 7.5px solid transparent;
+    border-bottom: 12px solid #ffffff;
+}
+.gui .cardinalUp:hover {
+    border-bottom-color: #c0c0c0;
+}
+.gui .cardinalUp.active {
+    border-bottom-color: var(--cardinal) !important;
+}
+.gui .cardinalRight {
+    right: 0;
+    top: 15px;
+    border-right: none;
+    border-top: 7.5px solid transparent;
+    border-bottom: 7.5px solid transparent;
+    border-left: 12px solid #ffffff;
+}
+.gui .cardinalRight:hover {
+    border-left-color: #c0c0c0;
+}
+.gui .cardinalRight.active {
+    border-left-color: var(--cardinal) !important;
+}
+.gui .cardinalDown {
+    left: 15px;
+    bottom: 0;
+    border-bottom: none;
+    border-left: 7.5px solid transparent;
+    border-right: 7.5px solid transparent;
+    border-top: 12px solid #ffffff;
+}
+.gui .cardinalDown:hover {
+    border-top-color: #c0c0c0;
+}
+.gui .cardinalDown.active {
+    border-top-color: var(--cardinal) !important;
+}
+.gui .cardinalLeft {
+    top: 15px;
+    border-left: none;
+    border-top: 7.5px solid transparent;
+    border-bottom: 7.5px solid transparent;
+    border-right: 12px solid #ffffff;
+}
+.gui .cardinalLeft:hover {
+    border-right-color: #c0c0c0;
+}
+.gui .cardinalLeft.active {
+    border-right-color: var(--cardinal) !important;
+}
+.gui .cardinalCenter {
+    display: block;
+    top: 16px;
+    left: 16px;
+    width: 13px !important;
+    height: 13px !important;
+    border: none;
+    border-radius: 50%;
+    background: #ffffff !important;
+}
+.gui .cardinalCenter:hover {
+    background: #c0c0c0 !important;
+}
+.gui .cardinalCenter.active {
+    background: var(--cardinal) !important;
+}
+
+.gui .property.select select {
+    margin-top: 5.5px;
+    float: right;
+    width: 60%;
+    background: #303030;
+    color: #ffffff;
+    cursor: pointer;
+    border: #505050;
+}
+.gui .property.select select:hover {
+    background: #404040;
+}
+.gui .property.select option {
+    background: #303030;
+}
+.gui .property.select select:focus {
+    outline: none;
+}
+.gui .property.select.number select {
+    color: var(--number);
+}
+.gui .property.select.text select {
+    color: var(--text);
+}
+
+.gui .property.direction .label {
+    line-height: 118px;
+}
+.gui .directionCircle {
+    position: relative;
+    float: right;
+    margin-right: calc(30% - 50px);
+    margin-top: 7px;
+    width: 100px;
+    height: 100px;
+    background: var(--direction_background);
+    border: 2px solid var(--direction);
+    border-radius: 50%;
+}
+.gui .directionCircle input {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px !important;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    color: var(--direction);
+    background: var(--direction_background_transparent) !important;
+    border-bottom: 2px solid var(--direction) !important;
+    margin: 0 !important;
+}
+.gui .directionLever {
+    position: absolute;
+    top: calc(50% - 1px);
+    left: 50%;
+    width: calc(50% + 1px);
+    height: 2px;
+    background: var(--direction);
+    transform-origin: 0 1px;
+}
+.gui .directionHandle {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 10px;
+    height: 10px;
+    background: var(--direction_background);
+    border: 2px solid var(--direction);
+    border-radius: 50%;
+    cursor: pointer;
+}
+.gui .directionHandle:hover {
+    background: var(--direction_background_hover);
+}
+
+.gui .array {
+    counter-reset: index;
+}
+.gui .array .counter::after {
+    counter-increment: index;
+    content: counter(index);
+}
+.gui .array .add {
+    width: 100%;
+    font: 11px "Lucida Grande", sans-serif;
+    line-height: 20px;
+    background: #000000;
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 1px solid #303030;
+}
+.gui .array .add::after {
+    content: "Add Item";
+}
+.gui .array .add:focus {
+    outline: none;
+}
+.gui .array .wrapper {
+    width: 100%;
+}
+.gui .array .property {
+    position: relative;
+}
+.gui .array .property:hover .wrapper {
+    width: calc(100% - 25px);
+}
+.gui .array .remove {
+    display: none;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: 3.7px;
+    background: #303030;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    padding: 0;
+}
+.gui .array .remove:hover {
+    background: #404040;
+}
+.gui .array .remove::after {
+    content: "×";
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 20px;
+    color: #202020;
+}
+.gui .array .property:hover .remove {
+    display: block;
+}
+.gui .array .title:hover .remove {
+    display: block;
+}
+.gui .array .title {
+    position: relative;
+}
+.gui .array .title .remove::after {
+    color: #000000;
+}
+.gui .array.min .property:hover .remove {
+    display: none !important;
+}
+.gui .array.min .title:hover .remove {
+    display: none !important;
+}
+.gui .array.min .property:hover .wrapper {
+    width: 100% !important;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --text: hsl(147, 75%, 40%);
+    }
+    .gui input {
+        background: #e0e0e0;
+    }
+    .gui input:hover {
+        background: #dcdcdc;
+    }
+    .gui input:focus {
+        background: #d8d8d8;
+        color: #000000 !important;
+    }
+    .gui .title {
+        background: #c0c0c0;
+        color: #000000;
+        border-bottom-color: #c0c0c0;
+    }
+    .gui .property {
+        border-bottom-color: #c0c0c0;
+        background: #d0d0d0;
+    }
+    .gui .label {
+        color: #000000;
+    }
+    #togglemenu {
+        background: #c0c0c0;
+        color: #000000;
+    }
+    .gui .array .add {
+        background: #c0c0c0;
+        color: #000000;
+        border-bottom-color: #b0b0b0;
+    }
+    .gui .cardinalUp {
+        border-bottom-color: #c0c0c0;
+    }
+    .gui .cardinalUp:hover {
+        border-bottom-color: #a0a0a0;
+    }
+    .gui .cardinalRight {
+        border-left-color: #c0c0c0;
+    }
+    .gui .cardinalRight:hover {
+        border-left-color: #a0a0a0;
+    }
+    .gui .cardinalDown {
+        border-top-color: #c0c0c0;
+    }
+    .gui .cardinalDown:hover {
+        border-top-color: #a0a0a0;
+    }
+    .gui .cardinalLeft {
+        border-right-color: #c0c0c0;
+    }
+    .gui .cardinalLeft:hover {
+        border-right-color: #a0a0a0;
+    }
+    :root {
+        --direction_background: #55b2dd;
+        --direction_background_transparent: #55b2dd80;
+        --direction_background_hover: hsl(199, 67%, 55%);
+    }
+}

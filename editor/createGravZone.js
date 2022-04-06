@@ -37,6 +37,12 @@ function createGravZone(x = 0, y = 0, w = 10, h = 20, dir = 2) {
         gravZone.size.y = hInput.value = Math.max(hInput.value, 0);
     });
 
+    const dirInput = document.createElement("input");
+    dirInput.value = dir;
+    dirInput.addEventListener("input", () => {
+        gravZone.dir = dir;
+    });
+
 
     gravZone.element = createFolder("Gravity Zone Properties", [
         createFolder("Position", [
@@ -47,12 +53,12 @@ function createGravZone(x = 0, y = 0, w = 10, h = 20, dir = 2) {
             createProperty("width", wInput, "number"),
             createProperty("height", hInput, "number")
         ]),
-        createProperty("direction", null, "cardinalCenter", {
+        ((dir % 1) === 0) ? createProperty("direction", null, "cardinalCenter", {
             event: dir => {
                 gravZone.dir = dir;
             },
             value: dir === 4 ? 4 : ((dir + 2) % 4)
-        })
+        }) : createProperty("direction", dirInput, "number")
     ]);
     gravZone.inputs = {
         x: xInput,
