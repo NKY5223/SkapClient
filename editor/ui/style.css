@@ -1,14 +1,3 @@
-:root {
-    --number: #2fa1d6;
-    --text: #1ed36f;
-    --boolean: #ad55c5;
-    --cardinal: #bb3e2d;
-    --direction: #2fa1d6;
-    --direction_background: #195f80;
-    --direction_background_transparent: #195f8080;
-    --direction_background_hover: #227faa;
-}
-
 /* Input styling */
 .gui input::-webkit-outer-spin-button, .gui input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -20,7 +9,6 @@
 .gui input {
     font-family: Consolas, monospace;
 }
-
 
 .gui ul {
     list-style: none;
@@ -101,28 +89,29 @@
     transform: rotateX(90deg);
 }
 .gui .property.number {
-    border-left: 3px solid var(--number);
+    border-left: 3px solid #2fa1d6;
 }
 .gui .property.number input {
-    color: var(--number);
+    color: #2fa1d6;
 }
 .gui .property.text {
-    border-left: 3px solid var(--text);
+    border-left: 3px solid #1ed36f;
 }
 .gui .property.cardinal {
-    border-left: 3px solid var(--cardinal);
+    border-left: 3px solid #bb3e2d;
 }
 .gui .property.direction {
-    border-left: 3px solid var(--direction);
+    border-left: 3px solid #2fa1d6;
 }
 .gui .property.text input {
-    color: var(--text);
+    color: #1ed36f;
 }
 
 .gui .property.color {
     border-left: 3px solid #ffffff;
 }
 .gui .property.color label {
+    color: #ffffff;
     box-sizing: border-box;
     display: block;
     float: right;
@@ -131,7 +120,7 @@
     height: calc(100% - 8px);
     overflow: hidden;
     border: 1px solid #303030;
-    font: bold 13px "Lucida Grande", sans-serif;
+    font: bold 13px Consolas, monospace;
     line-height: 17px;
     text-align: center;
     position: relative;
@@ -150,10 +139,10 @@
     color: #000000;
 }
 .gui .property.switch {
-    border-left: 3px solid var(--boolean);
+    border-left: 3px solid #ad55c5;
 }
 .gui .property.switch input {
-    color: var(--boolean);
+    color: #ad55c5;
 }
 .gui .property input {
     color: #ffffff;
@@ -193,7 +182,7 @@
     border-radius: 50%;
 }
 .gui input:checked+.switchSpan {
-    background: var(--boolean);
+    background: #ad55c5;
 }
 .gui input:checked+.switchSpan::after {
     left: calc(100% - 15px - 2.5px);
@@ -211,71 +200,50 @@
     margin-right: calc(30% - 22.5px);
 }
 .gui .cardinalWrapper button {
+    --color: #ffffff;
     width: 0;
     height: 0;
     padding: 0;
+    border: 7.5px solid transparent;
     cursor: pointer;
     background: transparent;
     position: absolute;
 }
+.gui .cardinalWrapper button:hover {
+    --color: #c0c0c0;
+}
+.gui .cardinalWrapper button.active {
+    --color: #bb3e2d;              /* --cardinal */
+}
+.gui .cardinalWrapper button.active:hover {
+    --color: #8c2f22;
+}
 .gui .cardinalWrapper button:focus {
     outline: none;
 }
-.gui .cardinalUp {
+.gui .cardinalWrapper button.cardinalUp {
     left: 15px;
     border-top: none;
-    border-left: 7.5px solid transparent;
-    border-right: 7.5px solid transparent;
-    border-bottom: 12px solid #ffffff;
+    border-bottom: 12px solid var(--color);
 }
-.gui .cardinalUp:hover {
-    border-bottom-color: #c0c0c0;
-}
-.gui .cardinalUp.active {
-    border-bottom-color: var(--cardinal) !important;
-}
-.gui .cardinalRight {
+.gui .cardinalWrapper button.cardinalRight {
     right: 0;
     top: 15px;
     border-right: none;
-    border-top: 7.5px solid transparent;
-    border-bottom: 7.5px solid transparent;
-    border-left: 12px solid #ffffff;
+    border-left: 12px solid var(--color);
 }
-.gui .cardinalRight:hover {
-    border-left-color: #c0c0c0;
-}
-.gui .cardinalRight.active {
-    border-left-color: var(--cardinal) !important;
-}
-.gui .cardinalDown {
+.gui .cardinalWrapper button.cardinalDown {
     left: 15px;
     bottom: 0;
     border-bottom: none;
-    border-left: 7.5px solid transparent;
-    border-right: 7.5px solid transparent;
-    border-top: 12px solid #ffffff;
+    border-top: 12px solid var(--color);
 }
-.gui .cardinalDown:hover {
-    border-top-color: #c0c0c0;
-}
-.gui .cardinalDown.active {
-    border-top-color: var(--cardinal) !important;
-}
-.gui .cardinalLeft {
+.gui .cardinalWrapper button.cardinalLeft {
     top: 15px;
     border-left: none;
-    border-top: 7.5px solid transparent;
-    border-bottom: 7.5px solid transparent;
-    border-right: 12px solid #ffffff;
+    border-right: 12px solid var(--color);
 }
-.gui .cardinalLeft:hover {
-    border-right-color: #c0c0c0;
-}
-.gui .cardinalLeft.active {
-    border-right-color: var(--cardinal) !important;
-}
-.gui .cardinalCenter {
+.gui .cardinalWrapper button.cardinalNone {
     display: block;
     top: 16px;
     left: 16px;
@@ -283,13 +251,7 @@
     height: 13px !important;
     border: none;
     border-radius: 50%;
-    background: #ffffff !important;
-}
-.gui .cardinalCenter:hover {
-    background: #c0c0c0 !important;
-}
-.gui .cardinalCenter.active {
-    background: var(--cardinal) !important;
+    background: var(--color) !important;
 }
 
 .gui .property.select select {
@@ -311,10 +273,10 @@
     outline: none;
 }
 .gui .property.select.number select {
-    color: var(--number);
+    color: #2fa1d6;
 }
 .gui .property.select.text select {
-    color: var(--text);
+    color: #1ed36f;
 }
 
 .gui .property.direction .label {
@@ -327,8 +289,8 @@
     margin-top: 7px;
     width: 100px;
     height: 100px;
-    background: var(--direction_background);
-    border: 2px solid var(--direction);
+    background: #195f80;
+    border: 2px solid #2fa1d6;
     border-radius: 50%;
 }
 .gui .directionCircle input {
@@ -338,9 +300,9 @@
     width: 30px !important;
     text-align: center;
     transform: translate(-50%, -50%);
-    color: var(--direction);
-    background: var(--direction_background_transparent) !important;
-    border-bottom: 2px solid var(--direction) !important;
+    color: #2fa1d6;
+    background: #195f8080 !important;
+    border-bottom: 2px solid #2fa1d6 !important;
     margin: 0 !important;
 }
 .gui .directionLever {
@@ -349,7 +311,7 @@
     left: 50%;
     width: calc(50% + 1px);
     height: 2px;
-    background: var(--direction);
+    background: #2fa1d6;
     transform-origin: 0 1px;
 }
 .gui .directionHandle {
@@ -358,13 +320,13 @@
     right: -6px;
     width: 10px;
     height: 10px;
-    background: var(--direction_background);
-    border: 2px solid var(--direction);
+    background: #195f80;
+    border: 2px solid #2fa1d6;
     border-radius: 50%;
     cursor: pointer;
 }
 .gui .directionHandle:hover {
-    background: var(--direction_background_hover);
+    background: #227faa;
 }
 
 .gui .array {
@@ -376,7 +338,7 @@
 }
 .gui .array .add {
     width: 100%;
-    font: 11px "Lucida Grande", sans-serif;
+    font: 11px Consolas, monospace;
     line-height: 20px;
     background: #000000;
     border: none;

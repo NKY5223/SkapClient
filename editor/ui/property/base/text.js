@@ -1,13 +1,15 @@
 import createElement from "../../createElement.js";
 import Property from "../property.js";
 
+
 /**
- * @typedef {{ name: string | Node, value?: string, oninput?: (value: string) => void }} TextPropertyOptions
+ * @typedef TextPropertyOptions
+ * @property {string | Node} [name]
+ * @property {string} [value]
+ * @property {(value: string) => void} [oninput]
  */
 export default class TextProperty extends Property {
-    /**
-     * @param {TextPropertyOptions} [options]
-     */
+    /** @param {TextPropertyOptions} [options] */
     constructor(options) {
         super(options?.name ?? "text");
 

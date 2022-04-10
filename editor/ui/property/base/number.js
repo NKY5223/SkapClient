@@ -2,12 +2,15 @@ import createElement from "../../createElement.js";
 import Property from "../property.js";
 
 /**
- * @typedef {{ name: string | Node, value?: number, min?: number, max?: number, oninput?: (value: number) => void }} NumberPropertyOptions
+ * @typedef NumberPropertyOptions
+ * @property {string | Node} [name]
+ * @property {number} [value]
+ * @property {number} [min]
+ * @property {number} [max]
+ * @property {(value: number) => void} [oninput]
  */
 export default class NumberProperty extends Property {
-    /**
-     * @param {NumberPropertyOptions} [options]
-     */
+    /** @param {NumberPropertyOptions} [options] */
     constructor(options) {
         super(options?.name ?? "number");
         
