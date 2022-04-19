@@ -1,5 +1,5 @@
-import createElement from "../../createElement.js";
-import Property from "../property.js";
+import createElement from "../createElement.js";
+import Property from "./property.js";
 
 export default class Folder {
     /** 

@@ -1,9 +1,10 @@
-import Folder from "../property/folder/folder.js";
+import Folder from "../property/folder.js";
 import PositionProperty from "../property/util/pos.js";
 import NumberProperty from "../property/base/number.js";
 import TextProperty from "../property/base/text.js";
 import ColorProperty from "../property/base/color.js";
 import CardinalProperty from "../property/base/cardinal.js";
+import SelectProperty from "../property/base/select.js";
 
 const menu = document.getElementById("menu");
 
@@ -33,8 +34,13 @@ const cardinal = new CardinalProperty({
     value: CardinalProperty.UP,
     oninput: console.log
 });
+const select = new SelectProperty({
+    value: "two",
+    options: ["one", "two", "three"],
+    oninput: console.log
+});
 
-const folder = new Folder("folder", [number, text, pos, color, cardinal]);
+const folder = new Folder("folder", [number, text, pos, color, cardinal, select]);
 
 window.globalThings = { folder };
 

@@ -1,5 +1,5 @@
 import NumberProperty from "../base/number.js";
-import Folder from "../folder/folder.js";
+import Folder from "../folder.js";
 
 /**
  * @typedef {{ 

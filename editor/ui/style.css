@@ -211,6 +211,7 @@
 }
 .gui .cardinalWrapper button:hover {
     --color: #c0c0c0;
+    /* filter: brightness(0.75); */
 }
 .gui .cardinalWrapper button.active {
     --color: #bb3e2d;              /* --cardinal */
