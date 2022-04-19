@@ -16,18 +16,14 @@ export default class NumberProperty extends Property {
         
         this.elements.main.classList.add("number");
 
-        const input = createElement("input", { attributes: { type: "number" } });
+        const input = createElement("input", { attributes: { type: "number", value: options?.value ?? 0, min: options?.min ?? null, max: options?.max ?? null }});
         
         input.onwheel = () => {}; // fix for scroll
         this.elements.main.append(input);
         
         this.elements = { ...this.elements, input };
         
-        if (!options) return;
-        if (options.value !== null) input.value = options.value;
-        if (options.min !== null) input.min = options.min;
-        if (options.max !== null) input.max = options.max;
-        if (options.oninput) input.addEventListener("input", e => options.oninput(this.value));
+        if (options?.oninput) input.addEventListener("input", e => options.oninput(this.value));
     }
     get value() {
         return Number(this.elements.input.value);

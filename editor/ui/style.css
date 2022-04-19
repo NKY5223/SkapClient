@@ -326,7 +326,7 @@
     border-radius: 50%;
     cursor: pointer;
 }
-.gui .directionHandle:hover {
+.gui .directionHandle:hover, .gui .directionHandle.active {
     background: #227faa;
 }
 

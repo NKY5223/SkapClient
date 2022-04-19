@@ -5,6 +5,7 @@ import TextProperty from "../property/base/text.js";
 import ColorProperty from "../property/base/color.js";
 import CardinalProperty from "../property/base/cardinal.js";
 import SelectProperty from "../property/base/select.js";
+import DirectionProperty from "../property/base/direction.js";
 
 const menu = document.getElementById("menu");
 
@@ -39,8 +40,12 @@ const select = new SelectProperty({
     options: ["one", "two", "three"],
     oninput: console.log
 });
+const direction = new DirectionProperty({
+    value: 69,
+    oninput: console.log
+});
 
-const folder = new Folder("folder", [number, text, pos, color, cardinal, select]);
+const folder = new Folder("folder", [number, text, pos, color, cardinal, select, direction]);
 
 window.globalThings = { folder };
 
