@@ -255,6 +255,9 @@ function createProperty(name = "name", input = document.createElement("input"), 
 }
 
 
+/** @param {[number, number, number]} color */
+function luma([r, g, b]) { return 0.2126 * r + 0.7152 * g + 0.0722 * b; }
+
 let currentId = 0;
 function generateId() {
     return "generated" + currentId++;
