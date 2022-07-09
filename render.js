@@ -186,7 +186,7 @@ function render() {
     ctx.textBaseline = "middle";
     ctx.lineCap = "round";
 
-    if (map.color.startsWith("hsl") || map.color === "rainbow") map.color = `hsl(${time}, 100%, 50%)`;
+    if (map.color.startsWith("hsl") || map.color === "rainbow") map.color = `hsl(${time}, 75%, 40%)`;
 
     ctx.fillStyle = map.color;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
