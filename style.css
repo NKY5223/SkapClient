@@ -170,7 +170,7 @@ code {
     font-size: 30px;
 }
 .grecaptcha-badge {
-    display: none;
+    opacity: 0.1;
 }
 
 #backtoLogin, #backToLogout {

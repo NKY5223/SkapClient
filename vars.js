@@ -21,7 +21,7 @@ ws.binaryType = "arraybuffer";
 let hideSKAP = false;
 let isRendering = false;
 
-const clientWS = new ClientWS(location.hostname === "localhost" ? "ws://localhost:4000" : "wss://skapclientserver.nky5223.repl.co");
+const clientWS = new ClientWS("wss://skapclientserver.nky5223.repl.co");
 
 const URLParams = new URLSearchParams(location.search);
 const autojoinGameId = URLParams.get("gameId");
@@ -35,7 +35,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "bugfixes, extra logs";
+const version = "fixed TPSHistory length";
 console.log("SkapClient Version:", version);
 
 /**
@@ -70,7 +70,7 @@ const renderSettings = {
         invert: false
     },
     colors: {
-        obstacle: "#ffffff", // Is variable (shit) (no moar shit)
+        obstacle: null,
         lava: "#d01000",
         slime: "#00c000",
         ice: "#00e0e0",
@@ -343,6 +343,7 @@ let RENDER_SKIN = null;
 
 const map = {
     background: "#ffffff",
+    color: "rgb(48, 56, 117.6)",
     areaSize: { x: 100, y: 100 },
     obstacle: [],
     movingObstacle: [],
@@ -564,9 +565,9 @@ let canSend = false;
 let lastUpdate = 0;
 let lastFrame = 0;
 /** @type {{ time: number, fps: number }[]} */
-const FPSHistory = [];
+const FPSHistory = [{ time: 0, fps: 0 }];
 /** @type {{ time: number, tps: number }[]} */
-const TPSHistory = [];
+const TPSHistory = [{ time: 0, tps: 0 }];
 
 // HTML Elements
 // Other stuff

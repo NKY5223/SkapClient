@@ -124,7 +124,7 @@ function render() {
     if (TPSHistory.length) {
         TPSctx.clearRect(0, 0, TPSCanvas.width, TPSCanvas.height);
         TPSctx.beginPath();
-        TPSctx.moveTo(TPSCanvas.width + (TPSHistory[0].time - now) / 15, TPSCanvas.height - TPSHistory[0].fps * TPSCanvas.height / 120);
+        TPSctx.moveTo(TPSCanvas.width + (TPSHistory[0].time - now) / 15, TPSCanvas.height - TPSHistory[0].tps * TPSCanvas.height / 120);
         for (let { time, tps } of TPSHistory) {
             TPSctx.lineTo(TPSCanvas.width + (time - now) / 15, TPSCanvas.height - tps * TPSCanvas.height / 120);
         }
@@ -186,8 +186,9 @@ function render() {
     ctx.textBaseline = "middle";
     ctx.lineCap = "round";
 
+    if (map.color.startsWith("hsl") || map.color === "rainbow") map.color = `hsl(${time}, 100%, 50%)`;
 
-    ctx.fillStyle = renderSettings.colors.obstacle;
+    ctx.fillStyle = map.color;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.fillStyle = map.background;
@@ -222,7 +223,7 @@ function render() {
 
     if (renderSettings.render.obstacle) {
         // Render obstacles
-        ctx.fillStyle = renderSettings.colors.obstacle;
+        ctx.fillStyle = renderSettings.colors.obstacle ?? map.color;
         for (let obj of map.obstacle) {
             ctx.fillRect(
                 Math.round(canvas.width / 2 + camScale * (obj.pos.x - camX)),
@@ -285,7 +286,7 @@ function render() {
             }
             if (gradient) {
                 gradient.addColorStop(0, map.background);
-                gradient.addColorStop(1, renderSettings.colors.obstacle);
+                gradient.addColorStop(1, renderSettings.colors.obstacle ?? map.color);
             } else gradient = map.background;
             ctx.fillStyle = gradient;
             ctx.fillRect(

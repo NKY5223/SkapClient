@@ -19,6 +19,7 @@ function updateStates(m) {
     let calcTPS = 1000 / diff;
     TPSDisplay.innerHTML = calcTPS.toFixed(2);
     TPSHistory.push({ time: now, tps: calcTPS });
+    if (TPSHistory.length > 100 || TPSHistory[TPSHistory.length - 1].time - TPSHistory[0].time > 1150) TPSHistory.splice(0, 1);
     lastUpdate = now;
 
     let player = m.players[m.infos.id];

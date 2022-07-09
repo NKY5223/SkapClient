@@ -428,6 +428,7 @@ Owner:<ul>
             case "join":
                 if (msg.m) customAlert("Could not join game");
                 else {
+                    console.log("!!!")
                     initMap(msg.i.map);
                     powers.clear();
                     msg.i.powers.forEach(powers.add.bind(powers));
@@ -460,7 +461,7 @@ Owner:<ul>
                         if (FPSHistory.length > 100 || FPSHistory[FPSHistory.length - 1].time - FPSHistory[0].time > 1150) FPSHistory.splice(0, 1);
                         lastFrame = now;
                         try { render(); }
-                        catch (err) { }
+                        catch (err) { console.error(err) }
                         window.requestAnimationFrame(run);
                     })();
                     customAlert("Joined game");
@@ -744,9 +745,9 @@ Owner:<ul>
                 show(hatRewards[msg.m]);
                 break;
             case "style":
-                let r = msg.c[0].toString(16);
-                let g = msg.c[1].toString(16);
-                let b = msg.c[2].toString(16);
+                let r = Math.min(Math.max(0, msg.c[0]), 255).toString(16);
+                let g = Math.min(Math.max(0, msg.c[1]), 255).toString(16);
+                let b = Math.min(Math.max(0, msg.c[2]), 255).toString(16);
                 hatsDiv.innerHTML = "";
                 for (let h of msg.h) {
                     // Create DIV
@@ -907,7 +908,7 @@ Owner:<ul>
  * @param {SkapMap} i 
  */
 function initMap(i) {
-    renderSettings.colors.obstacle = "rgb(" +
+    map.color = i.backgroundColor === "rainbow" ? "rainbow" : "rgb(" +
         (240 + (i.backgroundColor[0] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[2] - 240) * i.backgroundColor[3]) + ")";
