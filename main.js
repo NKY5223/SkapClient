@@ -69,7 +69,7 @@ if (localStorage.getItem("banned") === null) {
         register.addEventListener("click", () => {
             getToken(token => {
                 send({
-                    e: "regiser",
+                    e: "register",
                     m: {
                         username: username.value,
                         password: SHA256(username.value + password.value)
@@ -1142,12 +1142,12 @@ function message(msg, force = false) {
     if (!showChat && !blocked.includes(msg.s)) {
         chatMsgs[msg.s] = { m: checkProfanityString(msg.m), t: 300 };
     }
-    if (msg && msg.m && msg.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || /* msg.m.match(/@everyone(\s|$)/g) || msg.m.match(/@all(\s|$)/g) || */(msg.m.match(/@devs(\s|$)/g) && devs.includes(user))) mention.play();
+    if (msg && msg.m && msg.m.match(new RegExp("@" + user + "(\\s|$)", "g")) || (msg.m.match(/@devs(\s|$)/g) && devs.includes(user))) mention.play();
     let scroll = chat.lastElementChild ? chat.scrollTop + chat.clientHeight + 6 >= chat.scrollHeight : true;
     let wrapper = document.createElement("div");
     wrapper.className = "wrapper";
     let p = document.createElement("p");
-    p.className = msg.r === -2
+    p.className = (msg.r === -2)
         ? "discordMsg"
         : msg.s === "[SKAP]" || msg.s === "[CLIENT]"
             ? "SYSMsg"
@@ -1157,7 +1157,7 @@ function message(msg, force = false) {
                 // ? "Sweatyfuckingbitchmsg"
                 : ["guestMsg", "userMsg", "modMsg"][msg.r + 1];
     p.innerHTML = `<span class="
-    ${msg.s === -2
+    ${msg.r === -2
             ? ""
             : devs.includes(msg.s)
                 ? "devMsg"

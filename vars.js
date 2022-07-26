@@ -35,7 +35,7 @@ if (URLParams.has("username")) {
 }
 history.replaceState(null, "SkapClient", location.protocol + "//" + location.host + location.pathname);
 
-const version = "fixed TPSHistory length";
+const version = "darkened rainbow, added restriction to colored names";
 console.log("SkapClient Version:", version);
 
 /**
