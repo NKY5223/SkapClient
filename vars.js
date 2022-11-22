@@ -15,7 +15,7 @@ if (localStorage.getItem("banned") !== null) {
     }
 }
 
-const ws = new WebSocket("wss://second-secret-skape-site-lol.herokuapp.com/");
+const ws = new WebSocket("wss://skap.io");
 ws.binaryType = "arraybuffer";
 
 let hideSKAP = false;
