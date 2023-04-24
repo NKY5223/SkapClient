@@ -500,7 +500,7 @@ function render() {
         }
     }
     // Render images(0)
-    for (let i in map.image0) {
+    /*for (let i in map.image0) {
         let obj = map.image0[i];
         try {
             ctx.drawImage(
@@ -513,7 +513,7 @@ function render() {
         } catch (err) {
             console.error(map.image0.splice(i, 1)[0], err);
         }
-    }
+    }*/
 
     // ENTITIES
     for (let obj of state.entities) {
@@ -811,7 +811,7 @@ function render() {
                 ctx.ellipse(p.radius * -0.105 * camScale, p.radius * 0.4 * camScale, p.radius * 0.557 * camScale, p.radius * 0.55 * camScale, 0, 0, 7);
             } else {
                 ctx.ellipse(0, 0, p.radius * camScale, p.radius * camScale, 0, 0, 7);
-            }
+           }
             ctx.fillStyle = died
                 ? freeze
                     ? renderSettings.colors.playerFreezeDead
@@ -820,7 +820,9 @@ function render() {
                     ? renderSettings.colors.playerFreeze
                     : skin in renderSettings.textures.skins
                         ? "#00000000"
-                        : fromColArr(p.color);
+                        : p.color instanceof Array && p.color.length > 2
+                             ? fromColArr(p.color)
+                             : "#000000";
             ctx.fill();
 
             // Hat
