@@ -3,7 +3,7 @@ localStorage.removeItem("password");
 localStorage.removeItem("cookie");
 
 
-if (localStorage.getItem("banned") === null) {
+//if (localStorage.getItem("banned") === null) {
     ws.addEventListener("open", () => {
         canSend = true;
         if (!URLParams.has("username")) {
@@ -903,15 +903,16 @@ Owner:<ul>
         }, clientWS);
     };
     clientWS.init();
-}
+//}
 /**
  * @param {SkapMap} i 
  */
 function initMap(i) {
-    map.color = i.backgroundColor === "rainbow" ? "rainbow" : "rgb(" +
+    map.color = i.backgroundColor instanceof Array && i.backgroundColor.length > 3 ? "rgb(" +
         (240 + (i.backgroundColor[0] - 240) * i.backgroundColor[3]) + ", " +
         (240 + (i.backgroundColor[1] - 240) * i.backgroundColor[3]) + ", " +
-        (240 + (i.backgroundColor[2] - 240) * i.backgroundColor[3]) + ")";
+        (240 + (i.backgroundColor[2] - 240) * i.backgroundColor[3]) + ")"
+        : "rainbow";
     map.background = fromColArr(i.areaColor);
     map.areaSize = i.areaSize;
     map.obstacle = [];
