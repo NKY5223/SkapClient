@@ -1,6 +1,6 @@
 # SkapClient
 
-[SkapClient](https://nky5223.github.io/SkapClient) is a... hacked client for [skap](https://skap.io)?
+[SkapClient](https://nky5223.github.io/SkapClient) is an unofficial client for [skap](https://skap.io).
 
 ## Files:
 
@@ -39,7 +39,6 @@ master (root)
  ├─ ping.mp3 - Ping sound
  ├─ discord.png - Discord Logo
  ├─ github.png - Github Logo
- ├─ README.md - This very file
- ├─ macros.doskey - Wait, wha-
+ ├─ README.md - This file
  └─ ClientTest.json - A SkapMap used to test entities (made by haha0201)
 ```
