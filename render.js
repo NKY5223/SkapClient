@@ -820,9 +820,7 @@ function render() {
                     ? renderSettings.colors.playerFreeze
                     : skin in renderSettings.textures.skins
                         ? "#00000000"
-                        : p.color instanceof Array && p.color.length > 2
-                             ? fromColArr(p.color)
-                             : "#000000";
+                        : fromColArr(p.color)
             ctx.fill();
 
             // Hat
@@ -1126,5 +1124,6 @@ function render() {
  * @param {number[]} arr 
  */
 function fromColArr(arr) {
+    if (isNaN(arr[0]) || isNaN(arr[1]) || isNaN(arr[2])) return "#000000";
     return `rgba(${arr.join(", ")})`;
 }
