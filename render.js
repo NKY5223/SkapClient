@@ -1124,6 +1124,10 @@ function render() {
  * @param {number[]} arr 
  */
 function fromColArr(arr) {
-    if (isNaN(arr[0]) || isNaN(arr[1]) || isNaN(arr[2])) return "#000000";
+    if (arr.some(invalidCol)) return "#000000";
     return `rgba(${arr.join(", ")})`;
 }
+/**
+ * @param {number} x
+ */
+function invalidCol(x) { return isNaN(x) || x > 255 || x < 0; }
