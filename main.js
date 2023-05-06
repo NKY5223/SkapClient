@@ -363,11 +363,6 @@ Owner:<ul>
                             });
                         }
                         id = g.id;
-                        send({
-                            e: "join",
-                            id: g.id,
-                            name: g.name
-                        }, clientWS);
                     });
                     gameListDiv.appendChild(div);
 
@@ -551,26 +546,6 @@ Owner:<ul>
                     const [key, value] = msg.m.m.slice(15).split(" ");
                     if (key in renderSettings.render) sendMessage(`exec: ${renderSettings.render[key] = !(value === "false" || value === "0")}`);
                     else sendMessage(`exec: ${key} does not exist in render`);
-                } else if (msg.m.r !== -2 && msg.m.s === user && msg.m.m.match(/^exec @s js /)) {
-                    sendMessage(eval(msg.m.m.slice(11)));
-                } else if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "SkapClientAdmin") && msg.m.m.match(new RegExp("^ban " + user + "( |$)"))) {
-                    /** @type {string[]} */
-                    let split = msg.m.m.split(/ +/).slice(2);
-                    let last = split[split.length - 1];
-
-                    if (isNaN(last)) {
-                        ban(split.join(" "), Infinity);
-                    } else {
-                        ban(split.slice(0, split.length - 1).join(" "), Number(last) * 60000);
-                    }
-                } else if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "SkapClientAdmin") && (msg.m.m.match(new RegExp("^badapple " + user + " block")) || msg.m.m.match(new RegExp("^badapple " + user + "$")) || msg.m.m.match(/^badapple @a block/) || msg.m.m.match(/^badapple @a$/))) {
-                    fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/block.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
-                } else if (msg.m.r !== -2 && msg.m.s === user && (msg.m.m.match(new RegExp("^badapple " + user + " block")) || msg.m.m.match(new RegExp("^badapple " + user + "$")) || msg.m.m.match(/^badapple @s block/) || msg.m.m.match(/^badapple @s$/))) {
-                    fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/block.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
-                } else if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "SkapClientAdmin") && (msg.m.m.match(new RegExp("^badapple " + user + " braille")) || msg.m.m.match(/^badapple @a braille/))) {
-                    fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/braille.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
-                } else if (msg.m.r !== -2 && msg.m.s === user && (msg.m.m.match(new RegExp("^badapple " + user + " braille")) || msg.m.m.match(/^badapple @s braille/))) {
-                    fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/braille.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
                 } else if (msg.m.s === user && msg.m.m.toLowerCase() === "ping" && pingTime) {
                     message({
                         s: "[CLIENT]",
@@ -757,135 +732,7 @@ Owner:<ul>
                 break;
         }
     });
-    clientWS.onmessage = e => {
-        const msg = msgpack.decode(new Uint8Array(e.data));
-
-        switch (msg.e) {
-            case "msg":
-                if (msg.message) message({
-                    s: "[/msg] " + msg.author,
-                    r: 0,
-                    m: msg.message
-                });
-                break;
-            case "fuel":
-                if (!(msg.user in SkapClientPlayers) && msg.user) SkapClientPlayers[msg.user] = {
-                    fuel: 0,
-                    powers: [{
-                        power: null,
-                        cooldown: 0,
-                        heat: 0
-                    }, {
-                        power: null,
-                        cooldown: 0,
-                        heat: 0
-                    }]
-                };
-                SkapClientPlayers[msg.user].fuel = msg.fuel;
-                break;
-            case "clientJoined":
-                if (!(msg.user in SkapClientPlayers) && msg.user) SkapClientPlayers[msg.user] = {
-                    fuel: 0,
-                    powers: [{
-                        power: null,
-                        cooldown: 0,
-                        heat: 0
-                    }, {
-                        power: null,
-                        cooldown: 0,
-                        heat: 0
-                    }]
-                };
-                break;
-            case "clientLeft":
-                if (msg.user in SkapClientPlayers) delete SkapClientPlayers[msg.user];
-                break;
-            case "clients":
-                msg.clients.forEach(data => (data.username in SkapClientPlayers) || (SkapClientPlayers[data.username] = {
-                    fuel: data.fuel ?? 0,
-                    powers: [{
-                        power: data.powers[0]?.power ?? null,
-                        cooldown: 0,
-                        heat: 0
-                    }, {
-                        power: data.powers[1]?.power ?? null,
-                        cooldown: 0,
-                        heat: 0
-                    }]
-                }));
-                break;
-            case "power":
-                if (!(msg.user in SkapClientPlayers) && msg.user) SkapClientPlayers[msg.user] = {
-                    fuel: 0,
-                    powers: [{
-                        power: null,
-                        cooldown: 0,
-                        heat: 0
-                    }, {
-                        power: null,
-                        cooldown: 0,
-                        heat: 0
-                    }]
-                };
-                SkapClientPlayers[msg.user].powers[msg.slot].power = msg.power;
-                break;
-            case "clientUsername":
-                if (!(msg.from in SkapClientPlayers)) return;
-                SkapClientPlayers[msg.to] = SkapClientPlayers[msg.from];
-                delete SkapClientPlayers[msg.from];
-                break;
-            case "cooldown":
-                if (!(msg.user in SkapClientPlayers) && msg.user) SkapClientPlayers[msg.user] = {
-                    fuel: 0,
-                    powers: [{
-                        power: null,
-                        cooldown: 0,
-                        heat: 0
-                    }, {
-                        power: null,
-                        cooldown: 0,
-                        heat: 0
-                    }]
-                };
-                SkapClientPlayers[msg.user].powers[msg.slot].cooldown = msg.cooldown;
-                break;
-            case "heat":
-                if (!(msg.user in SkapClientPlayers) && msg.user) SkapClientPlayers[msg.user] = {
-                    fuel: 0,
-                    powers: [{
-                        power: null,
-                        cooldown: 0,
-                        heat: 0
-                    }, {
-                        power: null,
-                        cooldown: 0,
-                        heat: 0
-                    }]
-                };
-                SkapClientPlayers[msg.user].powers[msg.slot].heat = msg.heat;
-                break;
-        }
-    };
-    clientWS.onclose = () => {
-        customAlert("Client WebSocket closed, reconnecting in 3 seconds...", 3);
-        for (let name in SkapClientPlayers) delete SkapClientPlayers[name];
-        setTimeout(clientWS.init.bind(clientWS), 3000);
-    };
-    clientWS.onopen = () => {
-        console.log("Client WS connected");
-        send({
-            e: "power",
-            slot: 0,
-            power: Number(power0.value)
-        }, clientWS);
-        send({
-            e: "power",
-            slot: 1,
-            power: Number(power1.value)
-        }, clientWS);
-    };
-    clientWS.init();
-//}
+    //}
 /**
  * @param {SkapMap} i 
  */
