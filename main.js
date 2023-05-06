@@ -416,17 +416,7 @@ Owner:<ul>
                     for (let el of poweroptions) {
                         if (msg.i.powers.includes(parseInt(el.dataset.power))) show(el);
                         else hide(el);
-                    }
-                    send({
-                        e: "power",
-                        slot: 0,
-                        power: power0.value = msg.i.powers[0]
-                    }, clientWS);
-                    send({
-                        e: "power",
-                        slot: 1,
-                        power: power1.value = msg.i.powers[1]
-                    }, clientWS);
+                    }
                     if (!isRendering) (function run() {
                         isRendering = true;
                         const now = Date.now();
@@ -1102,12 +1092,7 @@ function changePower(slot = 0, power = 0) {
                 e: "powerChange",
                 m: 0,
                 i: Number(power0.value)
-            });
-            send({
-                e: "power",
-                slot: 0,
-                power: Number(power0.value)
-            }, clientWS);
+            });
         }
         power1.value = power;
     } else {
@@ -1118,11 +1103,6 @@ function changePower(slot = 0, power = 0) {
                 m: 1,
                 i: Number(power1.value)
             });
-            send({
-                e: "power",
-                slot: 1,
-                power: Number(power1.value)
-            }, clientWS);
         }
         power0.value = power;
     }
@@ -1131,11 +1111,6 @@ function changePower(slot = 0, power = 0) {
         m: slot ? 1 : 0,
         i: Number(power)
     });
-    send({
-        e: "power",
-        slot: slot ? 1 : 0,
-        power: Number(power)
-    }, clientWS);
 }
 function aim(x = 0, y = 0) {
     send({
