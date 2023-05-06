@@ -3,7 +3,7 @@ function ban(reason, time) {
     localStorage.setItem("bantime", Date.now() + time);
     location.reload();
 }
-if (localStorage.getItem("banned") !== null) {
+/*if (localStorage.getItem("banned") !== null) {
     if (localStorage.getItem("bantime") === "Infinity" || Date.now() <= parseInt(localStorage.getItem("bantime"))) {
         document.getElementById("connecting").innerHTML = `
     You are banned<br>
@@ -13,15 +13,13 @@ if (localStorage.getItem("banned") !== null) {
         alert("Your ban has expired.");
         localStorage.removeItem("banned");
     }
-}
+}*/
 
 const ws = new WebSocket("wss://skap.io");
 ws.binaryType = "arraybuffer";
 
 let hideSKAP = false;
-let isRendering = false;
-
-const clientWS = new ClientWS("wss://skapclientserver.nky5223.repl.co");
+let isRendering = false;
 
 const URLParams = new URLSearchParams(location.search);
 const autojoinGameId = URLParams.get("gameId");
@@ -407,8 +405,7 @@ const othercontrols = [
 let state = null;
 /** @typedef {0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | null} PowerValue */
 /** @typedef {{ power: PowerValue, cooldown: number, heat: number }} Power 0 <= cooldown, heat <= 1 */
-/** @type {{ [name: string]: { fuel: number, powers: [ Power, Power ] }}} */
-const SkapClientPlayers = {};
+/** @type {{ [name: string]: { fuel: number, powers: [ Power, Power ] }}} */
 let particles = {
     dash: [],
     shrink: [],
