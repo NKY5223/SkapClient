@@ -124,12 +124,6 @@ localStorage.removeItem("cookie");
                                 r: 0,
                                 m: `You can't block yourself :/`
                             }, true);
-                        } else if (devs.includes(p)) {
-                            message({
-                                s: "[CLIENT]",
-                                r: 0,
-                                m: `Seriously? Blocking a DEV?`
-                            }, true);
                         } else if (blocked.includes(p)) {
                             message({
                                 s: "[CLIENT]",
@@ -206,12 +200,7 @@ Owner:<ul>
                     } else if (msg.startsWith("/tableflip")) {
                         sendMessage(msg.slice(11) + " (╯°□°）╯︵ ┻━┻");
                     } else if (msg.startsWith("/unflip")) {
-                        sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
-                    } else if (msg.startsWith("/msg")) {
-                        send(msgpack.encode({
-                            e: "msg",
-                            message: Object.entries(emojiList).reduce((m, [i, { char, regex }]) => m.replace(regex, char), msg.slice(5))
-                        }), clientWS);
+                        sendMessage(msg.slice(8) + " ┬─┬ ノ( ゜-゜ノ)");
                     } else if (msg.startsWith("/clear")) {
                         chat.innerHTML = "";
                     } else {
@@ -337,14 +326,7 @@ Owner:<ul>
                     }
                     if (msg.t.startsWith("Logged in as ")) {
                         user = msg.t.slice(13);
-                        send({
-                            e: "login",
-                            username: user
-                        }, clientWS);
 
-                        if (banned.includes(user)) {
-                            ban("Hardcoded ban", Infinity);
-                        }
                     }
                     customAlert(msg.t.safe());
                     hide(loginData);
