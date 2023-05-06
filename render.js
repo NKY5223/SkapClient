@@ -844,30 +844,9 @@ function render() {
                     : freeze
                         ? renderSettings.colors.playerFreezeText
                         : "#ffffff";
-                if (p.name in SkapClientPlayers) {
-                    const width = ctx.measureText(p.name).width;
-                    ctx.fillText(p.name, camScale * (renderSettings.textures.iconSize.x / 2 + 0.1), camScale * hat.textOffset * (isWolfie ? p.radius / 2 : p.radius));
+ctx.fillText(p.name, 0, camScale * hat.textOffset * (isWolfie ? p.radius / 2 : p.radius));
                     ctx.globalCompositeOperation = "source-over";
-                    ctx.drawImage(renderSettings.textures.skapclient, -(width + camScale * (renderSettings.textures.iconSize.x + 0.1)) / 2, camScale * hat.textOffset * (isWolfie ? p.radius / 2 : p.radius) - camScale * (renderSettings.textures.iconSize.y + 0.2) / 2, camScale * renderSettings.textures.iconSize.x, camScale * renderSettings.textures.iconSize.y);
-                } else {
-                    ctx.fillText(p.name, 0, camScale * hat.textOffset * (isWolfie ? p.radius / 2 : p.radius));
-                    ctx.globalCompositeOperation = "source-over";
-                }
-            }
-
-            // fuelBar™️
-            if (renderSettings.render.playerFuel && p.name in SkapClientPlayers) {
-                ctx.fillStyle = died
-                    ? freeze
-                        ? renderSettings.colors.playerFreezeDead
-                        : renderSettings.colors.playerDead
-                    : freeze
-                        ? renderSettings.colors.playerFreeze
-                        : renderSettings.colors.fuel;
-                ctx.fillRect(-camScale * 5, camScale * (p.radius + 1), camScale * SkapClientPlayers[p.name].fuel, camScale * 2.5);
-                ctx.strokeStyle = "#202020";
-                ctx.lineWidth = camScale / 2;
-                ctx.strokeRect(-camScale * 5, camScale * (p.radius + 1), camScale * 10, camScale * 2.5);
+                
             }
 
             // Messages
@@ -892,69 +871,7 @@ function render() {
                 }
             }
 
-            // Powers
-            if (renderSettings.render.playerPowers && p.name in SkapClientPlayers) {
-                ctx.fillStyle = renderSettings.colors.powerBG;
-                ctx.strokeStyle = renderSettings.colors.powerStroke;
-
-                ctx.fillRect(
-                    -6 * camScale,
-                    (p.radius + 4) * camScale,
-                    5 * camScale,
-                    5 * camScale
-                );
-                ctx.fillRect(
-                    camScale,
-                    (p.radius + 4) * camScale,
-                    5 * camScale,
-                    5 * camScale
-                );
-
-                ctx.fillStyle = renderSettings.colors.cooldown;
-
-                if (SkapClientPlayers[p.name].powers[0].cooldown) ctx.fillRect(
-                    -6 * camScale,
-                    (p.radius + 9 - 5 * SkapClientPlayers[p.name].powers[0].cooldown) * camScale,
-                    5 * camScale,
-                    5 * SkapClientPlayers[p.name].powers[0].cooldown * camScale
-                );
-                if (SkapClientPlayers[p.name].powers[1].cooldown) ctx.fillRect(
-                    camScale,
-                    (p.radius + 9 - 5 * SkapClientPlayers[p.name].powers[1].cooldown) * camScale,
-                    5 * camScale,
-                    5 * SkapClientPlayers[p.name].powers[1].cooldown * camScale
-                );
-
-                ctx.fillStyle = renderSettings.colors.heat;
-
-                if (SkapClientPlayers[p.name].powers[0].heat) ctx.fillRect(
-                    -6 * camScale,
-                    (p.radius + 9 - 5 * SkapClientPlayers[p.name].powers[0].heat) * camScale,
-                    5 * camScale,
-                    5 * SkapClientPlayers[p.name].powers[0].heat * camScale
-                );
-                if (SkapClientPlayers[p.name].powers[1].heat) ctx.fillRect(
-                    camScale,
-                    (p.radius + 9 - 5 * SkapClientPlayers[p.name].powers[1].heat) * camScale,
-                    5 * camScale,
-                    5 * SkapClientPlayers[p.name].powers[1].heat * camScale
-                );
-
-                if (SkapClientPlayers[p.name].powers[0].power !== null) ctx.drawImage(
-                    renderSettings.textures.powers[SkapClientPlayers[p.name].powers[0].power] || renderSettings.textures.powers[11],
-                    -6 * camScale,
-                    (p.radius + 4) * camScale,
-                    5 * camScale,
-                    5 * camScale
-                );
-                if (SkapClientPlayers[p.name].powers[1].power !== null) ctx.drawImage(
-                    renderSettings.textures.powers[SkapClientPlayers[p.name].powers[1].power] || renderSettings.textures.powers[11],
-                    camScale,
-                    (p.radius + 4) * camScale,
-                    5 * camScale,
-                    5 * camScale
-                );
-            }
+        
             ctx.restore();
         }
     }
