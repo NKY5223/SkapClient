@@ -263,6 +263,30 @@ const renderSettings = {
                 size: [1.6, 1.6],
                 texture: loadImage("https://skap.io/textures/hats/kite.png")
             },
+            onigiri: {
+                offset: [-1.05, -1.9],
+                textOffset: -2.5,
+                size: [2.1, 2.1],
+                texture: loadImage("https://skap.io/textures/hats/onigiri.png")
+            },
+            taria: {
+                offset: [-1.34, -2.1],
+                textOffset: -2.5,
+                size: [2.7, 2.7],
+                texture: loadImage("https://skap.io/textures/hats/taria.png")
+            },
+            horns: {
+                offset: [-1.8, -2.0],
+                textOffset: -1.5,
+                size: [3.5, 3.5],
+                texture: loadImage("https://skap.io/textures/hats/horns.png")
+            },
+            devil: {
+                offset: [-1.8, -2.0],
+                textOffset: -1.5,
+                size: [3.5, 3.5],
+                texture: loadImage("https://skap.io/textures/hats/devil.png")
+            },
             sakura: {
                 offset: [-1.05, -1.4],
                 textOffset: -1.3,
@@ -686,7 +710,13 @@ const hatRewards = {
     santa: document.getElementById("santa"),
     crown: document.getElementById("crown"),
     party: document.getElementById("party"),
-    cowboy: document.getElementById("cowboy")
+    cowboy: document.getElementById("cowboy"),
+    kite: document.getElementById("kite"),
+    onigiri: document.getElementById("onigiri"),
+    taria: document.getElementById("taria"),
+    horns: document.getElementById("horns"),
+    devil: document.getElementById("devil"),
+    sakura: document.getElementById("sakura")
 };
 const exitHatRewards = document.getElementsByClassName("exithatreward");
 
