@@ -547,6 +547,9 @@ canvas {
     background-clip: text;
     color: transparent;
 }
+.prooklmsg {
+    color: #80ff90;
+}
 /*
 .Sweatyfuckingbitchmsg {
     /* animation: sweaty 0.1s linear infinite; * /
