@@ -1182,7 +1182,9 @@ function message(msg, force = false) {
                     ? "whizmsg"
                     : msg.s === "Wish"
                         ? "wishmsg"
-                        : ""
+                        : msg.s === "prooklturdle"
+                            ? "prooklmsg"
+                            : ""
         }">
         ${force
             ? msg.s
