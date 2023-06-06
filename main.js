@@ -334,6 +334,8 @@ Owner:<ul>
                 if (!msg.m) {
                     if (msg.cookie !== "") {
                         document.cookie = "session=" + msg.cookie;
+                        username.value = "";
+                        password.value = "";
                     }
                     if (msg.t.startsWith("Logged in as ")) {
                         user = msg.t.slice(13);
