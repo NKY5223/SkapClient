@@ -340,8 +340,8 @@ const renderSettings = {
             loadImage("none.svg"),
         ],
         skins: {
-            NKY: loadImage("skins/NKY.png"),
-            NKY5223: loadImage("skins/NKY.png"),
+            /*NKY: loadImage("skins/NKY.png"),
+            NKY5223: loadImage("skins/NKY.png"),*/
             "star.": loadImage("skins/star.png"),
             haha0201: loadImage("skins/kinda_pro.png"),
             ZeroTix: loadImage("skins/zerotixpro.png"),
@@ -453,7 +453,7 @@ let blocked = localStorage.getItem("blocked") ? localStorage.getItem("blocked").
 let viewWS = false;
 let debug = Boolean(localStorage.getItem("debug"));
 let noUS = false;
-const devs = ["NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", "SkapClientAdmin", "ZeroTix", "ZeroFix", "haha0201", "RayhanADev"];
+const devs = [/*"NKY", "NKY5223", "NKYv2", "NKYv3", "NKYv4", "3225YKN", */"SkapClientAdmin", "ZeroTix", "ZeroFix", "haha0201", "RayhanADev"];
 const banned = [];
 const profanCheck = atob("c2hpdCBmdWNrIG1pbmdlIGNvY2sgdGl0cyBwZW5pcyBjbGl0IHB1c3N5IG1lYXRjdXJ0YWluIGppenogcHJ1bmUgZG91Y2hlIHdhbmtlciBqZXJr").split(" ");
 const seriousProfanCheck = atob("bmlnZ2VyIG5pZ2dhIGZhZ2dvdCBjdW50IHdob3JlIHJhcGU=").split(" ");
