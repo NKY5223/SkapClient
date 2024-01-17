@@ -1,0 +1,5 @@
+<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+	<circle cx="50" cy="50" r="50" fill="#000000" />
+	<circle cx="50" cy="50" r="45" fill="#808080" />
+	<text x="10" y="62" style="font:bold 35px Arial;">OwO</text>
+</svg>

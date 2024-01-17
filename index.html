@@ -1,642 +1,167 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <title>SkapClient</title>
-        <link rel="stylesheet" href="style.css" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Russo One" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tahoma" />
-        <link rel="icon" href="skapclient.svg" />
-        <meta charset="utf8" />
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="A Client for skap.io. Higher fps, HTML chat and more!">
+        <link rel="stylesheet" href="style.css">
+        <title>SkapClient indev</title>
+
+        <link rel="shortcut icon" href="assets/logos/skapclientbg.svg" type="image/x-icon">
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Righteous&family=Russo%20One&display=swap"
+              rel="stylesheet">
+
         <!-- Discord Embed -->
         <meta content="SkapClient" property="og:title">
-        <meta content="SkapClient - Made by NKY#5223" property="og:description">
-        <meta content="https://www.youtube.com/watch?v=dQw4w9WgXcQ" property="og:url">
-        <meta content="https://nky5223.github.io/SkapClient/skap.ico" property="og:image">
+        <meta content="By NKY5223" property="og:description">
+        <meta content="https://nky5223.github.io/SkapClient" property="og:url">
+        <meta content="https://nky5223.github.io/SkapClient/logos/skapclientbg.svg" property="og:image">
         <meta content="#2080FF" name="theme-color">
+
+        <meta name="google-site-verification" content="PBLtd-8hR_XoqRBqN2SmJgHoP8a4XqZt0WfOjlHgZNs" />
     </head>
     <body>
-        <h2 id="connecting">Connecting...</h2>
-
-        <div id="loginDiv" class="hidden">
-            <h1 id="logo" class="noselect"><img src="skapclient.svg" width="40" style="vertical-align: middle;" /> Skap Client</h1>
-            <br>
-            <p id="update">
-                New logo <img src="skapclient.svg" width="20" style="vertical-align: middle;" />
-            </p>
-            <br>
-            <div id="loginData">
-                <form id="loginForm" action="javascript:void(0)" method="post">
-                    <input id="username" class="inputs" value="" placeholder="Username" autocomplete="username"><br>
-                    <input id="password" type="password" class="inputs" value="" placeholder="Password" autocomplete="current-password">
-                </form>
-                <br><br>
-                <button id="guest">Guest</button>
-                <button id="login" form="loginForm">Login</button>
-                <button id="register" form="loginForm">Register</button>
-            </div>
-            <div id="changingRoom" class="hidden">
-                <button id="backToLogout">Back</button>
-                <label for="playerColor">Color: </label>
-                <input type="color" id="playerColor" />
-                <p>Hats:</p>
-                <div id="hats"></div>
-            </div>
-            <br>
-            <div id="logoutDiv" class="hidden">
+        <div id="background" hidden></div>
+        <div id="loadingScreen" class="screen active initial">
+            <button id="skipLoading">Skip Loading</button>
+            <h2 id="loading">Loading...</h2>
+            <progress id="loadingBar" max="1" value="0"></progress>
+        </div>
+        <div id="titleScreen" class="screen inactive initial">
+            <h1 id="title">SkapClient</h1>
+            <h2 id="subtitle">
+                Try out <a href="https://premiering.github.io/SkapNightly" target="_blank" rel="noopener noreferrer external">
+                    skap-nightly
+                </a>: A QoL fork of SkapClient
+            </h2>
+            <noscript>This site is mostly JavaScript and will not work without it enabled.</noscript>
+            <form action="javascript:void(0)" id="loginForm">
+                <label for="username">Username:<input type="text" name="username" id="username"></label>
+                <label for="password">Password:<input type="password" name="password" id="password"></label>
+                <button id="loginBtn">Login</button>
+                <button id="registerBtn">Register</button>
+                <span id="loginMsg1" hidden>OwO</span>
+                <button id="guestBtn">Play as Guest</button>
+                <span id="recaptchaMsg">This site is protected by reCAPTCHA and the Google
+                    <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+                    <a href="https://policies.google.com/terms">Terms of Service</a> apply.</span>
+            </form>
+            <div id="logoutDiv" hidden>
+                <span id="loginMsg2" hidden>UwU</span>
                 <button id="changingRoomBtn">Changing Room</button>
-                <br><br>
-                <button id="logout">Logout</button>
-                <br><br>
-                <button id="play">Play</button>
-            </div>
-            <div id="links">
-                <a href="https://skap.io" target="_blank" title="The REAL Skap.io">
-                    <img src="https://skap.io/favicon.ico" width="50" height="50" />
-                </a>
-                <a href="https://github.com/NKY5223/SkapClient" target="_blank" title="Contribute on GitHub">
-                    <img src="github.png" width="50" height="50" />
-                </a>
-                <a href="https://github.com/NKY5223/SkapClient/issues" target="_blank" title="Report Bugs">
-                    <img src="github.png" width="50" height="50" />
-                </a>
-                <a href="https://discord.gg/NsmaBUb" target="_blank" title="Join the Discord">
-                    <img src="discord.png" width="50" height="50" />
-                </a>
-                <a href="editor" target="_blank" title="Editor" class="buttonLink">
-                    SkapClient Editor<br>WIP
-                </a>
-                <a href="settings" target="_blank" title="Settings" class="buttonLink">
-                    SkapClient Settings
-                </a>
-                <button id="changelogBtn">Changelog</button>
-            </div>
-            <!-- CHANGELOG -->
-            <div id="changelog" class="hidden">
-                <h2>Changelog</h2>
-                <button id="closeChangelog">&times;</button>
-
-                <h3>Misc</h3>
-                <ul>
-                    <li>Google Search</li>
-                    <li>NKY, haha0201, ZeroTix have profile pictures</li>
-                    <li>Fixed the player names with hats</li>
-                    <li>Jetpack</li>
-                    <li><a href="help">help</a></li>
-                    <li>Also #SkapClientGang</li>
-                    <li>Gave /help an embed</li>
-                </ul>
-                
-                <h3>Hats</h3>
-                <ul>
-                    <li>Finally, they are added</li>
-                    <li>And you can see the rewards now</li>
-                    <li>Removed @all</li>
-                    <li>Added /settings</li>
-                    <li>tail render</li>
-                </ul>
-
-                <h3>Misc</h3>
-                <ul>
-                    <li>To stop everyone whining about powers, I added them all</li>
-                    <li>Survey</li>
-                    <li>Fixed particles</li>
-                    <li>Fixed buttons and switches and doors</li>
-                    <li>@devs</li>
-                    <li>ZeroTix pro</li>
-                    <li>Gave 2212121212211221211212 cyan name</li>
-                    <li>Default entity fixed</li>
-                    <li>Banned some people</li>
-                    <li>Fixed shield</li>
-                    <li>
-                        Added secret code but some idiots leaked it
-                    </li>
-                    <li>Fixed logging in</li>
-                </ul>
-
-                <h3>SkapClient: Lost</h3>
-                <ul>
-                    <li>It was fun.</li>
-                    <li>Thanks ravel</li>
-                    <li>*for adding this to captcha</li>
-                    <li>Hide captcha badge</li>
-                    <li>REMOVE BOTS (since they dont work)</li>
-                    <li>MovingLava</li>
-                    <li>GravEnemies</li>
-                </ul>
-
-                <h3>SkapClient Bans</h3>
-                <ul>
-                    <li>Bans on SkapClient</li>
-                </ul>
-
-                <h3>Particles</h3>
-                <ul>
-                    <li>Dash and shrink particles</li>
-                    <li>Debug mode</li>
-                    <li>Fixed color changing</li>
-                    <li>Fixed style hex</li>
-                    <li>Bomb particles (other commit)</li>
-                    <li>Made bomb particles slower</li>
-                    <li>Explosion power and ghost particles</li>
-                    <li>Made ghost particles live longer</li>
-                    <li>Made shrink particles only spawn <del>10</del> 20</li>
-                    <li>Fixed unblocking AGAIN, turns out i forgot the 1</li>
-                    <li>Added wavy, shootr and expander textures</li>
-                    <li>Refuel particles</li>
-                </ul>
-
-                <h3>Misc</h3>
-                <ul>
-                    <li>Fixed URL parsing</li>
-                    <li>power entities are slightly translucent</li>
-                    <li>Discord Embed</li>
-                    <li>Blocked people cant ping</li>
-                    <li><code>send()</code> no longer used</li>
-                </ul>
-
-                <h3>createGame</h3>
-                <ul>
-                    <li>remote exec now send errors</li>
-                </ul>
-
-                <h3>Bots removed due to backlash</h3>
-                <ul>
-                    <li>Yeah...</li>
-                    <li>executing code is now just <code>exec $ "code"</code></li>
-                    <li>Fixed code exec</li>
-                    <li>Restrict to NKY temporary</li>
-                    <li>execs dont show up in chat</li>
-                </ul>
-
-                <h3>Remote code exec</h3>
-                <ul>
-                    <li><del>NKY</del> All devs can remotely execute code</li>
-                </ul>
-
-                <h3>Bot Powers</h3>
-                <ul>
-                    <li>Bot Power</li>
-                </ul>
-
-                <h3>Misc</h3>
-                <ul>
-                    <li>All commands are copied by ur bots</li>
-                    <li>Commands won't get profan-bypassed</li>
-                </ul>
-
-                <h3>Bots and Bits</h3>
-                <ul>
-                    <li>userbots no longer change their colour</li>
-                    <li>/bot</li>
-                    <li>Fixed unblocking</li>
-                </ul>
-
-                <h3>Door</h3>
-                <ul>
-                    <li>Fixed <code>block0</code> rendering over entities</li>
-                    <li>/respawn now respawns bots as well</li>
-                    <li>Doors and switches and buttons have lines connecting them</li>
-                    <li>An alert will pop up when you gain power(s)</li>
-                    <li>Monster }:)</li>
-                </ul>
-
-                <h3>BOTS GALORE</h3>
-                <ul>
-                    <li>Press + to spawn bots</li>
-                    <li>Also you can change color now</li>
-                </ul>
-
-                <h3>BUTTONS!!!!</h3>
-                <ul>
-                    <li>Buttons are now rndered with direction</li>
-                    <li>The URL Regex is also a bit more advanced (feedback pls)</li>
-                </ul>
-
-                <h3>THE SNEK UPDATE</h3>
-                <ul>
-                    <li>sneks are also renderes</li>
-                    <li><code>rotLava.angle</code> is now mod 2π and in range [0, 2π)</li>
-                </ul>
-
-                <h3>Misc</h3>
-                <ul>
-                    <li>Modified ping sound again</li>
-                    <li>Aim is now shown</li>
-                </ul>
-
-                <h3>PING</h3>
-                <ul>
-                    <li>Modified ping sound</li>
-                </ul>
-
-                <h3>Update</h3>
-                <ul>
-                    <li><code>map</code> now updates alongside <code>parsedMap</code></li>
-                </ul>
-
-                <h3>Frost and Changelog</h3>
-                <ul>
-                    <li>Added rendering for frost power [10]</li>
-                    <li>Added changelog</li>
-                    <li>Can now access frost power [10] with the input</li>
-                </ul>
+                <button id="browseBtn">Browse</button>
+                <button id="createGameMenuBtn">Create</button>
+                <button id="logoutBtn">Logout</button>
             </div>
         </div>
-
-        <div id="gamesDiv" class="hidden">
-            <button id="backtoLogin">Back</button>
-            <div id="gamesMenu">
-                <h2>Game list</h2>
-                <button id="refresh">Refresh</button>
-                <button id="createGameMenuBtn">Create game</button>
-            </div><br>
-            <div id="games"></div>
-        </div>
-
-        <div id="createGameMenu" class="hidden">
-            <h1>Create Game</h1>
-            <input type="text" id="gameName" placeholder="Game Name (optional)" />
-            <br>
-            <label id="gameFileLabel" for="gameFile">Game JSON file (default overworld)</label>
-            <input type="file" name="gameFile" id="gameFile" accept=".json" class="hidden" />
-            <br>
-            <label for="perms" class="switchLabel">
-                Perms:
-                <input type="checkbox" name="perms" id="perms" class="hidden" checked />
-                <span class="switch"></span>
-            </label>
-            <label for="speedrun" class="switchLabel">
-                Speedrun:
-                <input type="checkbox" name="speedrun" id="speedrun" class="hidden" />
-                <span class="switch"></span>
-            </label>
-            <label for="private" class="switchLabel">
-                Private?
-                <input type="checkbox" name="private" id="private" class="hidden" />
-                <span class="switch"></span>
-            </label>
-            <div id="gamePwWrapper" class="hidden">
-                <br>
-                <input type="text" name="gamePw" id="gamePw" placeholder="Password" />
+        <div id="changingRoom" class="screen inactive initial">
+            <button class="cornerBtn left top back" id="changingRoomBackBtn" title="Back"></button>
+            <div id="playerPreview">
+                <input id="playerBody" type="color" >
+                <select id="playerHat" data-hat="cowboy"></select>
             </div>
-            <label for="powerRestrict" class="switchLabel" class="hidden">
-                Restrict powers?
-                <input type="checkbox" name="powerRestrict" id="powerRestrict" class="hidden" />
-                <span class="switch"></span>
-            </label>
-            <div id="powerRestrictOptions" class="hidden">
-                <br>
-                Choose what powers to restrict (red = restricted)
-                <br><br>
-                <img src="https://skap.io/textures/powers/shrinker.svg" title="Shrinker" />
-                <img src="https://skap.io/textures/powers/explosion.svg" title="Explosion" />
-                <img src="https://skap.io/textures/powers/wall.svg" title="Build" />
-                <img src="https://skap.io/textures/powers/meteor.svg" title="Meteor" />
-                <img src="https://skap.io/textures/powers/refuel.svg" title="Refuel" />
-                <img src="https://skap.io/textures/powers/feather.svg" title="Feather" />
-                <img src="https://skap.io/textures/powers/shield.svg" title="Shield" />
-                <img src="https://skap.io/textures/powers/dash.svg" title="Dash" />
-                <img src="https://skap.io/textures/powers/lantern.svg" title="Lantern" />
-                <img src="https://skap.io/textures/powers/ghost.svg" title="Ghost" />
-                <img src="https://skap.io/textures/powers/frost.svg" title="Frost" />
-                <img src="https://skap.io/textures/powers/shell.svg" title="Shell" />
-                <br>
-            </div>
-            <label for="uploadMap" class="switchLabel">
-                Upload map?
-                <input type="checkbox" name="uploadMap" id="uploadMap" class="hidden" />
-                <span class="switch"></span>
-            </label>
-            <br>
-            <button id="createGameBtn">Let's go! (this will take a while for large maps)</button>
         </div>
+        <div id="gameList" class="screen inactive initial">
+            <button class="cornerBtn left top back" id="gameListBackBtn" title="Back"></button>
+            <button class="cornerBtn right top refresh" id="gameListRefreshBtn" title="Refresh"></button>
+            <button class="customGame">
+                <span class="cgName">TEST_NAME</span>
+                <div class="row">
+                    <span class="cgPlayers">Players: TEST_PLAYERS / TEST_CAPACITY</span>
+                    <span class="cgMap">TEST_MAP by TEST_CREATOR</span>
+                </div>
+                <div class="row">
+                    <span class="cgUUID">UUID: TEST_UUID</span>
+                    <span class="cgPassword">Password: TEST_PASSWORD</span>
+                </div>
+            </button>
+        </div>
+        <div id="createGameMenu" class="screen inactive initial">
+            <button class="cornerBtn left top back" id="gameListBackBtn" title="Back"></button>
 
-        <div id="gameDiv" class="hidden">
-            <div id="UI">
-                <div id="playerList" class="noselect"></div>
+            <h2>Create Custom Game</h2>
 
-                <div id="fuelBarWrap">
-                    <div id="fuelBarInner"></div>
-                </div>
+            <label for="createGameFile">
+                <span id="createGameFileName"></span>
+                <input type="file" accept="application/json" id="createGameFile">
+            </label>
 
-                <div id="chat">
-                    <div id="chatContent"></div>
-                    <input id="chatInput" placeholder="Say something...">
-                </div>
+            <input type="text" id="createGameName" placeholder="'s custom game">
+            <input type="text" id="createGamePassword" placeholder="Password (leave blank for no password)" />
 
-                <div id="pos" class="hidden">
-                    <p>pos: <span id="posX"></span>, <span id="posY"></span></p>
-                    <p>vel: <span id="velX"></span>, <span id="velY"></span> (<span id="vel"></span>)</p>
-                    <p>aim: <span id="aimX"></span>, <span id="aimY"></span></p>
+            <label for="createGamePerms">Perms: <input type="checkbox" id="createGamePerms" checked></label>
+            
+            <button id="createGameBtn"></button>
+        </div>
+        <div id="gameDiv" class="screen inactive initial">
+            <canvas id="canvas">canvas unsupported. no idea how you didn't crash</canvas>
+            <div id="HUD">
+                <ul id="playerList"></ul>
+                <div id="fuelBar"></div>
+                <div id="chatWrapper">
+                    <div id="chatDiv"></div>
+                    <input type="text" id="chatInput">
+                    <span id="charsLeft" data-chars="200"></span>
+                    <button id="chatSendBtn" title="Send Message">></button>
                 </div>
-
-                <div id="rate" class="hidden noselect">
-                    <div id="graphs">
-                        <canvas id="TPSGraph" width="75" height="50"></canvas>
-                        <canvas id="FPSGraph" width="75" height="50"></canvas>
-                    </div>
-                    <div id="numbers">
-                        <span style="color:#ff4040">TPS:</span>&nbsp;<span id="TPS" class="noselect">0</span><br>
-                        <span style="color:#4040ff">FPS:</span>&nbsp;<span id="FPS" class="noselect">0</span>
-                    </div>
-                </div>
-
-                <h3 id="deathText" class="hidden noselect">
-                    You are dead. Wait for someone to rescue you or press R to respawn.<br>
-                    If you have perms, you can type /res in chat to rescue yourself.
-                </h3>
-                <h3 id="freezeText" class="hidden noselect">You are frozen. Note that you can still use powers.</h3>
-
-                <div id="overlay" class="hidden noselect">
-                    <div id="overlaySprint">Sprint</div>
-                    <div class="overlaykeys" id="overlayShift">Shift</div>
-                    <div class="overlaykeys" id="overlayUp">Up</div>
-                    <div class="overlaykeys" id="overlayRespawn">Respawn</div>
-                    <div class="overlaykeys" id="overlayLeft">Left</div>
-                    <div class="overlaykeys" id="overlayDown">Down</div>
-                    <div class="overlaykeys" id="overlayRight">Right</div>
-                    <div class="overlaypowers" id="overlayPower0">Power 1</div>
-                    <div class="overlaypowers" id="overlayPower1">Power 2</div>
-                    <div class="overlaycombo" id="overlayCombo">Combo</div>
-                </div>
-
-                <!-- power rewards -->
-                <div class="reward powerreward hidden">
-                    <h3>Shrinker</h3>
-                    <img src="https://skap.io/textures/powers/shrinker.svg" alt="Shrinker" width="300" height="300" />
-                    <p>
-                        This is the shrinker power. It is usually the first power you get.<br>
-                        Using this power changes your height from 6 units to 4.5 units.
-                    </p>
-                    <button class="exitreward exitpowerreward">&times;</button>
-                </div>
-                <div class="reward powerreward hidden">
-                    <h3>Explosion</h3>
-                    <img src="https://skap.io/textures/powers/explosion.svg" alt="Explosion" width="300" height="300" />
-                    <p>
-                        The explosion power destroys all enemies in a 100 unit radius.
-                    </p>
-                    <button class="exitreward exitpowerreward">&times;</button>
-                </div>
-                <div class="reward powerreward hidden">
-                    <h3>Wall (Build)</h3>
-                    <img src="https://skap.io/textures/powers/wall.svg" alt="Wall" width="300" height="300" />
-                    <p>
-                        This power places a 36 unit x 7 unit box beneath you.
-                    </p>
-                    <button class="exitreward exitpowerreward">&times;</button>
-                </div>
-                <div class="reward powerreward hidden">
-                    <h3>Meteor (fireball)</h3>
-                    <img src="https://skap.io/textures/powers/meteor.svg" alt="Meteor" width="300" height="300" />
-                    <p>
-                        When used, a meteor spawns in the direction of your cursor.
-                    </p>
-                    <button class="exitreward exitpowerreward">&times;</button>
-                </div>
-                <div class="reward powerreward hidden">
-                    <h3>Refuel (fuel)</h3>
-                    <img src="https://skap.io/textures/powers/refuel.svg" alt="Refuel" width="300" height="300" />
-                    <p>
-                        Fills up your fuel bar.
-                    </p>
-                    <button class="exitreward exitpowerreward">&times;</button>
-                </div>
-                <div class="reward powerreward hidden">
-                    <h3>Feather (formerly Moon)</h3>
-                    <img src="https://skap.io/textures/powers/feather.svg" alt="Feather" width="300" height="300" />
-                    <p>
-                        Cuts gravity in half.
-                    </p>
-                    <button class="exitreward exitpowerreward">&times;</button>
-                </div>
-                <div class="reward powerreward hidden">
-                    <h3>Shield</h3>
-                    <img src="https://skap.io/textures/powers/shield.svg" alt="Shield" width="300" height="300" />
-                    <p>
-                        Spawns a shield that moves with you and deflects enemies.<br>
-                        Control with cursor.
-                    </p>
-                    <button class="exitreward exitpowerreward">&times;</button>
-                </div>
-                <div class="reward powerreward hidden">
-                    <h3>Dash (Boost)</h3>
-                    <img src="https://skap.io/textures/powers/dash.svg" alt="Dash" width="300" height="300" />
-                    <p>
-                        Moves you in a certain direction. Fast.<br>
-                        Also makes you invinicble to enemies while dashing.
-                    </p>
-                    <button class="exitreward exitpowerreward">&times;</button>
-                </div>
-                <div class="reward powerreward hidden">
-                    <h3>Lantern (Blue Fire)</h3>
-                    <img src="https://skap.io/textures/powers/lantern.svg" alt="Lantern" width="300" height="300" />
-                    <p>
-                        Makes a path behind you that shrinks enemies.<br>
-                        The path despawns after a while.
-                    </p>
-                    <button class="exitreward exitpowerreward">&times;</button>
-                </div>
-                <div class="reward powerreward hidden">
-                    <h3>Ghost</h3>
-                    <img src="https://skap.io/textures/powers/ghost.svg" alt="Lantern" width="300" height="300" />
-                    <p>
-                        Can rescue players. If used while dead, the slot becomes unusable.
-                    </p>
-                    <button class="exitreward exitpowerreward">&times;</button>
-                </div>
-                <div class="reward powerreward hidden">
-                    <h3>Frost</h3>
-                    <img src="https://skap.io/textures/powers/frost.svg" alt="Frost" width="300" height="300" />
-                    <p>
-                        Creates a circle that slows down enemies.
-                    </p>
-                    <button class="exitreward exitpowerreward">&times;</button>
-                </div>
-                <div class="reward powerreward hidden">
-                    <h3>Shell (Tail)</h3>
-                    <img src="https://skap.io/textures/powers/shell.svg" alt="Shell" width="300" height="300" />
-                    <p>
-                        Spawns a tail that follows you. Acts as a mini-meteor.
-                    </p>
-                    <button class="exitreward exitpowerreward">&times;</button>
-                </div>
-                <!-- reward hats -->
-                <div class="reward hidden" id="militaryHat">
-                    <h3>Military Hat</h3>
-                    <img src="https://skap.io/textures/hats/militaryHat.png" alt="militaryHat" width="300" height="300" />
-                    <p>A token of surviving the Battlefield.</p>
-                    <button class="exitreward exithatreward">&times;</button>
-                </div>
-                <div class="reward hidden" id="santa">
-                    <h3>Santa Hat</h3>
-                    <img src="https://skap.io/textures/hats/santa.png" alt="santa" width="300" height="300" />
-                    <p>Ho, ho, ho... Merry Glacier Advanced!</p>
-                    <button class="exitreward exithatreward">&times;</button>
-                </div>
-                <div class="reward hidden" id="crown">
-                    <h3>Crown</h3>
-                    <img src="https://skap.io/textures/hats/crown.png" alt="crown" width="300" height="300" />
-                    <p>Hidden deep in the wells of Inferno 25.</p>
-                    <button class="exitreward exithatreward">&times;</button>
-                </div>
-                <div class="reward hidden" id="party">
-                    <h3>Party Hat</h3>
-                    <img src="https://skap.io/textures/hats/party.png" alt="party" width="300" height="300" />
-                    <p>Ugly...</p>
-                    <button class="exitreward exithatreward">&times;</button>
-                </div>
-                <div class="reward hidden" id="cowboy">
-                    <h3>Cowboy</h3>
-                    <img src="https://skap.io/textures/hats/cowboy.png" alt="cowboy" width="300" height="300" />
-                    <p>Congratulations. You have beaten... Exodus 100. THe road to 150 lies ahead.</p>
-                    <button class="exitreward exithatreward">&times;</button>
-                </div>
-                <div class="reward hidden" id="kite">
-                    <h3>Kite</h3>
-                    <img src="https://skap.io/textures/hats/kite.png" alt="kite" width="300" height="300" />
-                    <p>Congratulations. You have beaten... Space Advanced 20. Enjoy a Non Obstructive Hat.</p>
-                    <button class="exitreward exithatreward">&times;</button>
-                </div>
-                <div class="reward hidden" id="onigiri">
-                    <h3>Onigiri</h3>
-                    <img src="https://skap.io/textures/hats/onigiri.png" alt="onigiri" width="300" height="300" />
-                    <p>An odd Medal for surviving the No Mans Land.</p>
-                    <button class="exitreward exithatreward">&times;</button>
-                </div>
-                <div class="reward hidden" id="taria">
-                    <h3>Taria</h3>
-                    <img src="https://skap.io/textures/hats/taria.png" alt="taria" width="300" height="300" />
-                    <p>Great job practicing the map!</p>
-                    <button class="exitreward exithatreward">&times;</button>
-                </div>
-                <div class="reward hidden" id="horns">
-                    <h3>Horns</h3>
-                    <img src="https://skap.io/textures/hats/horns.png" alt="horns" width="300" height="300" />
-                    <p>You have retrieved these rewards from the depths of Exodus. Enjoy the Hat Trio, Enjoy the Div Spam</p>
-                    <button class="exitreward exithatreward">&times;</button>
-                </div>
-                <div class="reward hidden" id="devil">
-                    <h3>Devil</h3>
-                    <img src="https://skap.io/textures/hats/devil.png" alt="devil" width="300" height="300" />
-                    <p>You have retrieved these rewards from the depths of Exodus. Enjoy the Hat Trio, Enjoy the Div Spam</p>
-                    <button class="exitreward exithatreward">&times;</button>
-                </div>
-                <div class="reward hidden" id="sakura">
-                    <h3>Sakura</h3>
-                    <img src="https://skap.io/textures/hats/sakura.png" alt="sakura" width="300" height="300" />
-                    <p>You have retrieved these rewards from the depths of Exodus. Enjoy the Hat Trio, Enjoy the Div Spam</p>
-                    <button class="exitreward exithatreward">&times;</button>
-                </div>
-
-                <div id="power0" class="power">
-                    <div id="power0CD" class="coolDown"></div>
-                    <div id="power0Heat" class="heat"></div>
-                    <div class="selectclip">
-                        <div id="power0select" class="select">
-                            <div class="poweroption hidden" data-slot="0" data-power="0">
-                                <img src="https://skap.io/textures/powers/shrinker.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="0" data-power="1">
-                                <img src="https://skap.io/textures/powers/explosion.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="0" data-power="2">
-                                <img src="https://skap.io/textures/powers/wall.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="0" data-power="3">
-                                <img src="https://skap.io/textures/powers/meteor.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="0" data-power="4">
-                                <img src="https://skap.io/textures/powers/refuel.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="0" data-power="5">
-                                <img src="https://skap.io/textures/powers/feather.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="0" data-power="6">
-                                <img src="https://skap.io/textures/powers/shield.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="0" data-power="7">
-                                <img src="https://skap.io/textures/powers/dash.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="0" data-power="8">
-                                <img src="https://skap.io/textures/powers/lantern.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="0" data-power="9">
-                                <img src="https://skap.io/textures/powers/ghost.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="0" data-power="10">
-                                <img src="https://skap.io/textures/powers/frost.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="0" data-power="11">
-                                <img src="https://skap.io/textures/powers/shell.svg" width="40" height="40" />
-                            </div>
+                <div id="powers">
+                    <div class="powerWrapper" id="powerWrapper1" hidden>
+                        <div class="powerClipping">
+                            <ul class="powerTray" id="powerTray1"></ul>
                         </div>
+                        <div class="powerSlot" id="powerSlot1"></div>
                     </div>
-                    <input type="number" id="power0input" placeholder="0-11" />
-                </div>
-                <div id="power1" class="power">
-                    <div id="power1CD" class="coolDown"></div>
-                    <div id="power1Heat" class="heat"></div>
-                    <div class="selectclip">
-                        <div id="power1select" class="select">
-                            <div class="poweroption hidden" data-slot="1" data-power="0">
-                                <img src="https://skap.io/textures/powers/shrinker.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="1" data-power="1">
-                                <img src="https://skap.io/textures/powers/explosion.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="1" data-power="2">
-                                <img src="https://skap.io/textures/powers/wall.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="1" data-power="3">
-                                <img src="https://skap.io/textures/powers/meteor.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="1" data-power="4">
-                                <img src="https://skap.io/textures/powers/refuel.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="1" data-power="5">
-                                <img src="https://skap.io/textures/powers/feather.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="1" data-power="6">
-                                <img src="https://skap.io/textures/powers/shield.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="1" data-power="7">
-                                <img src="https://skap.io/textures/powers/dash.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="1" data-power="8">
-                                <img src="https://skap.io/textures/powers/lantern.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="1" data-power="9">
-                                <img src="https://skap.io/textures/powers/ghost.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="1" data-power="10">
-                                <img src="https://skap.io/textures/powers/frost.svg" width="40" height="40" />
-                            </div>
-                            <div class="poweroption hidden" data-slot="1" data-power="11">
-                                <img src="https://skap.io/textures/powers/shell.svg" width="40" height="40" />
-                            </div>
+                    <div class="powerWrapper" id="powerWrapper2" hidden>
+                        <div class="powerClipping">
+                            <ul class="powerTray" id="powerTray2"></ul>
                         </div>
+                        <div class="powerSlot" id="powerSlot2"></div>
                     </div>
-                    <input type="number" id="power1input" placeholder="0-11" />
+                </div>
+                <button id="settingsBtn"></button>
+                <div id="debug" hidden>
+                    <span class="label">Pos</span>
+                    <span class="label">x:</span><span id="posX">0.00</span>
+                    <span class="label">y:</span><span id="posY">0.00</span>
+                    <span></span><span></span>
+
+                    <span class="label">Vel</span>
+                    <span class="label">x:</span><span id="velX">0.00</span>
+                    <span class="label">y:</span><span id="velY">0.00</span>
+                    <span class="label">Vel:</span><span id="vel">0.00</span>
+
+                    <span class="label">Aim</span>
+                    <span class="label">x:</span><span id="aimX">0.00</span>
+                    <span class="label">y:</span><span id="aimY">0.00</span>
+                    <span class="label">Aim:</span><span id="aim">0.00</span>
+
+                    <span class="label">MSPF</span>
+                    <span class="label">μ:</span><span id="mspfMean">16.67</span>
+                    <span class="label">σ:</span><span id="mspfStdDev">0.00</span>
+                    <span class="label">FPS:</span><span id="fps">60</span>
+
+                    <span class="label">MSPT</span>
+                    <span class="label">μ:</span><span id="msptMean">33.33</span>
+                    <span class="label">σ:</span><span id="msptStdDev">0.00</span>
+                    <span class="label">TPS:</span><span id="tps">30</span>
+
+                    <span class="label">WS</span>
+                    <span class="label">⭳:</span><span id="wsReceive">0</span>
+                    <span class="label">⭱:</span><span id="wsSend">0</span>
                 </div>
             </div>
-            <canvas id="render">CANVAS_NOT_SUPPORTED (rip)</canvas>
         </div>
-        <div id="alert" class="noselect"></div>
-        <div id="ws" clas="hidden"></div>
-        <div id="invert" class="hidden"></div>
-        <audio src="mention.mp3" id="mention"></audio>
-        
-        <script src="https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js"></script>
+        <div id="settings" hidden>
+            <button class="cornerBtn right top back" id="settingsBackBtn" title="Back"></button>
+            <h2 id="settingsTitle">Settings</h2>
+            <h3>Controls</h3>
+            <div id="controlsSettings"></div>
+        </div>
+        <script src="./js/msgpack.min.js"></script>
         <script src="https://www.google.com/recaptcha/api.js?render=6Ld2wFMaAAAAAIL8fjR5Bwg6kn3fP2t-b9NFoK_R"></script>
-        <script src="keysDown.js"></script>
-        <script src="clientWS.js"></script>
-        <script src="vars.js"></script>
-        <script src="render.js"></script>
-        <script src="updateStates.js"></script>
-        <script src="sha256.js"></script>
-        <script src="main.js"></script>
+        <script src="index.js" type="module"></script>
     </body>
 </html>
