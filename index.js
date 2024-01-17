@@ -5,7 +5,7 @@ import { DashParticle, ExplosionParticle, FeatherParticle, JetpackParticle, Shri
 import Renderer from "./js/Renderer.js";
 
 const game = new Game("wss://skap.io", false, msgpack);
-window.game = game; // Expose game to console
+// window.game = game; // Expose game to console
 
 // #region Utils
 /**
@@ -57,7 +57,6 @@ function changeScreen(screen, direction = 0) {
     activeScreen = screen;
 }
 
-window.changeScreen = changeScreen;
 /**
  * @param {keyof HTMLElementTagNameMap} tagname
  * @param {string[]} classes 
@@ -131,8 +130,8 @@ updateSettings();
 function updateSettings() {
     localStorage.setItem("settings", JSON.stringify(settings));
 }
-window.settings = settings;
-window.updateSettings = updateSettings;
+// window.settings = settings;
+// window.updateSettings = updateSettings;
 
 const settingsMenu = document.getElementById("settings");
 const settingsBackBtn = document.getElementById("settingsBackBtn");
@@ -439,7 +438,7 @@ game.on("updateState", state => {
 
 // #region Controls
 const controller = new Controller(document.documentElement, settings.controls);
-window.controller = controller; // Expose controller to console
+// window.controller = controller; // Expose controller to console
 
 ["up", "left", "down", "right", "halt", "sprint", "power1", "power2", "powercombo", "respawn"].forEach(name => {
     controller.onDown(name, e => game.input(name, true));
@@ -472,7 +471,7 @@ function mouseAim(x, y) {
     );
 }
 
-window.addEventListener("blur", _ => {
+document.addEventListener("blur", _ => {
     if (!game.GAME) return;
     controller.allUp();
 });
@@ -605,7 +604,7 @@ function chatAsClient(content = "Message", html = false) {
     createChatMsg("[CLIENT]", 1, content, html);
 }
 // expose to console
-window.createChatMsg = createChatMsg;
+// window.createChatMsg = createChatMsg;
 // #endregion
 
 // #region Send Chat Message
@@ -710,7 +709,6 @@ const commands = [
 ];
 
 const argRegex = / (?:(?:"(.+?)")|(\S+))/g;
-window.recompileregex = argRegex.compile.bind(argRegex);
 game.on("sendMessage", /** @param {string} msg */ msg => {
     return commands.reduce((result, command) => {
         if (!msg.startsWith(`/${command.name}`)) return result;
@@ -854,7 +852,7 @@ controller.onDown("zoomOut", e => {
 // #region Render
 const canvas = document.getElementById("canvas");
 const renderer = new Renderer(canvas);
-window.renderer = renderer; // Expose renderer to console
+// window.renderer = renderer; // Expose renderer to console
 
 let stopRender = false;
 let prevFrame = null;
