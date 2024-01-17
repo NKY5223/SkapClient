@@ -1,3 +1,4 @@
+import Game from "./Game.js";
 import Loader from "./Loader.js";
 import SkapMap from "./Map.js";
 import { Particle, ParticleManager } from "./Particle.js";
@@ -12,8 +13,9 @@ import lerp from "./lerp.js";
 export default class Renderer {
     /**
      * @param {HTMLCanvasElement} canvas 
+     * @param {Game} game
      */
-    constructor(canvas) {
+    constructor(canvas, game) {
         this.canvas = canvas;
         this.ctx = this.canvas.getContext("2d");
         this.game = game;

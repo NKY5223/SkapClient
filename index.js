@@ -851,7 +851,7 @@ controller.onDown("zoomOut", e => {
 
 // #region Render
 const canvas = document.getElementById("canvas");
-const renderer = new Renderer(canvas);
+const renderer = new Renderer(canvas, game);
 // window.renderer = renderer; // Expose renderer to console
 
 let stopRender = false;
