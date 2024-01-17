@@ -121,7 +121,6 @@ const settings = (_ => {
                 { powers: [6, 11], control: [{ trigger: "Digit5", ctrl: -1, alt: 0, shift: 0 }] },
                 { powers: [12, 13], control: [{ trigger: "Digit6", ctrl: -1, alt: 0, shift: 0 }] },
             ],
-            SUPER_SECRET_DEV_MODE_REAL: true
         };
     }
 })();
