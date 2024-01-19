@@ -209,6 +209,7 @@ body {
 }
 
 #title {
+    position: relative;
     background-image: linear-gradient(to bottom, #ff4040, #ff4040 57.5%, #d050d0, #6060ff 57.5%);
     background-clip: text;
     -webkit-background-clip: text;
@@ -218,6 +219,19 @@ body {
     margin: .1em;
     font-family: "Righteous", sans-serif;
     font-size: 7em;
+}
+
+#title.devMode::after {
+    content: "dev";
+    display: block;
+    position: absolute;
+
+    color: lime;
+    font-size: 4rem;
+    font-family: monospace;
+
+    bottom: -0.25em;
+    right: -0.5em;
 }
 
 #subtitle {
@@ -1094,6 +1108,7 @@ label[for="createGameFile"]:has([disabled]) {
 /* #endregion game */
 
 /* #region settings */
+
 /* #region settings btn */
 #settingsBtn {
     all: unset;
@@ -1120,21 +1135,213 @@ label[for="createGameFile"]:has([disabled]) {
 }
 /* #endregion */
 
-#settings[hidden] {
-    display: block;
-    bottom: 100%;
-}
 #settings {
     box-sizing: border-box;
     position: absolute;
     width: 100%;
     height: 100%;
-    bottom: 0;
     padding: 1em 5em;
     background-color: #202020e0;
 
-    transition: bottom 0.5s;
+    overflow-y: scroll;
 }
+
+/* #region control */
+.control {
+    display: grid;
+    width: fit-content;
+    grid-template-areas: "name name" "triggers addBtn";
+    place-items: center;
+    gap: .1em .5em;
+    margin-bottom: .2em;
+}
+
+.controlName {
+    margin: 0.1em 0;
+    justify-self: start;
+}
+
+.triggersWrapper {
+    display: flex;
+    max-width: 75vw;
+    width: fit-content;
+    flex-wrap: wrap;
+    grid-area: triggers;
+}
+.triggersWrapper:empty::before {
+    content: "<no keys assigned>";
+    color: #808080;
+    font-family: monospace;
+    font-style: italic;
+    font-size: small;
+}
+
+.addTriggerBtn {
+    all: unset;
+    display: grid;
+    width: 1.25em;
+    height: 1.25em;
+    cursor: pointer;
+    border: 1px solid white;
+    border-radius: .2em;
+    place-items: center;
+    grid-area: addBtn;
+}
+.addTriggerBtn:hover {
+    background: #ffffff20;
+}
+.addTriggerBtn:focus {
+    outline: 2px solid #2080ff;
+}
+.addTriggerBtn::after {
+    content: "+";
+    line-height: 1;
+}
+/* #endregion */
+
+/* #region trigger */
+.triggerWrapper {
+    display: grid;
+    grid-template-areas: "remove trigger ctrl shift alt meta";
+    background: #202020c0;
+    padding: .25em;
+    margin: .1em;
+    width: max-content;
+    height: 1.25em;
+    border-radius: .5em;
+    border: 1px solid white;
+}
+.triggerWrapper * {
+    box-sizing: border-box;
+}
+
+.deleteTriggerBtn {
+    all: unset;
+    box-sizing: border-box;
+    display: grid;
+    width: 1.25em;
+    height: 1.25em;
+    cursor: pointer;
+    border: 1px solid white;
+    border-radius: .2em;
+    place-items: center;
+}
+.deleteTriggerBtn:focus {
+    outline: 2px solid #2080ff;
+}
+.deleteTriggerBtn:hover {
+    background: #ffffff20;
+}
+.deleteTriggerBtn::after {
+    content: "-";
+    line-height: 1;
+}
+
+.trigger {
+    display: grid;
+    box-sizing: border-box;
+    grid-template-columns: repeat(5, min-content);
+    min-width: 10em;
+    padding: 0 .5em;
+    border-right: 1px solid #ffffff80;
+    margin-right: .2em;
+    height: 1.25em;
+    line-height: 1.25;
+}
+
+.modifierKey, .triggerKey {
+    width: fit-content;
+    position: relative;
+    padding: .1em .25em;
+    border: 1px solid white;
+    border-radius: .2em;
+    color: white;
+}
+.triggerKey {
+    display: block;
+    cursor: pointer;
+    background: #ffffff20;
+}
+.triggerKey::after { content: attr(data-trigger); }
+.triggerKey:hover {
+    background: #ffffff40;
+}
+.triggerKey:focus {
+    outline: 2px solid #2080ff;
+}
+
+.modifierKey.ctrl::before { content: "Ctrl"; }
+.modifierKey.shift::before { content: "Shift"; }
+.modifierKey.alt::before { content: "Alt"; }
+.modifierKey.meta::before { content: "Meta"; }
+.modifierKey.plus { 
+    margin-right: 1.25em; 
+    background: #00ff0040;
+}
+.modifierKey.minus { 
+    margin-left: 1.25em; 
+    background: #ff000040;
+}
+.modifierKey.plus::after {
+    content: "+";
+    position: absolute;
+    left: 100%;
+    width: 1.5em;
+    text-align: center;
+}
+.modifierKey.minus::after {
+    content: "-";
+    position: absolute;
+    right: 100%;
+    width: 1.5em;
+    text-align: center;
+}
+
+.modifierKey { display: none; }
+.modifierKey[data-value="1"].plus { display: block; }
+.modifierKey[data-value="-1"].minus { display: block; }
+
+
+.modifierBtn {
+    all: unset;
+    cursor: pointer;
+    display: inline-block;
+    height: 1.25em;
+    width: 1.25em;
+}
+.modifierBtn:hover, .modifierBtn:focus {
+    background-color: #ffffff20;
+}
+.modifierBtn:focus {
+    outline: 2px solid #2080ff;
+}
+.modifierBtn::before {
+    content: "";
+    display: inline-block;
+    width: 1.25em;
+    height: 1.25em;
+    background-size: 100%;
+}
+.modifierBtn[data-value="1"]::before {
+    background-image: url("./assets/icons/tick.svg");
+}
+.modifierBtn[data-value="0"]::before {
+    background-image: url("./assets/icons/slash.svg");
+}
+.modifierBtn[data-value="-1"]::before {
+    background-image: url("./assets/icons/cross.svg");
+}
+/* #endregion */
+
+/* #region trigger modal */
+#controlOverlay {
+    max-width: 30em;
+}
+#controlOverlay::backdrop {
+    background: #c0c0c080;
+}
+/* #endregion */
+
 /* #endregion */
 
 .grecaptcha-badge {

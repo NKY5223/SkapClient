@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+    <!-- <rect width="100" height="100"></rect> -->
+    <polyline points="15 85 85 15" stroke="#ff0000" stroke-width="10" />
+    <polyline points="15 15 85 85" stroke="#ff0000" stroke-width="10" />
+</svg>

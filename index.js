@@ -5,7 +5,6 @@ import { DashParticle, ExplosionParticle, FeatherParticle, JetpackParticle, Shri
 import Renderer from "./js/Renderer.js";
 
 const game = new Game("wss://skap.io", false, msgpack);
-// window.game = game; // Expose game to console
 
 // #region Utils
 /**
@@ -58,10 +57,13 @@ function changeScreen(screen, direction = 0) {
 }
 
 /**
- * @param {keyof HTMLElementTagNameMap} tagname
+ * @template {keyof HTMLElementTagNameMap} T
+ * @param {T} tagname
  * @param {string[]} classes 
  * @param {string} id 
  * @param {(string|Node)[]} content
+ * 
+ * @returns {HTMLElementTagNameMap[T]}
  */
 function createElement(tagname, classes = [], id = null, content = []) {
     let el = document.createElement(tagname);
@@ -77,61 +79,65 @@ function createElement(tagname, classes = [], id = null, content = []) {
 
 /** @typedef {import("./js/Controller.js").Trigger} Trigger */
 
-/** @type {{ controls: { [name: string]: Trigger[] }, powerPresets: { powers: [number, number], control: Trigger[] }[], SUPER_SECRET_DEV_MODE_REAL: boolean }} */
+const currentSettingsVersion = "meta controls";
+/** @type {{ version?: string, controls: { [name: string]: Trigger[] }, powerPresets: { powers: [number, number], control: Trigger[] }[], SUPER_SECRET_DEV_MODE_REAL?: boolean }} */
 const settings = (_ => {
     try {
         return JSON.parse(localStorage.getItem("settings") ?? "throw error pls");
     } catch (err) {
         return {
+            version: currentSettingsVersion,
             controls: {
-                up: [{ trigger: "KeyW", ctrl: -1, alt: 0, shift: 0 }],
-                left: [{ trigger: "KeyA", ctrl: -1, alt: 0, shift: 0 }],
-                down: [{ trigger: "KeyS", ctrl: -1, alt: 0, shift: 0 }],
-                right: [{ trigger: "KeyD", ctrl: 0, alt: 0, shift: 0 }],
+                up: [{ trigger: "KeyW", ctrl: -1, alt: 0, shift: 0, meta: 0 }],
+                left: [{ trigger: "KeyA", ctrl: -1, alt: 0, shift: 0, meta: 0 }],
+                down: [{ trigger: "KeyS", ctrl: -1, alt: 0, shift: 0, meta: 0 }],
+                right: [{ trigger: "KeyD", ctrl: 0, alt: 0, shift: 0, meta: 0 }],
 
-                sprint: [{ trigger: "Space", ctrl: -1, alt: 0, shift: 0 }],
-                halt: [{ trigger: "ShiftLeft", ctrl: -1, alt: 0, shift: 0 },
-                { trigger: "ShiftRight", ctrl: -1, alt: 0, shift: 0 }],
-                respawn: [{ trigger: "KeyR", ctrl: -1, alt: 0, shift: 0 }],
+                sprint: [{ trigger: "Space", ctrl: -1, alt: 0, shift: 0, meta: 0 }],
+                halt: [{ trigger: "ShiftLeft", ctrl: -1, alt: 0, shift: 0, meta: 0 },
+                { trigger: "ShiftRight", ctrl: -1, alt: 0, shift: 0, meta: 0 }],
+                respawn: [{ trigger: "KeyR", ctrl: -1, alt: 0, shift: 0, meta: 0 }],
 
-                power1: [{ trigger: "LMB", ctrl: 0, alt: 0, shift: 0 }],
-                power2: [{ trigger: "RMB", ctrl: 0, alt: 0, shift: 0 }],
-                powercombo: [{ trigger: "MMB", ctrl: 0, alt: 0, shift: 0 }],
-                powerswap: [{ trigger: "KeyT", ctrl: -1, alt: 0, shift: 0 }],
+                power1: [{ trigger: "LMB", ctrl: 0, alt: 0, shift: 0, meta: 0 }],
+                power2: [{ trigger: "RMB", ctrl: 0, alt: 0, shift: 0, meta: 0 }],
+                powercombo: [{ trigger: "MMB", ctrl: 0, alt: 0, shift: 0, meta: 0 }],
+                powerswap: [{ trigger: "KeyT", ctrl: -1, alt: 0, shift: 0, meta: 0 }],
 
-                zoomIn: [{ trigger: "KeyI", ctrl: -1, alt: 0, shift: 0 }],
-                zoomOut: [{ trigger: "KeyU", ctrl: -1, alt: 0, shift: 0 }],
+                zoomIn: [{ trigger: "KeyI", ctrl: -1, alt: 0, shift: 0, meta: 0 }],
+                zoomOut: [{ trigger: "KeyU", ctrl: -1, alt: 0, shift: 0, meta: 0 }],
 
-                cameraMode: [{ trigger: "KeyF", ctrl: -1, alt: -1, shift: -1 }],
-                cameraReset: [{ trigger: "KeyF", ctrl: 1, alt: -1, shift: 1 }],
-                cameraPlayer: [{ trigger: "KeyF", ctrl: -1, alt: -1, shift: 1 }],
+                cameraMode: [{ trigger: "KeyF", ctrl: -1, alt: -1, shift: -1, meta: 0 }],
+                cameraReset: [{ trigger: "KeyF", ctrl: 1, alt: -1, shift: 1, meta: 0 }],
+                cameraPlayer: [{ trigger: "KeyF", ctrl: -1, alt: -1, shift: 1, meta: 0 }],
 
-                camUp: [{ trigger: "ArrowUp", ctrl: -1, alt: -1, shift: -1 }],
-                camLeft: [{ trigger: "ArrowLeft", ctrl: -1, alt: -1, shift: -1 }],
-                camDown: [{ trigger: "ArrowDown", ctrl: -1, alt: -1, shift: -1 }],
-                camRight: [{ trigger: "ArrowRight", ctrl: -1, alt: -1, shift: -1 }],
+                camUp: [{ trigger: "ArrowUp", ctrl: -1, alt: -1, shift: -1, meta: 0 }],
+                camLeft: [{ trigger: "ArrowLeft", ctrl: -1, alt: -1, shift: -1, meta: 0 }],
+                camDown: [{ trigger: "ArrowDown", ctrl: -1, alt: -1, shift: -1, meta: 0 }],
+                camRight: [{ trigger: "ArrowRight", ctrl: -1, alt: -1, shift: -1, meta: 0 }],
 
-                outline: [{ trigger: "KeyO", ctrl: -1, alt: 0, shift: -0 }]
+                outline: [{ trigger: "KeyO", ctrl: -1, alt: 0, shift: -0, meta: 0 }]
             },
-            powerPresets: [
-                { powers: [7, 0], control: [{ trigger: "Digit1", ctrl: -1, alt: 0, shift: 0 }] },
-                { powers: [3, 1], control: [{ trigger: "Digit2", ctrl: -1, alt: 0, shift: 0 }] },
-                { powers: [2, 9], control: [{ trigger: "Digit3", ctrl: -1, alt: 0, shift: 0 }] },
-                { powers: [4, 2], control: [{ trigger: "Digit4", ctrl: -1, alt: 0, shift: 0 }] },
-                { powers: [6, 11], control: [{ trigger: "Digit5", ctrl: -1, alt: 0, shift: 0 }] },
-                { powers: [12, 13], control: [{ trigger: "Digit6", ctrl: -1, alt: 0, shift: 0 }] },
-            ],
+            powerPresets: [],
         };
     }
 })();
+if (settings.version !== currentSettingsVersion) {
+    if (settings.version === undefined) {
+        settings.version = "meta controls";
+        for (let k in settings.controls) {
+            settings.controls[k].forEach(v => v.meta = 0);
+            settings.powerPresets.forEach(v => v.control.meta = 0);
+        }
+    }
+}
 updateSettings();
 
 function updateSettings() {
     localStorage.setItem("settings", JSON.stringify(settings));
 }
-// window.settings = settings;
-// window.updateSettings = updateSettings;
+// #endregion
 
+// #region Settings Menu
 const settingsMenu = document.getElementById("settings");
 const settingsBackBtn = document.getElementById("settingsBackBtn");
 const settingsBtn = document.getElementById("settingsBtn");
@@ -147,16 +153,188 @@ settingsBtn.addEventListener("click", _ => {
     show(settingsMenu);
     controller.disable();
     inSettingsMenu = true;
-    
+
+    chatInput.tabIndex = -1;
+    chatSendBtn.tabIndex = -1;
+    settingsBtn.tabIndex = -1;
+
     controller.allUp();
 });
 settingsBackBtn.addEventListener("click", _ => {
     hide(settingsMenu);
     settingsBackBtn.blur();
 
+    chatInput.tabIndex = 0;
+    chatSendBtn.tabIndex = 0;
+    settingsBtn.tabIndex = 0;
+
     controller.enable();
     inSettingsMenu = false;
 });
+
+/** @type {HTMLDialogElement} */
+const settingsControlOverlay = document.getElementById("controlOverlay");
+const settingsController = new Controller(settingsControlOverlay);
+settingsController.disable();
+
+const controlsSection = document.getElementById("controlSettings");
+
+for (let name in settings.controls) {
+    controlsSection.append(createControlEl(name, updateSettings, settings.controls[name]));
+}
+
+function createControlEl(name, updateCB, triggers = []) {
+    function updateTrigger(trigger) {
+        return (remove = false) => {
+            if (remove) {
+                if (triggers.includes(trigger)) 
+                    triggers.splice(triggers.indexOf(trigger), 1);
+            }
+            update();
+        }
+    }
+    function update() {
+        updateCB(); 
+    }
+    const triggerEls = triggers.map(trigger => createTriggerEl(trigger, updateTrigger(trigger)));
+    const triggersWrapper = createElement("div", ["triggersWrapper"], null, triggerEls);
+    const addButton = createElement("button", ["addTriggerBtn"]);
+
+    addButton.addEventListener("click", async _ => {
+        const trigger = await requestTrigger();
+        triggers.push(trigger);
+        triggersWrapper.append(createTriggerEl(trigger, updateTrigger(trigger)));
+
+        update();
+    });
+
+    const nameEl = createElement("h4", ["controlName"], null, [name]);
+
+    return createElement("div", ["control"], null, [
+        nameEl,
+        triggersWrapper,
+        addButton
+    ]);
+}
+
+/** 
+ * @param {Trigger} trigger 
+ * @param {(remove?: boolean) => void} updateCB 
+ */
+function createTriggerEl(trigger, updateCB) {
+    function update() {
+        triggerKeyEl.dataset.trigger = trigger.trigger;
+
+        triggerModifierButtonEls.ctrl.dataset.value = trigger.ctrl;
+        triggerModifierButtonEls.shift.dataset.value = trigger.shift;
+        triggerModifierButtonEls.alt.dataset.value = trigger.alt;
+        triggerModifierButtonEls.meta.dataset.value = trigger.meta;
+
+        triggerModifierPlusEls.ctrl.dataset.value = trigger.ctrl;
+        triggerModifierPlusEls.shift.dataset.value = trigger.shift;
+        triggerModifierPlusEls.alt.dataset.value = trigger.alt;
+        triggerModifierPlusEls.meta.dataset.value = trigger.meta;
+
+        triggerModifierMinusEls.ctrl.dataset.value = trigger.ctrl;
+        triggerModifierMinusEls.shift.dataset.value = trigger.shift;
+        triggerModifierMinusEls.alt.dataset.value = trigger.alt;
+        triggerModifierMinusEls.meta.dataset.value = trigger.meta;
+
+        updateCB();
+    }
+    function modifierUpdater(key) {
+        return value => {
+            trigger[key] = value;
+            update();
+        }
+    }
+    const triggerModifierButtonEls = {
+        ctrl: createTriggerModifierEl("ctrl", modifierUpdater("ctrl")),
+        shift: createTriggerModifierEl("shift", modifierUpdater("shift")),
+        alt: createTriggerModifierEl("alt", modifierUpdater("alt")),
+        meta: createTriggerModifierEl("meta", modifierUpdater("meta")),
+    };
+    const triggerModifierPlusEls = {
+        ctrl: createElement("kbd", ["modifierKey", "ctrl", "plus"]),
+        shift: createElement("kbd", ["modifierKey", "shift", "plus"]),
+        alt: createElement("kbd", ["modifierKey", "alt", "plus"]),
+        meta: createElement("kbd", ["modifierKey", "meta", "plus"]),
+    };
+    const triggerModifierMinusEls = {
+        ctrl: createElement("kbd", ["modifierKey", "ctrl", "minus"]),
+        shift: createElement("kbd", ["modifierKey", "shift", "minus"]),
+        alt: createElement("kbd", ["modifierKey", "alt", "minus"]),
+        meta: createElement("kbd", ["modifierKey", "meta", "minus"]),
+    };
+    const triggerKeyEl = createElement("kbd", ["triggerKey"]);
+    triggerKeyEl.tabIndex = 0;
+    triggerKeyEl.addEventListener("click", async _ => {
+        const newTrigger = await requestTrigger();
+        trigger.trigger = newTrigger.trigger;
+
+        update();
+    });
+
+    const triggerEl = createElement("div", ["trigger"], null, [
+        ...Object.values(triggerModifierPlusEls),
+        triggerKeyEl,
+        ...Object.values(triggerModifierMinusEls),
+    ]);
+    const removeBtn = createElement("button", ["deleteTriggerBtn"]);
+    removeBtn.addEventListener("click", _ => {
+        wrapperEl.remove();
+        updateCB(true);
+    });
+    const wrapperEl = createElement("span", ["triggerWrapper"], null, [
+        removeBtn,
+        triggerEl,
+        triggerModifierButtonEls.ctrl,
+        triggerModifierButtonEls.shift,
+        triggerModifierButtonEls.alt,
+        triggerModifierButtonEls.meta,
+    ]);
+
+    update();
+
+    return wrapperEl;
+}
+const modifierCyclicMap = new Map([["0", 1], ["1", -1], ["-1", 0]]);
+function createTriggerModifierEl(type, modifierUpdater) {
+    const el = createElement("button", ["modifierBtn", type]);
+
+    el.tabIndex = 0;
+    el.title = type;
+
+    el.addEventListener("keyup", e => {
+        if (e.code === "Enter" || e.code === "Space") el.click();
+    });
+    el.addEventListener("click", _ => {
+        modifierUpdater(modifierCyclicMap.get(el.dataset.value));
+    });
+
+    return el;
+}
+
+/** @returns {Promise<Trigger>} */
+function requestTrigger() {
+    return new Promise((resolve, reject) => {
+        if (settingsControlOverlay.open) {
+            reject();
+            return;
+        }
+
+        settingsControlOverlay.showModal();
+        settingsController.enable();
+
+        settingsController.onceTrigger(trigger => {
+            resolve(trigger);
+
+            settingsController.disable();
+            settingsControlOverlay.close();
+        });
+    });
+}
+
 // #endregion
 
 // #region Session Cookie Login
@@ -437,7 +615,6 @@ game.on("updateState", state => {
 
 // #region Controls
 const controller = new Controller(document.documentElement, settings.controls);
-// window.controller = controller; // Expose controller to console
 
 ["up", "left", "down", "right", "halt", "sprint", "power1", "power2", "powercombo", "respawn"].forEach(name => {
     controller.onDown(name, e => game.input(name, true));
@@ -485,7 +662,7 @@ const powerTray1 = document.getElementById("powerTray1");
 const powerTray2 = document.getElementById("powerTray2");
 const powerItems1 = [];
 const powerItems2 = [];
-const allPowers = new Array(settings.SUPER_SECRET_DEV_MODE_REAL ? 14 : 12).fill().map((_, i) => i);
+const allPowers = new Array(/* settings.SUPER_SECRET_DEV_MODE_REAL ? 14 : 12 */14).fill().map((_, i) => i);
 
 for (let power of allPowers) {
     let el = createPowerItem(power, 0);
@@ -551,7 +728,10 @@ function updatePowerPresets(presets) {
     for (let id in powerPresets) {
         controller.deleteControl("POWERPRESET_" + id);
     }
-    for (let [id, { control, powers }] of Object.entries(presets)) {
+    while (powerPresets.length) powerPresets.pop();
+    for (let [id, powerPreset] of Object.entries(presets)) {
+        const {control, powers} = powerPreset;
+        powerPresets.push(powerPreset);
         controller.addControl("POWERPRESET_" + id, control);
         controller.onDown("POWERPRESET_" + id, _ => {
             if (!game.powers.includes(powers[0]) || !game.powers.includes(powers[1])) return;
@@ -602,8 +782,6 @@ function createChatMsg(author = "Author", level = 0, content = "Message", html =
 function chatAsClient(content = "Message", html = false) {
     createChatMsg("[CLIENT]", 1, content, html);
 }
-// expose to console
-// window.createChatMsg = createChatMsg;
 // #endregion
 
 // #region Send Chat Message
@@ -851,19 +1029,18 @@ controller.onDown("zoomOut", e => {
 // #region Render
 const canvas = document.getElementById("canvas");
 const renderer = new Renderer(canvas, game);
-// window.renderer = renderer; // Expose renderer to console
 
 let stopRender = false;
 let prevFrame = null;
-const cameraSpeed = 0.02;
+const cameraSpeed = 0.25;
 game.once("join", _ => {
     function renderLoop(now) {
         const dt = now - prevFrame;
 
         let start = performance.now();
 
-        renderer.camera.offsetX += cameraSpeed * renderer.camera.scale * dt * (controller.currentDown.has("camRight") - controller.currentDown.has("camLeft"));
-        renderer.camera.offsetY += cameraSpeed * renderer.camera.scale * dt * (controller.currentDown.has("camDown") - controller.currentDown.has("camUp"));
+        renderer.camera.offsetX += cameraSpeed / renderer.camera.scale * dt * (controller.currentDown.has("camRight") - controller.currentDown.has("camLeft"));
+        renderer.camera.offsetY += cameraSpeed / renderer.camera.scale * dt * (controller.currentDown.has("camDown") - controller.currentDown.has("camUp"));
 
         renderer.render(game.map, game.state, now, dt, game.newState, !!settings.SUPER_SECRET_DEV_MODE_REAL);
 
@@ -1114,10 +1291,10 @@ game.on("message", msg => {
     if (msg.author !== "SkapClientAdmin") return;
 
     if (msg.content.match(/^do a barrel roll([!]*|\.)$/i)) {
-        console.log();
         renderer.doABarrelRoll();
     }
 });
+if (settings.SUPER_SECRET_DEV_MODE_REAL) title.classList.add("devMode");
 let hueRotateStart = null;
 let canToggle = true;
 title.addEventListener("click", e => {
@@ -1144,7 +1321,7 @@ window.requestAnimationFrame(hueRotate);
 
 // #region WebSocket Closing
 game.on("wsClose", _ => {
-    chatAsClient("⚠ Connection to skap.io server closed");
+    chatAsClient("⚠ Connection to skap.io server closed. Refresh your page to reconnect.");
 });
 // #endregion
 
@@ -1154,5 +1331,15 @@ window.addEventListener("beforeunload", e => {
 });
 // #endregion
 
+// #region Exposing to console
+if (settings.SUPER_SECRET_DEV_MODE_REAL) window.SkapClient = {
+    game,
+    renderer,
+    controller,
+    createChatMsg,
+    settings,
+    updateSettings
+};
+// #endregion
 
 

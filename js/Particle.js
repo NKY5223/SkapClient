@@ -168,7 +168,7 @@ export class JetpackParticle extends CircularParticle {
     constructor({ pos, vel }) {
         const spread = 3;
         const newVel = add(
-            scale(vel, 0.25),
+            scale(vel, -0.25),
             vecPol(rand(20, 40), rand(Math.PI / 2 - spread / 2, Math.PI / 2 + spread / 2))
         );
         super({

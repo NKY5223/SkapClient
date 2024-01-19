@@ -1,7 +1,7 @@
 /**
  * @typedef {(event: MouseEvent | KeyboardEvent | null) => void} Listener
  * @typedef {(name: string, event: MouseEvent | KeyboardEvent | null) => void} AnyListener
- * @typedef {{ trigger: string, ctrl: -1 | 0 | 1, alt: -1 | 0 | 1, shift: -1 | 0 | 1 }} Trigger
+ * @typedef {{ trigger: string, ctrl: -1 | 0 | 1, alt: -1 | 0 | 1, shift: -1 | 0 | 1, meta: -1 | 0 | 1 }} Trigger
  */
 
 const BtnToNameMap = ["LMB", "MMB", "RMB", "XMB1", "XMB2"];
@@ -12,9 +12,9 @@ const NameToBtnMap = Object.fromEntries(BtnToNameMap.map((s, i) => [s, i]));
 export default class Controller {
     /**
      * @param { HTMLElement } element
-     * @param {{ [name: string]: string[] }} controls 
+     * @param {{ [name: string]: string[] }} [controls]
      */
-    constructor(element, controls) {
+    constructor(element, controls = []) {
         this.enabled = false;
 
         this.element = element;
@@ -28,7 +28,7 @@ export default class Controller {
         /** @type { AnyListener[] } */
         this.anyUpListeners = [];
 
-        /** @type { ((trigger: string) => void)[] } */
+        /** @type { ((trigger: Trigger) => void)[] } */
         this.triggerListeners = [];
 
         /** @type {{ [name: string]: Trigger[] }} */
@@ -52,7 +52,7 @@ export default class Controller {
 
             for (let name in this.controls) {
                 if (this.log) console.log(name);
-                for (let { trigger, ctrl, alt, shift } of this.controls[name]) {
+                for (let { trigger, ctrl, alt, shift, meta } of this.controls[name]) {
                     if (NameToBtnMap.hasOwnProperty(trigger)) continue;
 
                     if (e.code.toLowerCase() !== trigger.toLowerCase()) continue;
@@ -60,18 +60,26 @@ export default class Controller {
                     if (ctrl && ctrl !== e.ctrlKey * 2 - 1) continue;
                     if (alt && alt !== e.altKey * 2 - 1) continue;
                     if (shift && shift !== e.shiftKey * 2 - 1) continue;
+                    if (meta && meta !== e.metaKey * 2 - 1) continue;
 
                     this.emitDown(name, e);
                 }
             }
-
-            this.triggerListeners.forEach(f => f(e.code));
         });
         this.element.addEventListener("keyup", e => {
             if (!this.enabled) return;
 
+            this.triggerListeners.forEach(f => f({ 
+                trigger: e.code, 
+                ctrl: +e.ctrlKey,
+                alt: +e.altKey,
+                shift: +e.shiftKey,
+                meta: +e.metaKey,
+            }));
+            while (this.triggerListeners.length) this.triggerListeners.pop();
+
             for (let name in this.controls) {
-                for (let { trigger, ctrl, alt, shift } of this.controls[name]) {
+                for (let { trigger, ctrl, alt, shift, meta } of this.controls[name]) {
 
                     if (NameToBtnMap.hasOwnProperty(trigger)) continue;
 
@@ -80,6 +88,7 @@ export default class Controller {
                     if (ctrl && ctrl !== e.ctrlKey * 2 - 1) continue;
                     if (alt && alt !== e.altKey * 2 - 1) continue;
                     if (shift && shift !== e.shiftKey * 2 - 1) continue;
+                    if (meta && meta !== e.metaKey * 2 - 1) continue;
 
                     this.emitUp(name, e);
                 }
@@ -90,7 +99,7 @@ export default class Controller {
             if (!this.enabled) return;
 
             for (let name in this.controls) {
-                for (let { trigger, ctrl, alt, shift } of this.controls[name]) {
+                for (let { trigger, ctrl, alt, shift, meta } of this.controls[name]) {
                     if (!NameToBtnMap.hasOwnProperty(trigger)) continue;
 
                     if (e.button !== NameToBtnMap[trigger]) continue;
@@ -98,18 +107,26 @@ export default class Controller {
                     if (ctrl && ctrl !== e.ctrlKey * 2 - 1) continue;
                     if (alt && alt !== e.altKey * 2 - 1) continue;
                     if (shift && shift !== e.shiftKey * 2 - 1) continue;
+                    if (meta && meta !== e.metaKey * 2 - 1) continue;
 
                     this.emitDown(name, e);
                 }
             }
-
-            this.triggerListeners.forEach(f => f(BtnToNameMap[e.button]));
         });
         this.element.addEventListener("mouseup", e => {
             if (!this.enabled) return;
 
+            this.triggerListeners.forEach(f => f({ 
+                trigger: BtnToNameMap[e.button], 
+                ctrl: +e.ctrlKey,
+                alt: +e.altKey,
+                shift: +e.shiftKey,
+                meta: +e.metaKey,
+            }));
+            while (this.triggerListeners.length) this.triggerListeners.pop();
+
             for (let name in this.controls) {
-                for (let { trigger, ctrl, alt, shift } of this.controls[name]) {
+                for (let { trigger, ctrl, alt, shift, meta } of this.controls[name]) {
 
                     if (!NameToBtnMap.hasOwnProperty(trigger)) continue;
 
@@ -118,10 +135,10 @@ export default class Controller {
                     if (ctrl && ctrl !== e.ctrlKey * 2 - 1) continue;
                     if (alt && alt !== e.altKey * 2 - 1) continue;
                     if (shift && shift !== e.shiftKey * 2 - 1) continue;
+                    if (meta && meta !== e.metaKey * 2 - 1) continue;
 
                     this.emitUp(name, e);
                 }
-
             }
         });
         // #endregion
@@ -150,6 +167,9 @@ export default class Controller {
         delete this.upListeners[name];
         delete this.downListeners[name];
         delete this.triggerListeners[name];
+    }
+    updateControls(controls) {
+        this.controls = controls;
     }
     // #endregion
 
@@ -209,6 +229,14 @@ export default class Controller {
      */
     onAnyUp(listener) {
         this.anyUpListeners.push(listener);
+    }
+    // #endregion
+    // #region Trigger
+    /**
+     * @param {(trigger: Trigger) => void} listener 
+     */
+    onceTrigger(listener) {
+        this.triggerListeners.push(listener);
     }
     // #endregion
     // #endregion
