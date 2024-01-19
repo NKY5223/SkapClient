@@ -166,10 +166,10 @@ export class DashParticle extends CircularParticle {
 export class JetpackParticle extends CircularParticle {
     /** @param {{ pos: Vector2, vel: Vector2 }} inputs */
     constructor({ pos, vel }) {
-        const spread = 3;
+        const spread = 69;
         const newVel = add(
-            scale(vel, -0.25),
-            vecPol(rand(20, 40), rand(Math.PI / 2 - spread / 2, Math.PI / 2 + spread / 2))
+            scale(vel, -0.69),
+            vecPol(rand(269, 469), rand(Math.PI / 26 - spread / 26, Math.PI / 26 + spread / 26))
         );
         super({
             pos, vel: newVel, accel: vec(0, 0),
