@@ -948,7 +948,7 @@ export default class Renderer {
         // #region Reward DOING
         const rewardOffset = 3 * Math.sin(now / 750);
         for (let reward of map.objects.reward) {
-            if (!(reward.reward in this.settings.powers.textures)) {
+            if (!this.settings.powers.textures.hasOwnProperty(reward.reward)) {
                 this.mapRect(
                     reward.pos.x, reward.pos.y, 
                     reward.size.x, reward.size.y
@@ -968,7 +968,7 @@ export default class Renderer {
         // #region Hatreward DOING
         const hatRewardOffset = 2 * Math.sin(now / 500);
         for (let hatReward of map.objects.hatReward) {
-            if (!(hatReward.reward in this.settings.hats)) {
+            if (!this.settings.hats.hasOwnProperty(hatReward.reward)) {
                 this.mapRect(
                     hatReward.pos.x, hatReward.pos.y, 
                     hatReward.size.x, hatReward.size.y

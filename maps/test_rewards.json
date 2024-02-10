@@ -45,7 +45,7 @@
                         60,
                         0
                     ],
-                    "reward": "wolf"
+                    "reward": "toString"
                 },
                 {
                     "type": "reward",
