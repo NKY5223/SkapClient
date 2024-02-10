@@ -44,7 +44,10 @@ import Validator from "./Validator.js";
  * @typedef { BaseSkapMapObject<"circularSlime"> & { radius: number } } CircularSlime
  * @typedef { BaseSkapMapObject<"circularIce"> & { radius: number } } CircularIce
  * 
- * @typedef { Obstacle | Lava | Slime | Ice | Text | Teleporter | Block | Turret | GravityZone | RotatingLava | MovingObstacle | MovingLava | MovingSlime | MovingIce | CircularObstacle | CircularLava | CircularSlime | CircularIce } SkapMapObject
+ * @typedef { BaseSkapMapObject<"reward"> & { reward: number } } Reward
+ * @typedef { BaseSkapMapObject<"hatReward"> & { reward: string } } HatReward
+ * 
+ * @typedef { Obstacle | Lava | Slime | Ice | Text | Teleporter | Block | Turret | GravityZone | RotatingLava | MovingObstacle | MovingLava | MovingSlime | MovingIce | CircularObstacle | CircularLava | CircularSlime | CircularIce | Reward } SkapMapObject
  *
  * @typedef {{ 
             * all: SkapMapObject[],
@@ -74,7 +77,8 @@ import Validator from "./Validator.js";
             * circularLava: CircularLava[],
             * circularSlime: CircularSlime[],
             * circularIce: CircularIce[],
-            * [type: string]: SkapMapObject[]
+            * reward: Reward[],
+            * hatReward: HatReward[],
          * }} SkapMapObjects
  */
 

@@ -1,0 +1,69 @@
+{
+    "$schema": "./schema-v1.json",
+    "settings": {
+        "name": "Rewards Test Map",
+        "creator": "[SkapClient]",
+        "spawnArea": "0",
+        "spawnPosition": [50, 50],
+        "version": null
+    },
+    "maps": [
+        {
+            "name": "0",
+            "size": [
+                100,
+                100
+            ],
+            "objects": [
+                {
+                    "type": "reward",
+                    "position": [
+                        0,
+                        0
+                    ],
+                    "reward": 0
+                },
+                {
+                    "type": "reward",
+                    "position": [
+                        20,
+                        0
+                    ],
+                    "reward": 7
+                },
+                {
+                    "type": "hatReward",
+                    "position": [
+                        40,
+                        0
+                    ],
+                    "reward": "santa"
+                },
+                {
+                    "type": "hatReward",
+                    "position": [
+                        60,
+                        0
+                    ],
+                    "reward": "wolf"
+                },
+                {
+                    "type": "reward",
+                    "position": [
+                        0,
+                        120
+                    ],
+                    "reward": 12
+                },
+                {
+                    "type": "reward",
+                    "position": [
+                        20,
+                        120
+                    ],
+                    "reward": 13
+                }
+            ]
+        }
+    ]
+}

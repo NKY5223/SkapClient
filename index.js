@@ -76,9 +76,9 @@ function createElement(tagname, classes = [], id = null, content = []) {
 
 // #region Settings
 // localStorage.clear();
-
 /** @typedef {import("./js/Controller.js").Trigger} Trigger */
 
+const prevSettingsVersions = [undefined, "meta controls"];
 const currentSettingsVersion = "meta controls";
 /** @type {{ version?: string, controls: { [name: string]: Trigger[] }, powerPresets: { powers: [number, number], control: Trigger[] }[], SUPER_SECRET_DEV_MODE_REAL?: boolean }} */
 const settings = (_ => {
@@ -137,7 +137,17 @@ function updateSettings() {
 }
 // #endregion
 
-// #region Settings Menu
+// #region Dev Mode
+/** @type {HTMLLinkElement} */
+const icon = document.getElementById("iconLink");
+
+if (settings.SUPER_SECRET_DEV_MODE_REAL) {
+    icon.href = "assets/logos/skapclientdevbg.svg";
+    document.title = "SkapClient 🛠";
+}
+// #endregion
+
+// #region Controls Settings & Settings Menu
 const settingsMenu = document.getElementById("settings");
 const settingsBackBtn = document.getElementById("settingsBackBtn");
 const settingsBtn = document.getElementById("settingsBtn");
@@ -180,21 +190,27 @@ settingsController.disable();
 const controlsSection = document.getElementById("controlSettings");
 
 for (let name in settings.controls) {
-    controlsSection.append(createControlEl(name, updateSettings, settings.controls[name]));
+    controlsSection.append(createControlElWithName(name, updateSettings, settings.controls[name]));
 }
 
-function createControlEl(name, updateCB, triggers = []) {
+function createControlElWithName(name, updateCB, triggers = []) {
+    const nameEl = createElement("h4", ["controlName"], null, [name]);
+    return createElement("div", ["controlWrapper"], null, [
+        nameEl, createControlEl(updateCB, triggers)
+    ]);
+}
+function createControlEl(updateCB, triggers = []) {
     function updateTrigger(trigger) {
         return (remove = false) => {
             if (remove) {
-                if (triggers.includes(trigger)) 
+                if (triggers.includes(trigger))
                     triggers.splice(triggers.indexOf(trigger), 1);
             }
             update();
         }
     }
     function update() {
-        updateCB(); 
+        updateCB(triggers);
     }
     const triggerEls = triggers.map(trigger => createTriggerEl(trigger, updateTrigger(trigger)));
     const triggersWrapper = createElement("div", ["triggersWrapper"], null, triggerEls);
@@ -208,10 +224,7 @@ function createControlEl(name, updateCB, triggers = []) {
         update();
     });
 
-    const nameEl = createElement("h4", ["controlName"], null, [name]);
-
     return createElement("div", ["control"], null, [
-        nameEl,
         triggersWrapper,
         addButton
     ]);
@@ -601,6 +614,9 @@ game.once("join", _ => {
     document.activeElement?.blur();
     changeScreen(gameDiv, 0);
 });
+game.on("join", _ => {
+    chatAsClient("Joined game");
+});
 // #endregion
 
 // #region Player List
@@ -722,35 +738,109 @@ controller.onDown("powerswap", _ => {
 });
 // #endregion
 
-// #region Power Presets
-const powerPresets = [];
-function updatePowerPresets(presets) {
-    for (let id in powerPresets) {
-        controller.deleteControl("POWERPRESET_" + id);
-    }
-    while (powerPresets.length) powerPresets.pop();
-    for (let [id, powerPreset] of Object.entries(presets)) {
-        const {control, powers} = powerPreset;
-        powerPresets.push(powerPreset);
-        controller.addControl("POWERPRESET_" + id, control);
-        controller.onDown("POWERPRESET_" + id, _ => {
-            if (!game.powers.includes(powers[0]) || !game.powers.includes(powers[1])) return;
+// #region Power Presets (Settings)
+const powerPresetsDiv = document.getElementById("powerPresets");
 
-            game.changePower(powers[0], 0, true, settings.SUPER_SECRET_DEV_MODE_REAL);
-            game.changePower(powers[1], 1, true, settings.SUPER_SECRET_DEV_MODE_REAL);
-        });
+// me when stupid (i lazy but i fucking despise this)
+
+// truly one of the typeofs of all time
+/** 
+ * @param {(typeof settings)["powerPresets"][number]} powerPreset 
+ * @param {(powerPreset: (typeof settings)["powerPresets"][number]) => void} updateCB
+ */
+function createPowerPresetEl(powerPreset, updateCB) {
+    function update() {
+        updateCB(powerPreset);
     }
+    const powersEl = createPowerPresetPowersEl(powerPreset.powers, update);
+    const controlEl = createControlEl(update, powerPreset.control);
+    const el = createElement("div", ["powerPreset"], null, [
+        powersEl,
+        controlEl
+    ]);
+
+    return el;
 }
-updatePowerPresets(settings.powerPresets);
+/** 
+ * @param {(typeof settings)["powerPresets"][number]["powers"]} powers
+ * @param {(powers: [number, number]) => void} updateCB
+ */
+function createPowerPresetPowersEl(powers, updateCB) {
+    function update() {
+        updateCB(powers);
+    }
+    const power0 = createPowerPresetPowerEl(powers[0], power => { powers[0] = power; update() });
+    const power1 = createPowerPresetPowerEl(powers[1], power => { powers[0] = power; update() });
+    return createElement("div", ["powerPresetPowers"], null, [
+        power0, power1
+    ]);
+}
+/** 
+ * @param {(typeof settings)["powerPresets"][number]["powers"][number]} power 
+ * @param {(power: number) => void} updateCB
+ */
+function createPowerPresetPowerEl(power, updateCB) {
+    const el = createElement("input", ["powerPresetPower"]);
+    el.type = "number";
+    el.min = Math.min(...allPowers);
+    el.max = Math.max(...allPowers);
+    el.value = power;
+    
+    const bg = createElement("div", ["powerPresetPowerBG"], null, [el]);
+    bg.dataset.power = power;
+
+    el.addEventListener("input", _ => {
+        if (el.value === "") return;
+        const val = +el.value;
+        if (!allPowers.includes(val)) return;
+        updateCB(val);
+        bg.dataset.power = val;
+    });
+    return bg;
+}
+
+// powerPresetsDiv.append(...settings.powerPresets.map(powerPreset =>
+//     createPowerPresetEl(powerPreset, console.log)
+// ));
+
 // #endregion
 
 // #region Chat Message
 
 // #region Receive Chat Message
-const chatDiv = document.getElementById("chatDiv")
+const chatDiv = document.getElementById("chatDiv");
+
+const inviteRegex = /^INVITE ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})(?: (.+))?$/;
 game.on("message", msg => {
-    createChatMsg(msg.author, msg.level, msg.content.replaceAll("&lt;", "<").replaceAll("&gt;", ">"));
+    const content = msg.content.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+    const { author, level } = msg;
+
+    const inviteMatch = content.match(inviteRegex);
+    if (inviteMatch) {
+        const id = inviteMatch[1];
+        createChatMsg(author, level, createChatInvite(id), true);
+        return;
+    }
+
+    createChatMsg(author, level, content);
 });
+
+/** @param {string} id  */
+function createChatInvite(id) {
+    const el = createElement("button", ["invite"], null, ["Invitation to custom game"]);
+
+    if (settings.SUPER_SECRET_DEV_MODE_REAL) el.dataset.id = id;
+
+    el.addEventListener("click", _ => {
+        el.disabled = true;
+        el.innerText = "Joining...";
+        game.joinGame(id).then(_ => {
+            el.innerText = "Joined!";
+        });
+    });
+
+    return el;
+}
 
 const HUD = document.getElementById("HUD");
 HUD.addEventListener("mousedown", e => e.stopPropagation());
@@ -761,7 +851,10 @@ HUD.addEventListener("keyup", e => e.stopPropagation());
 
 function createChatMsg(author = "Author", level = 0, content = "Message", html = false) {
     let chatMsg = html ? (
-        createElement("p", ["chatMsg"], null, [content])
+        createElement("p", ["chatMsg"], null, [
+            createElement("span", ["author"], null, [author + ":"]),
+            content
+        ])
     ) : (
         createElement("p", ["chatMsg"], null, [
             createElement("span", ["author"], null, [author + ":"]),
@@ -1321,7 +1414,8 @@ window.requestAnimationFrame(hueRotate);
 
 // #region WebSocket Closing
 game.on("wsClose", _ => {
-    chatAsClient("⚠ Connection to skap.io server closed. Refresh your page to reconnect.");
+    chatAsClient("🔌 Connection to skap.io server closed. Refresh your page to reconnect.");
+    console.error("websocket died \n%csmh prookl stop crashing the damn game", "font-size: 0.6em; color: #c0ffc0");
 });
 // #endregion
 

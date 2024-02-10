@@ -395,6 +395,11 @@ export default class Renderer {
                 types: ["turret"],
                 color: [0xff, 0xff, 0x00, 0.75]
             },
+
+            {
+                types: ["reward", "hatReward"],
+                color: [0xff, 0xff, 0x00, 0.75]
+            }
         ];
 
         this.outlineShapeMap = {
@@ -940,16 +945,44 @@ export default class Renderer {
         this.fillBatch(this.rgba(...this.settings.box.color));
         // #endregion
 
-        // #region Reward
-        this.batchRectObjs(map.objects.reward);
-
-        this.fillBatch("#ff00ff");
+        // #region Reward DOING
+        const rewardOffset = 3 * Math.sin(now / 750);
+        for (let reward of map.objects.reward) {
+            if (!(reward.reward in this.settings.powers.textures)) {
+                this.mapRect(
+                    reward.pos.x, reward.pos.y, 
+                    reward.size.x, reward.size.y
+                );
+                this.fill("#ff00ff");
+                continue;
+            }
+            const img = this.settings.powers.textures[reward.reward];
+            this.ctx.drawImage(
+                img, 
+                ...this.t2w(reward.pos.x, reward.pos.y + rewardOffset),
+                this.tw(reward.size.x), this.tw(reward.size.y)
+            );
+        }
         // #endregion
 
-        // #region Hatreward
-        this.batchRectObjs(map.objects.hatReward);
-
-        this.fillBatch("#ff00ff");
+        // #region Hatreward DOING
+        const hatRewardOffset = 2 * Math.sin(now / 500);
+        for (let hatReward of map.objects.hatReward) {
+            if (!(hatReward.reward in this.settings.hats)) {
+                this.mapRect(
+                    hatReward.pos.x, hatReward.pos.y, 
+                    hatReward.size.x, hatReward.size.y
+                );
+                this.fill("#ff00ff");
+                continue;
+            }
+            const hat = this.settings.hats[hatReward.reward];
+            this.ctx.drawImage(
+                hat.texture, 
+                ...this.t2w(hatReward.pos.x, hatReward.pos.y + hatRewardOffset),
+                this.tw(hatReward.size.x), this.tw(hatReward.size.y)
+            );
+        }
         // #endregion
 
         // #region Text DONE

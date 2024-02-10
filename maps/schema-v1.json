@@ -1,0 +1,168 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Skap Map",
+    "description": "Map root.",
+    "type": "object",
+    "required": ["settings", "maps"],
+    "properties": {
+        "settings": {
+            "title": "Map Settings",
+            "description": "Settings for the map, includes creator, name of map, spawn and version(?)",
+            "type": "object",
+            "required": ["name", "creator", "spawnArea", "spawnPosition", "version"],
+            "default": {
+                "name": "[MAP_NAME]",
+                "creator": "[CREATOR]",
+                "spawnArea": "[SPAWN_AREA]",
+                "spawnPosition": [0, 0],
+                "version": null
+            },
+            "properties": {
+                "name": { "title": "Map name", "type": "string", "default": "[MAP_NAME]" },
+                "creator": { "title": "Map creator", "type": "string", "default": "[CREATOR]" },
+                "spawnArea": { "title": "Spawn area", "type": "string", "default": "[SPAWN_AREA]" },
+                "spawnPosition": { "title": "Spawn Position", "$ref": "#/definitions/vec" },
+                "version": { "default": null }
+            }
+        },
+        "maps": {
+            "title": "Map List",
+            "description": "Array of maps",
+            "type": "array",
+            "default": [],
+            "items": {
+                "title": "Map",
+                "description": "A map(/\"room\") within the custom map.",
+                "type": "object",
+                "required": ["name", "size", "objects"],
+                "default": {
+                    "name": "[MAP_NAME]",
+                    "size": [0, 0],
+                    "objects": []
+                },
+                "properties": {
+                    "name": { "title": "Map name", "type": "string", "default": "[MAP_NAME]" },
+                    "size": { "title": "Map size", "$ref": "#/definitions/vec" },
+                    "objects": {
+                        "type": "array",
+                        "additionalItems": true,
+                        "items": { 
+                            "anyOf": [
+                                {   "title": "Obstacle",
+                                    "description": "An obstacle object.",
+                                    "type": "object",
+                                    "required": ["type", "position", "size"],
+                                    "default": {
+                                        "type": "obstacle",
+                                        "position": [0, 0],
+                                        "size": [10, 10]
+                                    },
+                                    "properties": {
+                                        "type": { "const": "obstacle" },
+                                        "position": { "title": "Position", "$ref": "#/definitions/vec" },
+                                        "size": { "title": "Size", "$ref": "#/definitions/vec" }
+                                    }
+                                },
+                                {   "title": "Lava",
+                                    "description": "A lava object.",
+                                    "type": "object",
+                                    "required": ["type", "position", "size"],
+                                    "default": {
+                                        "type": "lava",
+                                        "position": [0, 0],
+                                        "size": [10, 10]
+                                    },
+                                    "properties": {
+                                        "type": { "const": "lava" },
+                                        "position": { "title": "Position", "$ref": "#/definitions/vec" },
+                                        "size": { "title": "Size", "$ref": "#/definitions/vec" }
+                                    }
+                                },
+                                {   "title": "(Power) Reward",
+                                    "description": "A power reward object. Will not be functional unless this map is Overworld.\nNote: The size of rewards are fixed at 18x18 by skap.io.",
+                                    "type": "object",
+                                    "required": ["type", "position"],
+                                    "default": {
+                                        "type": "reward",
+                                        "position": [0, 0],
+                                        "reward": 0
+                                    },
+                                    "properties": {
+                                        "type": { "const": "reward" },
+                                        "position": { "title": "Position of the CENTER of the object.", "$ref": "#/definitions/vec" },
+                                        "reward": { 
+                                            "title": "The power to be rewarded.",
+                                            "enum": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+                                        }
+                                    }
+                                },
+                                {   "title": "Hat Reward",
+                                    "description": "A hat reward object. Will not be functional unless this map is Overworld.\nNote: The size of rewards are fixed at 12x12 by skap.io.",
+                                    "type": "object",
+                                    "required": ["type", "position"],
+                                    "default": {
+                                        "type": "hatReward",
+                                        "position": [0, 0],
+                                        "reward": "none"
+                                    },
+                                    "properties": {
+                                        "type": { "const": "hatReward" },
+                                        "position": { "title": "Position of the CENTER of the object.", "$ref": "#/definitions/vec" },
+                                        "reward": { 
+                                            "title": "The hat to be rewarded.",
+                                            "enum": [
+                                                "none",
+                                                "catEars",
+                                                "catEars1",
+                                                "catEars111",
+                                                "tophat",
+                                                "guest",
+                                                "santa",
+                                                "militaryHat",
+                                                "nookyHat",
+                                                "ravelHat",
+                                                "wolf",
+                                                "trumpHat",
+                                                "bunnyEars",
+                                                "crown",
+                                                "kite",
+                                                "sakura",
+                                                "cowboy",
+                                                "party",
+                                                "bimbo",
+                                                "uwu",
+                                                "flowerHat",
+                                                "panties",
+                                                "panties2",
+                                                "bimboPurple",
+                                                "bimboGreen",
+                                                "moustache",
+                                                "onigiri",
+                                                "ramen",
+                                                "salmonSushi",
+                                                "horns",
+                                                "devil",
+                                                "taria"
+                                            ]
+                                        }
+                                    }
+                                }
+                            ] 
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "vec": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": [
+                { "title": "X", "type": "number", "default": 0 },
+                { "title": "Y", "type": "number", "default": 0 }
+            ]
+        }
+    }
+}

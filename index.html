@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="style.css">
         <title>SkapClient</title>
 
-        <link rel="shortcut icon" href="assets/logos/skapclientbg.svg" type="image/x-icon">
+        <link id="iconLink" rel="shortcut icon" href="assets/logos/skapclientbg.svg" type="image/x-icon">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,9 +158,15 @@
         <div id="settings" hidden>
             <button class="cornerBtn right top back" id="settingsBackBtn" title="Back"></button>
             <h2 id="settingsTitle">Settings</h2>
-            <h3>Controls</h3>
-            <section id="controlSettings">
-            </section>
+
+            <div id="controlSettings">
+                <h3>Controls</h3>
+            </div>
+            <div id="powerpresetSettings">
+                <h3>Power Presets</h3>
+                <div id="powerPresets"></div>
+                <button id="addPowerPreset"></button>
+            </div>
 
             <dialog id="controlOverlay">
                 <div id="controlMenu">

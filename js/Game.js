@@ -300,10 +300,9 @@ export default class Game {
             g: id
         });
         return new Promise(resolve => {
-            this.socket.once("join", msg => {
+            this.once("join", msg => {
                 this.GAME = id;
                 resolve(id);
-                this.emit("join", this.GAME);
             });
         });
     }
@@ -326,6 +325,12 @@ export default class Game {
                 s: settings
             });
         }
+        return new Promise(resolve => {
+            this.once("join", msg => {
+                this.GAME = "UNKNOWN_UUID";
+                resolve();
+            });
+        });
     }
     // #endregion
 

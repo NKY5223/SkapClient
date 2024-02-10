@@ -770,6 +770,8 @@ label[for="createGameFile"]:has([disabled]) {
     margin-right: .5em;
 }
 
+/* #region msg styles */
+
 /* Discord */
 .chatMsg[data-level="-2"] {
     color: #5e3dff;
@@ -832,12 +834,35 @@ label[for="createGameFile"]:has([disabled]) {
 
 /* #endregion */
 
+.chatMsg .invite {
+    all: unset;
+    cursor: pointer;
+    padding: .25em .4em;
+    border: 1px solid white;
+    border-radius: .2em;
+}
+.chatMsg .invite:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+.chatMsg .invite:not(:disabled)::after {
+    content: attr(data-id);
+
+    display: block;
+    margin-top: .2em;
+    color: #00ff00;
+    font-size: smaller;
+    font-family: monospace;
+}
+
+/* #endregion */
+
 /* #region fuel */
 #fuelBar {
     position: absolute;
     height: 2em;
-    inset: auto calc(1em + min(30em, 30%)) 1em calc(1em + min(30em, 30%));
-    border: .5em solid black;
+    inset: auto calc(1em + min(35em, 35%)) .5em calc(1em + min(35em, 35%));
+    border: .25em solid black;
 
     
     --fuel: 10;
@@ -880,10 +905,9 @@ label[for="createGameFile"]:has([disabled]) {
     border-radius: 1em;
 }
 
-#powers:has(.powerSlot[data-power="2"]):has(.powerSlot[data-power="4"]) {
-    /* Combo */
-    background: #2080ff80;
-}
+#powers:where(
+    :has(.powerSlot[data-power="2"]):has(.powerSlot[data-power="4"])
+) { background: #2080ff80; }
 
 .powerWrapper {
     position: relative;
@@ -902,8 +926,8 @@ label[for="createGameFile"]:has([disabled]) {
 
     box-sizing: border-box;
 
-    border: .1em solid #202020;
-    background-color: #404040;
+    border: .1em solid #ffffff;
+    background-color: #000000c0;
 
     overflow: hidden;
 }
@@ -918,7 +942,6 @@ label[for="createGameFile"]:has([disabled]) {
         linear-gradient(to top, #ff1000a0, #ff1000a0 calc(var(--cooldown) * 100%), transparent calc(var(--cooldown) * 100%)),
         linear-gradient(to top, #0010ffa0, #0010ffa0 calc(var(--heat) * 100%), transparent calc(var(--heat) * 100%));
 }
-
 .powerSlot::before {
     --active: clamp(0, 1 - 100000 * var(--cooldown), 1);
     transition: filter calc(0.25s * var(--active));
@@ -933,7 +956,26 @@ label[for="createGameFile"]:has([disabled]) {
     width: 100%;
     height: 100%;
 
-    clip-path: polygon(-10000% 0%, 50% 0%, 50% 100%, -10000% 100%);
+    clip-path: polygon(
+        -10000% 0%, 
+
+        25% 0%,
+        17.2744140625% 1.2236328125%,
+        10.3056640625% 4.7744140625%,
+        4.7744140625% 10.3056640625%,
+        1.2236328125% 17.2744140625%,
+        0% 25%,
+
+        0% 75%,
+        1.2236328125% 82.7255859375%,
+        4.7744140625% 89.6943359375%,
+        10.3056640625% 95.2255859375%,
+        17.2744140625% 98.7763671875%,
+        25% 100%,
+
+        25% 100%, 
+        -10000% 100%
+    );
 }
 
 .powerTray {
@@ -955,7 +997,6 @@ label[for="createGameFile"]:has([disabled]) {
 
     transition: transform .2s;
 }
-
 .powerTray::before {
     content: "";
 
@@ -965,12 +1006,7 @@ label[for="createGameFile"]:has([disabled]) {
 
     width: 2em;
     height: 100%;
-    background: #303030;
-}
-
-.powerItem:first-child {
-    border-radius: .5em 0 0 .5em;
-    overflow: hidden;
+    background: #000000c0;
 }
 
 .powerWrapper[data-disabled="1"] .powerTray {
@@ -986,17 +1022,20 @@ label[for="createGameFile"]:has([disabled]) {
     width: 2.7em;
     height: 2.7em;
 
-    background-color: #303030;
-    border-right: .05em solid #505050;
+    background-color: #000000c0;
+    border-right: .05em solid #ffffff;
 
     cursor: pointer;
 }
-
 .powerItem:hover {
     background-color: #285898;
 }
+.powerItem:first-child {
+    border-radius: .5em 0 0 .5em;
+    overflow: hidden;
+}
 
-[data-power]::before {
+:where(.powerItem, .powerSlot)[data-power]::before {
     content: "";
     display: block;
     width: 100%;
@@ -1009,60 +1048,60 @@ label[for="createGameFile"]:has([disabled]) {
     background-repeat: no-repeat;
 }
 
-[data-power="0"]::before {
+:where(.powerItem, .powerSlot)[data-power="0"]::before {
     background-image: url("https://skap.io/textures/powers/shrinker.svg");
 }
 
-[data-power="1"]::before {
+:where(.powerItem, .powerSlot)[data-power="1"]::before {
     background-image: url("https://skap.io/textures/powers/explosion.svg");
 }
 
-[data-power="2"]::before {
+:where(.powerItem, .powerSlot)[data-power="2"]::before {
     background-image: url("https://skap.io/textures/powers/wall.svg");
 }
 
-[data-power="3"]::before {
+:where(.powerItem, .powerSlot)[data-power="3"]::before {
     background-image: url("https://skap.io/textures/powers/meteor.svg");
 }
 
-[data-power="4"]::before {
+:where(.powerItem, .powerSlot)[data-power="4"]::before {
     background-image: url("https://skap.io/textures/powers/refuel.svg");
 }
 
-[data-power="5"]::before {
+:where(.powerItem, .powerSlot)[data-power="5"]::before {
     background-image: url("https://skap.io/textures/powers/feather.svg");
 }
 
-[data-power="6"]::before {
+:where(.powerItem, .powerSlot)[data-power="6"]::before {
     background-image: url("https://skap.io/textures/powers/shield.svg");
 }
 
-[data-power="7"]::before {
+:where(.powerItem, .powerSlot)[data-power="7"]::before {
     background-image: url("https://skap.io/textures/powers/dash.svg");
 }
 
-[data-power="8"]::before {
+:where(.powerItem, .powerSlot)[data-power="8"]::before {
     background-image: url("https://skap.io/textures/powers/lantern.svg");
 }
 
-[data-power="9"]::before {
+:where(.powerItem, .powerSlot)[data-power="9"]::before {
     background-image: url("https://skap.io/textures/powers/ghost.svg");
 }
 
-[data-power="10"]::before {
+:where(.powerItem, .powerSlot)[data-power="10"]::before {
     background-image: url("https://skap.io/textures/powers/frost.svg");
 }
 
-[data-power="11"]::before {
+:where(.powerItem, .powerSlot)[data-power="11"]::before {
     background-image: url("https://skap.io/textures/powers/shell.svg");
 }
 
-[data-power="12"]::before {
+:where(.powerItem, .powerSlot)[data-power="12"]::before {
     background-image: url("./assets/entities/blueFrisbeeEntity.svg");
     background-size: 70%;
 }
 
-[data-power="13"]::before {
+:where(.powerItem, .powerSlot)[data-power="13"]::before {
     background-image: url("./assets/entities/redFrisbeeEntity.svg");
     background-size: 70%;
 }
@@ -1086,6 +1125,7 @@ label[for="createGameFile"]:has([disabled]) {
     font-size: .75em;
     font-family: monospace;
 }
+#debug[hidden] { display: none; }
 
 .label {
     text-align: right;
@@ -1144,6 +1184,10 @@ label[for="createGameFile"]:has([disabled]) {
     background-color: #202020e0;
 
     overflow-y: scroll;
+}
+
+#controlSettings {
+    padding-left: 1em;
 }
 
 /* #region control */
@@ -1331,6 +1375,126 @@ label[for="createGameFile"]:has([disabled]) {
 .modifierBtn[data-value="-1"]::before {
     background-image: url("./assets/icons/cross.svg");
 }
+/* #endregion */
+
+/* #region power preset */
+#addPowerPreset {
+    all: unset;
+    margin-top: .5em;
+    display: grid;
+    width: 1.25em;
+    height: 1.25em;
+    cursor: pointer;
+    border: 1px solid white;
+    border-radius: .2em;
+    place-items: center;
+}
+#addPowerPreset:hover {
+    background: #ffffff20;
+}
+#addPowerPreset:focus {
+    outline: 2px solid #2080ff;
+}
+#addPowerPreset::after {
+    content: "+";
+    line-height: 1;
+}
+
+#powerPresets {
+    padding-left: 1em;
+}
+.powerPreset {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+
+/* #region power */
+.powerPresetPowers {
+    display: flex;
+    flex-direction: row;
+    gap: .5em;
+}
+.powerPresetPower {
+    all: unset;
+    display: block;
+    width: 3em;
+    height: 3em;
+
+    border: 1px solid white;
+    border-radius: .2em;
+    text-align: center;
+}
+.powerPresetPower::-webkit-inner-spin-button {
+    display: none;
+}
+
+/* #region background */
+.powerPresetPowerBG {
+    width: 3em;
+    height: 3em;
+    position: relative;
+}
+
+.powerPresetPowerBG::before {
+    content: "";
+    position: absolute;
+    display: block;
+    inset: 0;
+    background-position: center;
+    background-size: 80%;
+    background-repeat: no-repeat;
+    opacity: 0.25;
+    pointer-events: none;
+}
+.powerPresetPowerBG[data-power="0"]::before {
+    background-image: url("https://skap.io/textures/powers/shrinker.svg");
+}
+.powerPresetPowerBG[data-power="1"]::before {
+    background-image: url("https://skap.io/textures/powers/explosion.svg");
+}
+.powerPresetPowerBG[data-power="2"]::before {
+    background-image: url("https://skap.io/textures/powers/wall.svg");
+}
+.powerPresetPowerBG[data-power="3"]::before {
+    background-image: url("https://skap.io/textures/powers/meteor.svg");
+}
+.powerPresetPowerBG[data-power="4"]::before {
+    background-image: url("https://skap.io/textures/powers/refuel.svg");
+}
+.powerPresetPowerBG[data-power="5"]::before {
+    background-image: url("https://skap.io/textures/powers/feather.svg");
+}
+.powerPresetPowerBG[data-power="6"]::before {
+    background-image: url("https://skap.io/textures/powers/shield.svg");
+}
+.powerPresetPowerBG[data-power="7"]::before {
+    background-image: url("https://skap.io/textures/powers/dash.svg");
+}
+.powerPresetPowerBG[data-power="8"]::before {
+    background-image: url("https://skap.io/textures/powers/lantern.svg");
+}
+.powerPresetPowerBG[data-power="9"]::before {
+    background-image: url("https://skap.io/textures/powers/ghost.svg");
+}
+.powerPresetPowerBG[data-power="10"]::before {
+    background-image: url("https://skap.io/textures/powers/frost.svg");
+}
+.powerPresetPowerBG[data-power="11"]::before {
+    background-image: url("https://skap.io/textures/powers/shell.svg");
+}
+.powerPresetPowerBG[data-power="12"]::before {
+    background-image: url("./assets/entities/blueFrisbeeEntity.svg");
+    background-size: 70%;
+}
+.powerPresetPowerBG[data-power="13"]::before {
+    background-image: url("./assets/entities/redFrisbeeEntity.svg");
+    background-size: 70%;
+}
+/* #endregion */
+
+/* #endregion */
+
 /* #endregion */
 
 /* #region trigger modal */
