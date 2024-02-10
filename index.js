@@ -811,15 +811,18 @@ function createPowerPresetPowerEl(power, updateCB) {
 const chatDiv = document.getElementById("chatDiv");
 
 const inviteRegex = /^INVITE ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})(?: (.+))?$/;
+const inviteAuthors = ["SkapClientAdmin"];
 game.on("message", msg => {
     const content = msg.content.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
     const { author, level } = msg;
 
-    const inviteMatch = content.match(inviteRegex);
-    if (inviteMatch) {
-        const id = inviteMatch[1];
-        createChatMsg(author, level, createChatInvite(id), true);
-        return;
+    if (inviteAuthors.includes(author)) {
+        const inviteMatch = content.match(inviteRegex);
+        if (inviteMatch) {
+            const id = inviteMatch[1];
+            createChatMsg(author, level, createChatInvite(id), true);
+            return;
+        }
     }
 
     createChatMsg(author, level, content);
