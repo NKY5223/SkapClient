@@ -26,23 +26,25 @@
             }
         },
         "maps": {
-            "title": "Map List",
-            "description": "Array of maps",
+            "title": "Areas",
+            "description": "Array of areas",
             "type": "array",
             "default": [],
             "items": {
-                "title": "Map",
-                "description": "A map(/\"room\") within the custom map.",
+                "title": "Area",
+                "description": "An area within the custom map.",
                 "type": "object",
                 "required": ["name", "size", "objects"],
                 "default": {
-                    "name": "[MAP_NAME]",
+                    "name": "[AREA_NAME]",
                     "size": [0, 0],
-                    "objects": []
+                    "objects": [],
+                    "backgroundColor": [0, 0, 0, 0.9],
+                    "areaColor": [255, 255, 255]
                 },
                 "properties": {
-                    "name": { "title": "Map name", "type": "string", "default": "[MAP_NAME]" },
-                    "size": { "title": "Map size", "$ref": "#/definitions/vec" },
+                    "name": { "title": "Area name", "type": "string", "default": "[AREA_NAME]" },
+                    "size": { "title": "Area size", "$ref": "#/definitions/vec" },
                     "objects": {
                         "type": "array",
                         "additionalItems": true,
@@ -76,6 +78,74 @@
                                         "type": { "const": "lava" },
                                         "position": { "title": "Position", "$ref": "#/definitions/vec" },
                                         "size": { "title": "Size", "$ref": "#/definitions/vec" }
+                                    }
+                                },
+                                {   "title": "Slime",
+                                    "description": "A slime object.",
+                                    "type": "object",
+                                    "required": ["type", "position", "size"],
+                                    "default": {
+                                        "type": "slime",
+                                        "position": [0, 0],
+                                        "size": [10, 10]
+                                    },
+                                    "properties": {
+                                        "type": { "const": "slime" },
+                                        "position": { "title": "Position", "$ref": "#/definitions/vec" },
+                                        "size": { "title": "Size", "$ref": "#/definitions/vec" }
+                                    }
+                                },
+                                {   "title": "Ice",
+                                    "description": "An ice object.",
+                                    "type": "object",
+                                    "required": ["type", "position", "size"],
+                                    "default": {
+                                        "type": "ice",
+                                        "position": [0, 0],
+                                        "size": [10, 10]
+                                    },
+                                    "properties": {
+                                        "type": { "const": "ice" },
+                                        "position": { "title": "Position", "$ref": "#/definitions/vec" },
+                                        "size": { "title": "Size", "$ref": "#/definitions/vec" }
+                                    }
+                                },
+                                {   "title": "Text",
+                                    "description": "A text object.",
+                                    "type": "object",
+                                    "required": ["type", "position", "text"],
+                                    "default": {
+                                        "type": "text",
+                                        "position": [0, 0],
+                                        "text": "[TEXT_CONTENT]"
+                                    },
+                                    "properties": {
+                                        "type": { "const": "text" },
+                                        "position": { "title": "Position", "description": "Refers to the center of the text.", "$ref": "#/definitions/vec" },
+                                        "text": { "title": "Text", "type": "string" }
+                                    }
+                                },
+                                {   "title": "Teleporter",
+                                    "description": "A teleporter object.",
+                                    "type": "object",
+                                    "required": ["type", "position", "size", "dir", "id", "targetId", "targetArea"],
+                                    "default": {
+                                        "type": "teleporter",
+                                        "position": [0, 0],
+                                        "size": [20, 10],
+                                        "dir": 0,
+                                        "id": 0,
+                                        "targetId": 0,
+                                        "targetArea": "[AREA NAME]"
+                                    },
+                                    "properties": {
+                                        "type": { "const": "teleporter" },
+                                        "position": { "title": "Position", "description": "Position of the teleporter.", "$ref": "#/definitions/vec" },
+                                        "size": { "title": "Size", "description": "Size of the teleporter.", "$ref": "#/definitions/vec" },
+                                        "dir": { "enum": [0, 1, 2, 3] },
+                                        "id": { "title": "Id of the teleporter.", "type": "number" },
+                                        "targetId": { "title": "Id of the teleporter this is linked to.", "type": "number" },
+                                        "targetArea": { "title": "Area of the teleporter this is linked to.", "type": "string" }
                                     }
                                 },
                                 {   "title": "(Power) Reward",

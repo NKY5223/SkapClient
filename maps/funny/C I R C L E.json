@@ -1,5 +1,5 @@
 {
-    "$schema": "../schema-v1.json",
+    "$schema": "../schema/v1.json",
     "settings": {
         "name": "corcle",
         "creator": "[SkapClient]",

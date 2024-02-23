@@ -1,5 +1,5 @@
 {
-	"$schema": "../schema-v1.json",
+	"$schema": "../schema/v1.json",
 	"settings": {
         "name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit; Sed eget est eu mauris fermentum congue a non lectus; Suspendisse quis eros eget nibh venenatis elementum; Suspendisse eleifend tortor ut tortor suscipit ultricies; Proin a nisi semper, ornare erat et, placerat turpis; Donec sodales elit ut suscipit posuere; Nullam consectetur ipsum sit amet tortor lobortis, sit amet tempor sapien gravida; Praesent dignissim nisl sed neque gravida fringilla; Nulla semper quam at enim porta consectetur; Vestibulum nec tortor et erat molestie imperdiet; Cras ultricies eros id sapien ornare, quis molestie dolor accumsan; Duis venenatis tortor eget suscipit pharetra; Aliquam fringilla justo quis lorem iaculis, eu luctus metus tempor; Vivamus hendrerit justo non dolor varius pharetra; Nulla at lacus eget dolor tempus malesuada vitae vel ipsum; Integer vitae eros tempus, efficitur erat in, semper ex; Morbi tincidunt risus ut nulla egestas, sit amet mollis mi dapibus; Nullam fermentum urna accumsan nunc dapibus dignissim; Etiam tincidunt arcu eget nulla ultricies, in vehicula libero feugiat; Suspendisse tempor ipsum eu bibendum volutpat; Curabitur ac est vitae neque tempus tempor.",
         "creator": "[SkapClient]",

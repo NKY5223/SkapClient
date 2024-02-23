@@ -8,11 +8,11 @@ const Loader = {
             });
             img.addEventListener("error", reject);
         });
-        promise.then(
-            _ => this.onimgload(img),
-            _ => this.onimgerror(img)
-        );
         
+        promise
+            .then(_ => this.onimgload(img))
+            .catch(err => this.onimgerror(img, err));
+
         this.promises.push(promise);
 
         return promise;
@@ -27,11 +27,10 @@ const Loader = {
             ws.addEventListener("error", reject);
         });
 
-        promise.then(
-            _ => this.onwsload(ws),
-            _ => this.onwserror(ws)
-        );
-        
+        promise
+            .then(_ => this.onwsload(ws))
+            .catch(err => this.onwserror(ws, err));
+
         this.promises.push(promise);
 
         return promise;

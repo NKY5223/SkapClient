@@ -785,7 +785,7 @@ function createPowerPresetPowerEl(power, updateCB) {
     el.min = Math.min(...allPowers);
     el.max = Math.max(...allPowers);
     el.value = power;
-    
+
     const bg = createElement("div", ["powerPresetPowerBG"], null, [el]);
     bg.dataset.power = power;
 
@@ -977,6 +977,42 @@ const commands = [
         req: _ => settings.SUPER_SECRET_DEV_MODE_REAL,
         execute: (...args) => {
             return `/test args: ${args.join(", ")}`;
+        }
+    },
+    {
+        name: "eval",
+        preventSend: true,
+        execute: (...args) => {
+            (async () => {
+                if (!confirm(
+                    "Are you sure you want to run this script?\nIt could give the authors control of your account.\n5"
+                )) return;
+                if (!confirm(
+                    "Are you SURE you want to run this script?\nIt could give the authors control of your account, or grab your IP.\n4"
+                )) return;
+                if (!confirm(
+                    "Are you ABSOLUTELY SURE you want to run this script?\nIt could give the authors control of your account, or grab your IP, or worse.\n3"
+                )) return;
+                if (!confirm(
+                    "Do you trust the authors of this script and are ABSOLUTELY SURE you want to run this script?\nIt could give the authors control of your account, or grab your IP, or worse.\nCancel now, or prepare to face the consequences.\n2"
+                )) return;
+                if (!confirm(
+                    "Final warning. It is not my fault if you lose your account or get doxxed, alright?\n1"
+                )) return;
+                chatAsClient("Fetching script...");
+                try {
+                    const url = args[0];
+                    const res = await fetch(url);
+                    const text = await res.text();
+                    chatAsClient("Running script.");
+                    // !!!!! danger
+                    const result = eval(text);
+                    return `Script result: ${JSON.stringify(result)}`;
+                } catch (err) {
+                    chatAsClient("Could not fetch/run script.");
+                }
+            })();
+            return;
         }
     },
 ];
@@ -1349,15 +1385,16 @@ const loadingHeader = document.getElementById("loading");
 Loader.onimgload = Loader.onwsload = _ => {
     loadingBar.value = Loader.loaded / Loader.promises.length;
 };
-Loader.onimgerror = img => {
+Loader.onimgerror = (img, err) => {
     try {
-        loadingHeader.innerText = `Failed to load ${new URL(img.src).pathname.split("/").pop()}, try refreshing or checking your network settings.`;
+        loadingHeader.innerText = `Failed to load ${new URL(img.src).pathname.split("/").pop()}.`;
     } catch (err) {
         loadingHeader.innerText = "Failed to load an image";
     }
 };
-Loader.onwserror = ws => {
-    loadingHeader.innerText = `Failed to connect to ${ws.url}, try refreshing or checking your network settings.`;
+Loader.onwserror = (ws, err) => {
+    console.error(err);
+    loadingHeader.innerText = `Failed to connect to ${ws.url}.`;
 };
 
 skipLoadingBtn.addEventListener("click", _ => {
@@ -1375,7 +1412,7 @@ Loader.start().then(
     },
     err => {
         hide(loadingBar);
-        console.error("Error loading;", err);
+        console.error("FUCK");
     }
 );
 // #endregion
