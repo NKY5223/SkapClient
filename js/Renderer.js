@@ -1367,7 +1367,7 @@ export default class Renderer {
      * @param {import("./Game.js").Player} player
      */
     playerBody(player) {
-        if (player.name in this.settings.skins) {
+        if (this.settings.skins.hasOwnProperty(player.name)) {
 
             const skin = this.settings.skins[player.name].textures.get(
                 player.states.includes("Died"),

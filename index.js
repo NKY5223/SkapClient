@@ -1038,21 +1038,21 @@ game.on("sendMessage", /** @param {string} msg */ msg => {
 // #endregion
 
 // #region Particles
-const addParticle = {
-    explosion: particle => {
+const addParticle = new Map([
+    ["explosion", particle => {
         const { x, y } = particle;
         renderer.particles.addParticle(new ExplosionParticle({ pos: { x, y } }));
-    },
-    shrinking: particle => {
+    }],
+    ["shrinking", particle => {
         const { x, y } = particle;
         for (let i = 0; i < 20; i++)
             renderer.particles.addParticle(new ShrinkingParticle({ pos: { x, y } }));
-    },
-    dash: particle => {
+    }],
+    ["dash", particle => {
         const { x, y, dir } = particle;
         renderer.particles.addParticle(new DashParticle({ pos: { x, y }, dir }));
-    },
-    jetpack: player => {
+    }],
+    ["jetpack", player => {
         const { x, y } = player.pos;
         const { x: vx, y: vy } = player.vel;
         for (let i = 0; i < 10; i++)
@@ -1063,23 +1063,25 @@ const addParticle = {
                 },
                 vel: { x: vx, y: vy }
             }));
-    },
-    feather: player => {
+    }],
+    ["feather", player => {
         if (Math.random() > 0.1) return;
         const { x, y } = player.pos;
         renderer.particles.addParticle(new FeatherParticle({ pos: { x, y } }));
-    }
-};
+    }]
+]);
+const addJetpackParticle = addParticle.get("jetpack");
+const addFeatherParticle = addParticle.get("feather");
 game.on("updateState", _ => {
     game.state.particles.forEach(particle => {
-        if (particle.type in addParticle) addParticle[particle.type](particle);
+        if (addParticle.has(particle.type)) addParticle.get(particle.type)(particle);
     });
     Object.values(game.state.players).forEach(player => {
         if (player.states.includes("jetpack")) {
-            addParticle.jetpack(player);
+            addJetpackParticle(player);
         }
         if (player.states.includes("Feather") && player.vel.y) {
-            addParticle.feather(player);
+            addFeatherParticle(player);
         }
     });
 });
