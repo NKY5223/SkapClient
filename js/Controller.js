@@ -32,7 +32,7 @@ export default class Controller {
         this.triggerListeners = [];
 
         /** @type {{ [name: string]: Trigger[] }} */
-        this.controls = controls ?? {};
+        this.controls = {...controls} ?? {};
 
         /** @type {Set<string>} */
         this.currentDown = new Set();

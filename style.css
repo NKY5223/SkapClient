@@ -1186,6 +1186,11 @@ label[for="createGameFile"]:has([disabled]) {
     overflow-y: scroll;
 }
 
+#settingsBackBtn {
+    position: fixed;
+    right: 1.5em;
+}
+
 #controlSettings {
     padding-left: 1em;
 }
@@ -1402,13 +1407,42 @@ label[for="createGameFile"]:has([disabled]) {
 
 #powerPresets {
     padding-left: 1em;
+    width: fit-content;
 }
 .powerPreset {
-    display: flex;
-    flex-direction: column;
-    gap: .5em;
+    display: grid;
+    gap: .5em 5em;
+    grid-template-areas: 
+        "pow rem"
+        "key key"
+    ;
+    grid-template-columns: auto min-content;
+    width: 100%;
 }
 
+
+.deletePowerPresetBtn {
+    all: unset;
+    box-sizing: border-box;
+    display: grid;
+    grid-area: rem;
+    width: 1.25em;
+    height: 1.25em;
+    cursor: pointer;
+    border: 1px solid white;
+    border-radius: .2em;
+    place-items: center;
+}
+.deletePowerPresetBtn:focus {
+    outline: 2px solid #2080ff;
+}
+.deletePowerPresetBtn:hover {
+    background: #ffffff20;
+}
+.deletePowerPresetBtn::after {
+    content: "-";
+    line-height: 1;
+}
 /* #region power */
 .powerPresetPowers {
     display: flex;

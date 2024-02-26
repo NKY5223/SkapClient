@@ -80,7 +80,7 @@ function createElement(tagname, classes = [], id = null, content = []) {
 
 const prevSettingsVersions = [undefined, "meta controls"];
 const currentSettingsVersion = "meta controls";
-/** @type {{ version?: string, controls: { [name: string]: Trigger[] }, powerPresets: { powers: [number, number], control: Trigger[] }[], SUPER_SECRET_DEV_MODE_REAL?: boolean }} */
+/** @type {{ version?: string, controls: { [name: string]: Trigger[] }, powerPresets: { powers: [number, number], control: Trigger[] }[], dev?: boolean }} */
 const settings = (_ => {
     try {
         return JSON.parse(localStorage.getItem("settings") ?? "throw error pls");
@@ -141,7 +141,7 @@ function updateSettings() {
 /** @type {HTMLLinkElement} */
 const icon = document.getElementById("iconLink");
 
-if (settings.SUPER_SECRET_DEV_MODE_REAL) {
+if (settings.dev) {
     icon.href = "assets/logos/skapclientdevbg.svg";
     document.title = "SkapClient 🛠";
 }
@@ -500,9 +500,9 @@ function createGameItem(customGame) {
         createElement("span", ["cgUUID"], null, [`UUID: ${customGame.id}`])
     ]);
 
-    const el = createElement("button", customGame.private ? ["customGame", "private"] : ["customGame"], null, settings.SUPER_SECRET_DEV_MODE_REAL ? [name, row1, row2] : [name, row1]);
+    const el = createElement("button", customGame.private ? ["customGame", "private"] : ["customGame"], null, settings.dev ? [name, row1, row2] : [name, row1]);
     if (customGame.private) {
-        if (settings.SUPER_SECRET_DEV_MODE_REAL) {
+        if (settings.dev) {
             el.addEventListener("click", _ => {
                 game.joinGame(customGame.id, customGame.private);
             });
@@ -678,7 +678,7 @@ const powerTray1 = document.getElementById("powerTray1");
 const powerTray2 = document.getElementById("powerTray2");
 const powerItems1 = [];
 const powerItems2 = [];
-const allPowers = new Array(/* settings.SUPER_SECRET_DEV_MODE_REAL ? 14 : 12 */14).fill().map((_, i) => i);
+const allPowers = new Array(14).fill().map((_, i) => i);
 
 for (let power of allPowers) {
     let el = createPowerItem(power, 0);
@@ -699,7 +699,7 @@ function createPowerItem(power, slot) {
     el.dataset.power = power;
 
     el.addEventListener("click", _ => {
-        game.changePower(power, slot, false, settings.SUPER_SECRET_DEV_MODE_REAL);
+        game.changePower(power, slot, false, settings.dev);
     });
 
     return el;
@@ -728,34 +728,41 @@ game.on("updateState", _ => {
     powerSlot2.style.setProperty("--cooldown", game.state.infos.twoCooldown || 0);
     powerSlot2.style.setProperty("--heat", game.state.infos.twoHeat || 0);
 
-    if (settings.SUPER_SECRET_DEV_MODE_REAL) return;
+    if (settings.dev) return;
     powerWrapper1.dataset.disabled = +game.state.me.states.includes("Died");
     powerWrapper2.dataset.disabled = +game.state.me.states.includes("Died");
 });
 
 controller.onDown("powerswap", _ => {
-    game.changePower(game.activePowers[1], 0, false, settings.SUPER_SECRET_DEV_MODE_REAL);
+    game.changePower(game.activePowers[1], 0, false, settings.dev);
 });
 // #endregion
 
 // #region Power Presets (Settings)
 const powerPresetsDiv = document.getElementById("powerPresets");
+const addPowerPresetBtn = document.getElementById("addPowerPreset");
 
 // me when stupid (i lazy but i fucking despise this)
 
 // truly one of the typeofs of all time
 /** 
  * @param {(typeof settings)["powerPresets"][number]} powerPreset 
- * @param {(powerPreset: (typeof settings)["powerPresets"][number]) => void} updateCB
+ * @param {(powerPreset: (typeof settings)["powerPresets"][number], remove?: boolean) => void} updateCB
  */
 function createPowerPresetEl(powerPreset, updateCB) {
-    function update() {
-        updateCB(powerPreset);
+    function update(remove = false) {
+        updateCB(powerPreset, remove);
     }
-    const powersEl = createPowerPresetPowersEl(powerPreset.powers, update);
-    const controlEl = createControlEl(update, powerPreset.control);
+    const powersEl = createPowerPresetPowersEl(powerPreset.powers, _ => update());
+    const controlEl = createControlEl(_ => update(), powerPreset.control);
+    const removeBtn = createElement("button", ["deletePowerPresetBtn"]);
+
+    removeBtn.addEventListener("click", _ => {
+        el.remove();
+        update(true);
+    });
     const el = createElement("div", ["powerPreset"], null, [
-        powersEl,
+        powersEl, removeBtn,
         controlEl
     ]);
 
@@ -798,11 +805,40 @@ function createPowerPresetPowerEl(power, updateCB) {
     });
     return bg;
 }
+addPowerPresetBtn.addEventListener("click", _ => {
+    /** @type {(typeof settings)["powerPresets"][number]} */
+    const powerPreset = {
+        powers: [0, 0],
+        control: []
+    };
+    settings.powerPresets.push(powerPreset);
+    console.log(settings.powerPresets);
+    powerPresetsDiv.append(createPowerPresetEl(powerPreset, updatePowerPresets));
+    updatePowerPresets();
+});
 
-// powerPresetsDiv.append(...settings.powerPresets.map(powerPreset =>
-//     createPowerPresetEl(powerPreset, console.log)
-// ));
+powerPresetsDiv.append(...settings.powerPresets.map(powerPreset =>
+    createPowerPresetEl(powerPreset, updatePowerPresets)
+));
 
+function updatePowerPresets(powerPreset, remove = false) {
+    console.log(powerPreset, remove);
+    if (remove) {
+        settings.powerPresets.splice(settings.powerPresets.indexOf(powerPreset), 1);
+    }
+    for (let name in controller.controls) {
+        if (name.startsWith("powerPreset")) controller.deleteControl(name);
+    }
+    for (let id in settings.powerPresets) {
+        const powerPreset = settings.powerPresets[id];
+        controller.addControl(`powerPreset${id}`, powerPreset.control);
+        controller.onDown(`powerPreset${id}`, _ => {
+            game.changePower(powerPreset.powers[0], 0, true, settings.dev);
+            game.changePower(powerPreset.powers[1], 1, true, settings.dev);
+        });
+    }
+    updateSettings();
+}
 // #endregion
 
 // #region Chat Message
@@ -832,7 +868,7 @@ game.on("message", msg => {
 function createChatInvite(id) {
     const el = createElement("button", ["invite"], null, ["Invitation to custom game"]);
 
-    if (settings.SUPER_SECRET_DEV_MODE_REAL) el.dataset.id = id;
+    if (settings.dev) el.dataset.id = id;
 
     el.addEventListener("click", _ => {
         el.disabled = true;
@@ -974,7 +1010,7 @@ const commands = [
     {
         name: "test",
         preventSend: true,
-        req: _ => settings.SUPER_SECRET_DEV_MODE_REAL,
+        req: _ => settings.dev,
         execute: (...args) => {
             return `/test args: ${args.join(", ")}`;
         }
@@ -1176,7 +1212,7 @@ game.once("join", _ => {
         renderer.camera.offsetX += cameraSpeed / renderer.camera.scale * dt * (controller.currentDown.has("camRight") - controller.currentDown.has("camLeft"));
         renderer.camera.offsetY += cameraSpeed / renderer.camera.scale * dt * (controller.currentDown.has("camDown") - controller.currentDown.has("camUp"));
 
-        renderer.render(game.map, game.state, now, dt, game.newState, !!settings.SUPER_SECRET_DEV_MODE_REAL);
+        renderer.render(game.map, game.state, now, dt, game.newState, !!settings.dev);
 
         let end = performance.now();
 
@@ -1193,7 +1229,7 @@ game.once("join", _ => {
 
 // #region Fuel
 const fuelBar = document.getElementById("fuelBar");
-if (settings.SUPER_SECRET_DEV_MODE_REAL) hide(fuelBar);
+if (settings.dev) hide(fuelBar);
 
 game.on("updateState", _ => {
     fuelBar.style.setProperty("--fuel", game.state.me.fuel);
@@ -1205,7 +1241,7 @@ game.on("updateState", _ => {
 const DEBUG_LIMIT = 60;
 const debugDiv = document.getElementById("debug");
 
-if (settings.SUPER_SECRET_DEV_MODE_REAL) show(debugDiv);
+if (settings.dev) show(debugDiv);
 
 function debugFormat(number = 0, places = 0) {
     if (isNaN(number)) return "NaN";
@@ -1429,7 +1465,7 @@ game.on("message", msg => {
         renderer.doABarrelRoll();
     }
 });
-if (settings.SUPER_SECRET_DEV_MODE_REAL) title.classList.add("devMode");
+if (settings.dev) title.classList.add("devMode");
 let hueRotateStart = null;
 let canToggle = true;
 title.addEventListener("click", e => {
@@ -1468,7 +1504,7 @@ window.addEventListener("beforeunload", e => {
 // #endregion
 
 // #region Exposing to console
-if (settings.SUPER_SECRET_DEV_MODE_REAL) window.SkapClient = {
+if (settings.dev) window.SkapClient = {
     game,
     renderer,
     controller,
@@ -1477,5 +1513,3 @@ if (settings.SUPER_SECRET_DEV_MODE_REAL) window.SkapClient = {
     updateSettings
 };
 // #endregion
-
-
