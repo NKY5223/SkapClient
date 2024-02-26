@@ -777,7 +777,7 @@ function createPowerPresetPowersEl(powers, updateCB) {
         updateCB(powers);
     }
     const power0 = createPowerPresetPowerEl(powers[0], power => { powers[0] = power; update() });
-    const power1 = createPowerPresetPowerEl(powers[1], power => { powers[0] = power; update() });
+    const power1 = createPowerPresetPowerEl(powers[1], power => { powers[1] = power; update() });
     return createElement("div", ["powerPresetPowers"], null, [
         power0, power1
     ]);
