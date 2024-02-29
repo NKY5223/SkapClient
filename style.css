@@ -801,7 +801,7 @@ label[for="createGameFile"]:has([disabled]) {
 }
 
 .chatMsg:where(
-    [data-author="SkapClientAdmin"]
+    [data-author="SkapClientAdmin","Mohy"]
 ) .author {
     font-weight: bold;
     background-size: 20em 100%;
