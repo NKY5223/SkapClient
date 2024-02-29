@@ -822,7 +822,7 @@ powerPresetsDiv.append(...settings.powerPresets.map(powerPreset =>
 ));
 
 function updatePowerPresets(powerPreset, remove = false) {
-    console.log(powerPreset, remove);
+    // console.log(powerPreset, remove);
     if (remove) {
         settings.powerPresets.splice(settings.powerPresets.indexOf(powerPreset), 1);
     }
@@ -1510,6 +1510,7 @@ if (settings.dev) window.SkapClient = {
     controller,
     createChatMsg,
     settings,
-    updateSettings
+    updateSettings,
+    commands
 };
 // #endregion
