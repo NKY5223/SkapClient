@@ -6,7 +6,7 @@ import Validator from "./Validator.js";
 
 /** Custom Game
  * 
- * @typedef {{ name: string, players: number, capacity: number, mapName: string, creator: string, private: null | string, id: string }[]} CustomGame
+ * @typedef {{ name: string, players: number, capacity: number, mapName: string, creator: string, private: null | string, id: string }} CustomGame
  */
 /** Message Types
  * @typedef { ResultMessageFail | ResultMessageSuccess } ResultMessage 
@@ -63,7 +63,7 @@ export default class Game {
 
             this.GAME ??= null;
         });
-        this.socket.on("power", msg => this.unlockPower(msg.m));
+        this.socket.on("power", msg => msg.m.forEach(p => this.unlockPower(p)));
         this.socket.on("updateStates", msg => this.updateState(msg.m));
         this.socket.on("message", msg => this.emit("message", { author: msg.m.s, level: msg.m.r, content: msg.m.m, id: msg.m.i }));
 

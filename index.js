@@ -1053,22 +1053,26 @@ const commands = [
     },
 ];
 
+const commandNameRegex = /^\/(\S*)/;
 const argRegex = / (?:(?:"(.+?)")|(\S+))/g;
 game.on("sendMessage", /** @param {string} msg */ msg => {
+    const name = msg.match(commandNameRegex)?.[1];
     return commands.reduce((result, command) => {
-        if (!msg.startsWith(`/${command.name}`)) return result;
+        if (name !== command.name) return result;
         if (command.req && !command.req()) return result;
 
         const args = Array.from(msg.matchAll(argRegex)).map(a => a[1] ?? a[2]);
         const output = command.execute(...args);
-
-        if (output) {
-            if (typeof output === "string") chatAsClient(output);
-            else chatAsClient(...output);
-        }
+        
+        commandOutput(output);
         return result &&= !command.preventSend;
     }, true);
 });
+function commandOutput(output) {
+    if (!output) return;
+    if (typeof output === "string") chatAsClient(output);
+    else chatAsClient(...output);
+}
 // #endregion
 
 // #endregion
